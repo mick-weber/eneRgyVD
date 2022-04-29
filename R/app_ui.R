@@ -4,13 +4,34 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @noRd
+
+
+
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("eneRgyVD")
+    shinydashboardPlus::dashboardPage(
+      skin = "green",
+      shinydashboard::dashboardHeader(title = "eneRgy VD : prototype",
+                                      titleWidth = 350),
+
+      shinydashboard::dashboardSidebar(
+
+        # MODULE
+        mod_inputs_ui("inputs_1")
+
+      ),
+      shinydashboard::dashboardBody(
+        # Change background of dashboardBody() with html
+        tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
+
+        # MODULE
+        mod_map_selector_ui("map_selector_1")
+
+
+      )
     )
   )
 }
@@ -39,3 +60,4 @@ golem_add_external_resources <- function() {
     # for example, you can add shinyalert::useShinyalert()
   )
 }
+

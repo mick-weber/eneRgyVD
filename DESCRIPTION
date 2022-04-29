@@ -1,20 +1,31 @@
 Package: eneRgyVD
 Title: PKG_TITLE
 Version: 0.0.0.9000
-Authors@R: person('AUTHOR_FIRST', 'AUTHOR_LAST', email = 'AUTHOR@MAIL.COM', role = c('cre', 'aut'))
+Authors@R: 
+    person("AUTHOR_FIRST", "AUTHOR_LAST", , "AUTHOR@MAIL.COM", role = c("cre", "aut"))
 Description: PKG_DESC.
 License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
 Imports: 
     config (>= 0.3.1),
+    dashboardthemes,
+    dplyr,
     golem (>= 0.3.2),
-    shiny (>= 1.7.1)
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
+    leaflet,
+    leaflet.extras,
+    purrr,
+    sf,
+    shiny (>= 1.7.1),
+    shinycssloaders,
+    shinydashboard,
+    shinydashboardPlus,
+    tidyverse
 Suggests: 
     spelling (>= 2.2),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Encoding: UTF-8
 Language: en-US
-Depends: 
-    R (>= 2.10)
+LazyData: true
+RoxygenNote: 7.1.2

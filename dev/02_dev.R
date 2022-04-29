@@ -19,8 +19,8 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "map_selector", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "sideboard_inputs", with_test = TRUE) # Name of the module
+golem::add_module(name = "to_delete", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -36,7 +36,7 @@ golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package
-usethis::use_data_raw(name = "pronovo_data", open = FALSE)
+usethis::use_data_raw(name = "electricity_consumption", open = FALSE)
 
 ## Tests ----
 ## Add one line by test you want to create

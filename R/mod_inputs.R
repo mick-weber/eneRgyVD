@@ -15,8 +15,9 @@ mod_inputs_ui <- function(id){
                    label = "Commune(s)",
                    choices = communes_names,
                    selected = NULL,
-                   multiple = TRUE,
-                   options = list(placeholder = "Sélectionner une ou plusieurs communes")),
+                   multiple = TRUE),
+
+    # options = list(placeholder = "Sélectionner une ou plusieurs communes")
 
     # Select input for zooming on the districts (WIP feature)
     shiny::selectizeInput(inputId = ns("selected_district"),
@@ -38,6 +39,7 @@ mod_inputs_server <- function(id){
     ns <- session$ns
 
     inputVals <- reactiveValues()
+
 
     observe({
 

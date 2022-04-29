@@ -25,7 +25,7 @@ app_ui <- function(request) {
       ),
       shinydashboard::dashboardBody(
         # Change background of dashboardBody() with html
-        tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
+        #tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
 
         # MODULE
         mod_map_selector_ui("map_selector_1")

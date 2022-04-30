@@ -13,6 +13,7 @@ Imports:
     dplyr,
     golem (>= 0.3.2),
     leaflet,
+    magrittr,
     leaflet.extras,
     purrr,
     sf,

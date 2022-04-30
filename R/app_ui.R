@@ -14,22 +14,28 @@ app_ui <- function(request) {
     # Your application UI logic
     shinydashboardPlus::dashboardPage(
       skin = "green",
+
+      # Header ----
       shinydashboard::dashboardHeader(title = "eneRgy VD : prototype",
                                       titleWidth = 350),
 
+      # Sidebar ----
       shinydashboard::dashboardSidebar(
 
-        # MODULE
+      ## Inputs module ----
         mod_inputs_ui("inputs_1")
 
       ),
+
+      # Body ----
       shinydashboard::dashboardBody(
+
         # Change background of dashboardBody() with html
-        #tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
+        tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
 
-        # MODULE
-        mod_map_selector_ui("map_selector_1")
-
+        ## Leaflet select map ----
+        leaflet::leafletOutput("map", height = "700px", width = "900px") %>%
+          shinycssloaders::withSpinner(color="#3A862D")
 
       )
     )

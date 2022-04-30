@@ -10,14 +10,14 @@
 mod_inputs_ui <- function(id){
   ns <- NS(id)
   shiny::tagList(
+
     # Select input for municipalities
     shiny::selectizeInput(inputId = ns("selected_communes"),
                    label = "Commune(s)",
                    choices = communes_names,
                    selected = NULL,
-                   multiple = TRUE),
-
-    # options = list(placeholder = "Sélectionner une ou plusieurs communes")
+                   multiple = TRUE,
+                   options = list(placeholder = "Sélectionner une ou plusieurs communes")),
 
     # Select input for zooming on the districts (WIP feature)
     shiny::selectizeInput(inputId = ns("selected_district"),
@@ -40,7 +40,6 @@ mod_inputs_server <- function(id){
 
     inputVals <- reactiveValues()
 
-
     observe({
 
       inputVals$selectedCommunes <- input$selected_communes
@@ -51,6 +50,7 @@ mod_inputs_server <- function(id){
     # Our returning values when the module is called
 
     return(inputVals)
+
 
   })
 }

@@ -47,6 +47,15 @@ districts_names <- sf_districts %>%
   dplyr::add_row(NOM_MIN = "Canton", .before = 1) %>%
   dplyr::pull(NOM_MIN)
 
+## list of district centroids for labels
+
+# Pas créé car labels finalement pas très convainquants
+# sf_districts_labels <- sf_districts %>%
+#   dplyr::distinct(NOM_MIN, .keep_all = T) %>%
+#   mutate(centroid = sf::st_centroid(geometry)) %>%
+#   mutate(lng = sf::st_coordinates(centroid)[,1],
+#          lat = sf::st_coordinates(centroid)[,2])
+
 ## Bboxes for districts ----
 ## With a nested list ; each district name has 4 coordinates (xmin,ymin,xmax,ymax)
 ## These coordinates represent the boundaries for the leaflet map zoom adjustments (through widget)

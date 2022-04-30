@@ -34,6 +34,7 @@ app_ui <- function(request) {
         tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
 
         ## Leaflet select map ----
+
         leaflet::leafletOutput("map", height = "700px", width = "900px") %>%
           shinycssloaders::withSpinner(color="#3A862D")
 

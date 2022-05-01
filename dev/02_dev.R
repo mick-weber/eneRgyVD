@@ -17,13 +17,14 @@
 ## Amend DESCRIPTION with dependencies read from package code parsing
 attachment::att_amend_desc()
 usethis::use_pipe()
+usethis::use_package("shinyWidgets")
 
 
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "sideboard_inputs", with_test = TRUE) # Name of the module
-golem::add_module(name = "to_delete", with_test = TRUE) # Name of the module
+golem::add_module(name = "inputs", with_test = TRUE) # Name of the module
+golem::add_module(name = "elec_prod_filter", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

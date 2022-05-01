@@ -17,26 +17,53 @@ app_ui <- function(request) {
 
       # Header ----
       shinydashboard::dashboardHeader(title = "eneRgy VD : prototype",
-                                      titleWidth = 350),
+                                      titleWidth = 300),
 
       # Sidebar ----
       shinydashboard::dashboardSidebar(
+        width = 300,
+        shinydashboard::sidebarMenu(id = "sidebarMenu",
+          shinydashboard::menuItem("Sélection des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
+          shinydashboard::menuItem("Consommation", tabName = "tabConso", icon = icon("flash", lib = "glyphicon")),
+          shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
+          shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon"))
+        ),
 
-      ## Inputs module ----
+      ## SelectInput module ----
+      # Renders the sidebar inputs dynamically according to which tab is selected
         mod_inputs_ui("inputs_1")
 
       ),
 
       # Body ----
       shinydashboard::dashboardBody(
-
         # Change background of dashboardBody() with html
         tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
 
-        ## Leaflet select map ----
+        ## tabMap ----
+        shinydashboard::tabItems(
+          shinydashboard::tabItem(
+            tabName = "tabMap",
+            # Leaflet select map
+            leaflet::leafletOutput("map", height = "900px", width = "1200px") %>%
+              shinycssloaders::withSpinner(color="#3A862D")
+            ),
+        ## tabConso
+          shinydashboard::tabItem(
+            tabName = "tabConso",
+            h2("Will be implemented later on")
+          ),
+        ## tabProd
+          shinydashboard::tabItem(
+            tabName = "tabProd",
+            h2("Table & plot & download button coming soon")
+          ),
+        shinydashboard::tabItem(
+          tabName = "tabReport",
+          h2("Download report coming soon")
+        )
+      )
 
-        leaflet::leafletOutput("map", height = "700px", width = "900px") %>%
-          shinycssloaders::withSpinner(color="#3A862D")
 
       )
     )

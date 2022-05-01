@@ -21,7 +21,8 @@ Imports:
     shinycssloaders,
     shinydashboard,
     shinydashboardPlus,
-    tidyverse
+    tidyverse,
+    shinyWidgets
 Suggests: 
     spelling (>= 2.2),
     testthat (>= 3.0.0)

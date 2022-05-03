@@ -1,0 +1,9 @@
+Modulariser chaque partie de la sidebar ? Sinon à chaque fois qu'un élément s'update il déclenche la mise à jour de tous les autres... ? Est-ce vraiment un problème ? 
+
+
+Pour les facet plots : Ajouter une box "Libérer l'axe de l'ordonnée"  pour -> "free_y" facet_wrap
+
+
+# tabProd plot : 
+
+Add y axis values (?) ; add all x axis years ; légende propre et mieux placée (top) ; gérer les panneaux de facet_wrap ; ...

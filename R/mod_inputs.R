@@ -1,6 +1,7 @@
 #' sideboard_inputs UI Function
 #'
-#' @description A shiny Module.
+#' @description A shiny Module which populates the sideboard of the dashboard.
+#' Some of the widgets are dynamic, so we also create the reactive data in the top server part.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -49,14 +50,9 @@ mod_inputs_ui <- function(id){
                     `<i class='fa fa-pie-chart'></i>` = "pie"),
         justified = TRUE)
 
-    ),
-
-
-
-
-
-  )
-}
+    ), # End conditionalPanel
+  ) # End tagList
+} # End UI
 
 #' sideboard_inputs Server Functions
 #'
@@ -67,7 +63,8 @@ mod_inputs_server <- function(id){
 
     # tabProd inputs ----
 
-    # reactive dataset filtered by input$selected_communes
+    ## Reactive subset data  ----
+
     subset_elec_prod <- reactive({
 
       req(input$selected_communes)
@@ -77,27 +74,29 @@ mod_inputs_server <- function(id){
 
     })
 
+    ## Storing all values in inputVals ----
     # saving inputVals to populate the widgets in renderUI()
 
     inputVals <- reactiveValues()
 
     observe({
 
-      # store the selectizeInputs() values
+      # store the selectizeInputs() inputs
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
 
-      # min & max years for subsetted data
+      # min & max years for sliderInput()
       inputVals$min <- min(subset_elec_prod()$annee)
       inputVals$max <- max(subset_elec_prod()$annee)
 
-      # list of available techs for subsetted data
+      # list of available techs for pickerInput()
       inputVals$techs <- subset_elec_prod() %>%
         dplyr::distinct(categorie_diren) %>%
-        pull()
+        dplyr::pull()
 
-    })
+    }) # End observe
 
+    ## Render dynamic UI for renderUIs ----
     # renderUI for when tabProd is selected
     output$prod_year_n_techs <- shiny::renderUI({
 
@@ -112,6 +111,7 @@ mod_inputs_server <- function(id){
 
         shinyWidgets::pickerInput("prod_techs", label = "Choix des technologies",
                                   choices = inputVals$techs,
+                                  selected = inputVals$techs,
                                   multiple = T,
                                   options=shinyWidgets::pickerOptions(
                                     title = "Technologies disponibles",
@@ -125,17 +125,17 @@ mod_inputs_server <- function(id){
                                     style = rep(("color: black; background: white;"),
                                                 length(inputVals$techs)))
 
-        ))
+        )) # End tagList
 
-      })
+      }) # End renderUI
 
     # Returning values ----
 
     return(inputVals)
 
 
-  })
-}
+  }) # End moduleServer
+} # End server
 
 ## To be copied in the UI
 # mod_sideboard_inputs_ui("inputs_1")

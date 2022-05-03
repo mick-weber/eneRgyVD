@@ -33,6 +33,33 @@ load("./data/elec_prod_doc.rda")
 
 ## elec_prod_communes ----
 
+
+# Generic utils ----
+
+## Color used for multiple esthetic elements, for instance shinycssloaders()
+
+main_color <- "#3A862D"
+
+## Colors for categorie_diren
+
+categories_diren <- elec_prod %>%
+  distinct(categorie_diren) %>%
+  arrange(categorie_diren) %>%
+  pull()
+
+# We directly make a named vector since it's easier to spot what is what and we don't screw the order
+
+colors_categories <- c("Biomasse agricole" = "#48A649", # biomasse agricole
+                       "Bois-énergie" = "#CC9E62", # bois-énergie
+                       "Déchets incinérables" = "#BFDB86", # déchets méthanisables
+                       "Déchets méthanisables" = "#747D82", # déchets incinérables
+                       "Eolien" = "#6DD5E3", # éolien
+                       "Hydroélectricité" = "#6495ED", # hydroélectricité
+                       "Solaire" = "#FFB90F", # solaire
+                       "STEP" = "#A58DE6", # step
+                       "Thermique fossile" = "#E67A78") # thermique fossile
+
+
 # création du dataset par communes pour éviter de le calculer à chaque fois.
 # le dataset non agrégé servira à quelques graphiques (p.ex. courbes des puissances installées)
 

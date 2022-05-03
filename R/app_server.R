@@ -6,11 +6,10 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  # MODULES ----
 
 
   ## Inputs module ----
-    # This retrieves the selectInputs values fed to the leaflet map
+    # This retrieves the inputs saved in mod_inputs.R
 
    inputVals <- mod_inputs_server("inputs_1")
 
@@ -98,5 +97,9 @@ app_server <- function(input, output, session) {
 
 
 
+
+   # MODULES ----
+   ## tabProd: call the chart
+   mod_prod_charts_server("prod_chart1", inputVals = inputVals)
 }
 

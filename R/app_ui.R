@@ -46,7 +46,7 @@ app_ui <- function(request) {
             tabName = "tabMap",
             # Leaflet select map
             leaflet::leafletOutput("map", height = "900px", width = "1200px") %>%
-              shinycssloaders::withSpinner(color="#3A862D")
+              shinycssloaders::withSpinner(color=main_color) # defined in utiles_helpers.R
             ),
         ## tabConso
           shinydashboard::tabItem(
@@ -56,7 +56,10 @@ app_ui <- function(request) {
         ## tabProd
           shinydashboard::tabItem(
             tabName = "tabProd",
-            h2("Table & plot & download button coming soon")
+            h2("Production d'électricité par commune"),
+            br(),
+            # CALL MODULE
+            mod_prod_charts_ui("prod_chart1")
           ),
         shinydashboard::tabItem(
           tabName = "tabReport",

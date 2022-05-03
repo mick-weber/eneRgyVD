@@ -18,13 +18,14 @@
 attachment::att_amend_desc()
 usethis::use_pipe()
 usethis::use_package("shinyWidgets")
-
+usethis::use_package("plotly")
 
 
 ## Add modules ----
 ## Create a module infrastructure in R/
 golem::add_module(name = "inputs", with_test = TRUE) # Name of the module
-golem::add_module(name = "elec_prod_filter", with_test = TRUE) # Name of the module
+golem::add_module(name = "react_dataset", with_test = TRUE)
+golem::add_module(name = "prod_charts", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

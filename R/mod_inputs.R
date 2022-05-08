@@ -40,7 +40,8 @@ mod_inputs_ui <- function(id){
       shiny::uiOutput(ns("prod_year_n_techs")),
 
       # radioGroupButtons() for tabProd ----
-      # To select the type of plot. Params are not reactive so we code it here instead of uiOutput above
+      # To select the type of plot. Params are not reactive so we can code it here
+      # instead of the dynamic uiOutputs above
 
       shinyWidgets::radioGroupButtons(
         inputId = ns("tabProd_plot"),
@@ -50,7 +51,7 @@ mod_inputs_ui <- function(id){
                     `<i class='fa fa-pie-chart'></i>` = "pie"),
         justified = TRUE)
 
-    ), # End conditionalPanel
+    ) # End conditionalPanel
   ) # End tagList
 } # End UI
 
@@ -64,6 +65,9 @@ mod_inputs_server <- function(id){
     # tabProd inputs ----
 
     ## Reactive subset data  ----
+    # This is only used to feed the dynamic UI (year/techs available)
+    # The 'usable' dataset for plots etc. is computed in app_server.R and is further filtered by
+    # the values of the year sliderInput() and techs pickerInput()
 
     subset_elec_prod <- reactive({
 
@@ -85,16 +89,22 @@ mod_inputs_server <- function(id){
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
 
-      # min & max years for sliderInput()
-      inputVals$min <- min(subset_elec_prod()$annee)
-      inputVals$max <- max(subset_elec_prod()$annee)
+      # store min & max !available! years to feed sliderInput()
+      inputVals$min_avail <- min(subset_elec_prod()$annee)
+      inputVals$max_avail <- max(subset_elec_prod()$annee)
 
-      # list of available techs for pickerInput()
-      inputVals$techs <- subset_elec_prod() %>%
+      # store list of !available! techs to feed pickerInput()
+      inputVals$techs_avail <- subset_elec_prod() %>%
         dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
 
+      # TEST : storing values of inputs below before they are rendered
+
+      # inputVals$min <- input$prod_year[1]
+      # inputVals$max <- input$prod_year[2]
+
     }) # End observe
+
 
     ## Render dynamic UI for renderUIs ----
     # renderUI for when tabProd is selected
@@ -103,15 +113,15 @@ mod_inputs_server <- function(id){
         req(input$selected_communes)
 
       shiny::tagList(
-        shiny::sliderInput("prod_year", label = "Choix des années",
-                    min = inputVals$min,
-                    max = inputVals$max,
-                    value = c(inputVals$min, inputVals$max),
+        shiny::sliderInput(ns("prod_year"), label = "Choix des années",
+                    min = inputVals$min_avail,
+                    max = inputVals$max_avail,
+                    value = c(inputVals$min_avail, inputVals$max_avail),
                     step = 1L, sep = "", ticks = T),
 
-        shinyWidgets::pickerInput("prod_techs", label = "Choix des technologies",
-                                  choices = inputVals$techs,
-                                  selected = inputVals$techs,
+        shinyWidgets::pickerInput(ns("prod_techs"), label = "Choix des technologies",
+                                  choices = inputVals$techs_avail,
+                                  selected = inputVals$techs_avail,
                                   multiple = T,
                                   options=shinyWidgets::pickerOptions(
                                     title = "Technologies disponibles",
@@ -123,13 +133,23 @@ mod_inputs_server <- function(id){
                                     # we apply css iteratively on each element using length(techs)
                                     # https://stackoverflow.com/questions/54081254/pickerinput-font-or-background-color
                                     style = rep(("color: black; background: white;"),
-                                                length(inputVals$techs)))
+                                                length(inputVals$techs_avail)))
+                                  ) # End pickerInput()
+      ) # End tagList
+    }) # End renderUI
 
-        )) # End tagList
 
-      }) # End renderUI
+    # We complete inputVals with the values from renderUI() above
+    observe({
 
-    # Returning values ----
+      inputVals$min_selected <- input$prod_year[1]
+      inputVals$max_selected <- input$prod_year[2]
+      inputVals$techs_selected <- input$prod_techs
+
+    })
+
+
+    # Returning all the input values ----
 
     return(inputVals)
 

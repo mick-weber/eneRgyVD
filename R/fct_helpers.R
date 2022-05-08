@@ -1,13 +1,17 @@
+
+# Librairies ----
+library(tidyverse)
+library(leaflet)
+library(plotly)
+
+
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
 #'
-#' @return A leaflet map without reactivity.
+#' @return A leaflet base map without reactivity.
 #'
 #' @noRd
-
-library(tidyverse)
-library(leaflet)
 
 create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 
@@ -84,5 +88,68 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 # create_select_leaflet(sf_districts = sf_districts,
 #                       sf_lacs = sf_lacs,
 #                       sf_communes = sf_communes)
+
+#' create_bar_plotly
+#'
+#'@description Creates a plotly object from a facetted ggplot bar plot for use in renderPlotly
+#'
+#' @param data the data to provide
+#'
+#' @return an interactive plotly object
+
+create_bar_plotly <- function(data){
+
+  ggplot <- data %>%
+    ggplot2::ggplot()+
+    ggplot2::geom_col(aes(x = as.factor(annee), y = production_totale, fill = categorie_diren),
+                      position = "dodge")+
+    ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
+    ggplot2::scale_fill_manual(name = "Technologies",
+                               values = colors_categories)+ # palette defined in utils_helpers.R
+    ggplot2::labs( x = "", y = "kWh")+
+    ggplot2::facet_wrap(facets = vars(commune), ncol = 2)+
+    ggplot2::theme_bw()+
+    ggplot2::theme(legend.position = "top")
+
+
+  # turn to plotly object
+  ggplot %>% plotly::ggplotly() %>%
+    plotly::layout(legend = list(
+      orientation = "h", # puts the legend in the middle instead of default right
+      y = 1.25 # elevates the legend so its above the plot, not below
+    ))
+
+  # test :  elec_prod_communes %>% filter(commune %in% c("Morges", "Lausanne")) %>% create_bar_plotly()
+}
+
+
+#' create_treemap_plotly
+#'
+#' @description Creates a treemap
+#'
+#' @param data the data to provide
+#'
+#' @return an interactive plot
+#'
+
+create_treemap_plotly <- function(data){
+
+# library(treemapify)
+#
+# df <- tribble(~categorie_diren, ~parents, ~n,
+#                   "Hydro", "Renouvelable", 120,
+#                   "Solaire", "Renouvelable", 90,
+#                   "STEP", "Non-Renouvelable", 80,
+#                   "Thermique fossile", "Non-Renouvelable", 100
+#                   )
+# ggplot <- df %>%
+#   ggplot(aes(area = n, subgroup = parents, fill = categorie_diren, label = categorie_diren))+
+#   geom_treemap()+
+#   geom_treemap_subgroup_border()+
+#   geom_treemap_subgroup_text(place = "centre", grow = T, alpha = 0.5, colour =
+#                                "black", fontface = "italic", min.size = 0)+
+#   geom_treemap_text(colour = "white", place = "topleft", reflow = T)
+
+}
 
 

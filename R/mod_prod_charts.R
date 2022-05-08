@@ -15,7 +15,6 @@ mod_prod_charts_ui <- function(id){
     plotly::plotlyOutput(ns("chart_1")) %>%
       shinycssloaders::withSpinner(color= main_color) # defined in utils_helpers.R
 
-
   )
 }
 
@@ -26,13 +25,22 @@ mod_prod_charts_server <- function(id, inputVals){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    # Build reactive dataset (or save it directly in inputVals maybe)
+    # Build reactive dataset here
+    # We could do it in app_server.R but since the dataset is only used in this tab for now...
      subset_elec_prod <- reactive({
 
-       req(inputVals$selectedCommunes)
+       validate(
+         need(inputVals$selectedCommunes, "Sélectionner au moins une commune !")
+         )
+
+       req(inputVals$min_selected, inputVals$max_selected, inputVals$techs_selected)
 
        elec_prod_communes %>%
-         filter(commune %in% inputVals$selectedCommunes)
+         dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
+         dplyr::filter(annee >= inputVals$min_selected,
+                       annee <= inputVals$max_selected) %>%
+         dplyr::filter(categorie_diren %in% inputVals$techs_selected)
+
 
      })
 
@@ -45,18 +53,7 @@ mod_prod_charts_server <- function(id, inputVals){
 
        # for later : put in utils_helpers.R under : create_plotly_prod_bar(subset_elec_prod_d())
 
-       ggplot <- subset_elec_prod_d() %>%
-         ggplot2::ggplot()+
-         ggplot2::geom_col(aes(x = as.factor(annee), y = production_totale, fill = categorie_diren),
-                           position = "dodge")+
-         ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
-         ggplot2::scale_fill_manual(values = colors_categories)+ # palette defined in utils_helpers.R
-         ggplot2::labs( x = "", y = "kWh")+
-         ggplot2::theme_bw()+
-         ggplot2::facet_wrap(facets = vars(commune))
-
-        # turn to plotly object
-       ggplot %>% plotly::ggplotly()
+       create_bar_plotly(data = subset_elec_prod_d())
 
     })
 

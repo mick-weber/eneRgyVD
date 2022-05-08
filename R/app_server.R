@@ -6,12 +6,16 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-
-
   ## Inputs module ----
     # This retrieves the inputs saved in mod_inputs.R
 
    inputVals <- mod_inputs_server("inputs_1")
+
+
+   # TEST AREA
+
+
+   # /TEST AREA
 
    # Leaflet select map ----
 

@@ -98,27 +98,50 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 
 create_bar_plotly <- function(data){
 
+  # First create ggplot graph
   ggplot <- data %>%
     ggplot2::ggplot()+
-    ggplot2::geom_col(aes(x = as.factor(annee), y = production_totale, fill = categorie_diren),
+    ggplot2::geom_col(aes(x = as.factor(annee),
+                          y = production_totale,
+                          fill = categorie_diren,
+                          # Text is reused in ggplotly(tooltip = 'text')
+                          text = paste0(categorie_diren, "\n",
+                                        format(round(production_totale/1e3, digits = 0), big.mark = "'"),
+                                        " MWh en ", annee)),
                       position = "dodge")+
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
     ggplot2::scale_fill_manual(name = "Technologies",
                                values = colors_categories)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = "kWh")+
-    ggplot2::facet_wrap(facets = vars(commune), ncol = 2)+
+    ggplot2::facet_wrap(facets = vars(commune), ncol = 3)+
     ggplot2::theme_bw()+
-    ggplot2::theme(legend.position = "top")
+    ggplot2::theme(legend.position = "top",
+                   # change the labels of facet wrap. main_color defined in utils_helpers.R
+                   strip.background = element_rect(
+                     color="black", fill=main_color, size=1.5, linetype="solid"
+                   ),
+                   strip.text = element_text(
+                     size = 14, color = "white"
+                   ),
+                   legend.text = element_text(size = 14),
+                   legend.title = element_text(size = 14),
+                   legend.key.size = unit(2, "cm")
+    )
 
 
-  # turn to plotly object
-  ggplot %>% plotly::ggplotly() %>%
+  # Turn to plotly object
+  ggplot %>% plotly::ggplotly(tooltip = "text") %>% # refers to aes(text) defined in ggplot2
     plotly::layout(legend = list(
       orientation = "h", # puts the legend in the middle instead of default right
-      y = 1.25 # elevates the legend so its above the plot, not below
-    ))
+      y = 1.15 # elevates the legend so its above the plot, not below
+    )) %>%
+    config(locale = "fr")
 
-  # test :  elec_prod_communes %>% filter(commune %in% c("Morges", "Lausanne")) %>% create_bar_plotly()
+  # code for testing quickly. remove in prod.
+# elec_prod_communes %>%
+#   filter(commune %in% c("Morges", "Lausanne")) %>%
+#   create_bar_plotly()
+
 }
 
 
@@ -128,8 +151,8 @@ create_bar_plotly <- function(data){
 #'
 #' @param data the data to provide
 #'
-#' @return an interactive plot
 #'
+#' @return an interactive plot
 
 #  COMMENTED CODE BELOW IS FOR TESTING PURPOSES, SHOULD BE REMOVED LATER IN PROD
 # create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
@@ -186,5 +209,60 @@ create_sunburst_plotly <- function(data, year_var, year,
 
   # plot & enjoy
   plot_ly(data = sunburst_df,ids = ~ids, labels= ~labels, parents = ~parents, values= ~values,
-          type='sunburst', branchvalues = 'total')
+          type='sunburst', branchvalues = 'total') %>%
+    # change to fr
+    config(locale = "fr")
 }
+
+
+
+#' create_table_dt
+#'
+#' @param data Specific DGE-DIREN data to transform to datatable. Must follow Pronovo's outputs and utils_helpers.R format.
+#'
+#' @return A DT table with export functionalities
+#'
+
+create_table_dt <- function(data){
+
+  data %>%
+    dplyr::select(-numero_de_la_commune) %>%
+    # put installed power in the last position
+    dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
+    # rename columns to title case, replace "_" and trim blank spaces
+    dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
+      stringr::str_replace_all(string = str_to_title(.x),
+                               # replacements pairs below
+                               c("_" = " ",
+                                 "totale" = "")))) %>%
+    # add units
+    dplyr::rename_with(.cols = 4:6, ~paste0(.x, " [kWh]")) %>%
+    dplyr::rename_with(.cols = 7, ~paste0(.x, " [kW]")) %>%
+    dplyr::mutate(
+      # change year to factor %>%
+      Annee = as.factor(Annee),
+      # format numeric cols
+      across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
+    # turn to DT
+    DT::datatable(options = list(paging = TRUE,    ## paginate the output
+                                 pageLength = 15,  ## number of rows to output for each page
+                                 scrollX = TRUE,   ## enable scrolling on X axis
+                                 scrollY = TRUE,   ## enable scrolling on Y axis
+                                 autoWidth = TRUE, ## use smart column width handling
+                                 server = FALSE,   ## use client-side processing
+                                 dom = 'Bfrtip',
+                                 buttons = list(
+                                   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
+                                   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                                 columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/French.json')
+    ),
+    extensions = 'Buttons',
+    selection = 'single', ## enable selection of a single row
+    #filter = 'bottom',              ## include column filters at the bottom
+    rownames = FALSE               ## don't show row numbers/names
+    ) # End DT
+}
+
+

@@ -37,19 +37,7 @@ mod_inputs_ui <- function(id){
     shiny::conditionalPanel(
       condition="input.sidebarMenu == 'tabProd'",
 
-      shiny::uiOutput(ns("prod_year_n_techs")),
-
-      # radioGroupButtons() for tabProd ----
-      # To select the type of plot. Params are not reactive so we can code it here
-      # instead of the dynamic uiOutputs above
-
-      shinyWidgets::radioGroupButtons(
-        inputId = ns("tabProd_plot_type"),
-        label = "Type de graphique",
-        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
-                    `<i class='fa fa-chart-area'></i>` = "area",
-                    `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-        justified = TRUE)
+      shiny::uiOutput(ns("prod_year_n_techs"))
 
     ) # End conditionalPanel
   ) # End tagList
@@ -98,10 +86,6 @@ mod_inputs_server <- function(id){
       inputVals$techs_avail <- subset_elec_prod() %>%
         dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
-
-      # store which radioGroupButton() is currently selected
-
-      inputVals$prod_plot_type <- input$tabProd_plot_type
 
     }) # End observe. Note : inputVals is completed later again once renderUI() are rendered
 

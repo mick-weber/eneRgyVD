@@ -11,6 +11,7 @@ library(shinydashboardPlus)
 library(dashboardthemes)
 library(shinycssloaders)
 library(shinyWidgets)
+library(DT)
 
 # Loading .rda objects ----
 

@@ -44,11 +44,11 @@ mod_inputs_ui <- function(id){
       # instead of the dynamic uiOutputs above
 
       shinyWidgets::radioGroupButtons(
-        inputId = ns("tabProd_plot"),
+        inputId = ns("tabProd_plot_type"),
         label = "Type de graphique",
         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
                     `<i class='fa fa-chart-area'></i>` = "area",
-                    `<i class='fa fa-pie-chart'></i>` = "pie"),
+                    `<i class='fa fa-pie-chart'></i>` = "sunburst"),
         justified = TRUE)
 
     ) # End conditionalPanel
@@ -80,6 +80,7 @@ mod_inputs_server <- function(id){
 
     ## Storing all values in inputVals ----
     # saving inputVals to populate the widgets in renderUI()
+    # Note : inputVals is completed later again once renderUI() are rendered
 
     inputVals <- reactiveValues()
 
@@ -98,12 +99,11 @@ mod_inputs_server <- function(id){
         dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
 
-      # TEST : storing values of inputs below before they are rendered
+      # store which radioGroupButton() is currently selected
 
-      # inputVals$min <- input$prod_year[1]
-      # inputVals$max <- input$prod_year[2]
+      inputVals$prod_plot_type <- input$tabProd_plot_type
 
-    }) # End observe
+    }) # End observe. Note : inputVals is completed later again once renderUI() are rendered
 
 
     ## Render dynamic UI for renderUIs ----

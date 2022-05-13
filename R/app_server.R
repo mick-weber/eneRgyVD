@@ -11,12 +11,6 @@ app_server <- function(input, output, session) {
 
    inputVals <- mod_inputs_server("inputs_1")
 
-
-   # TEST AREA
-
-
-   # /TEST AREA
-
    # Leaflet select map ----
 
    #   Unfortunately this couldn't be modularized because for some reason the communication between
@@ -104,6 +98,7 @@ app_server <- function(input, output, session) {
 
    # MODULES ----
    ## tabProd: call the chart
+
    mod_prod_charts_server("prod_chart1", inputVals = inputVals)
 }
 

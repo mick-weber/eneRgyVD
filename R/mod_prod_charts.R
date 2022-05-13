@@ -12,10 +12,8 @@ mod_prod_charts_ui <- function(id){
   tagList(
 
     # WIP
-    plotly::plotlyOutput(ns("chart_1")) %>%
+    plotly::plotlyOutput(ns("chart_1"), height = "900px", width = "1200px") %>%
       shinycssloaders::withSpinner(color= main_color), # color defined in utils_helpers.R
-    plotly::plotlyOutput(ns("chart_2")) %>%
-      shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
 
   )
 }
@@ -44,49 +42,37 @@ mod_prod_charts_server <- function(id, inputVals){
          dplyr::filter(categorie_diren %in% inputVals$techs_selected)
 
 
-     })
+     }) # End reactive()
 
-     # We can debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
-
+     # We could debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
      subset_elec_prod_d <- subset_elec_prod %>% debounce(0)
 
-
-     output$chart_1 <- plotly::renderPlotly({
-
-       create_bar_plotly(data = subset_elec_prod_d()) # defined in fct_helpers.R
-
-    })
+     # According to which radioGroupButton() is selected through inputVals$prod_plot_type
+     # We plot one or the other type of plot (2/3 done)
+    # note: observeEvent is required since we need to acces prod_plot_type in a reactive consumer
 
 
-     output$chart_2 <- plotly::renderPlotly({
 
-       create_sunburst_plotly(data = subset_elec_prod_d(),
-                              year_var = "annee", # var name
-                              year = inputVals$max_selected, # takes the upper range of year slider
-                              values_tot = "production_totale", # var name
-                              rank_1 = "commune", # var name
-                              rank_2 = "categorie_diren", # var name
-                              rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale") # var name
+       # Render facetted plotly barplot
+       output$chart_1 <- plotly::renderPlotly({
 
-     })
+         if(inputVals$prod_plot_type == "bar"){
+        # PLOTLY BAR PLOT
+           create_bar_plotly(data = subset_elec_prod_d()) # defined in fct_helpers.R
 
+         } else if(inputVals$prod_plot_type == "sunburst"){
+        # PLOTLY SUNBURST PLOT
+           create_sunburst_plotly(data = subset_elec_prod_d(), # created just above
+                                  year_var = "annee", # var name
+                                  year = inputVals$max_selected, # takes the upper range of year slider
+                                  values_tot = "production_totale", # var name
+                                  rank_1 = "commune", # var name
+                                  rank_2 = "categorie_diren", # var name
+                                  rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale") # var names pivotted
+         }
 
-  })
-}
+         # PLOTLY AREA PLOT TO BE ADDED LATER
 
-## To be copied in the UI
-# mod_prod_charts_ui("prod_charts_1")
-
-## To be copied in the server
-# mod_prod_charts_server("prod_charts_1")
-
-# remove afterwards
-# elec_prod_communes %>%
-#   filter(commune %in% c("Morges", "Lausanne")) %>%
-#   ggplot()+
-#   geom_col(aes(x = annee, y = production_totale, fill = categorie_diren), position = "dodge")+
-#   ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
-#   ggplot2::scale_fill_manual(values = colors_categories)+ # palette defined in utils_helpers.R
-#   ggplot2::labs( x = "", y = "kWh")+
-#   ggplot2::theme_bw()+
-#   ggplot2::facet_wrap(facets = vars(commune))
+       })# End renderPlotly()
+  }) # End ModuleServer()
+} # End server

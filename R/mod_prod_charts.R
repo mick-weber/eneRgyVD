@@ -13,7 +13,9 @@ mod_prod_charts_ui <- function(id){
 
     # WIP
     plotly::plotlyOutput(ns("chart_1")) %>%
-      shinycssloaders::withSpinner(color= main_color) # defined in utils_helpers.R
+      shinycssloaders::withSpinner(color= main_color), # color defined in utils_helpers.R
+    plotly::plotlyOutput(ns("chart_2")) %>%
+      shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
 
   )
 }
@@ -51,11 +53,22 @@ mod_prod_charts_server <- function(id, inputVals){
 
      output$chart_1 <- plotly::renderPlotly({
 
-       # for later : put in utils_helpers.R under : create_plotly_prod_bar(subset_elec_prod_d())
-
-       create_bar_plotly(data = subset_elec_prod_d())
+       create_bar_plotly(data = subset_elec_prod_d()) # defined in fct_helpers.R
 
     })
+
+
+     output$chart_2 <- plotly::renderPlotly({
+
+       create_sunburst_plotly(data = subset_elec_prod_d(),
+                              year_var = "annee", # var name
+                              year = inputVals$max_selected, # takes the upper range of year slider
+                              values_tot = "production_totale", # var name
+                              rank_1 = "commune", # var name
+                              rank_2 = "categorie_diren", # var name
+                              rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale") # var name
+
+     })
 
 
   })

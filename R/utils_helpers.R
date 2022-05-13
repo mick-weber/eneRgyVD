@@ -60,7 +60,7 @@ colors_categories <- c("Biomasse agricole" = "#48A649", # biomasse agricole
                        "Thermique fossile" = "#E67A78") # thermique fossile
 
 
-# création du dataset par communes pour éviter de le calculer à chaque fois.
+# création du dataset pronovo par communes pour éviter de le calculer à chaque fois.
 # le dataset non agrégé servira à quelques graphiques (p.ex. courbes des puissances installées)
 
 elec_prod_communes <- elec_prod %>%
@@ -71,7 +71,7 @@ elec_prod_communes <- elec_prod %>%
               injection_totale,
               autoconso_totale), ~sum(.x, na.rm = T)),
     numero_de_la_commune = dplyr::first(numero_de_la_commune)) %>%
-  ungroup()
+  dplyr::ungroup()
 
 
 # Non-reactive objects for input widgets ----

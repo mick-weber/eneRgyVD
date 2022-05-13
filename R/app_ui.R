@@ -51,7 +51,7 @@ app_ui <- function(request) {
         ## tabConso
           shinydashboard::tabItem(
             tabName = "tabConso",
-            h2("Will be implemented later on")
+            h2("À venir: consommation d'électricité par commune et secteur")
           ),
         ## tabProd
           shinydashboard::tabItem(
@@ -63,7 +63,7 @@ app_ui <- function(request) {
           ),
         shinydashboard::tabItem(
           tabName = "tabReport",
-          h2("Download report coming soon")
+          h2("À venir: téléchargement d'un rapport spécifique à une commune")
         )
       )
 

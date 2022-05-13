@@ -4,7 +4,6 @@ library(tidyverse)
 library(leaflet)
 library(plotly)
 
-
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
@@ -123,33 +122,69 @@ create_bar_plotly <- function(data){
 }
 
 
-#' create_treemap_plotly
+#' create_sunburst_plotly
 #'
-#' @description Creates a treemap
+#' @description Creates a sunburst, inspired from https://stackoverflow.com/questions/57395424/how-to-format-data-for-plotly-sunburst-diagram
 #'
 #' @param data the data to provide
 #'
 #' @return an interactive plot
 #'
 
-create_treemap_plotly <- function(data){
-
-# library(treemapify)
+#  COMMENTED CODE BELOW IS FOR TESTING PURPOSES, SHOULD BE REMOVED LATER IN PROD
+# create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
+#                         values_tot = "production_totale",
+#                         rank_1 = "commune",
+#                         rank_2 = "categorie_diren",
+#                         rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale")
 #
-# df <- tribble(~categorie_diren, ~parents, ~n,
-#                   "Hydro", "Renouvelable", 120,
-#                   "Solaire", "Renouvelable", 90,
-#                   "STEP", "Non-Renouvelable", 80,
-#                   "Thermique fossile", "Non-Renouvelable", 100
-#                   )
-# ggplot <- df %>%
-#   ggplot(aes(area = n, subgroup = parents, fill = categorie_diren, label = categorie_diren))+
-#   geom_treemap()+
-#   geom_treemap_subgroup_border()+
-#   geom_treemap_subgroup_text(place = "centre", grow = T, alpha = 0.5, colour =
-#                                "black", fontface = "italic", min.size = 0)+
-#   geom_treemap_text(colour = "white", place = "topleft", reflow = T)
+# subset <- elec_prod_communes %>% filter(commune %in% c("Lausanne", "Aigle"))
 
+create_sunburst_plotly <- function(data, year_var, year,
+                                    values_tot, rank_1, rank_2, rank_3_1, rank_3_2){
+
+  # filter data so make sure there's only one year, otherwise the plot won't work (3 levels of labels allowed here)
+  data <- data %>% filter(.data[[year_var]] == year)
+
+  # total overall
+  total_row <- data %>% summarise(values = sum(.data[[values_tot]])) %>%
+    mutate(labels = as.character(year),
+           parents = NA,
+           ids = "Total")
+
+  # total per commune
+  subtotal_row <- data %>%
+    group_by(labels = .data[[rank_1]]) %>%
+    summarise(values = sum(.data[[values_tot]])) %>%
+    mutate(labels = labels,
+      parents = "Total",
+      ids = paste0("Total - ",labels), .keep = "unused")
+
+  # total per tech
+  subsubtotal_row <- data %>%
+    mutate(labels = .data[[rank_2]],
+           values = .data[[values_tot]],
+           parents = paste0("Total - ", .data[[rank_1]]),
+           ids = paste0(parents, " - ", .data[[rank_2]]),
+           .keep = "unused")
+
+  # total per usage
+  # specificity : we have two cols that we pivot_long, hence the rank_3_1 and rank_3-2
+  # if these were originally one column instead of two, we could simplify the code with rank_3 and remove pivot_longer()
+  lastsubtotal_row <- subsubtotal_row %>%
+    select(-values, -labels) %>%
+    mutate(Injection = .data[[rank_3_1]], Autonconsommation = .data[[rank_3_2]], .keep = "unused") %>%
+    pivot_longer(cols = c(Injection, Autonconsommation),
+                 names_to = "labels",
+                 values_to = "values") %>%
+    mutate(labels = labels,
+           parents = ids,
+           ids = paste0(parents, " - ", labels), .keep = "unused")
+
+  # assemble everything
+  sunburst_df <- bind_rows(list(total_row, subtotal_row, subsubtotal_row, lastsubtotal_row))
+
+  # plot & enjoy
+  plot_ly(data = sunburst_df,ids = ~ids, labels= ~labels, parents = ~parents, values= ~values,
+          type='sunburst', branchvalues = 'total')
 }
-
-

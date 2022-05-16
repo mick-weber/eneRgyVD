@@ -154,14 +154,9 @@ create_bar_plotly <- function(data){
 #'
 #' @return an interactive plot
 
-#  COMMENTED CODE BELOW IS FOR TESTING PURPOSES, SHOULD BE REMOVED LATER IN PROD
-# create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
-#                         values_tot = "production_totale",
-#                         rank_1 = "commune",
-#                         rank_2 = "categorie_diren",
-#                         rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale")
-#
-# subset <- elec_prod_communes %>% filter(commune %in% c("Lausanne", "Aigle"))
+
+
+subset <- elec_prod_communes %>% filter(commune %in% c("Lausanne", "Aigle"))
 
 create_sunburst_plotly <- function(data, year_var, year,
                                     values_tot, rank_1, rank_2, rank_3_1, rank_3_2){
@@ -202,18 +197,33 @@ create_sunburst_plotly <- function(data, year_var, year,
                  values_to = "values") %>%
     mutate(labels = labels,
            parents = ids,
-           ids = paste0(parents, " - ", labels), .keep = "unused")
+           ids = paste0(parents, " - ", labels),
+           values = values,
+           values_hover = paste0(format(values/1e3, big.mark = "'", digits = 0, scientific = F), " MWh"),
+           .keep = "unused")
 
   # assemble everything
   sunburst_df <- bind_rows(list(total_row, subtotal_row, subsubtotal_row, lastsubtotal_row))
 
   # plot & enjoy
-  plot_ly(data = sunburst_df,ids = ~ids, labels= ~labels, parents = ~parents, values= ~values,
+  plotly::plot_ly(data = sunburst_df,
+                  ids = ~ids,
+                  labels= ~labels,
+                  parents = ~parents,
+                  values= ~values,
+                  hoverinfo = "text", hovertext = sunburst_df$values_hover,
           type='sunburst', branchvalues = 'total') %>%
     # change to fr
     config(locale = "fr")
 }
 
+
+#  COMMENTED CODE BELOW IS FOR TESTING PURPOSES, SHOULD BE REMOVED LATER IN PROD
+create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
+                       values_tot = "production_totale",
+                       rank_1 = "commune",
+                       rank_2 = "categorie_diren",
+                       rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale")
 
 
 #' create_table_dt

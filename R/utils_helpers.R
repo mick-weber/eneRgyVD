@@ -12,6 +12,7 @@ library(dashboardthemes)
 library(shinycssloaders)
 library(shinyWidgets)
 library(DT)
+library(rjson)
 
 # Loading .rda objects ----
 
@@ -36,6 +37,18 @@ load("./data/elec_prod_doc.rda")
 
 
 # Generic utils ----
+
+## Run ONCE : Store JSON french language items file for DT library
+
+# rjson::fromJSON(
+#   file = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/French.json') %>%
+#   toJSON() %>%
+# write(file = "./data/DT_fr_language.json")
+
+## Load json french language file for DT library
+
+DT_fr_language <- fromJSON(file = "./data/DT_fr_language.json")
+
 
 ## Color used for multiple esthetic elements, for instance shinycssloaders()
 

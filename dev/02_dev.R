@@ -26,6 +26,7 @@ usethis::use_package("plotly")
 golem::add_module(name = "inputs", with_test = TRUE) # Name of the module
 golem::add_module(name = "react_dataset", with_test = TRUE)
 golem::add_module(name = "prod_charts", with_test = TRUE)
+golem::add_module(name = "download_data", with_test = TRUE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

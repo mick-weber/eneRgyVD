@@ -20,3 +20,5 @@ sf_lacs <- sf_lacs %>% sf::st_transform(crs = 'EPSG:4326')
 usethis::use_data(sf_communes, overwrite = TRUE)
 usethis::use_data(sf_districts, overwrite = TRUE)
 usethis::use_data(sf_lacs, overwrite = TRUE)
+
+

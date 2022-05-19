@@ -4,7 +4,7 @@
 \alias{create_bar_plotly}
 \title{create_bar_plotly}
 \usage{
-create_bar_plotly(data)
+create_bar_plotly(data, free_y = FALSE)
 }
 \arguments{
 \item{data}{the data to provide}

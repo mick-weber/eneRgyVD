@@ -80,7 +80,8 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
     leaflet.extras::addFullscreenControl(position = "topleft",
                                          pseudoFullscreen = TRUE) %>%
     # Set max limits where the users cannot pan further (approximate VD coords with padding)
-    leaflet::setMaxBounds(lng1 = 5.9, lat1 = 46.1, lng2 = 7.3, lat2 = 47.1)
+    leaflet::setMaxBounds(lng1 = 6.06, lat1 = 46.18, lng2 = 7.24, lat2 = 46.98)
+
 
 }
 
@@ -96,7 +97,7 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 #'
 #' @return an interactive plotly object
 
-create_bar_plotly <- function(data){
+create_bar_plotly <- function(data, free_y = FALSE){
 
   # First create ggplot graph
   ggplot <- data %>%
@@ -113,7 +114,10 @@ create_bar_plotly <- function(data){
     ggplot2::scale_fill_manual(name = "Technologies",
                                values = colors_categories)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = "kWh")+
-    ggplot2::facet_wrap(facets = vars(commune), ncol = 3)+
+    ggplot2::facet_wrap(facets = vars(commune),
+                        ncol = 3,
+                        # if the toggle linked to the free_y argument is TRUE, then free y axis
+                        scales = ifelse(free_y(), "free_y", "fixed"))+
     ggplot2::theme_bw()+
     ggplot2::theme(legend.position = "top",
                    # change the labels of facet wrap. main_color defined in utils_helpers.R
@@ -121,26 +125,27 @@ create_bar_plotly <- function(data){
                      color="black", fill=main_color, size=1.5, linetype="solid"
                    ),
                    strip.text = element_text(
-                     size = 14, color = "white"
-                   ),
-                   legend.text = element_text(size = 14),
-                   legend.title = element_text(size = 14),
+                    # if the toggle free_y is TRUE, reduce text size to 8, else 11
+                     size = ifelse(free_y(), 9, 12), color = "white"),
+                   legend.text = element_text(size = 12),
+                   legend.title = element_text(size = 12),
                    legend.key.size = unit(2, "cm")
-    )
+    )+
+    ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
 
   # Turn to plotly object
   ggplot %>% plotly::ggplotly(tooltip = "text") %>% # refers to aes(text) defined in ggplot2
     plotly::layout(legend = list(
       orientation = "h", # puts the legend in the middle instead of default right
-      y = 1.15 # elevates the legend so its above the plot, not below
+      y = 1.3 # elevates the legend so its above the plot, not below
     )) %>%
     config(locale = "fr")
 
   # code for testing quickly. remove in prod.
 # elec_prod_communes %>%
 #   filter(commune %in% c("Morges", "Lausanne")) %>%
-#   create_bar_plotly()
+#   create_bar_plotly(free_y = T)
 
 }
 
@@ -154,9 +159,6 @@ create_bar_plotly <- function(data){
 #'
 #' @return an interactive plot
 
-
-
-subset <- elec_prod_communes %>% filter(commune %in% c("Lausanne", "Aigle"))
 
 create_sunburst_plotly <- function(data, year_var, year,
                                     values_tot, rank_1, rank_2, rank_3_1, rank_3_2){
@@ -219,11 +221,12 @@ create_sunburst_plotly <- function(data, year_var, year,
 
 
 #  COMMENTED CODE BELOW IS FOR TESTING PURPOSES, SHOULD BE REMOVED LATER IN PROD
-create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
-                       values_tot = "production_totale",
-                       rank_1 = "commune",
-                       rank_2 = "categorie_diren",
-                       rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale")
+# subset <- elec_prod_communes %>% filter(commune %in% c("Lausanne", "Aigle"))
+# create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
+#                        values_tot = "production_totale",
+#                        rank_1 = "commune",
+#                        rank_2 = "categorie_diren",
+#                        rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale")
 
 
 #' create_table_dt
@@ -253,22 +256,22 @@ create_table_dt <- function(data){
       Annee = as.factor(Annee),
       # format numeric cols
       across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
-    # turn to DT
+    #turn to DT
     DT::datatable(options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page
-                                 scrollX = TRUE,   ## enable scrolling on X axis
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
-                                 server = FALSE,   ## use client-side processing
+                                 server = FALSE,   ## use server-side processing
                                  dom = 'Bfrtip',
-                                 buttons = list(
-                                   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
-                                   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                            # Buttons not needed anymore since mod_download_data.R is spot on
+                                 # buttons = list(
+                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
+                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
                                  columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/French.json')
+                                  language = DT_fr_language # from utils_helpers.R !
     ),
-    extensions = 'Buttons',
+    #extensions = 'Buttons',
     selection = 'single', ## enable selection of a single row
     #filter = 'bottom',              ## include column filters at the bottom
     rownames = FALSE               ## don't show row numbers/names

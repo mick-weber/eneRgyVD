@@ -1,4 +1,3 @@
-Modulariser chaque partie de la sidebar ? Sinon à chaque fois qu'un élément s'update il déclenche la mise à jour de tous les autres... ? Est-ce vraiment un problème ? 
 
 
 Pour les facet plots : Ajouter une box "Libérer l'axe de l'ordonnée"  pour -> "free_y" facet_wrap
@@ -9,9 +8,11 @@ Pour les facet plots : Ajouter une box "Libérer l'axe de l'ordonnée"  pour -> 
 Add y axis values (?) ; add all x axis years ; légende propre et mieux placée (top) ; gérer les panneaux de facet_wrap ; ...
 
 
-# tabProd : trouver une façon esthétique d'intégrer la table des données
-
-# tabProd : ajouter module de download (pas besoin avec plotly/DT !)
+# tabProd : ajouter module de download (pas besoin avec plotly/DT ; mais plus esthétique ?!)
+ ---> Nécessaire car l'option DT rend des chr etc., nous on veut le dataset en brut et pas l'output visuel DT
 
 # tabProd : add disclaimer about pronovo data and own diren estimates that may not be exact due to several factors
+
+# create home tab (or in map selector tab) with infoboxes from sdbPlus
+
 

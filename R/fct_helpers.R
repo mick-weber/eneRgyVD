@@ -100,10 +100,11 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 create_bar_plotly <- function(data, free_y = FALSE){
 
   # First create ggplot graph
+  # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data %>%
     ggplot2::ggplot()+
     ggplot2::geom_col(aes(x = as.factor(annee),
-                          y = production_totale,
+                          y = production_totale/1e3,
                           fill = categorie_diren,
                           # Text is reused in ggplotly(tooltip = 'text')
                           text = paste0(categorie_diren, "\n",
@@ -113,7 +114,7 @@ create_bar_plotly <- function(data, free_y = FALSE){
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
     ggplot2::scale_fill_manual(name = "Technologies",
                                values = colors_categories)+ # palette defined in utils_helpers.R
-    ggplot2::labs( x = "", y = "kWh")+
+    ggplot2::labs( x = "", y = "MWh")+
     ggplot2::facet_wrap(facets = vars(commune),
                         ncol = 3,
                         # if the toggle linked to the free_y argument is TRUE, then free y axis

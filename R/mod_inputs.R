@@ -73,6 +73,8 @@ mod_inputs_server <- function(id){
     inputVals <- reactiveValues()
 
     observe({
+      # store the commune prod dataset already filtered
+      inputVals$prod_dataset <- subset_elec_prod()
 
       # store the selectizeInputs() inputs
       inputVals$selectedCommunes <- input$selected_communes

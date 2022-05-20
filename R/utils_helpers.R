@@ -29,32 +29,54 @@ load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
 
-# TO BE ADDED
-
-# Modified datasets ----
-
-## elec_prod_communes ----
-
+# load("x.rda")
 
 # Generic utils ----
 
-## Run ONCE : Store JSON french language items file for DT library
+## DT language file ----
+### Run ONCE : Store JSON french language items file for DT library
 
 # rjson::fromJSON(
 #   file = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/French.json') %>%
 #   toJSON() %>%
 # write(file = "./data/DT_fr_language.json")
 
-## Load json french language file for DT library
+### Load json french language file for DT library
 
 DT_fr_language <- fromJSON(file = "./data/DT_fr_language.json")
 
 
-## Color used for multiple esthetic elements, for instance shinycssloaders()
+## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
 
-## Colors for categorie_diren
+
+# Non-reactive objects for input widgets ----
+
+## Generic objects (across all tabs) ----
+
+### Available communes ----
+# With more datasets (i.e. elec consumption), checking that the names are OK
+# throughout all datasets will be a crucial issue.
+
+communes_names <- sf_communes %>%
+  dplyr::distinct(NOM_MIN) %>%
+  dplyr::arrange(NOM_MIN) %>%
+  dplyr::rename(Commune = NOM_MIN)
+
+### Available districts ----
+# For the zooming feature. We add one row for the cantonal view
+
+districts_names <- sf_districts %>%
+  dplyr::distinct(NOM_MIN) %>%
+  dplyr::arrange(NOM_MIN) %>%
+  # add one row manually for the Canton, it should be placed first
+  dplyr::add_row(NOM_MIN = "Canton", .before = 1) %>%
+  dplyr::pull(NOM_MIN)
+
+## Objects specific to the tabProd  ----
+
+### Colors for categorie_diren ----
 
 categories_diren <- elec_prod %>%
   distinct(categorie_diren) %>%
@@ -62,6 +84,7 @@ categories_diren <- elec_prod %>%
   pull()
 
 # We directly make a named vector since it's easier to spot what is what and we don't screw the order
+# Eolien was added as anticipated
 
 colors_categories <- c("Biomasse agricole" = "#48A649", # biomasse agricole
                        "Bois-énergie" = "#CC9E62", # bois-énergie
@@ -74,8 +97,8 @@ colors_categories <- c("Biomasse agricole" = "#48A649", # biomasse agricole
                        "Thermique fossile" = "#E67A78") # thermique fossile
 
 
-# création du dataset pronovo par communes pour éviter de le calculer à chaque fois.
-# le dataset non agrégé servira à quelques graphiques (p.ex. courbes des puissances installées)
+### elec_prod_communes ----
+# From installation-specific to communes-specific (faster calculation)
 
 elec_prod_communes <- elec_prod %>%
   dplyr::group_by(commune, annee, categorie_diren) %>%
@@ -87,39 +110,35 @@ elec_prod_communes <- elec_prod %>%
     numero_de_la_commune = dplyr::first(numero_de_la_commune)) %>%
   dplyr::ungroup()
 
-
-# Non-reactive objects for input widgets ----
-
-## Generic objects (across all tabs) ----
-
-# list of communes names for select inputs
-
-communes_names <- sf_communes %>%
-  dplyr::distinct(NOM_MIN) %>%
-  dplyr::arrange(NOM_MIN) %>%
-  dplyr::rename(Commune = NOM_MIN)
-
-# list of districts ids ; we add one row for the cantonal view
-
-districts_names <- sf_districts %>%
-  dplyr::distinct(NOM_MIN) %>%
-  dplyr::arrange(NOM_MIN) %>%
-  # add one row manually for the Canton, it should be placed first
-  dplyr::add_row(NOM_MIN = "Canton", .before = 1) %>%
-  dplyr::pull(NOM_MIN)
-
-# list of district centroids for labels
-# for use in leaflet::addLabelOnlyMarkers() of the create_select_leaflet() fct in fct_helpers.R
-
-# Not used atm because not so convincing
-# sf_districts_labels <- sf_districts %>%
-#   dplyr::distinct(NOM_MIN, .keep_all = T) %>%
-#   mutate(centroid = sf::st_centroid(geometry)) %>%
-#   mutate(lng = sf::st_coordinates(centroid)[,1],
-#          lat = sf::st_coordinates(centroid)[,2])
+## Objects specific to the tabConso  ----
+# to be populated
 
 ## Objects specific to the tabMap  ----
 
+### Fixed statistics for boxes ----
+
+### Retrieve last available year
+# WHEN CONSO AVAILABLE: UPDATE programatically
+# and find the year common to the TWO datasets (!)
+
+vd_last_year <- 2020
+
+#### VD electricity production
+
+prod_elec_vd_last_year <- elec_prod_communes %>%
+  filter(annee == vd_last_year) %>%
+  summarise(production_totale = sum(production_totale, na.rm = TRUE)) %>%
+  pull()
+
+#### VD electricity consumption
+
+cons_elec_vd_last_year <- 4051844000 # from statvd; update dynamically when dataset is here
+
+#### VD electricity coverage
+
+coverage_elec_vd_last_year <- prod_elec_vd_last_year/cons_elec_vd_last_year
+
+### Map-specific ----
 # We retrieve the coordinates
 # With a nested list ; each district name has 4 coordinates (xmin,ymin,xmax,ymax)
 # These coordinates represent the boundaries for the leaflet map zoom adjustments (through widget)
@@ -130,15 +149,6 @@ bboxes <- districts_names %>%
 
 ## Add & fill the Canton bbox in our bboxes using the whole districts borders
 bboxes$Canton <- sf_districts %>% sf::st_bbox()
-
-## Objects specific to the tabProd  ----
-
-# I think these should be reactive to the filtered dataset (by municipalities)
-
-## Objects specific to the tabConso  ----
-
-# I think these should be reactive to the filtered dataset (by municipalities)
-
 
 
 

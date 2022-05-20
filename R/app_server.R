@@ -96,9 +96,16 @@ app_server <- function(input, output, session) {
 
 
 
-   # MODULES ----
-   ## tabProd: call the chart
+   # Output modules ----
+   ## tabProd: call the chart server logic ----
 
    mod_prod_charts_server("prod_chart1", inputVals = inputVals)
+
+   ## home tab: boxes ----
+   # Module for rendering the vd collapse box
+   mod_vd_collapse_box_server("vd_box")
+   # Module for rendering the commune boxes
+   mod_communes_boxes_server("communes_box", inputVals = inputVals)
+   # Module for downloading to be added ?
 }
 

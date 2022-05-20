@@ -23,7 +23,8 @@ Imports:
     shinydashboardPlus,
     tidyverse,
     shinyWidgets,
-    plotly
+    plotly,
+    scales
 Suggests: 
     spelling (>= 2.2),
     testthat (>= 3.0.0)

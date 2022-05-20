@@ -33,7 +33,7 @@ mod_prod_charts_ui <- function(id){
                       br(),
 
                       # Conditional plotly (bar/sunburst) ----
-                      plotly::plotlyOutput(ns("chart_1"), width = "1000px", height = "auto") %>%
+                      plotly::plotlyOutput(ns("chart_1"), width = "1150px", height = "auto") %>%
                         shinycssloaders::withSpinner(color= main_color), # color defined in utils_helpers.R
 
 
@@ -75,9 +75,11 @@ mod_prod_charts_server <- function(id, inputVals){
        req(inputVals$min_selected, inputVals$max_selected, inputVals$techs_selected)
 
     # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
-       elec_prod_communes %>%
-         dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
-         dplyr::filter(annee >= inputVals$min_selected,
+       # TESTING, WE DONT NEED THIS IF WE TAKE DIRECTLY INPUTVALS$PROD_DATASET
+       #elec_prod_communes %>%
+         #dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
+       inputVals$prod_dataset %>%
+       dplyr::filter(annee >= inputVals$min_selected,
                        annee <= inputVals$max_selected) %>%
          dplyr::filter(categorie_diren %in% inputVals$techs_selected)
 

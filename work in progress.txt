@@ -15,4 +15,7 @@ Add y axis values (?) ; add all x axis years ; légende propre et mieux placée 
 
 # create home tab (or in map selector tab) with infoboxes from sdbPlus
 
+- add note (info ?) about unit conversion (pretty table?):
+		1GWh = 1'000 MWh = 1'000'000 kWh
+		1kWh = 0.001MWh = 0.000001GWh
 

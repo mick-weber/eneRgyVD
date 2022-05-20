@@ -26,7 +26,8 @@ app_ui <- function(request) {
                                     shinydashboard::menuItem("Sélection des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     shinydashboard::menuItem("Consommation", tabName = "tabConso", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
-                                    shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon"))
+                                    shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
+                                    shinydashboard::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
         ),
 
         ## SelectInput module ----
@@ -45,6 +46,8 @@ app_ui <- function(request) {
             tabName = "tabMap",
             fluidRow(
               column(width = 8,
+                     # Title for select map
+                     h4("Sélectionnez des communes sur la carte ou dans la zone latérale"),
                      # Leaflet select map
                      leaflet::leafletOutput("map", height = "500px", width = "800px") %>%
                        shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
@@ -52,74 +55,53 @@ app_ui <- function(request) {
 
               # Next to leaflet map
               column(width = 4,
-                     # TEST AREA FOR SHINYDASHBOARDPLUS NESTED BOX WITH DESCRIPTIONBLOCKS
-                     shinydashboardPlus::box(
-                       solidHeader = FALSE,
-                       title = "Le canton en quelques chiffres",
-                       background = NULL,
-                       width = 12,
-                       status = "danger",
-                       footer = fluidRow(
-                         column(
-                           width = 6,
-                           shinydashboardPlus::descriptionBlock(
-                             numberColor = "green",
-                             number = "17%",
-                             header = "$35,210.43",
-                             text = "TOTAL REVENUE"
-                           )
-                         ),
-                         column(
-                           width = 6,
-                           shinydashboardPlus::descriptionBlock(
-                             header = "1200",
-                             text = "GOAL COMPLETION"
-                           )
-                         )
-                       )
-                     )
-
-
-
-                     # / TEST AREA FOR SHINYDASHBOARDPLUS NESTED BOX WITH DESCRIPTIONBLOCKS
+                     # Module for collapsible VD box
+                     mod_vd_collapse_box_ui("vd_box")
 
               )# End column
             ),#End fluidRow
-
-            # Below leaflet map
+            # breathing
+            br(),
+            # Below leaflet map ; for selected communes statistics
             fluidRow(
               column(width = 12,
-                     shinydashboard::valueBox(10 * 2, "New Orders", icon = icon("plug"), width = 2),
-                     shinydashboard::valueBox(10 * 2, "New Orders", icon = icon("flash"), width = 2),
-                     shinydashboard::valueBox(10 * 2, "New Orders", icon = icon("battery-half"), width = 2),
-                     shinydashboard::valueBox(10 * 2, "New Orders", icon = icon("battery-full"), width = 2)
-              )
+                     # Module for calling communes boxes
+                    mod_communes_boxes_ui("communes_box")
             )
+          )# End fluidRow
           ),# End tabItem
           ## tabConso
           shinydashboard::tabItem(
             tabName = "tabConso",
             h2("À venir: consommation d'électricité par commune et secteur")
-          ),
+          ),# End tabItem
           ## tabProd
           shinydashboard::tabItem(
             tabName = "tabProd",
             h2("Production d'électricité par commune"),
+            # breathing
             br(),
-            # CALL MODULE
+
+            # Module for producing prod charts
             mod_prod_charts_ui("prod_chart1")
-          ),
+
+          ),# End tabItem
+
           shinydashboard::tabItem(
             tabName = "tabReport",
             h2("À venir: téléchargement d'un rapport spécifique à une commune")
-          )
-        )
+          ),# End tabItem
 
+          shinydashboard::tabItem(
+            tabName = "tabInfo",
+            h2("Documentation sur l'application à venir")
+          )# End tabItem
 
-      )
-    )
-  )
-}
+        )# End tabItems
+      )# End dashboardBody
+    )# End dashboardPage
+  )# End tagList
+}# End UI
 
 #' Add external Resources to the Application
 #'

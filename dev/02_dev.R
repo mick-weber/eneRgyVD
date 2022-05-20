@@ -19,14 +19,17 @@ attachment::att_amend_desc()
 usethis::use_pipe()
 usethis::use_package("shinyWidgets")
 usethis::use_package("plotly")
+usethis::use_package("scales")
+usethis::use_package("leaflet")
 
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "inputs", with_test = TRUE) # Name of the module
-golem::add_module(name = "react_dataset", with_test = TRUE)
+golem::add_module(name = "inputs", with_test = TRUE)
 golem::add_module(name = "prod_charts", with_test = TRUE)
 golem::add_module(name = "download_data", with_test = TRUE)
+golem::add_module(name = "vd_collapse_box", with_test = TRUE)
+golem::add_module(name = "communes_boxes", with_test = TRUE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

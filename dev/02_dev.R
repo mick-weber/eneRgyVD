@@ -17,10 +17,12 @@
 ## Amend DESCRIPTION with dependencies read from package code parsing
 attachment::att_amend_desc()
 usethis::use_pipe()
+usethis::use_package("dplyr")
 usethis::use_package("shinyWidgets")
 usethis::use_package("plotly")
 usethis::use_package("scales")
 usethis::use_package("leaflet")
+usethis::use_package("sf")
 
 
 ## Add modules ----

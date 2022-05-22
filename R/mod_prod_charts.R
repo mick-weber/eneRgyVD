@@ -71,13 +71,17 @@ mod_prod_charts_server <- function(id, inputVals){
        validate(
          need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
          )
-        # waiting on these to get initialized (renderUIs)
-       req(inputVals$min_selected, inputVals$max_selected, inputVals$techs_selected)
+       # waiting on these to get initialized (renderUIs)
+       req(inputVals$min_selected,
+           inputVals$max_selected,
+           inputVals$techs_selected,
+           inputVals$prod_dataset)
 
     # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
        # TESTING, WE DONT NEED THIS IF WE TAKE DIRECTLY INPUTVALS$PROD_DATASET
-       #elec_prod_communes %>%
-         #dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
+       # elec_prod_communes %>%
+       # dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
+
        inputVals$prod_dataset %>%
        dplyr::filter(annee >= inputVals$min_selected,
                        annee <= inputVals$max_selected) %>%

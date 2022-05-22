@@ -96,7 +96,6 @@ app_ui <- function(request) {
             tabName = "tabInfo",
             h2("Documentation sur l'application à venir")
           )# End tabItem
-
         )# End tabItems
       )# End dashboardBody
     )# End dashboardPage

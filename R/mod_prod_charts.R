@@ -17,20 +17,32 @@ mod_prod_charts_ui <- function(id){
                       # radioGroupButtons() for tabProd ----
 
                       shiny::wellPanel(style = "background: white",
-                        shinyWidgets::radioGroupButtons(
-                        inputId = ns("tabProd_plot_type"),
-                        label = "Sélection du type de graphique",
-                        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
-                                    `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-                        justified = TRUE,
-                        width = "25%")
-                        ),# End wellPanel
+                                       shinyWidgets::radioGroupButtons(
+                                         inputId = ns("tabProd_plot_type"),
+                                         label = "Sélection du type de graphique",
+                                         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
+                                                     `<i class='fa fa-pie-chart'></i>` = "sunburst"),
+                                         justified = TRUE,
+                                         width = "25%"),
 
-                      # prettyToggle
-                      uiOutput(ns("toggle_chart_1")),
+                                       # prettyToggle
+                                       shiny::conditionalPanel(
+                                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                         condition = "output.toggle && input.tabProd_plot_type == 'bar'",
+                                         ns = ns,
 
-                      # breathing
-                      br(),
+                                         shinyWidgets::prettyToggle(
+                                           inputId = ns("toggle_status"),
+                                           label_on = "Axe des ordonnées libéré !",
+                                           label_off = "Libérer l'axe des ordonnées ?",
+                                           bigger = T,
+                                           shape = "curve",
+                                           animation = "pulse")
+                                       )# End conditionalPanel
+                      ),# End wellPanel
+
+                      # # breathing
+                      # br(),
 
                       # Conditional plotly (bar/sunburst) ----
                       plotly::plotlyOutput(ns("chart_1"), width = "1150px", height = "auto") %>%
@@ -92,27 +104,21 @@ mod_prod_charts_server <- function(id, inputVals){
      # We CAN debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
      subset_elec_prod_d <- subset_elec_prod %>% debounce(0)
 
+     # Initialize toggle condition for conditionalPanel in ui
+     output$toggle <- reactive({
+       # req(inputVals$selectedCommunes)
+       length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
+     })
+      # We don't suspend output$toggle when hidden (default is TRUE)
+      # https://stackoverflow.com/questions/35136029/hide-show-outputs-shiny-r
+     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
+
      # Render plot selectively based on radioButton above
      observe({
 
        if(input$tabProd_plot_type == "bar"){
 
-         # Toggle button for freeing Y axis
-        output$toggle_chart_1 <- renderUI({
-
-          req(
-            input$tabProd_plot_type == "bar", # removes the toggle when we switch to sunburst
-            inputVals$selectedCommunes # at least one commune is selected
-          )
-
-          shinyWidgets::prettyToggle(
-            inputId = ns("toggle_status"),
-            label_on = "Axe des ordonnées libéré !",
-            label_off = "Libérer l'axe des ordonnées ?",
-            bigger = T,
-            shape = "curve",
-            animation = "pulse")
-        })# End renderUI
+        # Update the initialized FALSE toggle_status with the input$toggle_status
 
          # PLOTLY BAR PLOT
          output$chart_1 <- plotly::renderPlotly({

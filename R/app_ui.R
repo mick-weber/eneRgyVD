@@ -16,8 +16,21 @@ app_ui <- function(request) {
       skin = "green",
 
       # Header ----
-      shinydashboard::dashboardHeader(title = "eneRgy VD : prototype",
-                                      titleWidth = 300),
+      shinydashboardPlus::dashboardHeader(title = "eneRgy VD : prototype",
+                                      titleWidth = 300,
+
+      leftUi = tagList(
+        shinydashboardPlus::dropdownBlock(
+          id = "dropdown_units",
+          title = "Conversion unités",
+          icon = icon("refresh", lib = "glyphicon"),
+
+          shiny::wellPanel(
+            h6("1 GWh
+               1'000MWh
+               1'000'000 kWh")
+            )
+          ))),
 
       # Sidebar ----
       shinydashboard::dashboardSidebar(

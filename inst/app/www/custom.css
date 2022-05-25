@@ -1,0 +1,12 @@
+/*Change font and size in dashboardHeader title*/
+.main-header .logo {
+  font-family: "Aharoni";
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/*Change dropdownBlock width for units*/
+a.dropdown-toggle{
+  width:200px;
+}
+

@@ -116,7 +116,7 @@ create_bar_plotly <- function(data, free_y = FALSE){
                                values = colors_categories)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = "MWh")+
     ggplot2::facet_wrap(facets = vars(commune),
-                        ncol = 3,
+                        ncol = 2,
                         # if the toggle linked to the free_y argument is TRUE, then free y axis
                         scales = ifelse(free_y(), "free_y", "fixed"))+
     ggplot2::theme_bw()+
@@ -130,8 +130,8 @@ create_bar_plotly <- function(data, free_y = FALSE){
                      size = ifelse(free_y(), 9, 12), color = "white"),
                    legend.text = element_text(size = 12),
                    legend.title = element_text(size = 12),
-                   legend.key.size = unit(2, "cm")
-    )+
+                   legend.key.size = unit(2, "cm"),
+                   panel.spacing.x = unit(0, "line"))+
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
 
@@ -142,13 +142,16 @@ create_bar_plotly <- function(data, free_y = FALSE){
       y = 1.3 # elevates the legend so its above the plot, not below
     )) %>%
     config(locale = "fr")
+}
 
-  # code for testing quickly. remove in prod.
+# # code for testing quickly. remove in prod.
+# free_y <- function(){ # imitate reactive free_y toggle
+#   return(FALSE)
+# }
 # elec_prod_communes %>%
-#   filter(commune %in% c("Morges", "Lausanne")) %>%
+#   filter(commune %in% c("Morges", "Lausanne",  "Senarclens", "Grancy")) %>%
 #   create_bar_plotly(free_y = T)
 
-}
 
 
 #' create_sunburst_plotly

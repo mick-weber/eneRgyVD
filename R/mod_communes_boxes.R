@@ -16,7 +16,6 @@ mod_communes_boxes_ui <- function(id){
     shinydashboard::valueBoxOutput(ns("prod_elec_commune")),
     shinydashboard::valueBoxOutput(ns("conso_elec_commune")),
     shinydashboard::valueBoxOutput(ns("coverage_elec_commune"))
-
   )
 }
 
@@ -40,7 +39,7 @@ mod_communes_boxes_server <- function(id, inputVals){
 
       req(inputVals$prod_dataset)
 
-      boxValues$prod_elec_last_year <- 2020 # must be updated when conso dataset arrives to find the common latest year
+      boxValues$elec_last_year <- 2020 # must be updated when conso dataset arrives to find the common latest year
 
       boxValues$prod_elec <- inputVals$prod_dataset %>%
         dplyr::filter(annee == 2020) %>% # year hard coded temporarily
@@ -48,40 +47,43 @@ mod_communes_boxes_server <- function(id, inputVals){
         dplyr::pull() %>%
         round(digits = 0)
 
+      boxValues$conso_elec <- 150 # link to dataset when available
+
 
     })
 
       # Rendering the valueBoxes
+
+    # Electricity production valueBox
     output$prod_elec_commune <- shinydashboard::renderValueBox({
 
+      req(boxValues$prod_elec)
 
-      shinydashboard::valueBox(value = boxValues$prod_elec,
-               subtitle = "MWh produits en 2020",
-               icon = icon("list"),
+      shinydashboard::valueBox(value = format(boxValues$prod_elec, big.mark = "'"),
+               subtitle = paste("MWh produits en", boxValues$elec_last_year ),
+               icon = icon("flash", lib = "glyphicon"),
                color = "light-blue")
-
     })
-
+    # Electricity consumption valueBox
     output$conso_elec_commune <- shinydashboard::renderValueBox({
 
+      req(boxValues$conso_elec)
+
       shinydashboard::valueBox(value = "200",
-               subtitle = "Subtitle",
-               icon = icon("list"),
+               subtitle = paste("MWh consommés en", boxValues$elec_last_year ),
+               icon = icon("flash", lib = "glyphicon"),
                color = "light-blue")
-
     })
-
+    # Coverage valueBox
     output$coverage_elec_commune <- shinydashboard::renderValueBox({
 
-      shinydashboard::valueBox(value = "200",
-               subtitle = "Subtitle",
-               icon = icon("list"),
+      req(boxValues$prod_elec, boxValues$conso_elec)
+
+      shinydashboard::valueBox(value = "XX%",
+               subtitle = paste("Couverture annuelle électrique en", boxValues$elec_last_year ),
+               icon = icon("scale", lib = "glyphicon"),
                color = "light-blue")
-
     })
-
-
-
   })
 }
 

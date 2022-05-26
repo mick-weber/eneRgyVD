@@ -55,6 +55,23 @@ main_color <- "#3A862D"
 
 ## Generic objects (across all tabs) ----
 
+### Conversion units table ----
+
+# Directly linked to mod_unit_converter.R module
+
+# From... vector. Supplies
+first_units <- c("kWh", "MWh", "GWh", "TJ")
+# To... vector.
+second_units <- c("kWh", "MWh", "GWh", "TJ")
+# Create table of conversion with all possible combinaisons
+conv_table <- expand.grid(from = first_units, to = second_units) %>%
+  arrange(from) %>%
+  mutate(factor = c(1, 1/1e3, 1/1e6, 3.6/1e6, # kWh to...
+                    1e3, 1, 1/1e3, 1/3.6/1e3, # MWh to...
+                    1e6, 1e3, 1, 1/3.6, # GWh to...
+                    1/3.6*1e6, 1/3.6*1e3, 1/3.6*1, 1)) # TJ to...
+
+
 ### Available communes ----
 # With more datasets (i.e. elec consumption), checking that the names are OK
 # throughout all datasets will be a crucial issue.

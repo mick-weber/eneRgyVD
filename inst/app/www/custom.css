@@ -10,3 +10,32 @@ a.dropdown-toggle{
   width:200px;
 }
 
+/* this will affect all the pre elements (stands for PREformatted text elements) rendered by renderText() */
+pre {
+  color: black;
+  background-color: white;
+  font-size:14px;
+  font-weight:bold;
+}
+
+/* this targets the dropdownBlock() for unit conversion */
+#unit_converter-unit_dropdown {
+
+
+}
+
+#unit_converter-unit_dropdown > ul > li > ul{
+
+  background-color:white;
+  border-radius: 25px;
+  border: 2px solid #3A862D;
+  padding: 10px;
+
+}
+
+/* this targets value_callback textOutput() in the unit converter widget */
+#unit_converter-value_callback {
+  font-size:11px;
+  color:grey;
+}
+

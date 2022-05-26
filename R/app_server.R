@@ -6,6 +6,10 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
+  # Module for dropdown block unit converter
+  mod_unit_converter_server("unit_converter")
+
+
   ## Inputs module ----
     # This retrieves the inputs saved in mod_inputs.R
 
@@ -106,6 +110,8 @@ app_server <- function(input, output, session) {
    mod_vd_collapse_box_server("vd_box")
    # Module for rendering the commune boxes
    mod_communes_boxes_server("communes_box", inputVals = inputVals)
-   # Module for downloading to be added ?
+
+
+
 }
 

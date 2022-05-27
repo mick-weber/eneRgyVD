@@ -110,8 +110,31 @@ app_server <- function(input, output, session) {
    mod_vd_collapse_box_server("vd_box")
    # Module for rendering the commune boxes
    mod_communes_boxes_server("communes_box", inputVals = inputVals)
+   # Module for producing rmd report based on downloadable_report.Rmd
+   mod_download_rmd_server("rmd")
 
 
+   # zone de test pour rapport, à modulariser après
+
+   # output$report <- downloadHandler(
+   #   filename = "report.html",
+   #   content = function(file) {
+   #     params <- list(communes = "Morges")
+   #
+   #     id <- showNotification(
+   #       "Rendu du rapport...",
+   #       duration = NULL,
+   #       closeButton = FALSE
+   #     )
+   #     on.exit(removeNotification(id), add = TRUE)
+   #
+   #     rmarkdown::render("downloadable_report.Rmd",
+   #                       output_file = file,
+   #                       params = params,
+   #                       envir = new.env(parent = globalenv())
+   #     )
+   #   }
+   # )
 
 }
 

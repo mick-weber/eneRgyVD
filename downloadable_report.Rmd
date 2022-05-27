@@ -1,0 +1,97 @@
+---
+title: "eneRgyVD: profil énergétique"
+subtitle: "Direction générale de l'environnement - Direction de l'énergie (DGE-DIREN)"
+author: "Weber Michaël"
+date: "`r Sys.Date()`"
+always_allow_html: yes
+output:
+  bookdown::html_document2:
+    code_folding: hide
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
+    code_download: TRUE
+header-includes: \usepackage{booktabs} \usepackage{longtable} \usepackage{array} \usepackage{multirow}
+  \usepackage[table]{xcolor} \usepackage{wrapfig} \usepackage{float} \floatplacement{figure}{H}
+fontsize: 11pt
+
+#bibliography: references.bib
+
+#paramètres pour l'export Shiny
+params:
+  communes: NULL
+  annee: NULL
+  
+---
+
+```{r setup, include=FALSE}
+# Basic knitr behavior
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
+
+if(!require(pacman)) {
+  install.packages("pacman")
+}
+# Basics
+pacman::p_load(knitr, tidyverse, writexl, readxl, bookdown,
+               scales, janitor, extrafont, rstudioapi, glue,
+               viridis, gt, lubridate)
+
+# Set working directory to source file location
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))       
+
+# extrafonts
+loadfonts(quiet = T)
+
+# scientific notation disabled
+options(scipen= 999)
+```
+
+```{css basic-theme, echo = FALSE}
+.main-container {
+    margin-left: 30px;
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: white;
+    background-color: darkgreen;
+    border-color: white;
+}
+
+h2,h3,h4,h5,h6{
+  font-size: 12pt;
+  color:midnightblue;
+}
+
+h1{
+font-size:14pt;
+color:midnightblue;
+}
+```
+
+Ce rapport a été généré depuis l'application eneRgyVD.
+
+# `r params$communes`
+
+## Production d'électricité
+
+Oulàlà pas bcp de prod !
+
+## Consommation d'électricité
+
+Oulàlà bcp de conso ! 
+
+# Contact
+
+DGE-DIREN, [michael.weber@vd.ch](michael.weber@vd.ch)
+
+
+
+
+
+
+
+
+

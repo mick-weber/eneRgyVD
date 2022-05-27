@@ -8,7 +8,7 @@
 
 
 app_ui <- function(request) {
-  tagList(
+  shiny::tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
@@ -93,7 +93,15 @@ app_ui <- function(request) {
 
           shinydashboard::tabItem(
             tabName = "tabReport",
-            h2("À venir: téléchargement d'un rapport spécifique à une commune")
+            h2("À venir: téléchargement d'un rapport spécifique à une commune"),
+            # shiny::downloadButton(
+            #   outputId = "report",
+            #   label = "Générer un rapport"
+            # )
+
+            # Module for producing rmd report based on downloadable_report.Rmd
+            mod_download_rmd_ui("rmd")
+
           ),# End tabItem
 
           shinydashboard::tabItem(

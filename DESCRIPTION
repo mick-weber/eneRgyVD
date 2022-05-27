@@ -24,7 +24,8 @@ Imports:
     tidyverse,
     shinyWidgets,
     plotly,
-    scales
+    scales,
+    clipr
 Suggests: 
     spelling (>= 2.2),
     testthat (>= 3.0.0)

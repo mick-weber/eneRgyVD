@@ -10,7 +10,6 @@
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   tagList(
-
     shinydashboardPlus::dropdownBlock(
       id = ns("unit_dropdown"),
       title = "Conversion d'unités",
@@ -28,19 +27,21 @@ mod_unit_converter_ui <- function(id){
                          choices = c("kWh", "MWh", "GWh", "TJ"),
                          inline = FALSE, width = "50px"))),
 
+    # convert button
     shinyWidgets::actionBttn(
       inputId = ns("convert"),
       label = "Convertir",
       style = "material-flat", size = "xs", icon = icon("refresh", lib = "glyphicon"),
-      color = "success"
+      color = "primary"
     ),
 
+    # breathing
     fluidRow(br()),
 
+    # value in italic (modified in custom.css)
     textOutput(ns("value_callback")),
-
+      # result in a div
       div(verbatimTextOutput(ns("result"))) # The output style is modified in custom.css, 'pre' selector
-
 
 )
     )
@@ -93,11 +94,8 @@ output$result <- renderText({
 
   })
 
-
   })
 }
-
-
 
   # testing module
   # nameApp <- function() {

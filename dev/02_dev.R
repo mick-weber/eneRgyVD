@@ -34,6 +34,8 @@ golem::add_module(name = "vd_collapse_box", with_test = TRUE)
 golem::add_module(name = "communes_boxes", with_test = TRUE)
 golem::add_module(name = "unit_converter", with_test = TRUE)
 golem::add_module(name = "download_rmd", with_test = TRUE)
+golem::add_module(name = "about_the_app", with_test = TRUE)
+
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

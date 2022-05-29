@@ -18,7 +18,16 @@ app_ui <- function(request) {
       # Header ----
       shinydashboardPlus::dashboardHeader(title = "eneRgy VD : prototype",
                                       titleWidth = 300,
+                                      dropdownMenu(type = "messages",
+                                                   badgeStatus = NULL, # avoid notif
+                                                   headerText = "Retours et suggestions",
+                                                   messageItem(from = "Contact DGE-DIREN",
+                                                               message = tags$a(href = "mailto:stats.energie@vd.ch",
+                                                                             "E-mail: stats.energie@vd.ch", target = "_blank")
 
+                                                   )# End messageItem
+                                                   ),# End dropdownMenu,
+      # Add unit converter drop-down next to the app's title (left)
       leftUi = mod_unit_converter_ui("unit_converter")
 
       ),
@@ -74,12 +83,12 @@ app_ui <- function(request) {
             )
           )# End fluidRow
           ),# End tabItem
-          ## tabConso
+          ## tabConso ----
           shinydashboard::tabItem(
             tabName = "tabConso",
             h2("À venir: consommation d'électricité par commune et secteur")
           ),# End tabItem
-          ## tabProd
+          ## tabProd ----
           shinydashboard::tabItem(
             tabName = "tabProd",
             h2("Production d'électricité par commune"),
@@ -90,23 +99,25 @@ app_ui <- function(request) {
             mod_prod_charts_ui("prod_chart1")
 
           ),# End tabItem
-
+          ## tabReport ----
           shinydashboard::tabItem(
             tabName = "tabReport",
-            h2("À venir: téléchargement d'un rapport spécifique à une commune"),
-            # shiny::downloadButton(
-            #   outputId = "report",
-            #   label = "Générer un rapport"
-            # )
+            # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
+            h2("Générer un rapport énergétique"),
 
-            # Module for producing rmd report based on downloadable_report.Rmd
+            # Module for producing rmd report based on downloadable_report.Rmd. Renders the button.
             mod_download_rmd_ui("rmd")
 
           ),# End tabItem
-
+          ## tabInfo ----
           shinydashboard::tabItem(
             tabName = "tabInfo",
-            h2("Documentation sur l'application à venir")
+            # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
+            h3(strong("À propos")),
+
+            # Module for producing the tab content (html mostly)
+            mod_about_the_app_ui("about")
+
           )# End tabItem
         )# End tabItems
       )# End dashboardBody

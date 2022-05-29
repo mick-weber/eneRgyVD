@@ -11,24 +11,32 @@ Imports:
     config (>= 0.3.1),
     dashboardthemes,
     dplyr,
+    DT,
+    ggplot2,
     golem (>= 0.3.2),
+    knitr,
     leaflet,
-    magrittr,
     leaflet.extras,
+    magrittr,
+    plotly,
     purrr,
+    rjson,
+    rmarkdown,
+    scales,
     sf,
     shiny (>= 1.7.1),
     shinycssloaders,
     shinydashboard,
     shinydashboardPlus,
-    tidyverse,
     shinyWidgets,
-    plotly,
-    scales,
-    clipr
+    stringr,
+    tidyverse,
+    writexl
 Suggests: 
     spelling (>= 2.2),
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US

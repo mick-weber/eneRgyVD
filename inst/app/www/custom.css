@@ -5,12 +5,24 @@
   font-size: 20px;
 }
 
-/*Change dropdownBlock width for units*/
-a.dropdown-toggle{
-  width:200px;
+/*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
+#unit_converter-unit_dropdown > a{
+   width:200px;
+}
+/*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/
+#unit_converter-unit_dropdown > ul > li > ul{
+  background-color:white;
+  border-radius: 25px;
+  border: 2px solid #3A862D;
+  padding: 10px;
 }
 
-/* this will affect all the pre elements (stands for PREformatted text elements) rendered by renderText() */
+/*Change the contact dropdownMenu width in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.messages-menu > a > i{
+  width:50px;
+}
+
+/* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
 pre {
   color: black;
   background-color: white;
@@ -18,18 +30,14 @@ pre {
   font-weight:bold;
 }
 
-/* this targets the dropdownBlock() for unit conversion */
-#unit_converter-unit_dropdown {
 
 
-}
+/* custom class for download buttons */
+.dlButton {
 
-#unit_converter-unit_dropdown > ul > li > ul{
-
+  width:175px;
   background-color:white;
-  border-radius: 25px;
-  border: 2px solid #3A862D;
-  padding: 10px;
+  color:#3A862D;
 
 }
 
@@ -38,4 +46,3 @@ pre {
   font-size:11px;
   color:grey;
 }
-

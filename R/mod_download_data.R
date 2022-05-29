@@ -14,11 +14,7 @@ mod_download_data_ui <- function(id){
     shiny::downloadButton(outputId = ns("download_csv"),
                           label = "CSV", class = "dlButton"),
     shiny::downloadButton(outputId = ns("download_excel"),
-                          label = "XLSX", class = "dlButton" ),
-    # create css class for 'dlButton' above
-    # this should be put in a styles.css file once the app is more advanced
-    tags$head(tags$style(".dlButton{background-color:#ffffff;} .dlButton{color: #3A862D;}"))
-
+                          label = "XLSX", class = "dlButton" ) # class defined in custom.css
   )
 }
 

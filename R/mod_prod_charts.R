@@ -52,16 +52,17 @@ mod_prod_charts_ui <- function(id){
       ),# End tabPanel 'Graphique'
 
       shiny::tabPanel(title = "Table",
-                      # breathing
-                      br(),
-                      # Download module
-                      mod_download_data_ui(ns("test")),
-                      # breathing
-                      br(),
-                      # DT table
-                      DT::dataTableOutput(ns("table_1")) %>%
-                        shinycssloaders::withSpinner(color= main_color)
-
+                      column(width = 11,
+                             # breathing
+                             br(),
+                             # Download module
+                             mod_download_data_ui(ns("table_download")),
+                             # breathing
+                             br(),
+                             # DT table
+                             DT::dataTableOutput(ns("table_1")) %>%
+                               shinycssloaders::withSpinner(color= main_color)
+                      )# End column
       )# End tabPanel 'Table'
     )# End tabsetPanel
   )# End tagList
@@ -143,7 +144,7 @@ mod_prod_charts_server <- function(id, inputVals){
        }# End else if
      })# End observe
 
-     mod_download_data_server("test", data = subset_elec_prod_d())
+     mod_download_data_server("table_download", data = subset_elec_prod_d())
 
 
        output$table_1 <- DT::renderDataTable({

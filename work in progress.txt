@@ -1,21 +1,12 @@
 
 
-Pour les facet plots : Ajouter une box "Libérer l'axe de l'ordonnée"  pour -> "free_y" facet_wrap
+# infoTab :
+
+- reorganize between "à propos de l'application", "sources des données", "faq", "technologie", etc. avec des tabItems.
+
+- add disclaimer about pronovo data and own diren estimates that may not be exact due to several factors
+
+# consProd : add data, visualisation, table, etc.
 
 
-# tabProd plot : 
-
-Add y axis values (?) ; add all x axis years ; légende propre et mieux placée (top) ; gérer les panneaux de facet_wrap ; ...
-
-
-# tabProd : ajouter module de download (pas besoin avec plotly/DT ; mais plus esthétique ?!)
- ---> Nécessaire car l'option DT rend des chr etc., nous on veut le dataset en brut et pas l'output visuel DT
-
-# tabProd : add disclaimer about pronovo data and own diren estimates that may not be exact due to several factors
-
-# create home tab (or in map selector tab) with infoboxes from sdbPlus
-
-- add note (info ?) about unit conversion (pretty table?):
-		1GWh = 1'000 MWh = 1'000'000 kWh
-		1kWh = 0.001MWh = 0.000001GWh
 

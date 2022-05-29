@@ -8,20 +8,34 @@
 #'
 #' @importFrom shiny NS tagList
 
-# this code is outside server part, as suggested by H.Wickham below
-# https://github.com/hadley/mastering-shiny/blob/master/rmarkdown-report/app.R
-report_path <- tempfile(fileext = ".Rmd")
-file.copy("downloadable_report.Rmd", report_path, overwrite = TRUE)
-
-
 mod_download_rmd_ui <- function(id){
   ns <- NS(id)
   tagList(
 
+    br(),
+    br(),
+    p("En cliquant sur le button ci-dessous, un rapport HTML sera automatiquement généré pour : "),
+    shiny::htmlOutput(ns("selected_communes")), # htmlOutput because we style it in server
+    br(),
+    p("Celui-ci contient les éléments suivants :"),
+    # [u]nordered [l]ist of [l]ist [i]tems
+    tags$ul(
+      tags$li("Des chiffres-clés (élaborer...)"),
+      tags$li("Les données & graphiques relatifs à la production d'électricité."),
+      tags$li("Les données & graphiques relatifs relatifs à la consommation d'électricité."),
+    ),
+    br(),
+
     shiny::downloadButton(
       outputId = ns("report"),
-      label = "Générer un rapport"
-    )
+      label = "Générer un rapport",
+      class = "dlButton" # class defined in custom.css
+    ),
+    br(),
+    br(),
+    br(),
+    p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
+      style = "color:grey;"),
 
   )
 }
@@ -29,24 +43,40 @@ mod_download_rmd_ui <- function(id){
 #' download_rmd Server Functions
 #'
 #' @noRd
-mod_download_rmd_server <- function(id){
+mod_download_rmd_server <- function(id, inputVals){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    output$selected_communes <- renderPrint({
+
+      validate(need(inputVals$selectedCommunes,
+               "Sélectionner au moins une commune pour générer un rapport."))
+
+        tags$strong(knitr::combine_words(words = inputVals$selectedCommunes,
+                             sep = ", ",
+                             and = " et ",
+                             oxford_comma = F), style = "font-size:medium;")
+
+    })
 
     output$report <- downloadHandler(
-      filename = "report.html",
+      filename = paste0("eneRgyVD_rapport_",Sys.Date(),".html"),
       content = function(file) {
-        params <- list(communes = c("Morges", "Aigle"))
+
+        tempReport <- file.path(tempdir(), "downloadable_report.Rmd")
+        file.copy("downloadable_report.Rmd", tempReport, overwrite = TRUE)
+
+
+        params <- list(communes = inputVals$selectedCommunes)
 
         id <- showNotification(
-          "Rendu du rapport...",
+          "Rendu du rapport html...",
           duration = NULL,
           closeButton = FALSE
         )
         on.exit(removeNotification(id), add = TRUE)
 
-        rmarkdown::render(report_path,
+        rmarkdown::render(tempReport,
                           output_file = file,
                           params = params,
                           envir = new.env(parent = globalenv())

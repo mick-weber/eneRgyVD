@@ -1,7 +1,7 @@
 ---
 title: "eneRgyVD: profil énergétique"
 subtitle: "Direction générale de l'environnement - Direction de l'énergie (DGE-DIREN)"
-author: "Weber Michaël"
+author: "Unité Données Indicateurs"
 date: "`r Sys.Date()`"
 always_allow_html: yes
 output:
@@ -22,7 +22,7 @@ fontsize: 11pt
 #paramètres pour l'export Shiny
 params:
   communes: NULL
-  annee: NULL
+  annees: NULL
   
 ---
 
@@ -85,7 +85,7 @@ Oulàlà bcp de conso !
 
 # Contact
 
-DGE-DIREN, [michael.weber@vd.ch](michael.weber@vd.ch)
+DGE-DIREN, [stats.energie@vd.ch](mailto:stats.energie@vd.ch)
 
 
 

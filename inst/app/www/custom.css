@@ -12,14 +12,18 @@
 /*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/
 #unit_converter-unit_dropdown > ul > li > ul{
   background-color:white;
-  border-radius: 25px;
-  border: 2px solid #3A862D;
-  padding: 10px;
+  border: 2px solid lightgrey;
 }
 
 /*Change the contact dropdownMenu width in app_ui.R */
-body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.messages-menu > a > i{
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu > a > i{
   width:50px;
+}
+
+/*Change the dropdownMenu content properties for contact dropdown in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
+  background-color:white;
+  border: 2px solid lightgrey;
 }
 
 /* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
@@ -30,19 +34,22 @@ pre {
   font-weight:bold;
 }
 
-
-
 /* custom class for download buttons */
 .dlButton {
-
   width:175px;
   background-color:white;
   color:#3A862D;
-
 }
 
 /* this targets value_callback textOutput() in the unit converter widget */
 #unit_converter-value_callback {
   font-size:11px;
   color:grey;
+}
+
+/* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
+.shiny-notification {
+  position:fixed;
+  top: calc(50%);
+  left: calc(50%);
 }

@@ -18,14 +18,11 @@ app_ui <- function(request) {
       # Header ----
       shinydashboardPlus::dashboardHeader(title = "eneRgy VD : prototype",
                                       titleWidth = 300,
-                                      dropdownMenu(type = "messages",
-                                                   badgeStatus = NULL, # avoid notif
+                                      dropdownMenu(type = "notifications", badgeStatus = NULL, icon = icon("envelope", lib = "font-awesome"),
                                                    headerText = "Retours et suggestions",
-                                                   messageItem(from = "Contact DGE-DIREN",
-                                                               message = tags$a(href = "mailto:stats.energie@vd.ch",
-                                                                             "E-mail: stats.energie@vd.ch", target = "_blank")
-
-                                                   )# End messageItem
+                                                   notificationItem(text = "Nous contacter par e-mail", href = "mailto:stats.energie@vd.ch",
+                                                                    icon = icon("envelope", lib = "font-awesome"), status = "info"
+                                                                    )# End messageItem
                                                    ),# End dropdownMenu,
       # Add unit converter drop-down next to the app's title (left)
       leftUi = mod_unit_converter_ui("unit_converter")

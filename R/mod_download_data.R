@@ -27,14 +27,14 @@ mod_download_data_server <- function(id, data){
 
     # CSV handler
     output$download_csv <- downloadHandler(
-      filename = paste("prod_elec_", Sys.Date(), ".csv"),
+      filename = paste0("prod_elec_", Sys.Date(), ".csv"),
       content = function(file){
-        write.csv(data, file = file, row.names = FALSE, sep = ";")
+        readr::write_delim(data, file = file, delim = ";")
       }
     )
     # XLSX handler
     output$download_excel <- downloadHandler(
-      filename = paste("prod_elec", Sys.Date(), ".xlsx"),
+      filename = paste0("prod_elec", Sys.Date(), ".xlsx"),
       content = function(file){
         writexl::write_xlsx(data, path = file)
         }

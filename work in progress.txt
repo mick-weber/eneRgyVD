@@ -19,4 +19,19 @@
 -------------------------------------------
 Mettre à jour le module prod_chart.R et les fonctions create_plotly_ / sunburst_ () pour accueillir les données conso
 
---> facilitera grandement la maintenance de l'app ! et +++ pour la formation
+[X] 11:00 03.06.2022 // Mettre à jour create_sunburst_plotly() pour accueilllir à la fois la conso et la prod électrique
+
+[X] Mettre à jour create_bar_plotly() pour accueillir à la fois la conso et la prod électrique
+
+[X] Créer 'create_conso_table_dt()' qui sera spécifique à la consommation électrique
+	(le travail esthétique est trop fin pour en faire une fonction générique aux deux datasets et que ça reste lisible)
+
+[ ! ] Modifier 'mod_prod_charts.R' en 'mod_elec_charts.R' en ajoutant les arguments suivants : 
+	- Les arguments à passer aux fonctions 'create_sunburst_plotly()' et 'create_bar_plotly()'
+		(intégrer ces arguments ensuite dans l'appel des fonctions du module lui-même)
+
+	- Le type de fonction 'create_prod/cons_table_dt()' à appeler (deux fonctions différentes car trop spécifique)
+
+[ ! ] Modifier app_ui.R et app_server.R en appelant deux fois le module 'mod_elec_charts.R' dans les endroits appropriés (tabProd et tabCons)
+	Et fournir les bons arguments en fonction des onglets (p.ex. third_rank = FALSE pour tabCons, et third_rank = TRUE pour tabProd...)
+

@@ -4,7 +4,15 @@
 \alias{create_bar_plotly}
 \title{create_bar_plotly}
 \usage{
-create_bar_plotly(data, free_y = FALSE)
+create_bar_plotly(
+  data,
+  var_year,
+  var_commune,
+  var_rank_1,
+  var_values,
+  color_palette,
+  free_y = FALSE
+)
 }
 \arguments{
 \item{data}{the data to provide}

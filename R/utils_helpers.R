@@ -29,7 +29,7 @@ load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
 
-# load("x.rda")
+load("./data/elec_cons.rda")
 
 # Generic utils ----
 

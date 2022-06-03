@@ -29,6 +29,7 @@ usethis::use_package("sf")
 ## Create a module infrastructure in R/
 golem::add_module(name = "inputs", with_test = TRUE)
 golem::add_module(name = "prod_charts", with_test = TRUE)
+golem::add_module(name = "cons_charts", with_test = TRUE)
 golem::add_module(name = "download_data", with_test = TRUE)
 golem::add_module(name = "vd_collapse_box", with_test = TRUE)
 golem::add_module(name = "communes_boxes", with_test = TRUE)

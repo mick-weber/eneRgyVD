@@ -11,6 +11,7 @@ create_sunburst_plotly(
   values_tot,
   rank_1,
   rank_2,
+  third_rank,
   rank_3_1,
   rank_3_2
 )

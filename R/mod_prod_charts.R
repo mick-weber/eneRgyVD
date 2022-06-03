@@ -124,6 +124,11 @@ mod_prod_charts_server <- function(id, inputVals){
 
            # fct is defined in fct_helpers.R
            create_bar_plotly(data = subset_elec_prod_d(),
+                             var_year = "annee",
+                             var_commune = "commune",
+                             var_rank_1 = "categorie_diren",
+                             var_values = "production_totale",
+                             color_palette = colors_categories, # defined in utils_helpers.R
                              free_y = reactive(input$toggle_status)) # links to ifelse in facet_wrap(scales = ...)
          })# End renderPlotly
        }# End if
@@ -137,6 +142,7 @@ mod_prod_charts_server <- function(id, inputVals){
                                   values_tot = "production_totale", # var name
                                   rank_1 = "commune", # var name
                                   rank_2 = "categorie_diren", # var name
+                                  third_rank = TRUE, # we do have a third layer (rank_3_1+rank_3_2)
                                   rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale") # var names pivotted
          })# End renderPlotly
        }# End else if
@@ -147,7 +153,7 @@ mod_prod_charts_server <- function(id, inputVals){
 
        output$table_1 <- DT::renderDataTable({
 
-         create_table_dt(data = subset_elec_prod_d())
+         create_prod_table_dt(data = subset_elec_prod_d())
 
        })# End renderDT
   }) # End ModuleServer

@@ -20,7 +20,8 @@ app_ui <- function(request) {
                                       titleWidth = 300,
                                       dropdownMenu(type = "notifications", badgeStatus = NULL, icon = icon("envelope", lib = "font-awesome"),
                                                    headerText = "Retours et suggestions",
-                                                   notificationItem(text = "Nous contacter par e-mail", href = "mailto:stats.energie@vd.ch",
+                                                   notificationItem(text = "Nous contacter par e-mail",
+                                                                    href = paste0("mailto:", mail_address), # defined in utils_helpers.R
                                                                     icon = icon("envelope", lib = "font-awesome"), status = "info"
                                                                     )# End messageItem
                                                    ),# End dropdownMenu,

@@ -33,6 +33,11 @@ load("./data/elec_prod_doc.rda")
 
 # Generic utils ----
 
+## E-mail address ----
+# Used for contact notificationMenu in ui.R & mod_about_the_app.R
+
+mail_address <- "stat.energie@vd.ch"
+
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library
 

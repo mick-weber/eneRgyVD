@@ -13,7 +13,9 @@ mod_about_the_app_ui <- function(id){
     column(width = 12,
     h4(strong("Contact")),
     tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'Unité Données et Indicateurs via ",
-           tags$a (href = "mailto:stats.energie@vd.ch", "stats.energie@vd.ch", target = "_blank"), # open in new tab
+           tags$a (href = paste0("mailto:", mail_address),
+                   mail_address,
+                   target = "_blank"), # open in new tab. address defined in utils_helpers.R
            ", qui est l'unité transversale de la Direction de l'énergie (DGE-DIREN) chargée des données énergétiques."),
     h4(strong("Pourquoi eneRgyVD ?")),
     tags$p("Le but de cette application est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.

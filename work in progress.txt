@@ -6,7 +6,17 @@
 
 - add disclaimer about pronovo data and own diren estimates that may not be exact due to several factors
 
-# consProd : add data, visualisation, table, etc.
+# consTab : add data, visualisation, table, etc.
+
+# prodTab : sunburst:  add some text to say that the current year is the max of the 'Choix des années' slider and can be played with !
+
+
+#Mise à jour données Pronovo Bévieux
 
 
 
+
+-------------------------------------------
+Mettre à jour le module prod_chart.R et les fonctions create_plotly_ / sunburst_ () pour accueillir les données conso
+
+--> facilitera grandement la maintenance de l'app ! et +++ pour la formation

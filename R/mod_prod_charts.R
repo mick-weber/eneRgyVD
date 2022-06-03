@@ -107,11 +107,9 @@ mod_prod_charts_server <- function(id, inputVals){
 
      # Initialize toggle condition for conditionalPanel in ui
      output$toggle <- reactive({
-       # req(inputVals$selectedCommunes)
        length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
      })
       # We don't suspend output$toggle when hidden (default is TRUE)
-      # https://stackoverflow.com/questions/35136029/hide-show-outputs-shiny-r
      outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
 
      # Render plot selectively based on radioButton above

@@ -1,0 +1,150 @@
+#' elec_charts UI Function
+#'
+#' @description A shiny Module which produces the different chart for the tab of the app. It
+#'
+#' @param id,input,output,session Internal parameters for {shiny}.
+#'
+#' @noRd
+#'
+#' @importFrom shiny NS tagList
+mod_elec_charts_ui <- function(id){
+  ns <- NS(id)
+  tagList(
+    # TABSETS for better readability of plot / table
+    shiny::tabsetPanel(
+      shiny::tabPanel(title = "Graphique",
+
+                      # radioGroupButtons() for tab ----
+
+                      shiny::wellPanel(style = "background: white",
+                                       shinyWidgets::radioGroupButtons(
+                                         inputId = ns("tab_plot_type"),
+                                         label = "Sélection du type de graphique",
+                                         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
+                                                     `<i class='fa fa-pie-chart'></i>` = "sunburst"),
+                                         justified = TRUE,
+                                         width = "25%"),
+
+                                       # prettyToggle
+                                       shiny::conditionalPanel(
+                                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                         condition = "output.toggle && input.tab_plot_type == 'bar'",
+                                         ns = ns,
+
+                                         shinyWidgets::prettyToggle(
+                                           inputId = ns("toggle_status"),
+                                           label_on = "Axe des ordonnées libéré !",
+                                           label_off = "Libérer l'axe des ordonnées ?",
+                                           bigger = T,
+                                           shape = "curve",
+                                           animation = "pulse")
+                                       )# End conditionalPanel
+                      ),# End wellPanel
+
+                      # # breathing
+                      # br(),
+
+                      # Conditional plotly (bar/sunburst) ----
+                      plotly::plotlyOutput(ns("chart_1"), width = "1150px", height = "auto") %>%
+                        shinycssloaders::withSpinner(color= main_color), # color defined in utils_helpers.R
+
+
+      ),# End tabPanel 'Graphique'
+
+      shiny::tabPanel(title = "Table",
+                      column(width = 11,
+                             # breathing
+                             br(),
+                             # Download module
+                             mod_download_data_ui(ns("table_download")),
+                             # breathing
+                             br(),
+                             # DT table
+                             DT::dataTableOutput(ns("table_1")) %>%
+                               shinycssloaders::withSpinner(color= main_color)
+                      )# End column
+      )# End tabPanel 'Table'
+    )# End tabsetPanel
+  )# End tagList
+}
+
+#' elec_charts Server Functions
+#'
+#' @noRd
+mod_elec_charts_server <- function(id,
+                                   inputVals,
+                                   subsetData,
+                                   var_year,
+                                   year, # for sunburst
+                                   var_commune,
+                                   var_rank_2,
+                                   var_values,
+                                   color_palette,
+                                   third_rank,
+                                   var_rank_3_1,
+                                   var_rank_3_2,
+                                   fct_table_dt_type){
+  moduleServer( id, function(input, output, session){
+    ns <- session$ns
+
+    # Reactive dataset
+    # We could do it in app_server.R but since the dataset is only used in this tab for now...
+
+
+
+    # We CAN debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
+    subsetData_d <- subsetData %>% debounce(0)
+
+    # Initialize toggle condition for conditionalPanel in ui
+    output$toggle <- reactive({
+      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
+    })
+    # We don't suspend output$toggle when hidden (default is TRUE)
+    outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
+
+    # Render plot selectively based on radioButton above
+    observe({
+
+      if(input$tab_plot_type == "bar"){
+
+        # Update the initialized FALSE toggle_status with the input$toggle_status
+
+        # PLOTLY BAR PLOT
+        output$chart_1 <- plotly::renderPlotly({
+
+          # fct is defined in fct_helpers.R
+          create_bar_plotly(data = subsetData_d(),
+                            var_year = var_year,
+                            var_commune = var_commune,
+                            var_rank_2 = var_rank_2,
+                            var_values = var_values,
+                            color_palette = color_palette, # defined in utils_helpers.R
+                            free_y = reactive(input$toggle_status)) # links to ifelse in facet_wrap(scales = ...)
+        })# End renderPlotly
+      }# End if
+      else if(input$tab_plot_type == "sunburst"){
+
+        # PLOTLY SUNBURST PLOT
+        output$chart_1 <- plotly::renderPlotly({
+          create_sunburst_plotly(data = subsetData_d(), # created just above
+                                 var_year = var_year, # var name
+                                 year = year, # takes the upper range of year slider
+                                 var_values = var_values, # var name
+                                 var_commune = var_commune, # var name
+                                 var_rank_2 = var_rank_2, # var name
+                                 third_rank = third_rank, # we do have a third layer (rank_3_1+rank_3_2)
+                                 var_rank_3_1 = var_rank_3_1, var_rank_3_2 = var_rank_3_2) # var names pivotted
+        })# End renderPlotly
+      }# End else if
+    })# End observe
+
+    mod_download_data_server("table_download", data = subsetData_d())
+
+
+    output$table_1 <- DT::renderDataTable({
+
+      fct_table_dt_type(data = subsetData_d())
+
+    })# End renderDT
+  }) # End ModuleServer
+} # End server

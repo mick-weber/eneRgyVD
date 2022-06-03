@@ -15,6 +15,57 @@ app_server <- function(input, output, session) {
 
    inputVals <- mod_inputs_server("inputs_1")
 
+   ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
+
+   subset_cons_data <- reactive({
+
+     # explicitely require communes to be selected
+     validate(
+       need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+     )
+
+     # waiting on these to get initialized (renderUIs)
+     req(inputVals$min_selected_cons,
+         inputVals$max_selected_cons,
+         inputVals$cons_dataset)
+
+     # further filter cons_dataset with selected min/max values
+
+     inputVals$cons_dataset %>%
+       dplyr::filter(annee >= inputVals$min_selected_cons,
+                     annee <= inputVals$max_selected_cons)
+
+   })
+
+
+
+
+   ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
+   subset_prod_data <- reactive({
+
+     # explicitely require communes to be selected
+     validate(
+       need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+     )
+     # waiting on these to get initialized (renderUIs)
+     req(inputVals$min_selected,
+         inputVals$max_selected,
+         inputVals$techs_selected,
+         inputVals$prod_dataset)
+
+     # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
+     # TESTING, WE DONT NEED THIS IF WE TAKE DIRECTLY INPUTVALS$PROD_DATASET
+     # elec_prod_communes %>%
+     # dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
+
+     inputVals$prod_dataset %>%
+       dplyr::filter(annee >= inputVals$min_selected,
+                     annee <= inputVals$max_selected) %>%
+       dplyr::filter(categorie_diren %in% inputVals$techs_selected)
+
+   }) # End reactive()
+
+
    # Leaflet select map ----
 
    #   Unfortunately this couldn't be modularized because for some reason the communication between
@@ -101,8 +152,37 @@ app_server <- function(input, output, session) {
 
 
    # Output modules ----
+
+   ## tabCons: call the chart server logic ----
+   mod_elec_charts_server("consumption_charts",
+                          inputVals = inputVals,
+                          subsetData = subset_cons_data,
+                          # args for create_bar_plotly() & create_sunburst_plotly()
+                          year = inputVals$max_selected_cons,
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_rank_2 = "secteur",
+                          var_values = "consommation_kwh",
+                          color_palette = colors_sectors,
+                          third_rank = FALSE,
+                          var_rank_3_1 = NULL, var_rank_3_2 = NULL,
+                          fct_table_dt_type = create_cons_table_dt)
+
    ## tabProd: call the chart server logic ----
-   mod_prod_charts_server("prod_chart1", inputVals = inputVals)
+   mod_elec_charts_server("production_charts",
+                          inputVals = inputVals,
+                          subsetData = subset_prod_data,
+                          # args for create_bar_plotly() & create_sunburst_plotly()
+                          year = inputVals$max_selected,
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_rank_2 = "categorie_diren",
+                          var_values = "production_totale",
+                          color_palette = colors_categories,
+                          third_rank = TRUE,
+                          var_rank_3_1 = "injection_totale", var_rank_3_2 = "autoconso_totale",
+                          # name of fct to create dt table
+                          fct_table_dt_type = create_prod_table_dt)
    ## tabMap: boxes for statistics ----
    # Module for rendering the vd collapse box
    mod_vd_collapse_box_server("vd_box")

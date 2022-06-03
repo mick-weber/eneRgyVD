@@ -29,7 +29,7 @@ load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
 
-load("./data/elec_cons.rda")
+load("./data/elec_cons_communes.rda")
 
 # Generic utils ----
 
@@ -118,6 +118,12 @@ colors_categories <- c("Biomasse agricole" = "#48A649", # biomasse agricole
                        "STEP" = "#A58DE6", # step
                        "Thermique fossile" = "#E67A78") # thermique fossile
 
+# We also make a named vector for sectors of elec consumption data
+# Be careful if sectors change name ! (SDN wrote them inconsistently here...)
+colors_sectors <- c("Industrie/Services" = "#00CED1", # blue shade
+                    "Ménage" = "#FF6A6A", # red shade
+                    "Transports" = "#EEB422", # orange shade
+                    "Inconnu" = "#CCCCCC") # grey shade
 
 ### elec_prod_communes ----
 # From installation-specific to communes-specific (faster calculation)
@@ -132,7 +138,7 @@ elec_prod_communes <- elec_prod %>%
     numero_de_la_commune = dplyr::first(numero_de_la_commune)) %>%
   dplyr::ungroup()
 
-## Objects specific to the tabConso  ----
+## Objects specific to the tabCons  ----
 # to be populated
 
 ## Objects specific to the tabMap  ----

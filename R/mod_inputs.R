@@ -30,6 +30,15 @@ mod_inputs_ui <- function(id){
                    selected = 0,
                    multiple = FALSE)),
 
+    # uiOutput for tabCons ----
+
+    shiny::conditionalPanel(
+      condition="input.sidebarMenu == 'tabCons'",
+
+      shiny::uiOutput(ns("cons_year"))
+
+    ), # End conditionalPanel
+
     # uiOutput() for tabProd ----
     # IF tabProd : 2 widgets in a single uiOutput call for years and technologies
     # --> uiOutput/renderUI because its parameters are reactive
@@ -49,6 +58,18 @@ mod_inputs_ui <- function(id){
 mod_inputs_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+    # tabCons inputs ----
+
+    subset_elec_cons <- reactive({
+
+      req(input$selected_communes)
+
+      elec_cons_communes %>%
+        filter(commune %in% input$selected_communes)
+
+    })
+
 
     # tabProd inputs ----
 
@@ -73,6 +94,9 @@ mod_inputs_server <- function(id){
     inputVals <- reactiveValues()
 
     observe({
+      # store the commune cons dataset already filtered
+      inputVals$cons_dataset <- subset_elec_cons()
+
       # store the commune prod dataset already filtered
       inputVals$prod_dataset <- subset_elec_prod()
 
@@ -80,7 +104,13 @@ mod_inputs_server <- function(id){
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
 
+      # store min & max !available! years from consumption data to feed sliderInput()
+
+      inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
+      inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
+
       # store min & max !available! years to feed sliderInput()
+      # CHANGE PARAMS WITH PROD LATER  ($min_avail_prod and max_avail_prod for consistency with cons)
       inputVals$min_avail <- min(subset_elec_prod()$annee)
       inputVals$max_avail <- max(subset_elec_prod()$annee)
 
@@ -89,10 +119,30 @@ mod_inputs_server <- function(id){
         dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
 
-    }) # End observe. Note : inputVals is completed later again once renderUI() are rendered
+    }) # End observe. Note : inputVals is completed later below once renderUI() are rendered
 
 
     ## Render dynamic UI for renderUIs ----
+
+    # renderUI for when tabCons is selected
+
+    output$cons_year <- shiny::renderUI({
+
+      req(input$selected_communes)
+
+      shiny::tagList(
+        shiny::sliderInput(ns("cons_year"), label = "Choix des années",
+                           min = inputVals$min_avail_cons,
+                           max = inputVals$max_avail_cons,
+                           value = c(inputVals$min_avail, inputVals$max_avail),
+                           step = 1L, sep = "", ticks = T))
+
+        # add more conditional widgets if needed in the future
+
+
+    })
+
+
     # renderUI for when tabProd is selected
     output$prod_year_n_techs <- shiny::renderUI({
 
@@ -127,6 +177,9 @@ mod_inputs_server <- function(id){
 
     # We complete inputVals with the values from renderUI() above
     observe({
+
+      inputVals$min_selected_cons <- input$cons_year[1]
+      inputVals$max_selected_cons <- input$cons_year[2]
 
       inputVals$min_selected <- input$prod_year[1]
       inputVals$max_selected <- input$prod_year[2]

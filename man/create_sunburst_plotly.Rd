@@ -6,14 +6,14 @@
 \usage{
 create_sunburst_plotly(
   data,
-  year_var,
+  var_year,
   year,
-  values_tot,
-  rank_1,
-  rank_2,
+  var_values,
+  var_commune,
+  var_rank_2,
   third_rank,
-  rank_3_1,
-  rank_3_2
+  var_rank_3_1,
+  var_rank_3_2
 )
 }
 \arguments{

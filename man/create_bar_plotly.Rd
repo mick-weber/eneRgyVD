@@ -8,7 +8,7 @@ create_bar_plotly(
   data,
   var_year,
   var_commune,
-  var_rank_1,
+  var_rank_2,
   var_values,
   color_palette,
   free_y = FALSE

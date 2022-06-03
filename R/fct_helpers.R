@@ -100,8 +100,8 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 create_bar_plotly <- function(data,
                               var_year,
                               var_commune,
-                              var_rank_1, # either secteur, categorie_diren...
-                              var_values,
+                              var_rank_2, # one of secteur, categorie_diren...
+                              var_values, # one of consommation_kwh, production_totale...
                               color_palette, # 'colors_categories',
                               free_y = FALSE){
 
@@ -111,9 +111,9 @@ create_bar_plotly <- function(data,
     ggplot2::ggplot()+
     ggplot2::geom_col(aes(x = as.factor(.data[[var_year]]),
                           y = .data[[var_values]]/1e3,
-                          fill = .data[[var_rank_1]],
+                          fill = .data[[var_rank_2]],
                           # Text is reused in ggplotly(tooltip = 'text')
-                          text = paste0(.data[[var_rank_1]], "\n",
+                          text = paste0(.data[[var_rank_2]], "\n",
                                         format(round(.data[[var_values]]/1e3, digits = 0), big.mark = "'"),
                                         " MWh en ", .data[[var_year]])),
                       position = "dodge")+
@@ -149,63 +149,6 @@ create_bar_plotly <- function(data,
     )) %>%
     config(locale = "fr")
 }
-# ---- PREVIOUS CREATE_BAT_PLOTLY FOR TABPROD ONLY ---- REMOVE WHEN CURRENT UPDATE IS DONE
-# create_bar_plotly <- function(data, free_y = FALSE){
-#
-#   # First create ggplot graph
-#   # We turn to MWh to save space, especially when free_y is activated...
-#   ggplot <- data %>%
-#     ggplot2::ggplot()+
-#     ggplot2::geom_col(aes(x = as.factor(annee),
-#                           y = production_totale/1e3,
-#                           fill = categorie_diren,
-#                           # Text is reused in ggplotly(tooltip = 'text')
-#                           text = paste0(categorie_diren, "\n",
-#                                         format(round(production_totale/1e3, digits = 0), big.mark = "'"),
-#                                         " MWh en ", annee)),
-#                       position = "dodge")+
-#     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
-#     ggplot2::scale_fill_manual(name = "Technologies",
-#                                values = colors_categories)+ # palette defined in utils_helpers.R
-#     ggplot2::labs( x = "", y = "MWh")+
-#     ggplot2::facet_wrap(facets = vars(commune),
-#                         ncol = 2,
-#                         # if the toggle linked to the free_y argument is TRUE, then free y axis
-#                         scales = ifelse(free_y(), "free_y", "fixed"))+
-#     ggplot2::theme_bw()+
-#     ggplot2::theme(legend.position = "top",
-#                    # change the labels of facet wrap. main_color defined in utils_helpers.R
-#                    strip.background = element_rect(
-#                      color="black", fill=main_color, size=1.5, linetype="solid"
-#                    ),
-#                    strip.text = element_text(
-#                     # if the toggle free_y is TRUE, reduce text size to 8, else 11
-#                      size = ifelse(free_y(), 9, 12), color = "white"),
-#                    legend.text = element_text(size = 12),
-#                    legend.title = element_text(size = 12),
-#                    legend.key.size = unit(2, "cm"),
-#                    panel.spacing.x = unit(0, "line"))+
-#     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
-#
-#
-#   # Turn to plotly object
-#   ggplot %>% plotly::ggplotly(tooltip = "text") %>% # refers to aes(text) defined in ggplot2
-#     plotly::layout(legend = list(
-#       orientation = "h", # puts the legend in the middle instead of default right
-#       y = 1.3 # elevates the legend so its above the plot, not below
-#     )) %>%
-#     config(locale = "fr")
-# }
-
-# # code for testing quickly. remove in prod.
-# free_y <- function(){ # imitate reactive free_y toggle
-#   return(FALSE)
-# }
-# elec_prod_communes %>%
-#   filter(commune %in% c("Morges", "Lausanne",  "Senarclens", "Grancy")) %>%
-#   create_bar_plotly(free_y = T)
-
-
 
 #' create_sunburst_plotly
 #'
@@ -216,33 +159,33 @@ create_bar_plotly <- function(data,
 #'
 #' @return an interactive plot
 
-create_sunburst_plotly <- function(data, year_var, year, values_tot, rank_1, rank_2,
+create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune, var_rank_2,
                                         third_rank,
-                                        rank_3_1, rank_3_2){
+                                        var_rank_3_1, var_rank_3_2){
 
   # filter data so make sure there's only one year, otherwise the plot won't work (3 levels of labels allowed here)
-  data <- data %>% filter(.data[[year_var]] == year)
+  data <- data %>% filter(.data[[var_year]] == year)
 
   # overall total (layer 0)
-  total_row <- data %>% summarise(values = sum(.data[[values_tot]])) %>%
+  total_row <- data %>% summarise(values = sum(.data[[var_values]])) %>%
     mutate(labels = as.character(year),
            parents = NA,
            ids = "Total")
 
   # total per rank_1 (commune expected)
   subtotal_row <- data %>%
-    group_by(labels = .data[[rank_1]]) %>%
-    dplyr::summarise(values = sum(.data[[values_tot]], na.rm = T)) %>%
+    group_by(labels = .data[[var_commune]]) %>%
+    dplyr::summarise(values = sum(.data[[var_values]], na.rm = T)) %>%
     mutate(labels = labels,
            parents = "Total",
            ids = paste0("Total - ",labels), .keep = "unused")
 
   # total per rank_2 (either categorie_diren or secteur)
   subsubtotal_row <- data %>%
-    mutate(labels = .data[[rank_2]],
-           values = .data[[values_tot]],
-           parents = paste0("Total - ", .data[[rank_1]]),
-           ids = paste0(parents, " - ", .data[[rank_2]]),
+    mutate(labels = .data[[var_rank_2]],
+           values = .data[[var_values]],
+           parents = paste0("Total - ", .data[[var_commune]]),
+           ids = paste0(parents, " - ", .data[[var_rank_2]]),
            .keep = "unused")
 
   # specificity : We have two cols that we pivot_long, hence the rank_3_1 and rank_3-2
@@ -253,7 +196,7 @@ create_sunburst_plotly <- function(data, year_var, year, values_tot, rank_1, ran
 
     lastsubtotal_row <- subsubtotal_row %>%
       select(-values, -labels) %>%
-      mutate(Injection = .data[[rank_3_1]], Autonconsommation = .data[[rank_3_2]], .keep = "unused") %>%
+      mutate(Injection = .data[[var_rank_3_1]], Autonconsommation = .data[[var_rank_3_2]], .keep = "unused") %>%
       pivot_longer(cols = c(Injection, Autonconsommation),
                    names_to = "labels",
                    values_to = "values") %>%
@@ -286,77 +229,6 @@ create_sunburst_plotly <- function(data, year_var, year, values_tot, rank_1, ran
 
 
 } # end function
-
-
-
-# ---- PREVIOUS CREATE_SUNBURST_PLOTLY SPECIFIC TO ELEC_PROD_COMMUNES ----
-# create_sunburst_plotly <- function(data, year_var, year,
-#                                     values_tot, rank_1, rank_2, rank_3_1, rank_3_2){
-#
-#   # filter data so make sure there's only one year, otherwise the plot won't work (3 levels of labels allowed here)
-#   data <- data %>% filter(.data[[year_var]] == year)
-#
-#   # total overall
-#   total_row <- data %>% summarise(values = sum(.data[[values_tot]])) %>%
-#     mutate(labels = as.character(year),
-#            parents = NA,
-#            ids = "Total")
-#
-#   # total per commune
-#   subtotal_row <- data %>%
-#     group_by(labels = .data[[rank_1]]) %>%
-#     summarise(values = sum(.data[[values_tot]])) %>%
-#     mutate(labels = labels,
-#       parents = "Total",
-#       ids = paste0("Total - ",labels), .keep = "unused")
-#
-#   # total per tech
-#   subsubtotal_row <- data %>%
-#     mutate(labels = .data[[rank_2]],
-#            values = .data[[values_tot]],
-#            parents = paste0("Total - ", .data[[rank_1]]),
-#            ids = paste0(parents, " - ", .data[[rank_2]]),
-#            .keep = "unused")
-#
-#   # total per usage
-#   # specificity : we have two cols that we pivot_long, hence the rank_3_1 and rank_3-2
-#   # if these were originally one column instead of two, we could simplify the code with rank_3 and remove pivot_longer()
-#   lastsubtotal_row <- subsubtotal_row %>%
-#     select(-values, -labels) %>%
-#     mutate(Injection = .data[[rank_3_1]], Autonconsommation = .data[[rank_3_2]], .keep = "unused") %>%
-#     pivot_longer(cols = c(Injection, Autonconsommation),
-#                  names_to = "labels",
-#                  values_to = "values") %>%
-#     mutate(labels = labels,
-#            parents = ids,
-#            ids = paste0(parents, " - ", labels),
-#            values = values,
-#            values_hover = paste0(format(values/1e3, big.mark = "'", digits = 0, scientific = F), " MWh"),
-#            .keep = "unused")
-#
-#   # assemble everything
-#   sunburst_df <- bind_rows(list(total_row, subtotal_row, subsubtotal_row, lastsubtotal_row))
-#
-#   # plot & enjoy
-#   plotly::plot_ly(data = sunburst_df,
-#                   ids = ~ids,
-#                   labels= ~labels,
-#                   parents = ~parents,
-#                   values= ~values,
-#                   hoverinfo = "text", hovertext = sunburst_df$values_hover,
-#           type='sunburst', branchvalues = 'total') %>%
-#     # change to fr
-#     config(locale = "fr")
-# }
-
-
-#  COMMENTED CODE BELOW IS FOR TESTING PURPOSES, SHOULD BE REMOVED LATER IN PROD
-# subset <- elec_prod_communes %>% filter(commune %in% c("Lausanne", "Aigle"))
-# create_sunburst_plotly(data = subset, year_var = "annee", year = 2020,
-#                        values_tot = "production_totale",
-#                        rank_1 = "commune",
-#                        rank_2 = "categorie_diren",
-#                        rank_3_1 = "injection_totale", rank_3_2 = "autoconso_totale")
 
 
 #' create_table_dt

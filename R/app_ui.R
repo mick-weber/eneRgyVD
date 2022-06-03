@@ -35,7 +35,7 @@ app_ui <- function(request) {
         width = 300,
         shinydashboard::sidebarMenu(id = "sidebarMenu",
                                     shinydashboard::menuItem("Sélection des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
-                                    shinydashboard::menuItem("Consommation", tabName = "tabConso", icon = icon("flash", lib = "glyphicon")),
+                                    shinydashboard::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
                                     shinydashboard::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
@@ -81,10 +81,14 @@ app_ui <- function(request) {
             )
           )# End fluidRow
           ),# End tabItem
-          ## tabConso ----
+          ## tabCons ----
           shinydashboard::tabItem(
-            tabName = "tabConso",
-            h2("À venir: consommation d'électricité par commune et secteur")
+            tabName = "tabCons",
+            h2("Consommation d'électricité par commune"),
+            # breathing
+            br(),
+            mod_elec_charts_ui("consumption_charts")
+
           ),# End tabItem
           ## tabProd ----
           shinydashboard::tabItem(
@@ -94,7 +98,7 @@ app_ui <- function(request) {
             br(),
 
             # Module for producing prod charts
-            mod_prod_charts_ui("prod_chart1")
+            mod_elec_charts_ui("production_charts")
 
           ),# End tabItem
           ## tabReport ----

@@ -70,7 +70,6 @@ mod_inputs_server <- function(id){
 
     })
 
-
     # tabProd inputs ----
 
     ## Reactive subset data  ----
@@ -93,16 +92,20 @@ mod_inputs_server <- function(id){
 
     inputVals <- reactiveValues()
 
+    # This is isolated first because otherwise we cannot use the district zoom feature
+    # since it waits for a commune to be selected (some inputVals$ below use req(inputVals$selectedCommunes))
+    observe({
+      # store the selectizeInputs() inputs
+      inputVals$selectedCommunes <- input$selected_communes
+      inputVals$selectedDistrict <- input$selected_district
+    })
+
     observe({
       # store the commune cons dataset already filtered
       inputVals$cons_dataset <- subset_elec_cons()
 
       # store the commune prod dataset already filtered
       inputVals$prod_dataset <- subset_elec_prod()
-
-      # store the selectizeInputs() inputs
-      inputVals$selectedCommunes <- input$selected_communes
-      inputVals$selectedDistrict <- input$selected_district
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
@@ -196,23 +199,5 @@ mod_inputs_server <- function(id){
   }) # End moduleServer
 } # End server
 
-## To be copied in the UI
-# mod_sideboard_inputs_ui("inputs_1")
 
-## To be copied in the server
-# mod_sideboard_inputs_server("inputs_1")
-
-
-
-  # testing module
-  # nameApp <- function() {
-  #     ui <- fluidPage(
-  #       mod_inputs_ui("id")
-  #     )
-  #     server <- function(input, output, session) {
-  #       mod_inputs_server("id")
-  #     }
-  #     shinyApp(ui, server)
-  # }
-  # nameApp()
 

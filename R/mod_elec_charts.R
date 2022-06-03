@@ -38,7 +38,20 @@ mod_elec_charts_ui <- function(id){
                                            bigger = T,
                                            shape = "curve",
                                            animation = "pulse")
-                                       )# End conditionalPanel
+                                       ),# End first conditionalPanel
+
+                                       shiny::conditionalPanel(
+                                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                         condition = "output.commune && input.tab_plot_type == 'bar'",
+                                         ns = ns,
+
+                                         shinyWidgets::prettyToggle(
+                                           inputId = ns("stacked_status"),
+                                           label_on = "Graphique empilé !",
+                                           label_off = "Graphique empilé ?",
+                                           bigger = T,
+                                           shape = "curve",
+                                           animation = "pulse"))
                       ),# End wellPanel
 
                       # # breathing
@@ -83,7 +96,8 @@ mod_elec_charts_server <- function(id,
                                    third_rank,
                                    var_rank_3_1,
                                    var_rank_3_2,
-                                   fct_table_dt_type){
+                                   fct_table_dt_type,
+                                   dl_prefix){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -95,12 +109,19 @@ mod_elec_charts_server <- function(id,
     # We CAN debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
     subsetData_d <- subsetData %>% debounce(0)
 
-    # Initialize toggle condition for conditionalPanel in ui
+    # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
       length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
+
+    # Initialize toggle stacked condition for conditionalPanel in ui
+    output$commune <- reactive({
+      length(inputVals$selectedCommunes) > 0 # Returns TRUE if at least one commune is selected, else FALSE
+    })
+
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
+    outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Render plot selectively based on radioButton above
     observe({
@@ -119,6 +140,7 @@ mod_elec_charts_server <- function(id,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
+                            stacked = input$stacked_status, # if T -> 'stack', F -> 'dodge'
                             free_y = reactive(input$toggle_status)) # links to ifelse in facet_wrap(scales = ...)
         })# End renderPlotly
       }# End if
@@ -138,7 +160,9 @@ mod_elec_charts_server <- function(id,
       }# End else if
     })# End observe
 
-    mod_download_data_server("table_download", data = subsetData_d())
+    mod_download_data_server("table_download",
+                             data = subsetData_d(),
+                             dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
 
 
     output$table_1 <- DT::renderDataTable({

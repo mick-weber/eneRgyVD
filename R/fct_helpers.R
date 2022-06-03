@@ -103,6 +103,7 @@ create_bar_plotly <- function(data,
                               var_rank_2, # one of secteur, categorie_diren...
                               var_values, # one of consommation_kwh, production_totale...
                               color_palette, # 'colors_categories',
+                              stacked = FALSE,
                               free_y = FALSE){
 
   # First create ggplot graph
@@ -116,7 +117,9 @@ create_bar_plotly <- function(data,
                           text = paste0(.data[[var_rank_2]], "\n",
                                         format(round(.data[[var_values]]/1e3, digits = 0), big.mark = "'"),
                                         " MWh en ", .data[[var_year]])),
-                      position = "dodge")+
+                      position = if_else(condition = stacked, # arg
+                                         true = "stack",
+                                         false = "dodge"))+
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
     ggplot2::scale_fill_manual(name = "Technologies",
                                values = color_palette)+ # palette defined in utils_helpers.R

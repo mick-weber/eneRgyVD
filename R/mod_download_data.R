@@ -21,20 +21,20 @@ mod_download_data_ui <- function(id){
 #' download_data Server Functions
 #'
 #' @noRd
-mod_download_data_server <- function(id, data){
+mod_download_data_server <- function(id, data, dl_prefix){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     # CSV handler
     output$download_csv <- downloadHandler(
-      filename = paste0("prod_elec_", Sys.Date(), ".csv"),
+      filename = paste0(dl_prefix, Sys.Date(), ".csv"),
       content = function(file){
         readr::write_delim(data, file = file, delim = ";")
       }
     )
     # XLSX handler
     output$download_excel <- downloadHandler(
-      filename = paste0("prod_elec", Sys.Date(), ".xlsx"),
+      filename = paste0(dl_prefix, Sys.Date(), ".xlsx"),
       content = function(file){
         writexl::write_xlsx(data, path = file)
         }

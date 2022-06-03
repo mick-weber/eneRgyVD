@@ -134,13 +134,9 @@ app_server <- function(input, output, session) {
      proxy %>%
        leaflet::fitBounds(
          lng1= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("xmin"),
-         lng2= bboxes %>% pluck(inputVals$selectedDistrict) %>% pluck("xmax"),
-         lat1= bboxes %>% pluck(inputVals$selectedDistrict) %>% pluck("ymin"),
-         lat2= bboxes %>% pluck(inputVals$selectedDistrict) %>% pluck("ymax"))
-
-  # NEW FEATURE TO ADD : add a popup menu when clicking on the municipalities to get basic indicators (1-2 max.)
-
-     # Requires to prepare data and then add it in the popup arg inside leaflet::addPolygons()
+         lng2= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("xmax"),
+         lat1= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("ymin"),
+         lat2= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("ymax"))
    })
 
 
@@ -166,7 +162,10 @@ app_server <- function(input, output, session) {
                           color_palette = colors_sectors,
                           third_rank = FALSE,
                           var_rank_3_1 = NULL, var_rank_3_2 = NULL,
-                          fct_table_dt_type = create_cons_table_dt)
+                          # name of fct to create dt table
+                          fct_table_dt_type = create_cons_table_dt,
+                          # name of dl preffix to supply to download module
+                          dl_prefix = "cons_elec_")
 
    ## tabProd: call the chart server logic ----
    mod_elec_charts_server("production_charts",
@@ -182,7 +181,9 @@ app_server <- function(input, output, session) {
                           third_rank = TRUE,
                           var_rank_3_1 = "injection_totale", var_rank_3_2 = "autoconso_totale",
                           # name of fct to create dt table
-                          fct_table_dt_type = create_prod_table_dt)
+                          fct_table_dt_type = create_prod_table_dt,
+                          # name of dl preffix to supply to download module
+                          dl_prefix = "prod_elec_")
    ## tabMap: boxes for statistics ----
    # Module for rendering the vd collapse box
    mod_vd_collapse_box_server("vd_box")

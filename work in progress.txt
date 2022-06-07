@@ -9,9 +9,6 @@ ADD DISCLAIMERS EVERYWHEEERE
 
 ######## CODING 
 
-
-- Clean up dependencies and imports with usethis::use_package("x") / att_amend_desc() 
-
-
-
 - modularize the map ?? am I a better programmer today than 6 weeks ago ? 
+
+- finish boxes in tabMap !! 

@@ -13,12 +13,23 @@ elec_prod <- readxl::read_excel(filepath,
                            guess_max = 1e5) %>%  # to avoid warnings when reading many NAs first
   janitor::clean_names(case = "snake")
 
+
+## IMPORTANT : TWEAK PRODUCTION/INJECTION/AC VARIABLES FOR TEMPORARILY OVERCOME POTENTIAL LEGAL ISSUES WITH DATA
+# This step should be removed once we know more about what data can be published !
+
+elec_prod  <- elec_prod %>%
+  mutate(injection_totale = runif(n = n(), min = 1e3, max = 1e6),
+         autoconso_totale = runif(n = n(), min = 1e3, max = 1e7)) %>%
+  rowwise() %>%
+  mutate(production_totale = sum(injection_totale,autoconso_totale))
+
 ## Preparing variable documentation, SECOND sheet ----
 
 elec_prod_doc <- read_excel(filepath,
                           sheet = 2) %>%
   mutate(variable_snake = janitor::make_clean_names(Variable)) %>% # make_clean_names -> ok for vectors
   relocate(variable_snake, .after = Variable)
+
 
 ## Saving in './data/' subfolder as '.rda' objects
 

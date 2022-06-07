@@ -1,8 +1,3 @@
-#
-# library(tidyverse)
-# library(leaflet)
-# library(plotly)
-
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.

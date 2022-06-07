@@ -1,18 +1,17 @@
 
 
-# infoTab :
-
-- reorganize between "à propos de l'application", "sources des données", "faq", "technologie", etc. avec des tabItems.
-
-- add disclaimer about pronovo data and own diren estimates that may not be exact due to several factors
-		ADD DISCLAIMERS EVERYWHEEERE
-
-- add 
+ADD DISCLAIMERS EVERYWHEEERE
 
 # prodTab : sunburst:  add some text to say that the current year is the max of the 'Choix des années' slider and can be played with !
 
 
 #Mise à jour données Pronovo Bévieux
 
+######## CODING 
 
-# Problème de réactivité (silencieux) avec le zoom des districts qui met à jour la carte que si inputVals$selectedCommunes est non-null 
+
+- Clean up dependencies and imports with usethis::use_package("x") / att_amend_desc() 
+
+
+
+- modularize the map ?? am I a better programmer today than 6 weeks ago ? 

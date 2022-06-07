@@ -1,21 +1,4 @@
-
-# Loading libraries ----
-
-library(sf)
-library(leaflet)
-library(tidyverse)
-library(shiny)
-library(leaflet.extras)
-library(shinydashboard)
-library(shinydashboardPlus)
-library(dashboardthemes)
-library(shinycssloaders)
-library(shinyWidgets)
-library(DT)
-library(rjson)
-
 # Loading .rda objects ----
-
 ## sf data ----
 
 load("./data/sf_communes.rda")
@@ -48,7 +31,7 @@ mail_address <- "stat.energie@vd.ch"
 
 ### Load json french language file for DT library
 
-DT_fr_language <- fromJSON(file = "./data/DT_fr_language.json")
+DT_fr_language <- rjson::fromJSON(file = "./data/DT_fr_language.json")
 
 
 ## Color used for multiple ui items ----
@@ -70,8 +53,8 @@ first_units <- c("kWh", "MWh", "GWh", "TJ")
 second_units <- c("kWh", "MWh", "GWh", "TJ")
 # Create table of conversion with all possible combinaisons
 conv_table <- expand.grid(from = first_units, to = second_units) %>%
-  arrange(from) %>%
-  mutate(factor = c(1, 1/1e3, 1/1e6, 3.6/1e6, # kWh to...
+  dplyr::arrange(from) %>%
+  dplyr::mutate(factor = c(1, 1/1e3, 1/1e6, 3.6/1e6, # kWh to...
                     1e3, 1, 1/1e3, 1/3.6/1e3, # MWh to...
                     1e6, 1e3, 1, 1/3.6, # GWh to...
                     1/3.6*1e6, 1/3.6*1e3, 1/3.6*1, 1)) # TJ to...
@@ -101,9 +84,9 @@ districts_names <- sf_districts %>%
 ### Colors for categorie_diren ----
 
 categories_diren <- elec_prod %>%
-  distinct(categorie_diren) %>%
-  arrange(categorie_diren) %>%
-  pull()
+  dplyr::distinct(categorie_diren) %>%
+  dplyr::arrange(categorie_diren) %>%
+  dplyr::pull()
 
 # We directly make a named vector since it's easier to spot what is what and we don't screw the order
 # Eolien was added as anticipated
@@ -154,9 +137,9 @@ vd_last_year <- 2020
 #### VD electricity production
 
 prod_elec_vd_last_year <- elec_prod_communes %>%
-  filter(annee == vd_last_year) %>%
-  summarise(production_totale = sum(production_totale, na.rm = TRUE)) %>%
-  pull()
+  dplyr::filter(annee == vd_last_year) %>%
+  dplyr::summarise(production_totale = sum(production_totale, na.rm = TRUE)) %>%
+  dplyr::pull()
 
 #### VD electricity consumption
 

@@ -7,7 +7,8 @@
 create_prod_table_dt(data)
 }
 \arguments{
-\item{data}{Specific DGE-DIREN data to transform to datatable. Must follow Pronovo's outputs and utils_helpers.R format.}
+\item{data}{Specific electricity production, DGE-DIREN data to transform to datatable.
+Must follow Pronovo's outputs and utils_helpers.R format.}
 }
 \value{
 A DT table with export functionalities

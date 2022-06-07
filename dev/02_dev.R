@@ -18,12 +18,21 @@
 attachment::att_amend_desc()
 usethis::use_pipe()
 usethis::use_package("dplyr")
-usethis::use_package("shinyWidgets")
+usethis::use_package("purrr")
+usethis::use_package("readr")
+usethis::use_package("tidyr")
 usethis::use_package("plotly")
+usethis::use_package("ggplot2")
+usethis::use_package("DT")
 usethis::use_package("scales")
+usethis::use_package("rjson")
+usethis::use_package("shinyWidgets")
+usethis::use_package("shinydashboard")
+usethis::use_package("shinydashboardPlus")
+usethis::use_package("shinycssloaders")
 usethis::use_package("leaflet")
+usethis::use_package("leaflet.extras")
 usethis::use_package("sf")
-
 
 ## Add modules ----
 ## Create a module infrastructure in R/

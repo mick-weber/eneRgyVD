@@ -1,13 +1,12 @@
-
-# Librairies ----
-library(tidyverse)
-library(leaflet)
-library(plotly)
+#
+# library(tidyverse)
+# library(leaflet)
+# library(plotly)
 
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
-#'
+#' @import leaflet
 #' @return A leaflet base map without reactivity.
 #'
 #' @noRd
@@ -95,6 +94,9 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 #'
 #' @param data the data to provide
 #'
+#'
+#' @import ggplot2
+#' @importFrom plotly ggplotly layout config
 #' @return an interactive plotly object
 
 create_bar_plotly <- function(data,
@@ -159,7 +161,9 @@ create_bar_plotly <- function(data,
 #'
 #' @param data the data to provide
 #'
-#'
+#' @import dplyr
+#' @importFrom plotly plot_ly config
+#' @importFrom tidyr pivot_longer
 #' @return an interactive plot
 
 create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune, var_rank_2,
@@ -236,8 +240,11 @@ create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune
 
 #' create_table_dt
 #'
-#' @param data Specific DGE-DIREN data to transform to datatable. Must follow Pronovo's outputs and utils_helpers.R format.
+#' @param data Specific electricity production, DGE-DIREN data to transform to datatable.
+#' Must follow Pronovo's outputs and utils_helpers.R format.
 #'
+#' @import dplyr DT
+#' @importFrom stringr str_replace_all str_to_title
 #' @return A DT table with export functionalities
 #'
 
@@ -249,7 +256,7 @@ create_prod_table_dt <- function(data){
     dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
     # rename columns to title case, replace "_" and trim blank spaces
     dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
-      stringr::str_replace_all(string = str_to_title(.x),
+      stringr::str_replace_all(string = stringr::str_to_title(.x),
                                # replacements pairs below
                                c("_" = " ",
                                  "totale" = "")))) %>%
@@ -284,6 +291,16 @@ create_prod_table_dt <- function(data){
 }
 
 
+#' create_cons_table_dt
+#'
+#' @param data Specific electricity consumption, DGE-DIREN data to transform to datatable.
+#' Must follow specific data format which can be found in /data
+#'
+#' @import dplyr DT
+#' @return
+#' @export
+#'
+#' @examples
 create_cons_table_dt <- function(data){
 
   data %>%

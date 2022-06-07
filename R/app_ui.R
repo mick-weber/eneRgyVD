@@ -18,9 +18,9 @@ app_ui <- function(request) {
       # Header ----
       shinydashboardPlus::dashboardHeader(title = "eneRgy VD : prototype",
                                       titleWidth = 300,
-                                      dropdownMenu(type = "notifications", badgeStatus = NULL, icon = icon("envelope", lib = "font-awesome"),
+                                      shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL, icon = icon("envelope", lib = "font-awesome"),
                                                    headerText = "Retours et suggestions",
-                                                   notificationItem(text = "Nous contacter par e-mail",
+                                                   shinydashboard::notificationItem(text = "Nous contacter par e-mail",
                                                                     href = paste0("mailto:", mail_address), # defined in utils_helpers.R
                                                                     icon = icon("envelope", lib = "font-awesome"), status = "info"
                                                                     )# End messageItem

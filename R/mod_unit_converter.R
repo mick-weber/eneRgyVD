@@ -7,6 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom shinyWidgets prettyRadioButtons
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   tagList(

@@ -17,6 +17,7 @@ app_server <- function(input, output, session) {
 
    inputVals <- mod_inputs_server("inputs_1")
 
+  # subset_cons_data ----
    ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
 
    subset_cons_data <- reactive({
@@ -39,7 +40,7 @@ app_server <- function(input, output, session) {
 
    })
 
-
+   # subset_prod_data ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
    subset_prod_data <- reactive({
 
@@ -54,13 +55,36 @@ app_server <- function(input, output, session) {
          inputVals$prod_dataset)
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
-     # TESTING, WE DONT NEED THIS IF WE TAKE DIRECTLY INPUTVALS$PROD_DATASET
+
      inputVals$prod_dataset %>%
        dplyr::filter(annee >= inputVals$min_selected_prod,
                      annee <= inputVals$max_selected_prod) %>%
        dplyr::filter(categorie_diren %in% inputVals$techs_selected)
 
    }) # End reactive()
+
+
+  subset_sunburst_prod_data <- reactive({
+
+    req(subset_prod_data())
+
+    subset_prod_data() %>%
+      filter(annee == inputVals$max_selected_prod)
+
+  })
+
+  subset_sunburst_cons_data <- reactive({
+
+    req(subset_cons_data())
+
+    subset_cons_data() %>%
+      filter(annee == inputVals$max_selected_cons)
+
+  })
+
+  observe({
+    print(subset_sunburst_cons_data())
+  })
 
    # Leaflet select map ----
 
@@ -150,6 +174,7 @@ app_server <- function(input, output, session) {
                           inputVals = inputVals,
                           subsetData = subset_cons_data,
                           # args for create_bar_plotly() & create_sunburst_plotly()
+                          sunburstData = subset_sunburst_cons_data,
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "secteur",
@@ -167,6 +192,7 @@ app_server <- function(input, output, session) {
                           inputVals = inputVals,
                           subsetData = subset_prod_data,
                           # args for create_bar_plotly() & create_sunburst_plotly()
+                          sunburstData = subset_sunburst_prod_data,
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "categorie_diren",

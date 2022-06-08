@@ -1,14 +1,17 @@
 
-
-
 # prodTab : sunburst:  add some text to say that the current year is the max of the 'Choix des années' slider and can be played with !
+
+
+
+sunburst commune label doesnt always display ?? try tweaking with plotly options
+
 
 
 #Mise à jour données Pronovo Bévieux
 
 ######## CODING 
 
-- modularize the map ?? am I a better programmer today than 6 weeks ago ? 
+- modularize the map widget?? am I a better programmer today than 6 weeks ago ? 
 
 - tabMap : ideas for valueboxes ?? 
 
@@ -31,6 +34,4 @@ GET IT A NAME goddamnit
 - poweRstats
 - eneRboardVD
 
-
-sunburst commune label doesnt always display ??
 

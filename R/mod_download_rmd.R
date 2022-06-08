@@ -26,11 +26,9 @@ mod_download_rmd_ui <- function(id){
     ),
     br(),
 
-    shiny::downloadButton(
-      outputId = ns("report"),
-      label = "Générer un rapport",
-      class = "dlButton" # class defined in custom.css
-    ),
+    # Add dynamic download button here (only if commune(s) selected)
+    uiOutput(ns("dl_button")),
+
     br(),
     br(),
     br(),
@@ -57,6 +55,18 @@ mod_download_rmd_server <- function(id, inputVals){
                              and = " et ",
                              oxford_comma = F), style = "font-size:medium;")
 
+    })
+
+
+    output$dl_button <- shiny::renderUI({
+
+      req(inputVals$selectedCommunes)
+
+      shiny::downloadButton(
+      outputId = ns("report"),
+      label = "Générer un rapport",
+      class = "dlButton" # class defined in custom.css
+      )
     })
 
     output$report <- downloadHandler(

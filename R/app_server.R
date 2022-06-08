@@ -200,8 +200,6 @@ app_server <- function(input, output, session) {
    })
 
 
-   # Module for rendering the commune boxes
-   mod_communes_boxes_server("communes_valueBoxes", inputVals = inputVals)
    ## tabReport ----
    # Module for producing rmd report based on downloadable_report.Rmd
    mod_download_rmd_server("rmd", inputVals = inputVals)

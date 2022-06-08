@@ -25,7 +25,7 @@ mod_elec_charts_ui <- function(id){
                                          justified = TRUE,
                                          width = "25%"),
 
-                                       # prettyToggle
+                                       # prettyToggle 1/2 for bar plot
                                        shiny::conditionalPanel(
                                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
                                          condition = "output.toggle && input.tab_plot_type == 'bar'",
@@ -40,6 +40,7 @@ mod_elec_charts_ui <- function(id){
                                            animation = "pulse")
                                        ),# End first conditionalPanel
 
+                                       # prettyToggle 2/2 for bar plot
                                        shiny::conditionalPanel(
                                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
                                          condition = "output.commune && input.tab_plot_type == 'bar'",
@@ -51,7 +52,17 @@ mod_elec_charts_ui <- function(id){
                                            label_off = "Graphique empilé ?",
                                            bigger = T,
                                            shape = "curve",
-                                           animation = "pulse"))
+                                           animation = "pulse")),
+
+                                       # simple text paragraph to inform how the sunburst year works
+                                       shiny::conditionalPanel(
+                                         condition = "input.tab_plot_type == 'sunburst'",
+                                         ns = ns,
+
+                                         tags$p("L'année affichée correspond à l'année la plus récente de la barre latérale.")
+
+                                       )
+
                       ),# End wellPanel
 
                       # # breathing
@@ -100,10 +111,6 @@ mod_elec_charts_server <- function(id,
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-
-    # We CAN debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
-    subsetData_d <- subsetData %>% debounce(0)
-
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
       length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
@@ -118,6 +125,8 @@ mod_elec_charts_server <- function(id,
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
+
+
     # Render plot selectively based on radioButton above
     observe({
 
@@ -129,7 +138,7 @@ mod_elec_charts_server <- function(id,
         output$chart_1 <- plotly::renderPlotly({
 
           # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetData_d(),
+          create_bar_plotly(data = subsetData(),
                             var_year = var_year,
                             var_commune = var_commune,
                             var_rank_2 = var_rank_2,
@@ -141,13 +150,18 @@ mod_elec_charts_server <- function(id,
       }# End if
       else if(input$tab_plot_type == "sunburst"){
 
-        # create sunburst data here, which is further filtered for one year (slider's max)
-        dataSunburst <- subsetData_d() %>%
-            dplyr::filter(.data[[var_year]] == inputVals$max_selected_prod)
+
+
+        # sunburst data creation here...
+
+        dataSunburst <- subsetData() %>%
+          dplyr::filter(.data[[var_year]] == inputVals$max_selected_prod)
+
 
         # PLOTLY SUNBURST PLOT
         output$chart_1 <- plotly::renderPlotly({
-          create_sunburst_plotly(dataSunburst =  dataSunburst, #subsetData_d(), # created just above
+
+          create_sunburst_plotly(data_sunburst = dataSunburst, #subsetData_d(), # created just above
                                  var_year = var_year, # var name
                                  var_values = var_values, # var name
                                  var_commune = var_commune, # var name
@@ -159,13 +173,13 @@ mod_elec_charts_server <- function(id,
     })# End observe
 
     mod_download_data_server("table_download",
-                             data = subsetData_d(),
+                             data = subsetData(),
                              dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
 
 
     output$table_1 <- DT::renderDataTable({
 
-      fct_table_dt_type(data = subsetData_d())
+      fct_table_dt_type(data = subsetData())
 
     })# End renderDT
   }) # End ModuleServer

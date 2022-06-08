@@ -88,11 +88,12 @@ app_ui <- function(request) {
             ),#End fluidRow
             # breathing
             br(),
-            # Below leaflet map ; for selected communes statistics
+            # Below leaflet map area
             fluidRow(
               column(width = 12,
-                     # Module for calling communes boxes
-                    mod_communes_boxes_ui("communes_valueBoxes")
+                     # Later : add Module to call more statistics ?
+
+                    # ...
 
             )
           )# End fluidRow

@@ -5,7 +5,7 @@
 \title{create_sunburst_plotly}
 \usage{
 create_sunburst_plotly(
-  dataSunburst,
+  data_sunburst,
   var_year,
   var_values,
   var_commune,

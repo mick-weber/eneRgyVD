@@ -1,8 +1,4 @@
 
-# prodTab : sunburst:  add some text to say that the current year is the max of the 'Choix des années' slider and can be played with !
-
-
-
 sunburst commune label doesnt always display ?? try tweaking with plotly options
 
 

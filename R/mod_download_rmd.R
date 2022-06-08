@@ -80,7 +80,7 @@ mod_download_rmd_server <- function(id, inputVals){
         params <- list(communes = inputVals$selectedCommunes)
 
         id <- showNotification(
-          "Rendu du rapport html...",
+          "Rendu du rapport html. Cette opération peut prendre quelques secondes.",
           duration = NULL,
           closeButton = FALSE
         )

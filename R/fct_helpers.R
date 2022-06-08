@@ -10,7 +10,7 @@ info_dev_message <- function(){
                                        tags$br(),
                                        "Pour des raisons juridiques, les données communales ont été temporairement
                                        remplacées par des valeurs aléatoires, celles-ci ne reflètent donc pas la réalité.
-                                       Plus d'informations à propos de cette application en cliquant sur 'À propos`
+                                       Plus d'informations sur cette application en cliquant sur 'À propos`
                                        dans la barre latérale"),
                          html = TRUE,
                          size = "s",
@@ -190,22 +190,22 @@ create_bar_plotly <- function(data,
 #' @importFrom tidyr pivot_longer
 #' @return an interactive plot
 
-create_sunburst_plotly <- function(dataSunburst,
+create_sunburst_plotly <- function(data_sunburst,
                                    var_year,
                                    var_values, var_commune, var_rank_2,
                                    third_rank,var_rank_3_1, var_rank_3_2){
 
-  # store the year for the center of sunburst plot label
-  label_year <- max(dataSunburst[[var_year]])
+  # store the year for the center of sunburst plot label.
+  label_year <- max(data_sunburst[[var_year]])
 
   # overall total (layer 0)
-  total_row <- dataSunburst %>% summarise(values = sum(.data[[var_values]])) %>%
-    dplyr::mutate(labels = as.character(label_year),
+  total_row <- data_sunburst %>% summarise(values = sum(.data[[var_values]])) %>%
+    dplyr::mutate(labels = as.character(label_year), # center of sunburst label
            parents = NA,
            ids = "Total")
 
   # total per rank_1 (commune expected)
-  subtotal_row <- dataSunburst %>%
+  subtotal_row <- data_sunburst %>%
     dplyr::group_by(labels = .data[[var_commune]]) %>%
     dplyr::summarise(values = sum(.data[[var_values]], na.rm = T)) %>%
     dplyr::mutate(labels = labels,
@@ -213,7 +213,7 @@ create_sunburst_plotly <- function(dataSunburst,
            ids = paste0("Total - ",labels), .keep = "unused")
 
   # total per rank_2 (either categorie_diren or secteur)
-  subsubtotal_row <- dataSunburst %>%
+  subsubtotal_row <- data_sunburst %>%
     dplyr::mutate(labels = .data[[var_rank_2]],
            values = .data[[var_values]],
            parents = paste0("Total - ", .data[[var_commune]]),

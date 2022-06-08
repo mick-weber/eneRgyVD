@@ -102,17 +102,16 @@ output$result <- renderText({
 
 observeEvent(input$convert,{
 
-  # we isolate the return value of the units similarity test.
+  # Isolates the return value of the units similarity test.
   # This guarantees that the 'Duh' can only appear when units are the same at the moment of input$convert
 
   similar_units_check <- isolate(input$in_unit == input$out_unit)
 
 output$duh_comment <- renderText({
 
-  # if at the moment of input$convert event we had similar units, then we show the 'Duh' comment.
+  # If at the moment of input$convert event we had similar units, then we show the 'Duh' comment.
   req(similar_units_check)
 
-  # add some HTML 'em' spaces first... not sure they're working better than bnsp
   paste(htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),
         htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),
         htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),

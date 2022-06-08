@@ -1,6 +1,5 @@
 
 
-ADD DISCLAIMERS EVERYWHEEERE
 
 # prodTab : sunburst:  add some text to say that the current year is the max of the 'Choix des années' slider and can be played with !
 
@@ -11,4 +10,27 @@ ADD DISCLAIMERS EVERYWHEEERE
 
 - modularize the map ?? am I a better programmer today than 6 weeks ago ? 
 
-- finish boxes in tabMap !! 
+- tabMap : ideas for valueboxes ?? 
+
+		- [# of PV installations (VD / selection)
+		- 
+
+######DOC 
+
+	- APP DIAGRAM 
+
+
+
+######BRAND 
+
+
+GET IT A NAME goddamnit
+
+- eneRgyVD
+- eneRstats
+- poweRstats
+- eneRboardVD
+
+
+sunburst commune label doesnt always display ??
+

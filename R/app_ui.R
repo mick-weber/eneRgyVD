@@ -2,31 +2,43 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny
+#' @import shiny shinydashboard
 #' @noRd
 
 
 
 app_ui <- function(request) {
+
   shiny::tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+
     # Your application UI logic
     shinydashboardPlus::dashboardPage(
       skin = "green",
 
       # Header ----
-      shinydashboardPlus::dashboardHeader(title = "eneRgy VD : prototype",
-                                      titleWidth = 300,
-                                      shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL, icon = icon("envelope", lib = "font-awesome"),
-                                                   headerText = "Retours et suggestions",
-                                                   shinydashboard::notificationItem(text = "Nous contacter par e-mail",
-                                                                    href = paste0("mailto:", mail_address), # defined in utils_helpers.R
-                                                                    icon = icon("envelope", lib = "font-awesome"), status = "info"
-                                                                    )# End messageItem
-                                                   ),# End dropdownMenu,
-      # Add unit converter drop-down next to the app's title (left)
-      leftUi = mod_unit_converter_ui("unit_converter")
+      shinydashboardPlus::dashboardHeader(title = "eneRgy VD (v0.1)",
+                                          titleWidth = 300,
+                                          shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                                                       icon = icon("calendar", lib = "glyphicon"),
+                                                                       headerText = "Dernières mises à jour",
+                                                                       shinydashboard::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                                                        status = "info",
+                                                                                                        text = "Juin 2022 : données production électricité 2021"),
+                                                                       shinydashboard::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                                                        status = "info",
+                                                                                                        text = "Juin 2022 : données consommation électricité 2020")
+                                          ),# End dropdownMenu 'updates'
+                                          shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                                                       icon = icon("envelope", lib = "font-awesome"),
+                                                                       headerText = "Retours et suggestions",
+                                                                       shinydashboard::notificationItem(text = "Nous contacter par e-mail",
+                                                                                                        href = paste0("mailto:", mail_address), # defined in utils_helpers.R
+                                                                                                        icon = icon("envelope", lib = "font-awesome"), status = "info")
+                                          ),# End dropdownMenu 'contact'
+                                          # Add unit converter drop-down next to the app's title (left)
+                                          leftUi = mod_unit_converter_ui("unit_converter")
 
       ),
 
@@ -67,7 +79,10 @@ app_ui <- function(request) {
               # Next to leaflet map
               column(width = 4,
                      # Module for collapsible VD box
-                     mod_vd_collapse_box_ui("vd_box")
+                     mod_collapse_stats_box_ui("vd_box"),
+
+                     # Dynamic module for collapsible communes box (condition in renderUI)
+                     uiOutput("communes_box")
 
               )# End column
             ),#End fluidRow
@@ -77,7 +92,8 @@ app_ui <- function(request) {
             fluidRow(
               column(width = 12,
                      # Module for calling communes boxes
-                    mod_communes_boxes_ui("communes_box")
+                    mod_communes_boxes_ui("communes_valueBoxes")
+
             )
           )# End fluidRow
           ),# End tabItem

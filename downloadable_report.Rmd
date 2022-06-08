@@ -72,20 +72,22 @@ color:midnightblue;
 ```
 
 Ce rapport a été généré depuis l'application eneRgyVD.
+Cette fonctionnalité n'est **pas encore complètement développée** et le sera dans les prochaines semaines.
+Merci de votre compréhension.
 
-# `r params$communes`
+# Rapport énergétique pour `r params$communes`
 
 ## Production d'électricité
 
-Oulàlà pas bcp de prod !
+*Insérer les graphiques etc. ici* 
 
 ## Consommation d'électricité
 
-Oulàlà bcp de conso ! 
+*Insérer les graphiques etc. ici*
 
 # Contact
 
-DGE-DIREN, [stats.energie@vd.ch](mailto:stats.energie@vd.ch)
+DGE-DIREN, [stat.energie@vd.ch](mailto:stat.energie@vd.ch)
 
 
 

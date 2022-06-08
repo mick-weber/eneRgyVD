@@ -10,6 +10,9 @@ create_cons_table_dt(data)
 \item{data}{Specific electricity consumption, DGE-DIREN data to transform to datatable.
 Must follow specific data format which can be found in /data}
 }
+\value{
+A DT table with export functionalities
+}
 \description{
 create_cons_table_dt
 }

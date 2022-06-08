@@ -86,19 +86,21 @@ mod_inputs_server <- function(id){
 
     })
 
-    ## Storing all values in inputVals ----
-    # saving inputVals to populate the widgets in renderUI()
-    # Note : inputVals is completed later again once renderUI() are rendered
+    ## Storing all useful values in inputVals ----
+    # [inputVals 0/3] Initializing the inputVals item
 
     inputVals <- reactiveValues()
 
-    # This is isolated first because otherwise we cannot use the district zoom feature
-    # since it waits for a commune to be selected (some inputVals$ below use req(inputVals$selectedCommunes))
+    # [inputVals 1/3] Communes and district
+    # These are updated separately first for the district zoom feature to be fully operational.
+
     observe({
-      # store the selectizeInputs() inputs
+
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
     })
+
+    # [inputVals 2/3] Other inputs not influenced by selectInputs() else than commune
 
     observe({
       # store the commune cons dataset already filtered
@@ -114,15 +116,35 @@ mod_inputs_server <- function(id){
 
       # store min & max !available! years to feed sliderInput()
       # CHANGE PARAMS WITH PROD LATER  ($min_avail_prod and max_avail_prod for consistency with cons)
-      inputVals$min_avail <- min(subset_elec_prod()$annee)
-      inputVals$max_avail <- max(subset_elec_prod()$annee)
+      inputVals$min_avail_prod <- min(subset_elec_prod()$annee)
+      inputVals$max_avail_prod <- max(subset_elec_prod()$annee)
 
       # store list of !available! techs to feed pickerInput()
       inputVals$techs_avail <- subset_elec_prod() %>%
         dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
 
-    }) # End observe. Note : inputVals is completed later below once renderUI() are rendered
+    }) # End observe
+
+    # inputVals 4/3 TESTING ; WHEN WORKING ADD THIS IN APPROPRIATE PLACE
+    # store the elec consumption and production values of the current selection
+    #   for the 'last_common_elec_year' year defined in utils_helpers.R
+
+    observe({
+
+      req(subset_elec_prod(), subset_elec_cons())
+
+      inputVals$common_year_elec_prod <- subset_elec_prod() %>%
+        dplyr::filter(annee == last_common_elec_year) %>%
+        dplyr::summarise(production_totale = sum(production_totale, na.rm = T)) %>%
+        dplyr::pull(production_totale) # kWh
+
+      inputVals$common_year_elec_cons <- subset_elec_cons() %>%
+        dplyr::filter(annee == last_common_elec_year) %>%
+        dplyr::summarise(consommation_kwh = sum(consommation_kwh, na.rm = T)) %>%
+        dplyr::pull(consommation_kwh) # kWh
+
+    })
 
 
     ## Render dynamic UI for renderUIs ----
@@ -137,12 +159,8 @@ mod_inputs_server <- function(id){
         shiny::sliderInput(ns("cons_year"), label = "Choix des années",
                            min = inputVals$min_avail_cons,
                            max = inputVals$max_avail_cons,
-                           value = c(inputVals$min_avail, inputVals$max_avail),
+                           value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
                            step = 1L, sep = "", ticks = T))
-
-        # add more conditional widgets if needed in the future
-
-
     })
 
 
@@ -153,9 +171,9 @@ mod_inputs_server <- function(id){
 
       shiny::tagList(
         shiny::sliderInput(ns("prod_year"), label = "Choix des années",
-                    min = inputVals$min_avail,
-                    max = inputVals$max_avail,
-                    value = c(inputVals$min_avail, inputVals$max_avail),
+                    min = inputVals$min_avail_prod,
+                    max = inputVals$max_avail_prod,
+                    value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),
                     step = 1L, sep = "", ticks = T),
 
         shinyWidgets::pickerInput(ns("prod_techs"), label = "Choix des technologies",
@@ -178,15 +196,16 @@ mod_inputs_server <- function(id){
     }) # End renderUI
 
 
-    # We complete inputVals with the values from renderUI() above
+    # [inputVals 3/3]
+    # We eventually complete inputVals with the values from renderUI() above
     observe({
 
-      inputVals$min_selected_cons <- input$cons_year[1]
-      inputVals$max_selected_cons <- input$cons_year[2]
+      inputVals$min_selected_cons <- input$cons_year[1] # current min year selected for elec consumption
+      inputVals$max_selected_cons <- input$cons_year[2] # current max year selected for elec consumption
 
-      inputVals$min_selected <- input$prod_year[1]
-      inputVals$max_selected <- input$prod_year[2]
-      inputVals$techs_selected <- input$prod_techs
+      inputVals$min_selected_prod <- input$prod_year[1] # current min year selected for elec production
+      inputVals$max_selected_prod <- input$prod_year[2] # current max year selected for elec production
+      inputVals$techs_selected <- input$prod_techs      # current selected technologies for elec production
 
     })
 

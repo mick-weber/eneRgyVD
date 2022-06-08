@@ -86,9 +86,8 @@ mod_elec_charts_ui <- function(id){
 #' @noRd
 mod_elec_charts_server <- function(id,
                                    inputVals,
-                                   subsetData,
+                                   subsetData, # filtered data for communes and selected years
                                    var_year,
-                                   year, # for sunburst
                                    var_commune,
                                    var_rank_2,
                                    var_values,
@@ -98,12 +97,8 @@ mod_elec_charts_server <- function(id,
                                    var_rank_3_2,
                                    fct_table_dt_type,
                                    dl_prefix){
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
-
-    # Reactive dataset
-    # We could do it in app_server.R but since the dataset is only used in this tab for now...
-
 
 
     # We CAN debounce the subset dataframe here to avoid trigerring multiple renderPlotly calls
@@ -146,11 +141,14 @@ mod_elec_charts_server <- function(id,
       }# End if
       else if(input$tab_plot_type == "sunburst"){
 
+        # create sunburst data here, which is further filtered for one year (slider's max)
+        dataSunburst <- subsetData_d() %>%
+            dplyr::filter(.data[[var_year]] == inputVals$max_selected_prod)
+
         # PLOTLY SUNBURST PLOT
         output$chart_1 <- plotly::renderPlotly({
-          create_sunburst_plotly(data = subsetData_d(), # created just above
+          create_sunburst_plotly(dataSunburst =  dataSunburst, #subsetData_d(), # created just above
                                  var_year = var_year, # var name
-                                 year = year, # takes the upper range of year slider
                                  var_values = var_values, # var name
                                  var_commune = var_commune, # var name
                                  var_rank_2 = var_rank_2, # var name

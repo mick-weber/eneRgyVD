@@ -6,6 +6,8 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
+  info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
+
   # Module for dropdown block unit converter
   mod_unit_converter_server("unit_converter")
 
@@ -38,8 +40,6 @@ app_server <- function(input, output, session) {
    })
 
 
-
-
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
    subset_prod_data <- reactive({
 
@@ -48,23 +48,19 @@ app_server <- function(input, output, session) {
        need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
      )
      # waiting on these to get initialized (renderUIs)
-     req(inputVals$min_selected,
-         inputVals$max_selected,
+     req(inputVals$min_selected_prod,
+         inputVals$max_selected_prod,
          inputVals$techs_selected,
          inputVals$prod_dataset)
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
      # TESTING, WE DONT NEED THIS IF WE TAKE DIRECTLY INPUTVALS$PROD_DATASET
-     # elec_prod_communes %>%
-     # dplyr::filter(commune %in% inputVals$selectedCommunes)  %>%
-
      inputVals$prod_dataset %>%
-       dplyr::filter(annee >= inputVals$min_selected,
-                     annee <= inputVals$max_selected) %>%
+       dplyr::filter(annee >= inputVals$min_selected_prod,
+                     annee <= inputVals$max_selected_prod) %>%
        dplyr::filter(categorie_diren %in% inputVals$techs_selected)
 
    }) # End reactive()
-
 
    # Leaflet select map ----
 
@@ -154,7 +150,6 @@ app_server <- function(input, output, session) {
                           inputVals = inputVals,
                           subsetData = subset_cons_data,
                           # args for create_bar_plotly() & create_sunburst_plotly()
-                          year = inputVals$max_selected_cons,
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "secteur",
@@ -164,7 +159,7 @@ app_server <- function(input, output, session) {
                           var_rank_3_1 = NULL, var_rank_3_2 = NULL,
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
-                          # name of dl preffix to supply to download module
+                          # name of dl prefix to supply to download module
                           dl_prefix = "cons_elec_")
 
    ## tabProd: call the chart server logic ----
@@ -172,7 +167,6 @@ app_server <- function(input, output, session) {
                           inputVals = inputVals,
                           subsetData = subset_prod_data,
                           # args for create_bar_plotly() & create_sunburst_plotly()
-                          year = inputVals$max_selected,
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "categorie_diren",
@@ -182,13 +176,32 @@ app_server <- function(input, output, session) {
                           var_rank_3_1 = "injection_totale", var_rank_3_2 = "autoconso_totale",
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
-                          # name of dl preffix to supply to download module
+                          # name of dl prefix to supply to download module
                           dl_prefix = "prod_elec_")
+
    ## tabMap: boxes for statistics ----
    # Module for rendering the vd collapse box
-   mod_vd_collapse_box_server("vd_box")
+   mod_collapse_stats_box_server("vd_box",
+                                 title = "Vaud en quelques chiffres",
+                                 production_value = prod_elec_vd_last_year, # utils_helpers.R
+                                 consumption_value = cons_elec_vd_last_year, # utils_helpers.R
+                                 year = last_common_elec_year) # utils_helpers.R
+
+  # Dynamic module for rendering the communes collapse box
+   output$communes_box <- renderUI({
+
+     req(inputVals$selectedCommunes)
+
+     mod_collapse_stats_box_server("communes_box",
+                                   title = "Votre sélection en quelques chiffres",
+                                   production_value = inputVals$common_year_elec_prod, # mod_inputs.R
+                                   consumption_value = inputVals$common_year_elec_cons, # mod_inputs.R
+                                   year = last_common_elec_year) # utils_helpers.R
+   })
+
+
    # Module for rendering the commune boxes
-   mod_communes_boxes_server("communes_box", inputVals = inputVals)
+   mod_communes_boxes_server("communes_valueBoxes", inputVals = inputVals)
    ## tabReport ----
    # Module for producing rmd report based on downloadable_report.Rmd
    mod_download_rmd_server("rmd", inputVals = inputVals)

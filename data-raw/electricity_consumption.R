@@ -23,6 +23,12 @@ elec_cons_communes <- elec_cons_communes %>%
   mutate(annee = 2020)
 
 
+## RANDOMIZATION STEP [temporary] ----
+# This step should be removed once we know more about what data can be published !
+
+elec_cons_communes <- elec_cons_communes %>%
+  mutate(consommation_kwh = runif(n(), min = 1e6, max = 1e8))
+
 
 ## Saving in './data/' subfolder as '.rda' objects
 

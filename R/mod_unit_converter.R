@@ -17,6 +17,8 @@ mod_unit_converter_ui <- function(id){
       badgeStatus = NULL, # avoids the annoying notif number counting the widgets in the dropdownBlock
       icon = icon("refresh", lib = "glyphicon"),
 
+      # breathing
+      br(),
       numericInput(inputId = ns("value"), label = "Saisir une valeur", value = 0),
 
     fluidRow(column(6,
@@ -42,8 +44,10 @@ mod_unit_converter_ui <- function(id){
     # value in italic (modified in custom.css)
     textOutput(ns("value_callback")),
       # result in a div
-      div(verbatimTextOutput(ns("result"))) # The output style is modified in custom.css, 'pre' selector
+      div(verbatimTextOutput(ns("result"))), # The output style is modified in custom.css, 'pre' selector
 
+    # add 'duh' comment if in_unit & out_unit are the same
+    uiOutput(ns("duh_comment"))
 )
     )
 }
@@ -95,6 +99,28 @@ output$result <- renderText({
 
   })
 
+
+observeEvent(input$convert,{
+
+  # we isolate the return value of the units similarity test.
+  # This guarantees that the 'Duh' can only appear when units are the same at the moment of input$convert
+
+  similar_units_check <- isolate(input$in_unit == input$out_unit)
+
+output$duh_comment <- renderText({
+
+  # if at the moment of input$convert event we had similar units, then we show the 'Duh' comment.
+  req(similar_units_check)
+
+  # add some HTML 'em' spaces first... not sure they're working better than bnsp
+  paste(htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),
+        htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),
+        htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),
+        htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),htmltools::HTML('&emsp;'),
+        "...duh.")
+
+})# End renderText
+})# End observeEvent
   })
 }
 

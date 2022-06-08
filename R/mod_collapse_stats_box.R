@@ -1,4 +1,4 @@
-#' vd_collapse_box UI Function
+#' collapse_stats_box UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_vd_collapse_box_ui <- function(id){
+mod_collapse_stats_box_ui <- function(id){
   ns <- NS(id)
   tagList(
 
@@ -16,10 +16,14 @@ mod_vd_collapse_box_ui <- function(id){
   )
 }
 
-#' vd_collapse_box Server Functions
+#' collapse_stats_box Server Functions
 #'
 #' @noRd
-mod_vd_collapse_box_server <- function(id){
+mod_collapse_stats_box_server <- function(id,
+                                          title,
+                                          production_value,
+                                          consumption_value,
+                                          year){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -29,7 +33,7 @@ mod_vd_collapse_box_server <- function(id){
       shinydashboardPlus::box(
         solidHeader = FALSE,
         collapsible = TRUE,
-        title = "Le canton en quelques chiffres",
+        title = title,
         background = NULL,
         width = 12,
         status = "success",
@@ -39,8 +43,8 @@ mod_vd_collapse_box_server <- function(id){
             width = 6,
             shinydashboardPlus::descriptionBlock(
               numberColor = "green", marginBottom = TRUE, # for testing
-              number = vd_last_year, # utils_helpers.R
-              header = paste0(format(prod_elec_vd_last_year/1e6, big.mark = "'", digits = 1), " GWh"),
+              number = year,
+              header = paste0(format(production_value/1e6, big.mark = "'", digits = 1), " GWh"),
               text = "Production d'électricité"
             )# End descriptionBlock
           ),# End column
@@ -48,8 +52,8 @@ mod_vd_collapse_box_server <- function(id){
             width = 6,
             shinydashboardPlus::descriptionBlock(
               numberColor = "green",
-              number = vd_last_year, # utils_helpers.R
-              header = paste0(format(cons_elec_vd_last_year/1e6, big.mark = "'", digits = 1), " GWh"),
+              number = year,
+              header = paste0(format(consumption_value/1e6, big.mark = "'", digits = 1), " GWh"),
               text = "Consommation d'électricité"
             )# End descriptionBlock
           )# End column
@@ -58,8 +62,8 @@ mod_vd_collapse_box_server <- function(id){
         width = 12,
         shinydashboardPlus::descriptionBlock(
           numberColor = "green",
-          number = vd_last_year, # utils_helpers.R
-          header = scales::label_percent(accuracy = .1)(coverage_elec_vd_last_year),
+          number = year,
+          header = scales::label_percent(accuracy = .1)(production_value/consumption_value),
           text = "Taux de couverture annuel"
         )
       )
@@ -71,8 +75,3 @@ mod_vd_collapse_box_server <- function(id){
   })
 }
 
-## To be copied in the UI
-# mod_vd_collapse_box_ui("vd_collapse_box_1")
-
-## To be copied in the server
-# mod_vd_collapse_box_server("vd_collapse_box_1")

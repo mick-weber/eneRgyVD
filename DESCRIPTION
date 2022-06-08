@@ -25,6 +25,7 @@ Imports:
     scales,
     sf,
     shiny (>= 1.7.1),
+    shinyalert,
     shinycssloaders,
     shinydashboard,
     shinydashboardPlus,

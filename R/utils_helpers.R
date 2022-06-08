@@ -16,10 +16,11 @@ load("./data/elec_cons_communes.rda")
 
 # Generic utils ----
 
-## E-mail address ----
-# Used for contact notificationMenu in ui.R & mod_about_the_app.R
+## E-mail address and links ----
+# Used for mod_about_the_app.R and/or contact notificationMenu in ui.R
 
 mail_address <- "stat.energie@vd.ch"
+link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
 
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library
@@ -58,7 +59,6 @@ conv_table <- expand.grid(from = first_units, to = second_units) %>%
                     1e3, 1, 1/1e3, 1/3.6/1e3, # MWh to...
                     1e6, 1e3, 1, 1/3.6, # GWh to...
                     1/3.6*1e6, 1/3.6*1e3, 1/3.6*1, 1)) # TJ to...
-
 
 ### Available communes ----
 # With more datasets (i.e. elec consumption), checking that the names are OK
@@ -126,28 +126,33 @@ elec_prod_communes <- elec_prod %>%
 
 ## Objects specific to the tabMap  ----
 
+### Common electricity year ----
+# We seek for the year that is common to both electricity and production datasets
+# This is to create the statistic boxes (tabMap) and compare similar years.
+
+last_common_elec_year <- dplyr::intersect(
+  elec_cons_communes %>% dplyr::distinct(annee),
+  elec_prod_communes %>% dplyr::distinct(annee)) %>%
+  dplyr::slice_max(annee) %>%
+  dplyr::pull(annee)
+
+
 ### Fixed statistics for boxes ----
 
-### Retrieve last available year
-# WHEN CONSO AVAILABLE: UPDATE programatically
-# and find the year common to the TWO datasets (!)
-
-vd_last_year <- 2020
-
-#### VD electricity production
+#### VD electricity production for last common year
 
 prod_elec_vd_last_year <- elec_prod_communes %>%
-  dplyr::filter(annee == vd_last_year) %>%
+  dplyr::filter(annee == last_common_elec_year) %>%
   dplyr::summarise(production_totale = sum(production_totale, na.rm = TRUE)) %>%
   dplyr::pull()
 
-#### VD electricity consumption
+#### VD electricity consumption for last common year
 
-cons_elec_vd_last_year <- 4051844000 # from statvd; update dynamically when dataset is here
+cons_elec_vd_last_year <- elec_cons_communes %>%
+  dplyr::filter(annee == last_common_elec_year) %>%
+  dplyr::summarise(consommation_kwh = sum(consommation_kwh, na.rm = TRUE)) %>%
+  dplyr::pull()
 
-#### VD electricity coverage
-
-coverage_elec_vd_last_year <- prod_elec_vd_last_year/cons_elec_vd_last_year
 
 ### Map-specific ----
 # We retrieve the coordinates

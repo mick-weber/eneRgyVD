@@ -5,10 +5,26 @@
   font-size: 20px;
 }
 
+/*Change the shinyalert (sweet-alert) popup text display style*/
+body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
+  text-align: center;}
+
+/*Change dropdownBlock's block width for updates dropdown in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
+   width:450px;
+}
+
+/*Change the dropdownMenu content properties for contact dropdown in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
+  background-color:white;
+  border: 2px solid lightgrey;
+}
+
 /*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
 #unit_converter-unit_dropdown > a{
    width:200px;
 }
+
 /*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/
 #unit_converter-unit_dropdown > ul > li > ul{
   background-color:white;
@@ -18,12 +34,6 @@
 /*Change the contact dropdownMenu width in app_ui.R */
 body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu > a > i{
   width:50px;
-}
-
-/*Change the dropdownMenu content properties for contact dropdown in app_ui.R */
-body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
-  background-color:white;
-  border: 2px solid lightgrey;
 }
 
 /* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
@@ -43,6 +53,11 @@ pre {
 
 /* this targets value_callback textOutput() in the unit converter widget */
 #unit_converter-value_callback {
+  font-size:11px;
+  color:grey;
+}
+
+#unit_converter-duh_comment {
   font-size:11px;
   color:grey;
 }

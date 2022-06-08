@@ -14,12 +14,12 @@ elec_prod <- readxl::read_excel(filepath,
   janitor::clean_names(case = "snake")
 
 
-## IMPORTANT : TWEAK PRODUCTION/INJECTION/AC VARIABLES FOR TEMPORARILY OVERCOME POTENTIAL LEGAL ISSUES WITH DATA
+## RANDOMIZATION STEP [temporary] ----
 # This step should be removed once we know more about what data can be published !
 
 elec_prod  <- elec_prod %>%
-  mutate(injection_totale = runif(n = n(), min = 1e3, max = 1e6),
-         autoconso_totale = runif(n = n(), min = 1e3, max = 1e7)) %>%
+  mutate(injection_totale = runif(n = n(), min = 1e3, max = 1e5),
+         autoconso_totale = runif(n = n(), min = 1e3, max = 1e6)) %>%
   rowwise() %>%
   mutate(production_totale = sum(injection_totale,autoconso_totale))
 

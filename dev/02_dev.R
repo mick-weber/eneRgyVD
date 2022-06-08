@@ -30,9 +30,11 @@ usethis::use_package("shinyWidgets")
 usethis::use_package("shinydashboard")
 usethis::use_package("shinydashboardPlus")
 usethis::use_package("shinycssloaders")
+usethis::use_package("shinyalert")
 usethis::use_package("leaflet")
 usethis::use_package("leaflet.extras")
 usethis::use_package("sf")
+usethis::use_package("htmltools")
 
 ## Add modules ----
 ## Create a module infrastructure in R/

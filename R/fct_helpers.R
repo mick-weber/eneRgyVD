@@ -1,3 +1,32 @@
+#' info_dev_message
+#' shinyalert popup which informs that this is a development version. Called in app_server.R
+#' @importFrom shinyalert shinyalert
+#' @return A shinyalert object when opening the app
+
+info_dev_message <- function(){
+
+  shinyalert::shinyalert(title = "Bienvenue sur eneRgyVD !",
+                         text = paste0("Cette application est en cours de développement.",
+                                       tags$br(),
+                                       "Pour des raisons juridiques, les données communales ont été temporairement
+                                       remplacées par des valeurs aléatoires, celles-ci ne reflètent donc pas la réalité.
+                                       Plus d'informations à propos de cette application en cliquant sur 'À propos`
+                                       dans la barre latérale"),
+                         html = TRUE,
+                         size = "s",
+                         closeOnEsc = TRUE,
+                         closeOnClickOutside = TRUE,
+                         type = "info",
+                         showConfirmButton = TRUE,
+                         showCancelButton = FALSE,
+                         confirmButtonText = "OK",
+                         timer = 0,
+                         animation = "pop"
+  )
+
+}
+
+
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
@@ -161,30 +190,31 @@ create_bar_plotly <- function(data,
 #' @importFrom tidyr pivot_longer
 #' @return an interactive plot
 
-create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune, var_rank_2,
-                                        third_rank,
-                                        var_rank_3_1, var_rank_3_2){
+create_sunburst_plotly <- function(dataSunburst,
+                                   var_year,
+                                   var_values, var_commune, var_rank_2,
+                                   third_rank,var_rank_3_1, var_rank_3_2){
 
-  # filter data so make sure there's only one year, otherwise the plot won't work (3 levels of labels allowed here)
-  data <- data %>% filter(.data[[var_year]] == year)
+  # store the year for the center of sunburst plot label
+  label_year <- max(dataSunburst[[var_year]])
 
   # overall total (layer 0)
-  total_row <- data %>% summarise(values = sum(.data[[var_values]])) %>%
-    mutate(labels = as.character(year),
+  total_row <- dataSunburst %>% summarise(values = sum(.data[[var_values]])) %>%
+    dplyr::mutate(labels = as.character(label_year),
            parents = NA,
            ids = "Total")
 
   # total per rank_1 (commune expected)
-  subtotal_row <- data %>%
-    group_by(labels = .data[[var_commune]]) %>%
+  subtotal_row <- dataSunburst %>%
+    dplyr::group_by(labels = .data[[var_commune]]) %>%
     dplyr::summarise(values = sum(.data[[var_values]], na.rm = T)) %>%
-    mutate(labels = labels,
+    dplyr::mutate(labels = labels,
            parents = "Total",
            ids = paste0("Total - ",labels), .keep = "unused")
 
   # total per rank_2 (either categorie_diren or secteur)
-  subsubtotal_row <- data %>%
-    mutate(labels = .data[[var_rank_2]],
+  subsubtotal_row <- dataSunburst %>%
+    dplyr::mutate(labels = .data[[var_rank_2]],
            values = .data[[var_values]],
            parents = paste0("Total - ", .data[[var_commune]]),
            ids = paste0(parents, " - ", .data[[var_rank_2]]),
@@ -197,26 +227,26 @@ create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune
   if(third_rank == TRUE){
 
     lastsubtotal_row <- subsubtotal_row %>%
-      select(-values, -labels) %>%
-      mutate(Injection = .data[[var_rank_3_1]], Autonconsommation = .data[[var_rank_3_2]], .keep = "unused") %>%
-      pivot_longer(cols = c(Injection, Autonconsommation),
+      dplyr::select(-values, -labels) %>%
+      dplyr::mutate(Injection = .data[[var_rank_3_1]], Autonconsommation = .data[[var_rank_3_2]], .keep = "unused") %>%
+      tidyr::pivot_longer(cols = c(Injection, Autonconsommation),
                    names_to = "labels",
                    values_to = "values") %>%
-      mutate(labels = labels,
+      dplyr::mutate(labels = labels,
              parents = ids,
              ids = paste0(parents, " - ", labels),
              values = values)
     # assemble everything
-    sunburst_df <- bind_rows(list(total_row, subtotal_row, subsubtotal_row, lastsubtotal_row))
+    sunburst_df <- dplyr::bind_rows(list(total_row, subtotal_row, subsubtotal_row, lastsubtotal_row))
 
   }else{
     # assemble everything
-    sunburst_df <- bind_rows(list(total_row, subtotal_row, subsubtotal_row))
+    sunburst_df <- dplyr::bind_rows(list(total_row, subtotal_row, subsubtotal_row))
   }
 
   # We hadd the hover_values for the tooltip in plotly, in MWh for readability
   sunburst_df <- sunburst_df %>%
-    mutate(values_hover = paste0(format(values/1e3, big.mark = "'", digits = 0, scientific = F), " MWh"))
+    dplyr::mutate(values_hover = paste0(format(values/1e3, big.mark = "'", digits = 0, scientific = F), " MWh"))
 
   # plot & enjoy
   plotly::plot_ly(data = sunburst_df,
@@ -227,7 +257,7 @@ create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune
                   hoverinfo = "text", hovertext = sunburst_df$values_hover,
                   type='sunburst', branchvalues = 'total') %>%
     # change to fr
-    config(locale = "fr")
+    plotly::config(locale = "fr")
 
 
 } # end function
@@ -238,7 +268,7 @@ create_sunburst_plotly <- function(data, var_year, year, var_values, var_commune
 #' @param data Specific electricity production, DGE-DIREN data to transform to datatable.
 #' Must follow Pronovo's outputs and utils_helpers.R format.
 #'
-#' @import dplyr DT
+#' @import dplyr
 #' @importFrom stringr str_replace_all str_to_title
 #' @return A DT table with export functionalities
 #'
@@ -291,11 +321,10 @@ create_prod_table_dt <- function(data){
 #' @param data Specific electricity consumption, DGE-DIREN data to transform to datatable.
 #' Must follow specific data format which can be found in /data
 #'
-#' @import dplyr DT
-#' @return
+#' @import dplyr
+#' @return A DT table with export functionalities
 #' @export
-#'
-#' @examples
+
 create_cons_table_dt <- function(data){
 
   data %>%

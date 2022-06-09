@@ -20,6 +20,8 @@ mod_about_the_app_ui <- function(id){
            tags$a (href = link_diren, "direction de l'énergie de l'Etat de Vaud (DGE-DIREN)",
                    target = "_blank"),
            "chargée des données énergétiques."),
+    # breathing
+    br(),
     h4(strong("Pourquoi eneRgyVD ?")),
     tags$p("Le but de cette application est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
@@ -50,7 +52,8 @@ mod_about_the_app_ui <- function(id){
     tabPanel("Confidentialité",
              column(width = 8,
     tags$h4(strong("Protection des données")),
-    tags$p("Attente de confirmation de l'appui juridique DGE-DIREN que les données par communes présentent dans l'application ne sont pas sujettes à restrictions juridiques.")
+    tags$p("Attente de confirmation de l'appui juridique DGE-DIREN que les données par communes présentent dans l'application
+           ne sont pas sujettes à restrictions juridiques. Pour cette raison, des données aléatoires sont temporairement diffusées.")
     )),# End tabPanel "Confidentialité"
 
     shiny::tabPanel("Technologie",

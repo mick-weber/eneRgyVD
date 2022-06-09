@@ -47,7 +47,9 @@ golem::add_module(name = "communes_boxes", with_test = TRUE)
 golem::add_module(name = "unit_converter", with_test = TRUE)
 golem::add_module(name = "download_rmd", with_test = TRUE)
 golem::add_module(name = "about_the_app", with_test = TRUE)
-golem::add_module(name = "elec_charts", with_test = TRUE) # new
+golem::add_module(name = "elec_charts", with_test = TRUE)
+
+golem::add_module(name = "map", with_test = TRUE)
 
 
 ## Add helper functions ----

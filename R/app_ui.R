@@ -74,6 +74,7 @@ app_ui <- function(request) {
                      # Leaflet select map
                      leaflet::leafletOutput("map", height = "500px", width = "800px") %>%
                        shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
+
               ),# End column
 
               # Next to leaflet map

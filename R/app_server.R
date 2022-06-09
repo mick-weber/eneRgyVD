@@ -40,7 +40,7 @@ app_server <- function(input, output, session) {
 
    })
 
-   # subset_prod_data ----
+   # Subset data prod & cons ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
    subset_prod_data <- reactive({
 
@@ -63,6 +63,7 @@ app_server <- function(input, output, session) {
 
    }) # End reactive()
 
+  # Sunburst data prod/cons ----
 
   subset_sunburst_prod_data <- reactive({
 
@@ -80,10 +81,6 @@ app_server <- function(input, output, session) {
     subset_cons_data() %>%
       filter(annee == inputVals$max_selected_cons)
 
-  })
-
-  observe({
-    print(subset_sunburst_cons_data())
   })
 
    # Leaflet select map ----

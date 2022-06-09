@@ -170,6 +170,7 @@ bboxes <- districts_names %>%
   purrr::set_names(districts_names)
 
 ## Add & fill the Canton bbox in our bboxes using the whole districts borders
+
 bboxes$Canton <- sf_districts %>% sf::st_bbox()
 
 

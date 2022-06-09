@@ -56,6 +56,7 @@ app_ui <- function(request) {
         ## SelectInput module ----
         # Renders the sidebar inputs dynamically according to which tab is selected
         mod_inputs_ui("inputs_1")
+
       ),
 
       # Body ----
@@ -70,8 +71,10 @@ app_ui <- function(request) {
                      # Title for select map
                      h4("Sélectionnez des communes sur la carte ou dans la zone latérale"),
                      # Leaflet select map
-                     leaflet::leafletOutput("map", height = "500px", width = "800px") %>%
-                       shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
+                      leaflet::leafletOutput("map", height = "500px", width = "800px") %>%
+                        shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
+
+
 
               ),# End column
 
@@ -100,7 +103,7 @@ app_ui <- function(request) {
           ## tabCons ----
           shinydashboard::tabItem(
             tabName = "tabCons",
-            h2("Consommation d'électricité par commune"),
+            h4("Consommation d'électricité par commune"),
             # breathing
             br(),
             mod_elec_charts_ui("consumption_charts")
@@ -109,7 +112,7 @@ app_ui <- function(request) {
           ## tabProd ----
           shinydashboard::tabItem(
             tabName = "tabProd",
-            h2("Production d'électricité par commune"),
+            h4("Production d'électricité par commune"),
             # breathing
             br(),
 
@@ -121,7 +124,7 @@ app_ui <- function(request) {
           shinydashboard::tabItem(
             tabName = "tabReport",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
-            h2("Générer un rapport énergétique"),
+            h3("Générer un rapport énergétique"),
 
             # Module for producing rmd report based on downloadable_report.Rmd. Renders the button.
             mod_download_rmd_ui("rmd")

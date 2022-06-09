@@ -10,6 +10,9 @@
   background-color:white;
 }
 
+/*Change map width relative to window size, not absolute*/
+/*... unsuccessful for now */
+
 /*Change the shinyalert (sweet-alert) popup text display style*/
 body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
   text-align: center;}

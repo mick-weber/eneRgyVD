@@ -86,7 +86,7 @@ mod_download_rmd_server <- function(id, inputVals){
         )
         on.exit(removeNotification(id), add = TRUE)
 
-        rmarkdown::render(report_path, # utils_helpers.R
+        rmarkdown::render(report_path, # utils_helpers.R !
                           output_file = file,
                           params = params,
                           envir = new.env(parent = globalenv())

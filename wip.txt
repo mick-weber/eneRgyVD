@@ -14,12 +14,6 @@ sunburst commune label doesnt always display ?? try tweaking with plotly options
 		- [# of PV installations (VD / selection)
 		- 
 
-######DOC 
-
-	- APP DIAGRAM 
-
-
-
 ######BRAND 
 
 
@@ -29,5 +23,7 @@ GET IT A NAME goddamnit
 - eneRstats
 - poweRstats
 - eneRboardVD
+
+
 
 

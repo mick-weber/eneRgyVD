@@ -6,8 +6,9 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
 #' @importFrom shinyWidgets prettyRadioButtons
+
+
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -22,11 +23,11 @@ mod_unit_converter_ui <- function(id){
       numericInput(inputId = ns("value"), label = "Saisir une valeur", value = 0),
 
     fluidRow(column(6,
-      prettyRadioButtons(inputId = ns("in_unit"), label = "Convertir de...",
+      shinyWidgets::prettyRadioButtons(inputId = ns("in_unit"), label = "Convertir de...",
                    choices = c("kWh", "MWh", "GWh", "TJ"),
                    inline = FALSE, width = "150px")),
       column(6,
-      prettyRadioButtons(inputId = ns("out_unit"), label = "À...",
+      shinyWidgets::prettyRadioButtons(inputId = ns("out_unit"), label = "À...",
                          choices = c("kWh", "MWh", "GWh", "TJ"),
                          inline = FALSE, width = "50px"))),
 
@@ -74,7 +75,7 @@ mod_unit_converter_server <- function(id){
       factor <- conv_table %>%
         dplyr::filter(from == input$in_unit,
                       to == input$out_unit) %>%
-        pull(factor)
+        dplyr::pull(factor)
 
       # We format the result in this way :  100 kWh = 0.1 MWh
       result <- paste(

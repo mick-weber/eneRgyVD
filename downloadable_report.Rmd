@@ -5,7 +5,7 @@ author: "Unité Données Indicateurs"
 date: "`r Sys.Date()`"
 always_allow_html: yes
 output:
-  bookdown::html_document2:
+  html_document:
     code_folding: hide
     df_print: paged
     number_sections: yes
@@ -13,8 +13,6 @@ output:
     toc_depth: 2
     toc_float: TRUE
     code_download: TRUE
-header-includes: \usepackage{booktabs} \usepackage{longtable} \usepackage{array} \usepackage{multirow}
-  \usepackage[table]{xcolor} \usepackage{wrapfig} \usepackage{float} \floatplacement{figure}{H}
 fontsize: 11pt
 
 #bibliography: references.bib
@@ -27,25 +25,29 @@ params:
 ---
 
 ```{r setup, include=FALSE}
+# this is removed to simplify the rmd. it was in YAML below 'code_download: TRUE'
+# header-includes: \usepackage{booktabs} \usepackage{longtable} \usepackage{array} \usepackage{multirow}
+#   \usepackage[table]{xcolor} \usepackage{wrapfig} \usepackage{float} \floatplacement{figure}{H}
+
 # Basic knitr behavior
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
 
-if(!require(pacman)) {
-  install.packages("pacman")
-}
+# if(!require(pacman)) {
+#   install.packages("pacman")
+# }
 # Basics
-pacman::p_load(knitr, tidyverse, writexl, readxl, bookdown,
-               scales, janitor, extrafont, rstudioapi, glue,
-               viridis, gt, lubridate)
+# pacman::p_load(knitr, tidyverse, writexl, readxl, bookdown,
+#                scales, janitor, extrafont, rstudioapi, glue,
+#                viridis, gt, lubridate)
 
 # Set working directory to source file location
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))       
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))       
 
 # extrafonts
-loadfonts(quiet = T)
+# loadfonts(quiet = T)
 
 # scientific notation disabled
-options(scipen= 999)
+# options(scipen= 999)
 ```
 
 ```{css basic-theme, echo = FALSE}

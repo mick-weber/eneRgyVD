@@ -60,8 +60,6 @@ app_ui <- function(request) {
 
       # Body ----
       shinydashboard::dashboardBody(
-        # Change background of dashboardBody() with html
-        tags$head(tags$style(HTML('.content-wrapper {background-color:white;}'))),
 
         ## tabMap ----
         shinydashboard::tabItems(

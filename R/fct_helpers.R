@@ -70,7 +70,7 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
                          layerId = ~NOM_MIN,
                          label = ~NOM_MIN,
                          group = "regions",
-                         highlightOptions = highlightOptions(
+                         highlightOptions = leaflet::highlightOptions(
                            weight = 5,
                            fillColor = NULL,
                            fillOpacity = NULL,
@@ -86,7 +86,7 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
                          layerId = ~NO_COM_FED, # any random layerId other than NOM_MIN (required)
                          label = ~NOM_MIN,
                          group = ~NOM_MIN,
-                         highlightOptions = highlightOptions(
+                         highlightOptions = leaflet::highlightOptions(
                            weight = 5,
                            fillColor = NULL,
                            fillOpacity = NULL,

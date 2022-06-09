@@ -13,6 +13,8 @@ mod_about_the_app_ui <- function(id){
     shiny::tabsetPanel(
       shiny::tabPanel(title = "Général",
                       column(width = 8,
+    # breathing
+    br(),
     h4(strong("Contact")),
     tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'Unité Données et Indicateurs via ",
            tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
@@ -30,6 +32,8 @@ mod_about_the_app_ui <- function(id){
 
     shiny::tabPanel(title = "Données",
                     column(width = 8,
+    # breathing
+    br(),
     h4(strong("Sources des données")),
     tags$p("Les sources de données suivantes sont utilisées : "),
     tags$ul(
@@ -44,13 +48,16 @@ mod_about_the_app_ui <- function(id){
               p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
                 point de mesure du territoire vaudois a pu être récoltée, le type de client associé à chaque point de mesure a été catégorisé en secteurs,
                 et ce sont ces données agrégées par commune qui alimentent cette application."),
-              p("La mise à jour est faite annuellement, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
-                compteurs aient été relevés durant 2021 pour l'année 2020. Selon la traitement nécessaire, les données peuvent prendre quelques mois à être disponibles dans l'application."))
+              p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
+                compteurs aient puetre relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
+                les données peuvent prendre quelques mois à être disponibles dans l'application."))
     )# End tags$ul
     )),# End tabPanel "Données"
 
     tabPanel("Confidentialité",
              column(width = 8,
+    # breathing
+    br(),
     tags$h4(strong("Protection des données")),
     tags$p("Attente de confirmation de l'appui juridique DGE-DIREN que les données par communes présentent dans l'application
            ne sont pas sujettes à restrictions juridiques. Pour cette raison, des données aléatoires sont temporairement diffusées.")
@@ -58,6 +65,8 @@ mod_about_the_app_ui <- function(id){
 
     shiny::tabPanel("Technologie",
                     column(width = 8,
+    # breathing
+    br(),
     tags$h4(strong("Technologie")),
     tags$p("Cette application est programmée avec le language",
            tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),

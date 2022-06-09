@@ -73,8 +73,8 @@ mod_download_rmd_server <- function(id, inputVals){
       filename = paste0("eneRgyVD_rapport_",Sys.Date(),".html"),
       content = function(file) {
 
-        tempReport <- file.path(tempdir(), "downloadable_report.Rmd")
-        file.copy("downloadable_report.Rmd", tempReport, overwrite = TRUE)
+        # tempReport <- file.path(tempdir(), "downloadable_report.Rmd")
+        # file.copy("downloadable_report.Rmd", tempReport, overwrite = TRUE)
 
 
         params <- list(communes = inputVals$selectedCommunes)
@@ -86,7 +86,7 @@ mod_download_rmd_server <- function(id, inputVals){
         )
         on.exit(removeNotification(id), add = TRUE)
 
-        rmarkdown::render(tempReport,
+        rmarkdown::render(report_path, # utils_helpers.R
                           output_file = file,
                           params = params,
                           envir = new.env(parent = globalenv())

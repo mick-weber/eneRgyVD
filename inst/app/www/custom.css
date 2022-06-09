@@ -5,6 +5,11 @@
   font-size: 20px;
 }
 
+/*Change background of the app to white*/
+.content-wrapper {
+  background-color:white;
+}
+
 /*Change the shinyalert (sweet-alert) popup text display style*/
 body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
   text-align: center;}

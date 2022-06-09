@@ -35,6 +35,8 @@ usethis::use_package("leaflet")
 usethis::use_package("leaflet.extras")
 usethis::use_package("sf")
 usethis::use_package("htmltools")
+usethis::use_package("bookdown") # for rmd rendering
+
 
 ## Add modules ----
 ## Create a module infrastructure in R/

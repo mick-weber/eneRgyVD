@@ -8,6 +8,7 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Imports: 
+    bookdown,
     config (>= 0.3.1),
     dplyr,
     DT,
@@ -17,6 +18,7 @@ Imports:
     leaflet,
     leaflet.extras,
     magrittr,
+    pkgload,
     plotly,
     purrr,
     readr,

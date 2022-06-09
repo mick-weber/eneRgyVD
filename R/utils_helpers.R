@@ -14,6 +14,12 @@ load("./data/elec_prod_doc.rda")
 
 load("./data/elec_cons_communes.rda")
 
+# Store .Rmd in temp dir ----
+# https://mastering-shiny.org/action-transfer.html#downloading-reports
+
+report_path <- tempfile(fileext = ".Rmd")
+file.copy("downloadable_report.Rmd", report_path, overwrite = TRUE)
+
 # Generic utils ----
 
 ## E-mail address and links ----

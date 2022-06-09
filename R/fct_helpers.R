@@ -103,7 +103,7 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
     leaflet.extras::addFullscreenControl(position = "topleft",
                                          pseudoFullscreen = TRUE) %>%
     # Set max limits where the users cannot pan further (approximate VD coords with padding)
-    leaflet::setMaxBounds(lng1 = 6.06+0.9, lat1 = 46.18+0.9, lng2 = 7.24-0.9, lat2 = 46.98-0.9)
+    leaflet::setMaxBounds(lng1 = 6.06, lat1 = 46.18, lng2 = 7.24, lat2 = 46.98)
 
 
 }

@@ -15,7 +15,7 @@ app_ui <- function(request) {
 
     # Your application UI logic
     shinydashboardPlus::dashboardPage(
-      skin = "green",
+      skin = "green",  # base theme, overriden in custom.css for header/logo
 
       # Header ----
       shinydashboardPlus::dashboardHeader(title = "eneRgy VD (v0.1)",
@@ -71,7 +71,7 @@ app_ui <- function(request) {
                      # Title for select map
                      h4("Sélectionnez des communes sur la carte ou dans la zone latérale"),
                      # Leaflet select map
-                      leaflet::leafletOutput("map", height = "500px", width = "800px") %>%
+                      leaflet::leafletOutput("map") %>% # height defined in custom.css #map
                         shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
 
 

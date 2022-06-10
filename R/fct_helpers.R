@@ -38,10 +38,12 @@ info_dev_message <- function(){
 create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 
   leaflet::leaflet(options = leafletOptions(
-    # set initial zoom (found empirically)
-    minZoom = 9,
-    # remove leaflet url bottom of the map
-    attributionControl = F)) %>%
+    zoomControl = TRUE,
+    zoomSnap = .1, # improve zoom increments
+    zoomDelta = 1,
+    minZoom = 7.9, # lock the back zoom range
+    attributionControl = F # remove leaflet url
+    )) %>%
     # Couche de base des districts si un district est sélectionné
     leaflet::addPolygons(data = sf_districts,
                          fillColor = NULL,
@@ -98,19 +100,16 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
     # leaflet::setMaxBounds(lng1 = 6.047974, lat1 = 46.126556, lng2 = 7.135620, lat2 = 46.949325) %>%
     # Set the background to white
     leaflet.extras::setMapWidgetStyle(list(background= "white")) %>%
-    # Add home button to zoom back to original view
-    leaflet.extras::addResetMapButton() %>%
-    leaflet.extras::addFullscreenControl(position = "topleft",
-                                         pseudoFullscreen = TRUE) %>%
-    # Set max limits where the users cannot pan further (approximate VD coords with padding)
-    leaflet::setMaxBounds(lng1 = 6.06, lat1 = 46.18, lng2 = 7.24, lat2 = 46.98)
-
+    # Add reset button to zoom back to original view
+    #leaflet.extras::addResetMapButton() %>%
+    # fitbounds with coordinates. ! tweak along with zoomSnap/zoomDelta
+    leaflet::setView(lng = 6.617, lat = 46.63, zoom = 7.8) %>% # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
+    # Set max limits to avoid panning away from the map
+    leaflet::setMaxBounds(lng1 = 5.4, lat1 = 45.98, lng2 = 7.7, lat2 = 47.4)
 
 }
 
-# create_select_leaflet(sf_districts = sf_districts,
-#                       sf_lacs = sf_lacs,
-#                       sf_communes = sf_communes)
+# create_select_leaflet(sf_districts, sf_lacs, sf_communes)
 
 #' create_bar_plotly
 #'
@@ -158,15 +157,15 @@ create_bar_plotly <- function(data,
     ggplot2::theme(legend.position = "top",
                    # change the labels of facet wrap. main_color defined in utils_helpers.R
                    strip.background = element_rect(
-                     color="black", fill=main_color, size=1.5, linetype="solid"
+                     color="black", fill=main_color, size=1, linetype="solid"
                    ),
                    strip.text = element_text(
-                     # if the toggle free_y is TRUE, reduce text size to 8, else 11
-                     size = ifelse(free_y(), 9, 12), color = "white"),
+                     # if the toggle free_y is TRUE, reduce text size to 9, else 11
+                     size = ifelse(free_y(), 10, 10), color = "white"),
                    legend.text = element_text(size = 12),
                    legend.title = element_text(size = 12),
                    legend.key.size = unit(2, "cm"),
-                   panel.spacing.x = unit(0, "line"))+
+                   panel.spacing.x = unit(1, "line"))+
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
 

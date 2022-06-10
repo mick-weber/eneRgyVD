@@ -1,6 +1,6 @@
 /*Change font and size in dashboardHeader title*/
 .main-header .logo {
-  font-family: "Aharoni";
+  font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 20px;
 }
@@ -10,8 +10,31 @@
   background-color:white;
 }
 
-/*Change map width relative to window size, not absolute*/
-/*... unsuccessful for now */
+/*Increase sidebar text size +20%*/
+#sidebarItemExpanded > ul > li{
+  font-size:1.2em;
+}
+
+/*Change skin='green' header bar color, defined in utils_helpers.R as main_color*/
+        /* logo */
+        .skin-green .main-header .logo {
+                              background-color: #3A862D;
+                              }
+
+        /* logo when hovered */
+        .skin-green .main-header .logo:hover {
+                              background-color: #3A862D;
+                              }
+
+        /* navbar (rest of the header) */
+        .skin-green .main-header .navbar {
+                              background-color: #3A862D;
+                              }
+        /* sidebar left border color on selected item */
+        .skin-green .sidebar-menu>li.active>a {
+          border-left-color: #3A862D;
+                              }
+
 
 /*Change the shinyalert (sweet-alert) popup text display style*/
 body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
@@ -25,7 +48,7 @@ body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifica
 /*Change the dropdownMenu content properties for contact dropdown in app_ui.R */
 body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
   background-color:white;
-  border: 2px solid lightgrey;
+  border: 1px solid lightgrey;
 }
 
 /*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
@@ -36,12 +59,27 @@ body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifica
 /*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/
 #unit_converter-unit_dropdown > ul > li > ul{
   background-color:white;
-  border: 2px solid lightgrey;
+  border: 1px solid lightgrey;
 }
 
 /*Change the contact dropdownMenu width in app_ui.R */
 body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu > a > i{
   width:50px;
+}
+
+/*display map indication centered insted of left aligned*/
+#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-8 > h4{
+  text-align: center;
+}
+
+/*Change map height to full height (100vh) minus header height (50px)+padding(15px)+title(20px)*/
+#map {
+    height: calc(100vh - 150px) !important;
+}
+
+/*Remove padding of column holding the stats boxes in tabMap*/
+#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-4{
+  padding-left:0px;
 }
 
 /* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
@@ -69,6 +107,8 @@ pre {
   font-size:11px;
   color:grey;
 }
+
+
 
 /* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
 .shiny-notification {

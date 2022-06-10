@@ -45,7 +45,8 @@ mod_collapse_stats_box_server <- function(id,
               numberColor = "green", marginBottom = TRUE, # for testing
               number = year,
               header = paste0(format(production_value/1e6, big.mark = "'", digits = 1), " GWh"),
-              text = "Production d'électricité"
+              text = htmltools::HTML(paste0("Production", tags$br(), "d'électricité")),
+              rightBorder = TRUE
             )# End descriptionBlock
           ),# End column
           column(
@@ -54,7 +55,8 @@ mod_collapse_stats_box_server <- function(id,
               numberColor = "green",
               number = year,
               header = paste0(format(consumption_value/1e6, big.mark = "'", digits = 1), " GWh"),
-              text = "Consommation d'électricité"
+              text = htmltools::HTML(paste0("Consommation", tags$br(), "d'électricité")),
+              rightBorder = FALSE
             )# End descriptionBlock
           )# End column
         ),# End 1st fluidrow
@@ -64,7 +66,8 @@ mod_collapse_stats_box_server <- function(id,
           numberColor = "green",
           number = year,
           header = scales::label_percent(accuracy = .1)(production_value/consumption_value),
-          text = "Taux de couverture annuel"
+          text = htmltools::HTML(paste0("Taux de couverture", tags$br(), "électrique annuel")),
+          rightBorder = FALSE
         )
       )
 

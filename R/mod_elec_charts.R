@@ -69,7 +69,7 @@ mod_elec_charts_ui <- function(id){
                       # br(),
 
                       # Conditional plotly (bar/sunburst) ----
-                      plotly::plotlyOutput(ns("chart_1"), width = "1150px", height = "auto") %>%
+                      plotly::plotlyOutput(ns("chart_1")) %>% #  width = "1150px", height = "auto"
                         shinycssloaders::withSpinner(color= main_color), # color defined in utils_helpers.R
 
 

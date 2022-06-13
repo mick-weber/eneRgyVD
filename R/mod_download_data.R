@@ -29,7 +29,7 @@ mod_download_data_server <- function(id, data, dl_prefix){
     output$download_csv <- downloadHandler(
       filename = paste0(dl_prefix, Sys.Date(), ".csv"),
       content = function(file){
-        readr::write_delim(data, file = file, delim = ";")
+        readr::write_excel_csv2(data, file = file) # https://www.rdocumentation.org/packages/readr/versions/1.3.0/topics/write_delim
       }
     )
     # XLSX handler

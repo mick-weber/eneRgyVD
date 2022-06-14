@@ -7,25 +7,22 @@ sunburst commune label doesnt always display ?? try tweaking with plotly options
 
 ######## CODING 
 
-- modularize the map widget?? am I a better programmer today than 6 weeks ago ? 
 
 - tabMap : ideas for valueboxes ?? 
 
 		- [# of PV installations (VD / selection)
-		- 
+
+tabProd : ideas for other vis ?
+		- density curve of pv installed power
 
 
 
 - Disallow data download if no commune is selected with a modal ! 
 
 - Development ideas : Add choropleths maps tab !!!! :D
-* kWh[prod] / kwh[pot]   --- check here for data availability https://www.vese.ch/fr/par-rapport-aux-donnees-pvpower-ch/
-* kWh[cons] / capita
-* etc.
-
-
-######BRAND 
-
+	- kWh[prod] / kwh[pot]   --- check here for data availability https://www.vese.ch/fr/par-rapport-aux-donnees-pvpower-ch/
+	- kWh[cons] / capita
+	- etc.
 
 GET IT A NAME goddamnit
 

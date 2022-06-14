@@ -25,6 +25,7 @@ mod_download_data_server <- function(id, data, dl_prefix){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+
     # CSV handler
     output$download_csv <- downloadHandler(
       filename = paste0(dl_prefix, Sys.Date(), ".csv"),

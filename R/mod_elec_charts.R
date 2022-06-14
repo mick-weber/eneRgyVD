@@ -80,16 +80,7 @@ mod_elec_charts_ui <- function(id){
                              # breathing
                              br(),
                              # Download module
-                             #mod_download_data_ui(ns("table_download")),
-
-                             # test unmodule
-                             h4("Télécharger les données"),
-                             shiny::downloadButton(outputId = ns("download_csv"),
-                                                   label = "CSV", class = "dlButton"),
-                             shiny::downloadButton(outputId = ns("download_excel"),
-                                                   label = "XLSX", class = "dlButton" ), # class defined in custom.css
-
-                             # / test unmodule
+                             mod_download_data_ui(ns("table_download")),
 
                              # breathing
                              br(),
@@ -135,9 +126,8 @@ mod_elec_charts_server <- function(id,
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
+
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
-
-
 
     # Render plot selectively based on radioButton above
     observe({
@@ -180,31 +170,12 @@ mod_elec_charts_server <- function(id,
       }# End else if
     })# End observe
 
-    # mod_download_data_server("table_download",
-    #                          data = subsetData(),
-    #                          dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
+    # store the data in a reactive (not sure why, but otherwise this won't work)
+    download_data <- reactive({ subsetData() })
 
-
-    # test unmodule
-
-    # CSV handler
-    output$download_csv <- downloadHandler(
-      filename = paste0(dl_prefix, Sys.Date(), ".csv"),
-      content = function(file){
-        readr::write_excel_csv2(subsetData(), file = file) # https://www.rdocumentation.org/packages/readr/versions/1.3.0/topics/write_delim
-      }
-    )
-    # XLSX handler
-    output$download_excel <- downloadHandler(
-      filename = paste0(dl_prefix, Sys.Date(), ".xlsx"),
-      content = function(file){
-        writexl::write_xlsx(subsetData(), path = file)
-      }
-    )
-
-    # / test unmodule
-
-
+    mod_download_data_server("table_download",
+                             data = download_data,
+                             dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
 
     output$table_1 <- DT::renderDataTable({
 

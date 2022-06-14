@@ -14,6 +14,16 @@ sunburst commune label doesnt always display ?? try tweaking with plotly options
 		- [# of PV installations (VD / selection)
 		- 
 
+
+
+- Disallow data download if no commune is selected with a modal ! 
+
+- Development ideas : Add choropleths maps tab !!!! :D
+* kWh[prod] / kwh[pot]   --- check here for data availability https://www.vese.ch/fr/par-rapport-aux-donnees-pvpower-ch/
+* kWh[cons] / capita
+* etc.
+
+
 ######BRAND 
 
 

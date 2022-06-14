@@ -75,7 +75,7 @@ mod_about_the_app_ui <- function(id){
            tags$a(href = "https://github.com/ThinkR-open/golem", "librairie golem", target = "_blank"),
            "et le contenu des visualisations par de multiples librairies issues notamment du",
            tags$a(href = "https://www.tidyverse.org/", "tidyverse.", target = "_blank"),
-           "De plus amples informations peuvent être adressées via l'e-mail de contact",
+           "De plus amples demandes d'informations peuvent être adressées directement à l'e-mail de contact",
            tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"),
            ".")
 

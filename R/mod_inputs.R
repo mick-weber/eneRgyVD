@@ -14,18 +14,18 @@ mod_inputs_ui <- function(id){
 
     # selectizeInput() for municipalities ----
     shiny::selectizeInput(inputId = ns("selected_communes"),
-                   label = "Commune(s)",
+                   label = "Sélection par commune(s)",
                    choices = communes_names,
                    selected = NULL,
                    multiple = TRUE,
-                   options = list(placeholder = "Sélectionner une ou plusieurs communes")),
+                   options = list(placeholder = "Plusieurs communes acceptées")),
 
     # selectizeInput() for district zoom ----
     # IF tabMap : Select input for zooming on the districts (WIP feature)
     shiny::conditionalPanel(
        condition="input.sidebarMenu == 'tabMap'",
     shiny::selectizeInput(inputId = ns("selected_district"),
-                   label = "Zoom par district",
+                   label = "Zoom sur un district",
                    choices = districts_names,
                    selected = 0,
                    multiple = FALSE)),

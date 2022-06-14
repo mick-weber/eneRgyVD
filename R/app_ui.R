@@ -46,7 +46,7 @@ app_ui <- function(request) {
       shinydashboard::dashboardSidebar(
         width = 300,
         shinydashboard::sidebarMenu(id = "sidebarMenu",
-                                    shinydashboard::menuItem("Sélection des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
+                                    shinydashboard::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     shinydashboard::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),

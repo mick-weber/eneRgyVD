@@ -51,6 +51,7 @@ mod_elec_charts_ui <- function(id){
                                            label_on = "Graphique empilé !",
                                            label_off = "Graphique empilé ?",
                                            bigger = T,
+                                           value = TRUE, # defaults to stacked
                                            shape = "curve",
                                            animation = "pulse")),
 
@@ -100,6 +101,7 @@ mod_elec_charts_server <- function(id,
                                    inputVals,
                                    subsetData, # filtered data for communes and selected years
                                    sunburstData,
+                                   legend_title, # for legend of barplot (either secteur/technologies)
                                    target_year,
                                    var_year,
                                    var_commune,
@@ -147,7 +149,8 @@ mod_elec_charts_server <- function(id,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
                             stacked = input$stacked_status, # if T -> 'stack', F -> 'dodge'
-                            free_y = reactive(input$toggle_status)) # links to ifelse in facet_wrap(scales = ...)
+                            free_y = reactive(input$toggle_status),
+                            legend_title = legend_title) # links to ifelse in facet_wrap(scales = ...)
         })# End renderPlotly
       }# End if
       else if(input$tab_plot_type == "sunburst"){

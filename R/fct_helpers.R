@@ -128,8 +128,9 @@ create_bar_plotly <- function(data,
                               var_rank_2, # one of secteur, categorie_diren...
                               var_values, # one of consommation_kwh, production_totale...
                               color_palette, # 'colors_categories',
-                              stacked = FALSE,
-                              free_y = FALSE){
+                              stacked = TRUE, # stacked by default
+                              free_y = FALSE,
+                              legend_title){
 
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
@@ -146,7 +147,7 @@ create_bar_plotly <- function(data,
                                          true = "stack",
                                          false = "dodge"))+
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
-    ggplot2::scale_fill_manual(name = "Technologies",
+    ggplot2::scale_fill_manual(name = legend_title,
                                values = color_palette)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = "MWh")+
     ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),
@@ -165,7 +166,9 @@ create_bar_plotly <- function(data,
                    legend.text = element_text(size = 12),
                    legend.title = element_text(size = 12),
                    legend.key.size = unit(2, "cm"),
-                   panel.spacing.x = unit(1, "line"))+
+                   panel.spacing.x = unit(1, "line"),
+                   panel.spacing.y = unit(1, "line"),
+                   axis.text.x = element_text(size = 12))+
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
 

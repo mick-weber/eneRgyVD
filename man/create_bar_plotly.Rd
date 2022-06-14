@@ -11,8 +11,9 @@ create_bar_plotly(
   var_rank_2,
   var_values,
   color_palette,
-  stacked = FALSE,
-  free_y = FALSE
+  stacked = TRUE,
+  free_y = FALSE,
+  legend_title
 )
 }
 \arguments{

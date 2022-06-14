@@ -172,6 +172,7 @@ app_server <- function(input, output, session) {
                           subsetData = subset_cons_data,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_cons_data,
+                          legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "secteur",
@@ -190,6 +191,7 @@ app_server <- function(input, output, session) {
                           subsetData = subset_prod_data,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_prod_data,
+                          legend_title = "Technologies",
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "categorie_diren",
@@ -205,7 +207,7 @@ app_server <- function(input, output, session) {
    ## tabMap: boxes for statistics ----
    # Module for rendering the vd collapse box
    mod_collapse_stats_box_server("vd_box",
-                                 title = "Vaud en quelques chiffres",
+                                 title = "Canton de Vaud",
                                  production_value = prod_elec_vd_last_year, # utils_helpers.R
                                  consumption_value = cons_elec_vd_last_year, # utils_helpers.R
                                  year = last_common_elec_year) # utils_helpers.R
@@ -216,7 +218,7 @@ app_server <- function(input, output, session) {
      req(inputVals$selectedCommunes)
 
      mod_collapse_stats_box_server("communes_box",
-                                   title = "Votre sélection en quelques chiffres",
+                                   title = "Commune(s) sélectionnée(s)",
                                    production_value = inputVals$common_year_elec_prod, # mod_inputs.R
                                    consumption_value = inputVals$common_year_elec_cons, # mod_inputs.R
                                    year = last_common_elec_year) # utils_helpers.R

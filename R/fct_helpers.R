@@ -26,7 +26,6 @@ info_dev_message <- function(){
 
 }
 
-
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
@@ -135,19 +134,18 @@ create_bar_plotly <- function(data,
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data %>%
-    ggplot2::ggplot()+
-    ggplot2::geom_col(aes(x = as.factor(.data[[var_year]]),
-                          y = .data[[var_values]]/1e3,
-                          fill = .data[[var_rank_2]],
-                          # Text is reused in ggplotly(tooltip = 'text')
-                          text = paste0(.data[[var_rank_2]], "\n",
-                                        format(round(.data[[var_values]]/1e3, digits = 0), big.mark = "'"),
-                                        " MWh en ", .data[[var_year]])),
-                      position = if_else(condition = stacked, # arg
+    ggplot2::ggplot(aes(x = as.factor(.data[[var_year]]),
+                        y = .data[[var_values]]/1e3,
+                        fill = .data[[var_rank_2]],
+                        # Text is reused in ggplotly(tooltip = 'text')
+                        text = paste0(.data[[var_rank_2]], "\n",
+                                      format(round(.data[[var_values]]/1e3, digits = 0), big.mark = "'"),
+                                      " MWh en ", .data[[var_year]])))+
+    ggplot2::geom_col(position = if_else(condition = stacked, # arg
                                          true = "stack",
                                          false = "dodge"))+
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
-    ggplot2::scale_fill_manual(name = legend_title,
+    ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = "MWh")+
     ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),

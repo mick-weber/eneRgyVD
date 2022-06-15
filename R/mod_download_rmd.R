@@ -22,7 +22,7 @@ mod_download_rmd_ui <- function(id){
     tags$ul(
       tags$li("Des chiffres-clés (élaborer...)"),
       tags$li("Les données & graphiques relatifs à la production d'électricité."),
-      tags$li("Les données & graphiques relatifs relatifs à la consommation d'électricité."),
+      tags$li("Les données & graphiques relatifs à la consommation d'électricité."),
     ),
     br(),
 

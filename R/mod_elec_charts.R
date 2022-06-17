@@ -33,8 +33,8 @@ mod_elec_charts_ui <- function(id){
 
                                          shinyWidgets::prettyToggle(
                                            inputId = ns("toggle_status"),
-                                           label_on = "Axe des ordonnées libéré !",
-                                           label_off = "Libérer l'axe des ordonnées ?",
+                                           label_on = "Axe des ordonnées libéré !", status_on = "success",
+                                           label_off = "Libérer l'axe des ordonnées ?", status_off = "info",
                                            bigger = T,
                                            shape = "curve",
                                            animation = "pulse")
@@ -48,14 +48,14 @@ mod_elec_charts_ui <- function(id){
 
                                          shinyWidgets::prettyToggle(
                                            inputId = ns("stacked_status"),
-                                           label_on = "Graphique empilé !",
-                                           label_off = "Graphique empilé ?",
+                                           label_on = "Barres empilées", status_on = "success",
+                                           label_off = "Barres adjacentes", status_off = "info",
                                            bigger = T,
                                            value = TRUE, # defaults to stacked
                                            shape = "curve",
                                            animation = "pulse")),
 
-                                       # simple text paragraph to inform how the sunburst year works
+                                       # Simple text to inform how the sunburst year works, if selected
                                        shiny::conditionalPanel(
                                          condition = "input.tab_plot_type == 'sunburst'",
                                          ns = ns,
@@ -70,8 +70,9 @@ mod_elec_charts_ui <- function(id){
                       # br(),
 
                       # Conditional plotly (bar/sunburst) ----
-                      plotly::plotlyOutput(ns("chart_1")) %>% #  width = "1150px", height = "auto"
-                        shinycssloaders::withSpinner(color= main_color), # color defined in utils_helpers.R
+
+                      plotly::plotlyOutput(ns("chart_1")) %>%
+                        shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
 
 
       ),# End tabPanel 'Graphique'
@@ -100,19 +101,19 @@ mod_elec_charts_ui <- function(id){
 mod_elec_charts_server <- function(id,
                                    inputVals,
                                    subsetData, # filtered data for communes and selected years
-                                   sunburstData,
+                                   sunburstData, # specific data for sunburst
                                    legend_title, # for legend of barplot (either secteur/technologies)
-                                   target_year,
-                                   var_year,
-                                   var_commune,
-                                   var_rank_2,
-                                   var_values,
-                                   color_palette,
-                                   third_rank,
-                                   var_rank_3_1,
-                                   var_rank_3_2,
-                                   fct_table_dt_type,
-                                   dl_prefix){
+                                   target_year, # which current year for the sunburst
+                                   var_year, # 'annee'
+                                   var_commune, # 'commune'
+                                   var_rank_2, # categorical var ('secteur'/'categorie_diren', ...)
+                                   var_values, # prod/consumption kwh
+                                   color_palette, # utils_helpers.R
+                                   third_rank, # boolean
+                                   var_rank_3_1, # var 1/2 to pivot for the last level of sunburst, if third_rank
+                                   var_rank_3_2, # var 2/2
+                                   fct_table_dt_type, # table function to pass (data specific)
+                                   dl_prefix){ # when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -173,17 +174,19 @@ mod_elec_charts_server <- function(id,
       }# End else if
     })# End observe
 
-    # store the data in a reactive (not sure why, but otherwise this won't work)
-    download_data <- reactive({ subsetData() })
-
-    mod_download_data_server("table_download",
-                             data = download_data,
-                             dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
-
+    # Renders the DT table
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData())
 
     })# End renderDT
+
+    # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
+    download_data <- reactive({ subsetData() })
+
+    # Module to download DT table data
+    mod_download_data_server("table_download",
+                             data = download_data,
+                             dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
   }) # End ModuleServer
 } # End server

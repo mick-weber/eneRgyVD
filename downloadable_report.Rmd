@@ -20,7 +20,8 @@ fontsize: 11pt
 #paramètres pour l'export Shiny
 params:
   communes: NULL
-  annees: NULL
+  prod_data: NULL
+  cons_data: NULL
   
 ---
 
@@ -48,6 +49,12 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = '
 
 # scientific notation disabled
 # options(scipen= 999)
+
+
+# Source the app file that contains plotting functions.
+#  Not sure this will work without locating it in temp 
+
+
 ```
 
 ```{css basic-theme, echo = FALSE}
@@ -79,13 +86,26 @@ Merci de votre compréhension.
 
 # Rapport énergétique pour `r params$communes`
 
-## Production d'électricité
-
-*Insérer les graphiques etc. ici* 
-
 ## Consommation d'électricité
 
-*Insérer les graphiques etc. ici*
+```{r}
+params$cons_data %>% 
+    eneRgyVD::create_cons_table_dt()
+```
+
+
+
+## Production d'électricité
+
+```{r}
+
+params$prod_data %>% 
+    eneRgyVD::create_prod_table_dt()
+
+```
+
+
+
 
 # Contact
 

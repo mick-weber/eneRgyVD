@@ -50,6 +50,7 @@ mod_download_rmd_server <- function(id, inputVals){
       validate(need(inputVals$selectedCommunes,
                "Sélectionner au moins une commune pour générer un rapport."))
 
+        # Nicely format the selected commune(s)
         tags$strong(knitr::combine_words(words = inputVals$selectedCommunes,
                              sep = ", ",
                              and = " et ",
@@ -69,6 +70,7 @@ mod_download_rmd_server <- function(id, inputVals){
       )
     })
 
+
     output$report <- downloadHandler(
       filename = paste0("eneRgyVD_rapport_",Sys.Date(),".html"),
       content = function(file) {
@@ -77,7 +79,9 @@ mod_download_rmd_server <- function(id, inputVals){
         # file.copy("downloadable_report.Rmd", tempReport, overwrite = TRUE)
 
 
-        params <- list(communes = inputVals$selectedCommunes)
+        params <- list(communes = inputVals$selectedCommunes,
+                       prod_data = inputVals$prod_dataset,
+                       cons_data = inputVals$cons_dataset)
 
         id <- showNotification(
           "Rendu du rapport html. Cette opération peut prendre quelques secondes.",

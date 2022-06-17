@@ -115,7 +115,6 @@ app_ui <- function(request) {
             h4("Production d'électricité par commune"),
             # breathing
             br(),
-
             # Module for producing prod charts
             mod_elec_charts_ui("production_charts")
 

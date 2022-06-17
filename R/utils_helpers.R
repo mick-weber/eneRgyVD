@@ -19,6 +19,9 @@ load("./data/elec_cons_communes.rda")
 
 report_path <- tempfile(fileext = ".Rmd")
 file.copy("downloadable_report.Rmd", report_path, overwrite = TRUE)
+# fct_path <- tempfile(fileext = ".R")
+# file.copy("./R/fct_helpers.R", fct_path, overwrite = TRUE)
+
 
 # Generic utils ----
 

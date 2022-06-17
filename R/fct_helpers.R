@@ -120,6 +120,7 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 #' @import ggplot2
 #' @importFrom plotly ggplotly layout config
 #' @return an interactive plotly object
+#' @export
 
 create_bar_plotly <- function(data,
                               var_year,
@@ -159,13 +160,12 @@ create_bar_plotly <- function(data,
                      color="black", fill=main_color, size=1, linetype="solid"
                    ),
                    strip.text = element_text(
-                     # if the toggle free_y is TRUE, reduce text size to 9, else 11
-                     size = ifelse(free_y(), 10, 10), color = "white"),
+                     size =10, color = "white"),
                    legend.text = element_text(size = 12),
                    legend.title = element_text(size = 12),
                    legend.key.size = unit(2, "cm"),
-                   panel.spacing.x = unit(1, "line"),
-                   panel.spacing.y = unit(1, "line"),
+                   panel.spacing.x = unit(.1, "cm"),
+                   panel.spacing.y = unit(1, "cm"),
                    axis.text.x = element_text(size = 12))+
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
@@ -255,7 +255,9 @@ create_sunburst_plotly <- function(data_sunburst,
                   parents = ~parents,
                   values= ~values,
                   hoverinfo = "text", hovertext = sunburst_df$values_hover,
-                  type='sunburst', branchvalues = 'total') %>%
+                  type='sunburst', branchvalues = 'total',
+                  width = "500px" # important because otherwise it's too much on the right
+                  ) %>%
     # change to fr
     plotly::config(locale = "fr")
 
@@ -271,7 +273,7 @@ create_sunburst_plotly <- function(data_sunburst,
 #' @import dplyr
 #' @importFrom stringr str_replace_all str_to_title
 #' @return A DT table with export functionalities
-#'
+#' @export
 
 create_prod_table_dt <- function(data){
 
@@ -361,4 +363,3 @@ create_cons_table_dt <- function(data){
     rownames = FALSE               ## don't show row numbers/names
     ) # End DT
 }
-

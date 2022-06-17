@@ -42,9 +42,3 @@ mod_download_data_server <- function(id, data, dl_prefix){
       )
 })
 }
-
-## To be copied in the UI
-# mod_download_data_ui("download_data_1")
-
-## To be copied in the server
-# mod_download_data_server("download_data_1")

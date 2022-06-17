@@ -1,9 +1,8 @@
 
-sunburst commune label doesnt always display ?? try tweaking with plotly options
 
+# Mise à jour données Pronovo Bévieux quand OK pour données communales
 
-
-#Mise à jour données Pronovo Bévieux
+# populate the report with basic graphs
 
 ######## CODING 
 
@@ -19,18 +18,8 @@ tabProd : ideas for other vis ?
 
 - Disallow data download if no commune is selected with a modal ! 
 
-- Development ideas : Add choropleths maps tab !!!! :D
-	- kWh[prod] / kwh[pot]   --- check here for data availability https://www.vese.ch/fr/par-rapport-aux-donnees-pvpower-ch/
-	- kWh[cons] / capita
-	- etc.
+- Add cantonal data selection ?? [in data preparation we could add a 'canton' row, and in the communes widget we pass it as first position in factors ?]
 
-GET IT A NAME goddamnit
-
-- eneRgyVD
-- eneRstats
-- poweRstats
-- eneRboardVD
-
-
+- Development ideas : Add PV potential data + choropleths
 
 

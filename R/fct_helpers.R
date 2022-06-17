@@ -152,7 +152,7 @@ create_bar_plotly <- function(data,
     ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),
                         ncol = 2,
                         # if the toggle linked to the free_y argument is TRUE, then free y axis
-                        scales = ifelse(free_y(), "free_y", "fixed"))+
+                        scales = ifelse(free_y, "free_y", "fixed"))+
     ggplot2::theme_bw()+
     ggplot2::theme(legend.position = "top",
                    # change the labels of facet wrap. main_color defined in utils_helpers.R
@@ -363,3 +363,30 @@ create_cons_table_dt <- function(data){
     rownames = FALSE               ## don't show row numbers/names
     ) # End DT
 }
+
+
+#' return_palette_prod_elec
+#' Returns the color palette for categories in the electricity production dataset
+#' @return a vector with categorical data and hex color strings
+#' @export
+
+return_palette_prod_elec <- function(){
+
+  return(colors_categories) # in utils_helpers.R
+
+}
+
+#' return_palette_cons_elec
+#' Returns the color palette for sectors in the electricity consumption dataset
+#' @return a vector with categorical data and hex color strings
+#' @export
+
+return_palette_cons_elec <- function(){
+
+  return(colors_sectors) # in utils_helpers.R
+
+}
+
+
+
+

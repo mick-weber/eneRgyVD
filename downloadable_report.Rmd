@@ -70,7 +70,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = '
 }
 
 h2,h3,h4,h5,h6{
-  font-size: 12pt;
+  font-size: 13pt;
   color:midnightblue;
 }
 
@@ -84,18 +84,37 @@ Ce rapport a été généré depuis l'application eneRgyVD.
 Cette fonctionnalité n'est **pas encore complètement développée** et le sera dans les prochaines semaines.
 Merci de votre compréhension.
 
-# Rapport énergétique pour `r params$communes`
+# Rapport énergétique pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`
 
 ## Consommation d'électricité
 
+**Tableau de données**
+
 ```{r}
-params$cons_data %>% 
-    eneRgyVD::create_cons_table_dt()
+params$cons_data %>%
+  eneRgyVD::create_cons_table_dt()
 ```
 
+**Graphique**
 
+```{r}
+
+params$cons_data %>%
+  dplyr::group_split(commune) %>%
+  purrr::map(~ eneRgyVD::create_bar_plotly(.x, var_year = "annee",
+                                var_commune = "commune",
+                                var_rank_2 = "secteur",
+                                var_values = "consommation_kwh",
+                                color_palette = eneRgyVD::return_palette_cons_elec(),
+                                stacked = T,
+                                free_y = F,
+                                legend_title = "Secteurs"))
+
+```
 
 ## Production d'électricité
+
+**Tableau de données**
 
 ```{r}
 
@@ -104,8 +123,21 @@ params$prod_data %>%
 
 ```
 
+**Graphique**
 
+```{r}
 
+params$prod_data %>%
+    eneRgyVD::create_bar_plotly(var_year = "annee",
+                                var_commune = "commune",
+                                var_rank_2 = "categorie_diren",
+                                var_values = "production_totale",
+                                color_palette = eneRgyVD::return_palette_prod_elec(),
+                                stacked = T,
+                                free_y = F,
+                                legend_title = "Technologies")
+
+```
 
 # Contact
 

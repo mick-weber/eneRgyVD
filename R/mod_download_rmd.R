@@ -83,12 +83,25 @@ mod_download_rmd_server <- function(id, inputVals){
                        prod_data = inputVals$prod_dataset,
                        cons_data = inputVals$cons_dataset)
 
-        id <- showNotification(
-          "Rendu du rapport html. Cette opération peut prendre quelques secondes.",
-          duration = NULL,
-          closeButton = FALSE
-        )
+        # id <- showNotification(
+        #   "Rendu du rapport html. Cette opération peut prendre quelques secondes...",
+        #   duration = NULL,
+        #   closeButton = FALSE
+        # )
+        # on.exit(removeNotification(id), add = TRUE)
+
+        notify <- function(msg, id = NULL) {
+          showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
+        }
+
+        id <- notify("Importation des données...")
         on.exit(removeNotification(id), add = TRUE)
+        Sys.sleep(1)
+        notify("Arborescence des commutativités...", id = id)
+        Sys.sleep(1.5)
+        notify("Orthogonalisation des matrices...", id = id)
+        Sys.sleep(1.5)
+        notify("Élevage de moutons basques...", id = id)
 
         rmarkdown::render(report_path, # utils_helpers.R !
                           output_file = file,

@@ -150,7 +150,7 @@ mod_elec_charts_server <- function(id,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
                             stacked = input$stacked_status, # if T -> 'stack', F -> 'dodge'
-                            free_y = reactive(input$toggle_status),
+                            free_y = input$toggle_status, # reactive(input$toggle_status)
                             legend_title = legend_title) # links to ifelse in facet_wrap(scales = ...)
         })# End renderPlotly
       }# End if

@@ -18,8 +18,8 @@ elec_prod <- readxl::read_excel(filepath,
 # This step should be removed once we know more about what data can be published !
 
 elec_prod  <- elec_prod %>%
-  mutate(injection_totale = runif(n = n(), min = 1e3, max = 1e5),
-         autoconso_totale = runif(n = n(), min = 1e3, max = 1e6)) %>%
+  mutate(injection_totale = round(runif(n = n(), min = 1e3, max = 1e5), digits = 0),
+         autoconso_totale = round(runif(n = n(), min = 1e3, max = 1e6), digits = 0)) %>%
   rowwise() %>%
   mutate(production_totale = sum(injection_totale,autoconso_totale))
 

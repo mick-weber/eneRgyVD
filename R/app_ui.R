@@ -18,7 +18,7 @@ app_ui <- function(request) {
       skin = "green",  # base theme, overriden in custom.css for header/logo
 
       # Header ----
-      shinydashboardPlus::dashboardHeader(title = "eneRgy VD (v0.1)",
+      shinydashboardPlus::dashboardHeader(title = "eneRgy VD (v0.2)",
                                           titleWidth = 300,
                                           shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                        icon = icon("calendar", lib = "glyphicon"),

@@ -11,7 +11,7 @@ info_dev_message <- function(){
                                        "Pour des raisons juridiques, les données communales ont été temporairement
                                        remplacées par des valeurs aléatoires, celles-ci ne reflètent donc pas la réalité.
                                        Plus d'informations sur cette application en cliquant sur 'À propos`
-                                       dans la barre latérale"),
+                                       dans la barre latérale."),
                          html = TRUE,
                          size = "s",
                          closeOnEsc = TRUE,
@@ -256,7 +256,7 @@ create_sunburst_plotly <- function(data_sunburst,
                   values= ~values,
                   hoverinfo = "text", hovertext = sunburst_df$values_hover,
                   type='sunburst', branchvalues = 'total',
-                  width = "500px" # important because otherwise it's too much on the right
+                  width = "800px" # important because otherwise it's too much on the right
                   ) %>%
     # change to fr
     plotly::config(locale = "fr")

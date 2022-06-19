@@ -96,12 +96,18 @@ mod_download_rmd_server <- function(id, inputVals){
 
         id <- notify("Importation des données...")
         on.exit(removeNotification(id), add = TRUE)
-        Sys.sleep(1)
+        Sys.sleep(1.5)
         notify("Arborescence des commutativités...", id = id)
         Sys.sleep(1.5)
-        notify("Orthogonalisation des matrices...", id = id)
+        notify("Peignage de girafe...", id = id)
+        Sys.sleep(1.5)
+        notify("Orthogonalisation de matrices", id = id)
+        Sys.sleep(1.5)
+        notify("Service gagnant...", id = id)
         Sys.sleep(1.5)
         notify("Élevage de moutons basques...", id = id)
+
+
 
         rmarkdown::render(report_path, # utils_helpers.R !
                           output_file = file,

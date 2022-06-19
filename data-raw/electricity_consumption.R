@@ -27,7 +27,7 @@ elec_cons_communes <- elec_cons_communes %>%
 # This step should be removed once we know more about what data can be published !
 
 elec_cons_communes <- elec_cons_communes %>%
-  mutate(consommation_kwh = runif(n(), min = 1e6, max = 1e8))
+  mutate(consommation_kwh = round(runif(n(), min = 1e6, max = 1e8), digits = 0))
 
 
 ## Saving in './data/' subfolder as '.rda' objects

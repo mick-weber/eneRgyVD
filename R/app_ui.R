@@ -41,7 +41,7 @@ app_ui <- function(request) {
                                            # Add unit converter drop-down next to the app's title (left)
                                            leftUi = mod_unit_converter_ui("unit_converter")
 
-      ),
+      ),# End dashboardHeader
 
       # Sidebar ----
       shinydashboard::dashboardSidebar(
@@ -52,11 +52,11 @@ app_ui <- function(request) {
                                     shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
                                     shinydashboard::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
-        ),
+        ),# End sidebarMenu
 
         ## SelectInput module ----
         # Renders the sidebar inputs dynamically according to which tab is selected
-        mod_inputs_ui("inputs_1")
+       mod_inputs_ui("inputs_1")
 
       ),
 
@@ -107,6 +107,7 @@ app_ui <- function(request) {
             h4("Consommation d'électricité par commune"),
             # breathing
             br(),
+
             mod_elec_charts_ui("consumption_charts")
 
           ),# End tabItem
@@ -117,6 +118,7 @@ app_ui <- function(request) {
             # breathing
             br(),
             # Module for producing prod charts
+
             mod_elec_charts_ui("production_charts")
 
           ),# End tabItem
@@ -127,6 +129,7 @@ app_ui <- function(request) {
             h3("Générer un rapport énergétique"),
 
             # Module for producing rmd report based on downloadable_report.Rmd. Renders the button.
+
             mod_download_rmd_ui("rmd")
 
           ),# End tabItem
@@ -137,6 +140,7 @@ app_ui <- function(request) {
             h3(strong("À propos")),
 
             # Module for producing the tab content (html mostly)
+
             mod_about_the_app_ui("about")
 
           )# End tabItem

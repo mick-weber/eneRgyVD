@@ -52,8 +52,9 @@ body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifica
 }
 
 /*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
+/*Do not make it too wide or it messes up with the mobile display of header (gets stacked)*/
 #unit_converter-unit_dropdown > a{
-   width:200px;
+   width:90px;
 }
 
 /*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/

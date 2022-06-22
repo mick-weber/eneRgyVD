@@ -2,7 +2,7 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny shinydashboard
+#' @import shiny shinydashboard shinydashboardPlus
 #' @noRd
 
 
@@ -37,8 +37,9 @@ app_ui <- function(request) {
                                                                                                         href = paste0("mailto:", mail_address), # defined in utils_helpers.R
                                                                                                         icon = icon("envelope", lib = "font-awesome"), status = "info")
                                           ),# End dropdownMenu 'contact'
-                                          # Add unit converter drop-down next to the app's title (left)
-                                          leftUi = mod_unit_converter_ui("unit_converter")
+
+                                           # Add unit converter drop-down next to the app's title (left)
+                                           leftUi = mod_unit_converter_ui("unit_converter")
 
       ),
 

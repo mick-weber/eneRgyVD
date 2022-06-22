@@ -14,8 +14,8 @@ mod_unit_converter_ui <- function(id){
   tagList(
     shinydashboardPlus::dropdownBlock(
       id = ns("unit_dropdown"),
-      title = "Conversion d'unités",
-      badgeStatus = NULL, # avoids the annoying notif number counting the widgets in the dropdownBlock
+      title = "Unités",
+      badgeStatus = NULL, # avoids the useless notif number counting the widgets in the dropdownBlock
       icon = icon("refresh", lib = "glyphicon"),
 
       # breathing

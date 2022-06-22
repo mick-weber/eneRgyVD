@@ -20,8 +20,6 @@ load("./data/elec_cons_communes.rda")
 report_path <- tempfile(fileext = ".Rmd")
 file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
-
-
 # Generic utils ----
 
 ## E-mail address and links ----

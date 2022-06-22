@@ -113,7 +113,8 @@ mod_elec_charts_server <- function(id,
                                    var_rank_3_1, # var 1/2 to pivot for the last level of sunburst, if third_rank
                                    var_rank_3_2, # var 2/2
                                    fct_table_dt_type, # table function to pass (data specific)
-                                   dl_prefix){ # when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                   dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                   doc_vars){ # the non-reactive documentation file for variables description
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -187,6 +188,7 @@ mod_elec_charts_server <- function(id,
     # Module to download DT table data
     mod_download_data_server("table_download",
                              data = download_data,
-                             dl_prefix = dl_prefix) # dl preffix for file name, passed into app_server.R
+                             dl_prefix = dl_prefix,
+                             doc_vars = doc_vars) # dl preffix for file name, passed into app_server.R
   }) # End ModuleServer
 } # End server

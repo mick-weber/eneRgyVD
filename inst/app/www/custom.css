@@ -10,10 +10,15 @@
   background-color:white;
 }
 
-/*Increase sidebar text size +20%*/
+body {
+    font-size: 1.3em;
+}
+
+/*Increase sidebar text size (+20%)*/
 #sidebarItemExpanded > ul > li{
   font-size:1.2em;
 }
+
 
 /*Change skin='green' header bar color, defined in utils_helpers.R as main_color*/
         /* logo */
@@ -91,11 +96,28 @@ pre {
   font-weight:bold;
 }
 
-/* custom class for download buttons */
+/* custom class for shiny download buttons */
 .dlButton {
   width:175px;
   background-color:white;
   color:#3A862D;
+}
+
+
+/* custom class for 'excel' buttons of datatable. We must remove initial background gradient first.*/
+div.dt-buttons > button.dt-button.buttons-csv.buttons-html5{
+  width:70px;
+  background:none;
+  background-color:white;
+  color:darkgreen;
+}
+
+/* custom class for 'csv' buttons of datatable. We must remove initial background gradient first.*/
+div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
+  width:70px;
+  background:none;
+  background-color:white;
+  color:darkgreen;
 }
 
 /* this targets value_callback textOutput() in the unit converter widget */

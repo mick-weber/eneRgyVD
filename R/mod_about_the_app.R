@@ -31,11 +31,14 @@ mod_about_the_app_ui <- function(id){
     )), # End tabPanel "Général"
 
     shiny::tabPanel(title = "Données",
-                    column(width = 8,
+                    column(width = 11,
     # breathing
     br(),
     h4(strong("Sources des données")),
     tags$p("Les sources de données suivantes sont utilisées : "),
+
+    tabsetPanel(
+      tabPanel("Production d'électricité",
     tags$ul(
       tags$li(h5(strong("Production d'électricité : PRONOVO")),
               p("L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
@@ -43,16 +46,36 @@ mod_about_the_app_ui <- function(id){
                 Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles,
                 nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application.",
                 tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur PRONOVO AG", target = "_blank")),# open in new tab
-              p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021.")),
+              p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."))
+      ),# End tags$ul 1/2
+    br(),
+
+    # Documentation table for electricity production
+    DT::dataTableOutput(ns("elec_prod_doc")),
+    br()
+
+    ),# End nested tabPanel 1/2
+
+    tabPanel("Consommation d'électricité",
+             tags$ul(
       tags$li(h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
               p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
                 point de mesure du territoire vaudois a pu être récoltée, le type de client associé à chaque point de mesure a été catégorisé en secteurs,
                 et ce sont ces données agrégées par commune qui alimentent cette application."),
               p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
-                compteurs aient puetre relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
+                compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
                 les données peuvent prendre quelques mois à être disponibles dans l'application."))
-    )# End tags$ul
-    )),# End tabPanel "Données"
+                ),# End tags$ul 2/2
+      br(),
+
+      # Documentation table for electricity production
+      DT::dataTableOutput(ns("elec_cons_doc")),
+      br()
+
+              )# End nested tabPanel 2/2
+            )# End nested tabsetPanel
+          )# End column
+        ),# End tabPanel "Données"
 
     tabPanel("Confidentialité",
              column(width = 8,
@@ -90,6 +113,22 @@ mod_about_the_app_ui <- function(id){
 mod_about_the_app_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # Table for electricity production documentation
+    output$elec_prod_doc <- DT::renderDataTable({
+
+      elec_prod_doc %>%  # loaded in utils_helpers.R
+        create_doc_table_dt(doc_prefix = "doc_elec_prod_") # fct_helpers.R
+
+    })
+
+    # Table for electricity consumption documentation
+    output$elec_cons_doc <- DT::renderDataTable({
+
+      elec_cons_doc %>%  # loaded in utils_helpers.R
+        create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
+
+    })
 
   })
 }

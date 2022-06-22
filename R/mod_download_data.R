@@ -21,7 +21,7 @@ mod_download_data_ui <- function(id){
 #' download_data Server Functions
 #'
 #' @noRd
-mod_download_data_server <- function(id, data, dl_prefix){
+mod_download_data_server <- function(id, data, dl_prefix, doc_vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -34,10 +34,18 @@ mod_download_data_server <- function(id, data, dl_prefix){
       }
     )
     # XLSX handler
+
+    # We add documentation for XLSX since it's easy (CSV would require two separate files which must be in a ZIP...)
+
+    download_sheets <- reactive({
+      list(donnees = data(),
+           doc = doc_vars)})
+
+
     output$download_excel <- downloadHandler(
       filename = paste0(dl_prefix, Sys.Date(), ".xlsx"),
       content = function(file){
-        writexl::write_xlsx(data(), path = file)
+        writexl::write_xlsx(download_sheets(), path = file)
         }
       )
 })

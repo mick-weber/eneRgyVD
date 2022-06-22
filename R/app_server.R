@@ -183,7 +183,9 @@ app_server <- function(input, output, session) {
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
                           # name of dl prefix to supply to download module
-                          dl_prefix = "cons_elec_")
+                          dl_prefix = "cons_elec_",
+                          # documentation file from utils_helpers.R
+                          doc_vars = elec_cons_doc)
 
    ## tabProd: call the chart server logic ----
    mod_elec_charts_server("production_charts",
@@ -202,7 +204,9 @@ app_server <- function(input, output, session) {
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
                           # name of dl prefix to supply to download module
-                          dl_prefix = "prod_elec_")
+                          dl_prefix = "prod_elec_",
+                          # documentation file from utils_helpers.R
+                          doc_vars = elec_prod_doc)
 
    ## tabMap: boxes for statistics ----
    # Module for rendering the vd collapse box

@@ -13,6 +13,7 @@ load("./data/elec_prod_doc.rda")
 ## electricity_consumption data ----
 
 load("./data/elec_cons_communes.rda")
+load("./data/elec_cons_doc.rda")
 
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
@@ -44,7 +45,6 @@ DT_fr_language <- rjson::fromJSON(file = "./data/DT_fr_language.json")
 ## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
-
 
 # Non-reactive objects for input widgets ----
 

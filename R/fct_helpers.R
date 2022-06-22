@@ -355,7 +355,7 @@ create_cons_table_dt <- function(data){
                                  #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
                                  columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
+                                 language = DT_fr_language # from utils_helpers.R
     ),
     #extensions = 'Buttons',
     selection = 'single', ## enable selection of a single row
@@ -364,6 +364,34 @@ create_cons_table_dt <- function(data){
     ) # End DT
 }
 
+
+#' create_doc_table_dt
+#' Creates minimalistic documentation table with download feature
+#' @param data
+#'
+#' @return A DT object
+#' @export
+
+create_doc_table_dt <- function(data, doc_prefix){
+
+  data %>%
+    DT::datatable(rownames = FALSE, # no index col
+                  extensions = "Buttons",
+                  options = list(
+      dom = "Bti", # Button ; table ; information summary
+      buttons = list(
+        list(extend = 'csv', filename = paste0(doc_prefix, Sys.Date())),
+        list(extend = 'excel', filename = paste0(doc_prefix, Sys.Date()))),
+
+      paging = FALSE,
+      scrollY = FALSE,
+      autoWidth = TRUE,
+      language = DT_fr_language # from utils_helpers.R
+    ))
+
+}
+
+elec_prod_doc %>% create_doc_table_dt(doc_prefix = "test")
 
 #' return_palette_prod_elec
 #' Returns the color palette for categories in the electricity production dataset

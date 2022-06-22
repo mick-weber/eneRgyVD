@@ -2,7 +2,7 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny shinydashboard shinydashboardPlus
+#' @import shiny shinydashboard
 #' @noRd
 
 
@@ -104,7 +104,7 @@ app_ui <- function(request) {
           ## tabCons ----
           shinydashboard::tabItem(
             tabName = "tabCons",
-            h4("Consommation d'électricité par commune"),
+            h4(strong("Consommation d'électricité par commune")),
             # breathing
             br(),
 
@@ -114,7 +114,7 @@ app_ui <- function(request) {
           ## tabProd ----
           shinydashboard::tabItem(
             tabName = "tabProd",
-            h4("Production d'électricité par commune"),
+            h4(strong("Production d'électricité par commune")),
             # breathing
             br(),
             # Module for producing prod charts
@@ -126,10 +126,9 @@ app_ui <- function(request) {
           shinydashboard::tabItem(
             tabName = "tabReport",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
-            h3("Générer un rapport énergétique"),
+            h4(strong("Générer un rapport énergétique")),
 
             # Module for producing rmd report based on downloadable_report.Rmd. Renders the button.
-
             mod_download_rmd_ui("rmd")
 
           ),# End tabItem
@@ -137,7 +136,7 @@ app_ui <- function(request) {
           shinydashboard::tabItem(
             tabName = "tabInfo",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
-            h3(strong("À propos")),
+            h4(strong("À propos")),
 
             # Module for producing the tab content (html mostly)
 

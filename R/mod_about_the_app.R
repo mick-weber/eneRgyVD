@@ -100,11 +100,24 @@ mod_about_the_app_ui <- function(id){
            tags$a(href = "https://www.tidyverse.org/", "tidyverse.", target = "_blank"),
            "De plus amples demandes d'informations peuvent être adressées directement à l'e-mail de contact",
            tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"),
-           ".")
-
+           "."),
+    br(),
+    br(),
+    br(),
+    # the fluidrow is here to force the horizontal alignment of github button + p()
+    fluidRow(
+      column(1, div(style = "margin-top: -10px;", # inline css for nice alignment with p()
+                    shinydashboardPlus::socialButton(
+                      href = "https://github.com/mick-weber/eneRgyVD",
+                      icon = icon("github")
+                    ),# End socialbutton
+                    )# End div
+      ),# End column
+      column(3, p("Code complet sur GitHub"))
+    )# End fluidRow
     )),# End tabPanel "Technologie"
     )# End tabsetPanel
-    )# End tagList
+  )# End tagList
 }
 
 #' about_the_app Server Functions

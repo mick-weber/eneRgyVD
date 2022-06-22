@@ -11,14 +11,13 @@
 }
 
 body {
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
 
 /*Increase sidebar text size (+20%)*/
 #sidebarItemExpanded > ul > li{
-  font-size:1.2em;
+  font-size:1em;
 }
-
 
 /*Change skin='green' header bar color, defined in utils_helpers.R as main_color*/
         /* logo */
@@ -59,7 +58,7 @@ body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifica
 /*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
 /*Do not make it too wide or it messes up with the mobile display of header (gets stacked)*/
 #unit_converter-unit_dropdown > a{
-   width:90px;
+   width:100px;
 }
 
 /*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/

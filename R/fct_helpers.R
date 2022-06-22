@@ -391,7 +391,6 @@ create_doc_table_dt <- function(data, doc_prefix){
 
 }
 
-elec_prod_doc %>% create_doc_table_dt(doc_prefix = "test")
 
 #' return_palette_prod_elec
 #' Returns the color palette for categories in the electricity production dataset

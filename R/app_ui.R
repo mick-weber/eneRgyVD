@@ -137,6 +137,7 @@ app_ui <- function(request) {
             tabName = "tabInfo",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
             h4(strong("À propos")),
+            br(),
 
             # Module for producing the tab content (html mostly)
 

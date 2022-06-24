@@ -11,12 +11,12 @@
 }
 
 body {
-    font-size: 1.5em;
+    font-size: 1.4em;
 }
 
 /*Increase sidebar text size (+20%)*/
 #sidebarItemExpanded > ul > li{
-  font-size:1em;
+  font-size:1.1em;
 }
 
 /*Change skin='green' header bar color, defined in utils_helpers.R as main_color*/
@@ -49,16 +49,26 @@ body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifica
    width:450px;
 }
 
+/*Change the dropdownMenu width for updates dropdown in app_ui.R*/
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li:nth-child(1) > a{
+  width:60px;
+}
+
 /*Change the dropdownMenu content properties for contact dropdown in app_ui.R */
 body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
   background-color:white;
   border: 1px solid lightgrey;
 }
 
+/*Change the dropdownMenu width for contact dropdown in app.ui.R*/
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li:nth-child(2) > a{
+  width:60px;
+}
+
 /*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
 /*Do not make it too wide or it messes up with the mobile display of header (gets stacked)*/
 #unit_converter-unit_dropdown > a{
-   width:100px;
+   width:105px;
 }
 
 /*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/
@@ -85,6 +95,11 @@ body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifica
 /*Remove padding of column holding the stats boxes in tabMap*/
 #shiny-tab-tabMap > div:nth-child(1) > div.col-sm-4{
   padding-left:0px;
+}
+
+/*Remove the default uppercase shinydashboardPlus option for the description of all statbox values*/
+.description-block>.description-text {
+    text-transform: unset;
 }
 
 /* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
@@ -129,8 +144,6 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
   font-size:11px;
   color:grey;
 }
-
-
 
 /* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
 .shiny-notification {

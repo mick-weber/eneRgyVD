@@ -279,20 +279,18 @@ create_prod_table_dt <- function(data){
 
   data %>%
     dplyr::select(-numero_de_la_commune) %>%
-    # put installed power in the last position
-    dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
-    # rename columns to title case, replace "_" and trim blank spaces
-    dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
-      stringr::str_replace_all(string = stringr::str_to_title(.x),
-                               # replacements pairs below
-                               c("_" = " ",
-                                 "totale" = "")))) %>%
-    # add units
-    dplyr::rename_with(.cols = 4:6, ~paste0(.x, " [kWh]")) %>%
-    dplyr::rename_with(.cols = 7, ~paste0(.x, " [kW]")) %>%
+    # relocate and rename at the same time
+    dplyr::relocate(
+      `Commune` = commune,
+      `Année` = annee,
+      `Catégorie DIREN` = categorie_diren,
+      `Production (kWh)` = production_totale,
+      `Injection (kWh)` = injection_totale,
+      `Autoconsommation (kWh)` = autoconso_totale,
+      `Puissance électrique (kW)` = puissance_electrique_installee) %>%
     dplyr::mutate(
       # change year to factor %>%
-      Annee = as.factor(Annee),
+      `Année` = as.factor(`Année`),
       # format numeric cols
       across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
     #turn to DT
@@ -332,14 +330,14 @@ create_cons_table_dt <- function(data){
   data %>%
     # clear out useless vars
     select(-code_secteur) %>%
-    # put installed power in the last position
-    dplyr::relocate(commune,annee,secteur, consommation_kwh) %>%
-    # rename columns to title case, replace "_" and trim blank spaces
-    dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
-      stringr::str_replace_all(string = str_to_title(.x),pattern = "_", replacement = " "))) %>%
+    # relocate and rename at the same taime
+    dplyr::relocate(`Commune` = commune,
+                    `Année` = annee,
+                    `Secteur` = secteur,
+                    `Consommation (kWh)` = consommation_kwh) %>%
     dplyr::mutate(
       # change year to factor %>%
-      Annee = as.factor(Annee),
+      `Année` = as.factor(`Année`),
       # format numeric cols
       across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
     #turn to DT
@@ -415,5 +413,43 @@ return_palette_cons_elec <- function(){
 }
 
 
+#' create_pv_density_plot
+#' DEVELOPMENT: Creates a density plot showing how PV installations installed power is distributed
+#' @param data
+#'
+#' @return a ggplotly object
+#' @export
+
+create_pv_density_plot <- function(data){
+
+  data %>%
+    dplyr::filter(categorie_diren == "Solaire",
+           annee == 2020,
+           !is.na(puissance_electrique_installee)) %>%
+    ggplot2::ggplot(ggplot2::aes(x = puissance_electrique_installee))+
+    ggplot2::geom_histogram(ggplot2::aes(y=..density..), alpha = .2)+
+    ggplot2::geom_density(fill = "Orange", alpha = .4)+
+    ggplot2::geom_text(ggplot2::aes(x= median(puissance_electrique_installee), y = -.02,
+                  label = paste0("Installation médiane: ",median(puissance_electrique_installee),"kW")),
+              check_overlap = TRUE)+
+    ggplot2::geom_vline(ggplot2::aes(xintercept = median(puissance_electrique_installee)),
+               linetype="dashed")+
+    ggplot2::geom_vline(ggplot2::aes(xintercept = mean(puissance_electrique_installee)),
+               linetype="dashed")+
+    ggplot2::geom_text(ggplot2::aes(x= mean(puissance_electrique_installee), y = .3, hjust = 0.1,
+                  label = paste0("Installation moyenne: ",round(mean(puissance_electrique_installee),2),"kW")),
+              check_overlap = TRUE)+
+    ggplot2::scale_x_log10(breaks = scales::pseudo_log_trans(base = 2),
+                           labels = scales::number_format(suffix = "kW", accuracy = 1, big.mark = "'"))+
+    ggplot2::labs(
+      title = "Répartition des puissances installées",
+      y = "Densité",
+      x = "Puissance électrique installée (log10)",
+      caption = "Source: DGE-DIREN (graphique)\nPronovo/Swissgrid (données)")+
+    ggplot2::theme_bw()+
+    ggplot2::theme(axis.text.y = ggplot2::element_blank(),
+                   axis.ticks.y = ggplot2::element_blank(),
+                   panel.grid.major.y = ggplot2::element_blank())
+}
 
 

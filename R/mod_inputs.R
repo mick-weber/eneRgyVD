@@ -73,10 +73,7 @@ mod_inputs_server <- function(id){
     # tabProd inputs ----
 
     ## Reactive subset data  ----
-    # This is only used to feed the dynamic UI (year/techs available)
-    # The 'usable' dataset for plots etc. is computed in app_server.R and is further filtered by
-    # the values of the year sliderInput() and techs pickerInput()
-
+    # BY COMMUNE
     subset_elec_prod <- reactive({
 
       req(input$selected_communes)
@@ -85,6 +82,19 @@ mod_inputs_server <- function(id){
         filter(commune %in% input$selected_communes)
 
     })
+
+    # BY PV INSTALLATION (density curve plot)
+    subset_elec_prod_pv_long <- reactive({
+
+      req(input$selected_communes)
+
+      elec_prod %>%
+        filter(commune %in% input$selected_communes) %>%
+        filter(categorie_diren == "Solaire")
+    })
+
+
+
 
     ## Storing all useful values in inputVals ----
     # [inputVals 0/3] Initializing the inputVals item
@@ -108,6 +118,7 @@ mod_inputs_server <- function(id){
 
       # store the commune prod dataset already filtered
       inputVals$prod_dataset <- subset_elec_prod()
+      inputVals$prod_pv_dataset <- subset_elec_prod_pv_long()
 
       # store min & max !available! years from consumption data to feed sliderInput()
 

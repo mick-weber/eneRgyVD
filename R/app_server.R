@@ -228,6 +228,22 @@ app_server <- function(input, output, session) {
                                    year = last_common_elec_year) # utils_helpers.R
    })
 
+   ## tabPV ----
+   # Create the PV density plot
+   output$pv_density <- shiny::renderPlot({
+
+     req(inputVals$selectedCommunes)
+
+     inputVals$prod_pv_dataset %>%
+       create_pv_density_plot()
+
+   })
+
+   # testing
+   observe({
+     print(inputVals$prod_pv_dataset)
+   })
+   #/testing
 
    ## tabReport ----
    # Module for producing rmd report based on downloadable_report.Rmd

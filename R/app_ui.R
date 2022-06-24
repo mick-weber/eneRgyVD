@@ -51,6 +51,7 @@ app_ui <- function(request) {
                                     shinydashboard::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
                                     shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
+                                    shinydashboard::menuItem("Photovoltaïque", tabName = "tabPV", icon = icon("th", lib = "glyphicon")),
                                     shinydashboard::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
         ),# End sidebarMenu
 
@@ -132,6 +133,18 @@ app_ui <- function(request) {
             mod_download_rmd_ui("rmd")
 
           ),# End tabItem
+
+          ## tabPV ----
+
+          shinydashboard::tabItem(
+            tabName = "tabPV",
+            # Tab's title
+            h4(strong("Complément photovoltaïque")),
+
+            shiny::plotOutput("pv_density")
+
+          ),# End tabItem
+
           ## tabInfo ----
           shinydashboard::tabItem(
             tabName = "tabInfo",

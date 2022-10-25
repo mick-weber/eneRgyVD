@@ -36,6 +36,7 @@ usethis::use_package("leaflet.extras")
 usethis::use_package("sf")
 usethis::use_package("htmltools")
 usethis::use_package("bookdown") # for rmd rendering
+usethis::use_package("fresh") # for adminLTE theme
 
 
 ## Add modules ----

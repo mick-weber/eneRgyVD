@@ -1,0 +1,48 @@
+Package: eneRgyVD
+Title: PKG_TITLE
+Version: 0.0.0.9000
+Authors@R: 
+    person("AUTHOR_FIRST", "AUTHOR_LAST", , "AUTHOR@MAIL.COM", role = c("cre", "aut"))
+Description: PKG_DESC.
+License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
+Imports: 
+    bookdown,
+    config (>= 0.3.1),
+    dplyr,
+    DT,
+    ggplot2,
+    golem (>= 0.3.2),
+    knitr,
+    leaflet,
+    leaflet.extras,
+    magrittr,
+    pkgload,
+    plotly,
+    purrr,
+    readr,
+    rjson,
+    rmarkdown,
+    scales,
+    sf,
+    shiny (>= 1.7.1),
+    shinyalert,
+    shinycssloaders,
+    shinydashboard,
+    shinydashboardPlus,
+    shinyWidgets,
+    stringr,
+    tidyr,
+    tidyverse,
+    writexl
+Suggests: 
+    spelling (>= 2.2),
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.2.1

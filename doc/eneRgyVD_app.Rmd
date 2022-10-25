@@ -1,0 +1,279 @@
+---
+title: "eneRgyVD: app documentation"
+subtitle: "EPFL Extension School ADSCV capstone submission"
+author: "Weber Michaël"
+date: "`r Sys.Date()`"
+fontsize: 11pt
+always_allow_html: yes
+output:
+  bookdown::html_document2:
+    code_folding: hide
+    df_print: paged
+    number_sections: no
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
+    code_download: TRUE
+  output: rmarkdown::html_vignette
+header-includes: \usepackage{booktabs} \usepackage{longtable} \usepackage{array} \usepackage{multirow}
+  \usepackage[table]{xcolor} \usepackage{wrapfig} \usepackage{float} \floatplacement{figure}{H}
+
+vignette: >
+  %\VignetteIndexEntry{eneRgyVD}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r setup, include = FALSE}
+# Basic knitr behavior
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
+
+# Librairies
+pacman::p_load(tidyverse, gt)
+```
+
+
+```{css basic-theme, echo = FALSE}
+
+.main-container {
+    margin-left: 30px;
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: white;
+    background-color: forestgreen;
+    border-color: forestgreen;
+}
+
+h2,h3,h4,h5,h6{
+  font-size: 12pt;
+  color:midnightblue;
+}
+
+h1{
+font-size:14pt;
+color:midnightblue;
+}
+```
+
+**The application can be accessed here : [https://dge-diren.shinyapps.io/energyvd/](https://dge-diren.shinyapps.io/energyvd/)**
+
+# 1) Why eneRgyVD ?
+
+Energy statistics are complex in nature due to the energy system itself being a nexus of numerous interwoven energy carriers, transformations and usages. The same energy indicator can be calculated in dozens of different ways, following different methodologies and taking different assumptions. These methodologies can also change over time or geographic areas, making the interpretation of such data even more complicated and often misleading to the untrained eye. In the meantime, energy statistics have grown in importance due to the urgent need to document the energy transition and mitigate climate change. 
+
+It is thus important that existing energy statistics are made available to the entities that need it. But making it available is not enough : 
+
+* Active diffusion of such data should be made. Often, municipalities or other entities don't even know such data exists;
+
+* Data should be organized, every variable and its content should be identified easily;
+
+* Documentation about how it's collected, what the data covers, **what it doesn't cover and the associated caveats** should be highlighted clearly;
+
+* Providing intuitive interactive visualisation of such data is key to open up data accessibility and understandability so that non-energy experts can be involved in the process as well.
+
+The aim of this application is to gather, document, display and make available the most relevant energy datasets at hand for the canton de Vaud in one platform. This plateform is particularly thought for municipalities needing such data to elaborate their energy policies. Since most municipality administration employees are not especially tech literate, the interface should be user-friendly while allowing in-depth data exploration features such as interactive graphs and saving results in a standalone document. 
+
+* Municipalities should be able to easily select data for their own territories and play with the results;
+
+* Downloading the data should be easy, for instance for the planification companies mandated by the municipalities;
+
+* Documentation should be clear and accessible, and if more information is needed a contact should be clearly indicated.
+
+As an employee of Etat de Vaud and more specifically of the Direction de l'énergie, this application is hopefully going to be officially deployed as a public service. The current state of the app will be used as a demonstration of what can be done. It is not the first application supported by my employer, however it is the first one that is not being mandated to an extern company. The main advantages of developing this app internally are : 
+
+* The level of customisation is much higher than if the development was outsourced, because we know what we need and do not lose details through contracts and limited communication;
+
+* The quality/price ratio is in my opinion much better than previous mandates;
+
+* Easy and quick maintenance. Adding small updates, for instance a notification that new data is available for year 2022 takes literally 1 minute against many (many) more if it had to be done through a mandate;
+
+* App development (new datasets and new features) can be easily anticipated and coordinated with data availability.
+
+# 2) The data
+
+## a) Overview
+
+In this final submission, there are two main datasets fed to the application. In the near future, more datasets can and will be added. 
+
+**Please note that due to pending legal decisions, all the data has been temporarily replaced with random values.**
+
+### i. Electricity generation of municipalities
+
+Almost all electricity-generating plants are recorded in a federal system, from small 2kW solar photovolatïc panels to 500MW hydro dams. This database records periodically the electricity injection of thousands of plants, each with an individual ID and many other variables, such as the installed electrical power of the plant, the type of subsidy it might be linked to, the approximate location, etc.
+
+Each kWh injected and its source technology (PV, nuclear, etc.) is recorded as a **Guarantee of Origin (GoOs)** which is then sold on the European and Swiss electricity market. Such guarantees are especially useful to track the renewable electricity generation. The organism in charge of recording these GoOs is [Pronovo AG](https://pronovo.ch/fr/).
+
+Each year, the Canton de Vaud receives from Pronovo **two files**: one with a record of **installations** active during the year preceding the request, and another one with a record of **electricity generation**. Since the data is not cleaned at all, an extensive work of preparation is implemented to provide useful statistics. That work is outside the scope of this project and only the cleaned data is fed to the app. The main treatment steps from the received files to the cleaned output are the following : 
+
+* Harmonising the variable names and their coding which differ from year to year...
+
+* Merging the two files together with the available joint keys
+
+* Aggregating the records to have one installation for one year period
+
+* Cleaning the localities which are hand recorded, with all the different spellings possible...
+
+* Completing the estimate of electricity own consumption for several technologies
+
+Originally, since the data records the owners' name and address, its use is covered by specific legislation and must be treated with special care. For this reason, the cleaned dataset has been anonymised. Data is availably starting from 2015, until 2020 (data for 2021 is not available yet, but will be soon).
+
+### ii. Electricity consumption of municipalities
+
+This dataset documents the electricity consumption of municipalities and is aggregated from very detailed data, at the metering point, of the whole VD territory. This data is transmitted by the distribution system operators (DSO) and is collected yearly, with currently only 2020 available. 
+
+## b) Data management
+
+The three datasets exists in local `.csv` or `.xlsx` files. Unfortunately, no real database architecture exists for accessing such data automatically, because these are fairly new. The raw data is anonymised, and is not exported with the package as its subfolder is added in the `.gitignore` file.
+
+These raw files are supplied in their original format in `/data-raw` and then sent to `/data` as `.rda` format, after some modifications such as : 
+
+* Dropping unnecessary variables
+
+* Cleaning the names to snake case
+
+* Replacing implicit `NA` values with explicit `NA`s
+
+* **Temporarily randomizing values**
+
+### i. Electricity generation data: 
+
+The raw `.xlsx` dataset lies in `/data-raw` along with its "cleaning" script.
+The resulting cleaned dataset will be stored as `pronovo_data.rda` in the explicit `/data` subfolder of this project.
+
+Here we import at least these variables in the app: 
+
+* `commune`: the name of the administrative municipality. The most up to date names are used, meaning that communes mergings are always considered and retroactively computed for the past years.
+
+* `annee`: the year of the data
+ 
+* `categorie_diren`: the type of electricity generation technology according to DGE-DIREN nomenclature
+
+* `production_totale`: the amount of electricity generated, in kWh
+
+### ii. Electricity consumption data
+
+The detailed data for each building / measure point is confidential. Only the aggregated data will be fed to the application in the `data-raw` as `.csv` or `.xlsx` and then variable names will be cleaned and saved as a `.rda` in `/data`.
+
+Here we will import at least these variables in the app : 
+
+* `commune`: the name of the administrative municipality. The most up to date names are used, meaning that communes mergings are always considered and retroactively computed for the past years.
+
+* `annee`: the year of the data
+
+* `secteur`: the sector according to DGE-DIREN nomenclature (industry/services, households, transports, unknown, ...)
+
+* `consommation_kwh`: the amount of electrical energy, in kWh, consumed by the sector
+
+
+Since 2020 is the first year where such data is available, there is currently only one year to display. More years will be added in the future, so the visualisations are compatible when the user selects more than one year.
+
+# 3) Data Visualisation and Communication
+
+## a) App framework
+
+**eneRgyVD** is a `{golem}` package containing a `{shiny}` interactive web app. The application has a dashboard-inspired structure.
+
+## b) App structure
+
+**eneRgyVD** is a dashboard generated by `{shinydashboard}` and `{shinydashboardPlus}` with the main three following elements:
+
+* A **header** with a unit conversion widget, a notification system and a contact button
+
+* A **sidebar** with some selection widgets and different tabs redirecting on different datasets, visualisations and features.
+
+* A **main panel** which displays the main information, be it graphs, tables, or maps depending on the user's current selection in the sidebar. Below is a short **description of each tab:**
+
+1. A home tab displaying a `{leaflet}` map of all ~300 municipalities which allows the user to select multiple municipalities by clicking on them. Then the selected municipalities should automatically update the `selectInput()` widgets. The user can then use geographical guidance to find the municipalities, as well as a list sorted in alphabetical order through a `selectInput()` widget. This tab also displays key statistics for the whole territory and the current selection.
+
+2. A tab dedicated to electricity generation data. Three visualisations are generated: a bar plot which can be stacked or not, and a sunburst graph and a table. The data can be downloaded in CSV or Excel format.
+
+3. A tab dedicated to electricity consumption data. Three visualisations are generated: a bar plot which can be stacked or not, and a sunburst graph and a table. The data can be downloaded in CSV or Excel format.
+
+4. A report tab which offers the user to download a html `.Rmd` report of the different visualisations available in the app for the current municipalities selection. The report is very basic for now, but can easily be developed in the future.
+
+5. A information tab which provides some context and a contact point for feedbacks and questions
+
+# 4) Technical details
+
+Here's a simple app diagram drawn with [https://app.diagrams.net/](https://app.diagrams.net/).
+
+```{r, echo = FALSE, out.width = "900px"}
+knitr::include_graphics(path = "app_diagram.png", )
+
+golem_v <- packageVersion("golem")
+```
+
+The `{golem}` architecture is not detailed here but is well documented [in this book](https://engineering-shiny.org/golem.html). The `{golem}` version used to develop this app is `r golem_v`.
+
+## a) Modules
+
+Modules are stored in the `./R/` subfolder. As seen in the diagram above, several modules are being used, and reused in order to factorise the code and simplify its maintenance. Nested modules are also used, for instance to download the data.
+
+## b) Functions
+
+Functions are stored in the `.R/fct_helpers.R` file. There are 8 functions for now, and they mostly serve to create the visualisations and tables. The most complex function is `create_sunburst_plotly()` which prepares the whole data to the correct structure to form a sunbusrt plot, then convert it to a `{plotly}` graph.
+
+## c) Utilities
+
+Utilities (utils) are stored in the `.R/utils_helpers.R` file and hosts the following code:
+
+* Loading all the `.rda` objects from `./data/`
+
+* Storing all the reused elements in the app, such as e-mail contact, color palettes, unique district and communes names, etc.
+
+* Computes the fixed statistics (for the whole territory) and generates the `bbox` objects for the `{leaflet}` map.
+
+* The background conversion factors for the unit conversion widget
+
+* etc.
+
+## d) Styling
+
+A `custom.css` file in the `inst/app/www/` subfolder is linked to the app and contains many modifications such as button classes, dropdown widths, padding removal etc. A custom `favicon.ico` is also stored in this subfolder. HTML tags are also frequently used inside the UI as well.
+
+## e) Leaflet map
+
+This is the only part of code that should practically be inside a module and is not. As a result, the shiny code for this map lies in both `app_ui.R` and `app_server.R`. The reason for this is the difficulty to make the code work and interact with the widgets from other modules (`mod_inputs.R`). I did not find a way to both receive data from a module (communes selected in the sidebar) and also send data to this same module (updates sidebar by adding the communes selected in the map) by communicating from two different modules.
+However, the code works if located directly in the top-level of the app and is fairly well documented, so this is satisfying enough to me.
+
+## f) Tests
+
+Test files have been generated in the `./tests` subfolder, however such tests have not been coded yet. This will be done in the future if I receive confirmation that app can be deployed, so this will make the maintenance easier.
+
+
+## g) Documentation
+
+This vignette serves as the main documentation, and all the `.Rd` files for each function can be accessed in the `./man/` subfolder or directly in the `{roxygen2}` tags in the `fct_helpers.R` file.
+
+## h) Hosting
+
+Currently, the app is hosted in [shinyapps.io](https://www.shinyapps.io/) with a free pricing plan and can be consulted using this url : [https://dge-diren.shinyapps.io/energyvd/](https://dge-diren.shinyapps.io/energyvd/).
+
+As the servers are US-based, a more local solution is being investigated by the IT services at my work. 
+
+# 5) Upcoming features
+
+Here's a non exhaustive list of developments that can be expected : 
+
+* Adding a 'compare with the Canton' feature so that the user can easily access the VD data rather than only the selected municipalites. 
+
+* Data about photovoltaic production potentials per municipality could be added in a new tab and compared to the current production for a given year. Choropleth maps could be used as well to have a global view of all the communes.
+
+* Data about buildings energy consumption could be added in a new tab, which would provide estimates about the different energy carriers and CO2 emission of a commune. This dataset is currently under development at my work.
+
+* Adding more in-depth graphs about existing datasets. For instance, a density curve of the installed electric capacity of the photovoltaic installations of the selected municipalities.
+
+# 6) Conclusion 
+
+While I reckon the app would benefit some interesting features and should be more thoroughly documented (especially the testing side), I am happy to submit this app version as my capstone project of the [ADSCV EPFL Extension school formation](https://www.extensionschool.ch/learn/applied-data-science-communication-visualization) program. 
+
+I would like to thank all my EPFL instructors which have provided great support as well as an amazing course to learn interactive visualiastion and web development using R shiny. Starting from just knowing how to make a bar plot all the way to this application is something truly satisfying and beneficial. This provides new skills that are much needed in my work environment, hopefully helping moving towards a more data-informed world.  
+
+
+
+
+
+ 

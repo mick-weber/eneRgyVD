@@ -1,3 +1,4 @@
+# This file contains most non-shiny elements
 # Loading .rda objects ----
 ## sf data ----
 

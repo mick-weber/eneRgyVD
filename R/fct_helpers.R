@@ -61,7 +61,9 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
     leaflet::addPolygons(data = sf_lacs,
                          fillColor = "lightblue",
                          color = "grey",
-                         weight = 1) %>%
+                         weight = 1,
+                         # Si clickable : l'app crash car lac =/= commune !
+                         options = pathOptions(clickable = FALSE)) %>%
     # Première couche des communes (en blanc, état non-sélectionné)
     leaflet::addPolygons(data = sf_communes,
                          fillColor = "white",

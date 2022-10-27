@@ -1,0 +1,143 @@
+/*Change font and size in dashboardHeader title*/
+.main-header .logo {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+
+
+
+/*Change background of the app to white*/
+.content-wrapper {
+  background-color:white;
+}
+
+body {
+    font-size: 1.5em;
+}
+
+/*Increase sidebar text size (+20%)*/
+#sidebarItemExpanded > ul > li{
+  font-size:1em;
+}
+
+/*Change header bar color, defined in utils_helpers.R as main_color*/
+        /* logo */
+        .skin-green .main-header .logo {
+                              background-color: #3A862D;
+                              }
+
+        /* logo when hovered */
+        .skin-green .main-header .logo:hover {
+                              background-color: #3A862D;
+                              }
+
+        /* navbar (rest of the header) */
+        .skin-green .main-header .navbar {
+                              background-color: #3A862D;
+                              }
+        /* sidebar left border color on selected item */
+        .skin-green .sidebar-menu>li.active>a {
+          border-left-color: #3A862D;
+                              }
+
+
+/*Change the shinyalert (sweet-alert) popup text display style*/
+body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
+  text-align: center;}
+
+/*Change dropdownBlock's block width for updates dropdown in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
+   width:450px;
+}
+
+/*Change the dropdownMenu content properties for contact dropdown in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu.open > ul{
+  background-color:white;
+  border: 1px solid lightgrey;
+}
+
+/*Change dropdownBlock's block width for unit converter widget in mod_unit_converter.R */
+/*Do not make it too wide or it messes up with the mobile display of header (gets stacked)*/
+#unit_converter-unit_dropdown > a{
+   width:100px;
+}
+
+/*Change dropdownBlock content properties for unit converter widget in mod_unit_converter.R*/
+#unit_converter-unit_dropdown > ul > li > ul{
+  background-color:white;
+  border: 1px solid lightgrey;
+}
+
+/*Change the contact dropdownMenu width in app_ui.R */
+body > div.wrapper > header > nav > div:nth-child(4) > ul > li.dropdown.notifications-menu > a > i{
+  width:50px;
+}
+
+/*display map indication centered insted of left aligned*/
+#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-8 > h4{
+  text-align: center;
+}
+
+/*Change map height to full height (100vh) minus header height (50px)+padding(15px)+title(20px)*/
+#map {
+    height: calc(100vh - 150px) !important;
+}
+
+/*Remove padding of column holding the stats boxes in tabMap*/
+#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-4{
+  padding-left:0px;
+}
+
+/* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
+pre {
+  color: black;
+  background-color: white;
+  font-size:14px;
+  font-weight:bold;
+}
+
+/* custom class for shiny download buttons */
+.dlButton {
+  width:175px;
+  background-color:white;
+  color:#3A862D;
+}
+
+
+/* custom class for 'excel' buttons of datatable. We must remove initial background gradient first.*/
+div.dt-buttons > button.dt-button.buttons-csv.buttons-html5{
+  width:70px;
+  background:none;
+  background-color:white;
+  color:darkgreen;
+}
+
+/* custom class for 'csv' buttons of datatable. We must remove initial background gradient first.*/
+div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
+  width:70px;
+  background:none;
+  background-color:white;
+  color:darkgreen;
+}
+
+/* this targets value_callback textOutput() in the unit converter widget */
+#unit_converter-value_callback {
+  font-size:11px;
+  color:grey;
+}
+
+#unit_converter-duh_comment {
+  font-size:11px;
+  color:grey;
+}
+
+
+
+/* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
+.shiny-notification {
+  position:fixed;
+  top: calc(50%);
+  left: calc(50%);
+}

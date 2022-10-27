@@ -9,6 +9,8 @@ Depends:
     R (>= 2.10)
 Imports: 
     bookdown,
+    bs4Dash,
+    bs4dash,
     config (>= 0.3.1),
     dplyr,
     DT,

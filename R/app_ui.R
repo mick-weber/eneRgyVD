@@ -15,9 +15,7 @@ app_ui <- function(request) {
 
     # Your application UI logic
     shinydashboardPlus::dashboardPage(
-      freshTheme = energyvd_theme,  # utils_helpers.R from {fresh} lib,
-      # partially overridden by styles.css
-
+      skin = "green",
       # Header ----
       shinydashboardPlus::dashboardHeader(title = "eneRgy VD (v0.2)",
                                           titleWidth = 300,

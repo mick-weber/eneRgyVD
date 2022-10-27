@@ -36,7 +36,7 @@ usethis::use_package("leaflet.extras")
 usethis::use_package("sf")
 usethis::use_package("htmltools")
 usethis::use_package("bookdown") # for rmd rendering
-usethis::use_package("fresh") # for adminLTE theme
+usethis::use_package("sass")
 
 
 ## Add modules ----
@@ -64,7 +64,6 @@ golem::add_utils("helpers", with_test = TRUE)
 ## Creates .js and .css files at inst/app/www
 golem::add_js_file("script")
 golem::add_js_handler("handlers")
-golem::add_css_file("custom")
 golem::add_sass_file("custom")
 
 ## Add internal datasets ----

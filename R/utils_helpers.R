@@ -1,4 +1,3 @@
-# This file contains most non-shiny elements
 # Loading .rda objects ----
 ## sf data ----
 
@@ -54,34 +53,6 @@ DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 ## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
-
-## {fresh} theme for shinydashboard ----
-# Actuellement en test
-
-energyvd_theme <- fresh::create_theme(theme = "default",
-  output_file = "./inst/app/www/custom.css", # location of css (optionnal)
-  include_assets = TRUE, # copy fonts file used in BS themes ?
-  fresh::adminlte_color(
-    green = "#3A862D",
-     blue = "#3A862D",
-     red = "#3A862D",
-     yellow = "#3A862D",
-     fuchsia = "#3A862D",
-     navy = "#3A862D",
-     purple = "#3A862D",
-     maroon = "#3A862D",
-     light_blue = "#3A862D"
-  ),
-  fresh::adminlte_sidebar(
-    dark_bg = "#3A862D",
-    dark_hover_bg = "#3A862D",
-    dark_color = "#3A862D"
-  ),
-  fresh::adminlte_global(
-    content_bg = "#3A862D"
-  ))
-
-
 
 # Non-reactive objects for input widgets ----
 

@@ -30,19 +30,18 @@ mod_collapse_stats_box_server <- function(id,
 
     output$vd_box <- renderUI({
 
-      shinydashboardPlus::box(
+      bs4Dash::box(
+        width = 12, # = 100% of the width = 4 allowed for the module
         solidHeader = FALSE,
         collapsible = TRUE,
         title = title,
         background = NULL,
-        width = 12,
         status = "success",
-        footer = fluidRow(
-          fluidRow(
+        fluidRow(
           column(
             width = 6,
-            shinydashboardPlus::descriptionBlock(
-              numberColor = "green", marginBottom = TRUE, # for testing
+            bs4Dash::descriptionBlock(
+              marginBottom = TRUE,
               number = year,
               header = paste0(format(production_value/1e6, big.mark = "'", digits = 1), " GWh"),
               text = htmltools::HTML(paste0("Production", tags$br(), "d'électricité")),
@@ -51,8 +50,7 @@ mod_collapse_stats_box_server <- function(id,
           ),# End column
           column(
             width = 6,
-            shinydashboardPlus::descriptionBlock(
-              numberColor = "green",
+            bs4Dash::descriptionBlock(
               number = year,
               header = paste0(format(consumption_value/1e6, big.mark = "'", digits = 1), " GWh"),
               text = htmltools::HTML(paste0("Consommation", tags$br(), "d'électricité")),
@@ -60,21 +58,20 @@ mod_collapse_stats_box_server <- function(id,
             )# End descriptionBlock
           )# End column
         ),# End 1st fluidrow
+
+        fluidRow(
       column(
         width = 12,
-        shinydashboardPlus::descriptionBlock(
-          numberColor = "green",
+        bs4Dash::descriptionBlock(
           number = year,
           header = scales::label_percent(accuracy = .1)(production_value/consumption_value),
           text = htmltools::HTML(paste0("Taux de couverture", tags$br(), "électrique annuel")),
           rightBorder = FALSE
-        )
-      )
-
-        )# # End 2nd fluidRow
+        )# End descriptionBlock
+      )# End column
+      )# End 2nd fluidRow
       )# End box
-    })
-
-  })
+    })# End renderUI
+  })# End moduleServer
 }
 

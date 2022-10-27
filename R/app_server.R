@@ -6,11 +6,7 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
-
-  # Module for dropdown block unit converter
-  mod_unit_converter_server("unit_converter")
-
+   info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
 
   ## Inputs module ----
     # This retrieves the inputs saved in mod_inputs.R

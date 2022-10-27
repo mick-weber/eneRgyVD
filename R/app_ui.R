@@ -2,10 +2,8 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny shinydashboard
+#' @import shiny shinydashboard bs4Dash
 #' @noRd
-
-
 
 app_ui <- function(request) {
 
@@ -14,43 +12,40 @@ app_ui <- function(request) {
     golem_add_external_resources(),
 
     # Your application UI logic
-    shinydashboardPlus::dashboardPage(
-      skin = "green",
+    bs4Dash::dashboardPage(
       # Header ----
-      shinydashboardPlus::dashboardHeader(title = "eneRgy VD (v0.2)",
+      bs4Dash::dashboardHeader(title = "eneRgy VD",
                                           titleWidth = 300,
-                                          shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                          bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                        icon = icon("calendar", lib = "glyphicon"),
                                                                        headerText = "Dernières mises à jour",
-                                                                       shinydashboard::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                       bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                                                         status = "info",
                                                                                                         text = "Juin 2022 : données production électricité 2021"),
-                                                                       shinydashboard::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                       bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                                                         status = "info",
                                                                                                         text = "Juin 2022 : données consommation électricité 2020")
                                           ),# End dropdownMenu 'updates'
-                                          shinydashboard::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                          bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                        icon = icon("envelope", lib = "font-awesome"),
                                                                        headerText = "Retours et suggestions",
-                                                                       shinydashboard::notificationItem(text = "Nous contacter par e-mail",
+                                                                       bs4Dash::notificationItem(text = "Nous contacter par e-mail",
                                                                                                         href = paste0("mailto:", mail_address), # defined in utils_helpers.R
                                                                                                         icon = icon("envelope", lib = "font-awesome"), status = "info")
-                                          ),# End dropdownMenu 'contact'
+                                          )# End dropdownMenu 'contact'
 
-                                           # Add unit converter drop-down next to the app's title (left)
-                                           leftUi = mod_unit_converter_ui("unit_converter")
 
       ),# End dashboardHeader
 
       # Sidebar ----
-      shinydashboard::dashboardSidebar(
+      bs4Dash::dashboardSidebar(
         width = 300,
-        shinydashboard::sidebarMenu(id = "sidebarMenu",
-                                    shinydashboard::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
-                                    shinydashboard::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
-                                    shinydashboard::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
-                                    shinydashboard::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
-                                    shinydashboard::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
+        bs4Dash::sidebarMenu(id = "sidebarMenu",
+                                    bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
+                                    bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
+                                    bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
+                                    bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
+                                    bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
         ),# End sidebarMenu
 
         ## SelectInput module ----
@@ -60,11 +55,11 @@ app_ui <- function(request) {
       ),
 
       # Body ----
-      shinydashboard::dashboardBody(
+      bs4Dash::dashboardBody(
 
         ## tabMap ----
-        shinydashboard::tabItems(
-          shinydashboard::tabItem(
+        bs4Dash::tabItems(
+          bs4Dash::tabItem(
             tabName = "tabMap",
             fluidRow(
               column(width = 8,
@@ -101,7 +96,7 @@ app_ui <- function(request) {
           )# End fluidRow
           ),# End tabItem
           ## tabCons ----
-          shinydashboard::tabItem(
+          bs4Dash::tabItem(
             tabName = "tabCons",
             h4(strong("Consommation d'électricité par commune")),
             # breathing
@@ -111,7 +106,7 @@ app_ui <- function(request) {
 
           ),# End tabItem
           ## tabProd ----
-          shinydashboard::tabItem(
+          bs4Dash::tabItem(
             tabName = "tabProd",
             h4(strong("Production d'électricité par commune")),
             # breathing
@@ -122,7 +117,7 @@ app_ui <- function(request) {
 
           ),# End tabItem
           ## tabReport ----
-          shinydashboard::tabItem(
+          bs4Dash::tabItem(
             tabName = "tabReport",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
             h4(strong("Générer un rapport énergétique")),
@@ -132,7 +127,7 @@ app_ui <- function(request) {
 
           ),# End tabItem
           ## tabInfo ----
-          shinydashboard::tabItem(
+          bs4Dash::tabItem(
             tabName = "tabInfo",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
             h4(strong("À propos")),

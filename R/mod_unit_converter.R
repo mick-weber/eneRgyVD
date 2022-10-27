@@ -12,7 +12,7 @@
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shinydashboardPlus::dropdownBlock(
+    bs4Dash::dropdownBlock(
       id = ns("unit_dropdown"),
       title = "Unités",
       badgeStatus = NULL, # avoids the useless notif number counting the widgets in the dropdownBlock

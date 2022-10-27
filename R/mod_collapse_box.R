@@ -13,7 +13,6 @@ mod_collapse_box_ui <- function(id){
 
     uiOutput(ns("vd_box"))
 
-
   )
 }
 
@@ -26,7 +25,7 @@ mod_collapse_box_server <- function(id){
 
     output$vd_box <- renderUI({
 
-      shinydashboardPlus::box(
+      bs4Dash::box(
         solidHeader = FALSE,
         collapsible = TRUE,
         title = "Le canton en quelques chiffres",
@@ -36,8 +35,9 @@ mod_collapse_box_server <- function(id){
         footer = fluidRow(
           column(
             width = 6,
-            shinydashboardPlus::descriptionBlock(
-              numberColor = "green", marginBottom = TRUE, # for testing
+            bs4Dash::descriptionBlock(
+              # numberColor = "green",
+              marginBottom = TRUE, # for testing
               number = "2020",
               header = "2'000 GWh",
               text = "Production d'électricité"
@@ -45,8 +45,8 @@ mod_collapse_box_server <- function(id){
           ),
           column(
             width = 6,
-            shinydashboardPlus::descriptionBlock(
-              numberColor = "green",
+            bs4Dash::descriptionBlock(
+              # numberColor = "green",
               number = "2020",
               header = "5'000 GWh",
               text = "Consommation d'électricité"

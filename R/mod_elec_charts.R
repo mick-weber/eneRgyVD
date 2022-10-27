@@ -116,6 +116,7 @@ mod_elec_charts_server <- function(id,
                                    dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars){ # the non-reactive documentation file for variables description
   moduleServer(id, function(input, output, session){
+
     ns <- session$ns
 
     # Initialize toggle free_y condition for conditionalPanel in ui

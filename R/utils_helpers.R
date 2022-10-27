@@ -61,18 +61,19 @@ main_color <- "#3A862D"
 ### Conversion units table ----
 
 # Directly linked to mod_unit_converter.R module
+# !! 27.10.2022 : deleted because useless
 
-# From... vector. Supplies
-first_units <- c("kWh", "MWh", "GWh", "TJ")
-# To... vector.
-second_units <- c("kWh", "MWh", "GWh", "TJ")
-# Create table of conversion with all possible combinaisons
-conv_table <- expand.grid(from = first_units, to = second_units) %>%
-  dplyr::arrange(from) %>%
-  dplyr::mutate(factor = c(1, 1/1e3, 1/1e6, 3.6/1e6, # kWh to...
-                    1e3, 1, 1/1e3, 1/3.6/1e3, # MWh to...
-                    1e6, 1e3, 1, 1/3.6, # GWh to...
-                    1/3.6*1e6, 1/3.6*1e3, 1/3.6*1, 1)) # TJ to...
+# # From... vector. Supplies
+# first_units <- c("kWh", "MWh", "GWh", "TJ")
+# # To... vector.
+# second_units <- c("kWh", "MWh", "GWh", "TJ")
+# # Create table of conversion with all possible combinaisons
+# conv_table <- expand.grid(from = first_units, to = second_units) %>%
+#   dplyr::arrange(from) %>%
+#   dplyr::mutate(factor = c(1, 1/1e3, 1/1e6, 3.6/1e6, # kWh to...
+#                     1e3, 1, 1/1e3, 1/3.6/1e3, # MWh to...
+#                     1e6, 1e3, 1, 1/3.6, # GWh to...
+#                     1/3.6*1e6, 1/3.6*1e3, 1/3.6*1, 1)) # TJ to...
 
 ### Available communes ----
 # With more datasets (i.e. elec consumption), checking that the names are OK

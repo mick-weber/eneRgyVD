@@ -9,3 +9,85 @@
 #inputs_1-selected_district-label{
   color: #bec5cb;
 }
+
+/*Increase generic font size*/
+body {
+    font-size: 1.25em;
+}
+
+/*Increase sidebar text size (+20%)*/
+#sidebarItemExpanded > ul > li{
+  font-size:1em;
+}
+
+
+/*Change the shinyalert (sweet-alert) popup text display style*/
+body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
+  text-align: center;}
+
+
+/*display map indication centered insted of left aligned*/
+#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-8 > h4{
+  text-align: center;
+}
+
+/*Change map height to full height (100vh) minus header height (50px)+padding(15px)+title(20px)*/
+#map {
+    height: calc(100vh - 150px) !important;
+}
+
+/*Remove padding of column holding the stats boxes in tabMap*/
+#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-4{
+  padding-left:0px;
+}
+
+/* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
+/*pre {
+/*  color: black;
+/*  background-color: white;
+/*  font-size:14px;
+/*  font-weight:bold;
+/*}
+/*
+/*/* custom class for shiny download buttons */
+/*.dlButton {
+/*  width:175px;
+/*  background-color:white;
+/*  color:#3A862D;
+/*}
+/*
+/*
+/*/* custom class for 'excel' buttons of datatable. We must remove initial background gradient first.*/
+/*div.dt-buttons > button.dt-button.buttons-csv.buttons-html5{
+/*  width:70px;
+/*  background:none;
+/*  background-color:white;
+/*  color:darkgreen;
+/*}
+/*
+/*/* custom class for 'csv' buttons of datatable. We must remove initial background gradient first.*/
+/*div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
+/*  width:70px;
+/*  background:none;
+/*  background-color:white;
+/*  color:darkgreen;
+/*}
+
+/* this targets value_callback textOutput() in the unit converter widget */
+#unit_converter-value_callback {
+  font-size:11px;
+  color:grey;
+}
+
+#unit_converter-duh_comment {
+  font-size:11px;
+  color:grey;
+}
+
+
+/* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
+.shiny-notification {
+  position:fixed;
+  top: calc(60%);
+  left: calc(50%);
+}

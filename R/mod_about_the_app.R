@@ -78,7 +78,7 @@ mod_about_the_app_ui <- function(id){
                 )# End nested tabPanel 2/2
                              )# End nested tabsetPanel
                       )# End column
-                ),# End tabPanel 'Données'
+      ),# End tabPanel 'Données'
 
 
       shiny::tabPanel(title = "Confidentialité",
@@ -89,7 +89,7 @@ mod_about_the_app_ui <- function(id){
                              tags$p("Attente de confirmation de l'appui juridique DGE-DIREN que les données par communes présentent dans l'application
            ne sont pas sujettes à restrictions juridiques. Pour cette raison, des données aléatoires sont temporairement diffusées.")
                       )# End column
-                      ),# End tabPanel 'Confidentialité'
+      ),# End tabPanel 'Confidentialité'
 
 
       shiny::tabPanel(title = "Technologie",
@@ -124,7 +124,7 @@ mod_about_the_app_ui <- function(id){
               column(3, p("Code complet sur GitHub"))
             )# End fluidRow
                       )# End column
-            )# End tabPanel 'Technologie'
+      )# End tabPanel 'Technologie'
 
 
     )# End main tabsetPanel

@@ -17,7 +17,7 @@ mod_elec_charts_ui <- function(id){
 
                       # radioGroupButtons() for tab ----
 
-                      shiny::wellPanel(style = "background: white",
+                      shiny::wellPanel(style = "background: transparent",
                                        shinyWidgets::radioGroupButtons(
                                          inputId = ns("tab_plot_type"),
                                          label = "Sélection du type de graphique",

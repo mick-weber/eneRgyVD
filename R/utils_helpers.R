@@ -59,16 +59,19 @@ main_color_active <- "#26C026"
 # Example from https://dreamrs.github.io/fresh/
 
 # Search bs4dash vars
-# fresh::search_vars_bs4dash(pattern = "sidebar") %>%
+# fresh::search_vars_bs4dash(pattern = "navbar") %>%
 #   View()
 
 eneRgy_theme <- fresh::create_theme(
 
+  fresh::bs4dash_status(
+    primary = main_color
+  ),
 
   fresh::bs4dash_vars(
-    navbar_light_color = main_color,
-    navbar_light_active_color = main_color_active,
-    navbar_light_hover_color = main_color_active
+    navbar_light_color = "#f1f2f3",
+    navbar_light_active_color = "FFF",
+    navbar_light_hover_color = "FFF"
   ),
   fresh::bs4dash_yiq(
     contrasted_threshold = 10,
@@ -76,7 +79,7 @@ eneRgy_theme <- fresh::create_theme(
     text_light = "#272c30"
   ),
   fresh::bs4dash_layout(
-    main_bg = "#FFF"
+    main_bg = "white"
   ),
   fresh::bs4dash_sidebar_light(
     bg = "#272c30",
@@ -85,10 +88,7 @@ eneRgy_theme <- fresh::create_theme(
     submenu_bg = "#272c30",
     submenu_color = "#bec5cb",
     submenu_hover_color = "#FFF"
-  ),
-  fresh::bs4dash_status(
-    primary = main_color, danger = "#BF616A", light = "#272c30"
-  ) # ,fresh::bs4dash_color()
+  )
 
 )
 
@@ -96,23 +96,6 @@ eneRgy_theme <- fresh::create_theme(
 # Non-reactive objects for input widgets ----
 
 ## Generic objects (across all tabs) ----
-
-### Conversion units table ----
-
-# Directly linked to mod_unit_converter.R module
-# !! 27.10.2022 : deleted because useless
-
-# # From... vector. Supplies
-# first_units <- c("kWh", "MWh", "GWh", "TJ")
-# # To... vector.
-# second_units <- c("kWh", "MWh", "GWh", "TJ")
-# # Create table of conversion with all possible combinaisons
-# conv_table <- expand.grid(from = first_units, to = second_units) %>%
-#   dplyr::arrange(from) %>%
-#   dplyr::mutate(factor = c(1, 1/1e3, 1/1e6, 3.6/1e6, # kWh to...
-#                     1e3, 1, 1/1e3, 1/3.6/1e3, # MWh to...
-#                     1e6, 1e3, 1, 1/3.6, # GWh to...
-#                     1/3.6*1e6, 1/3.6*1e3, 1/3.6*1, 1)) # TJ to...
 
 ### Available communes ----
 # With more datasets (i.e. elec consumption), checking that the names are OK

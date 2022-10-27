@@ -16,13 +16,17 @@ app_ui <- function(request) {
       # Custom theme
       freshTheme = eneRgy_theme, # utils_helpers.R
       # Header ----
-      bs4Dash::dashboardHeader(titleWidth = 300,
+      bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
                                title = bs4Dash::dashboardBrand(
                                  title = "eneRgy",
                                  image = NULL, # add path to logo if needed
-                                 color = "warning",
+                                 color = "primary",
                                  href = "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/diren-energie/"
                                ),
+
+                               leftUi = mod_unit_converter_ui("unit_converter"),
+
+
                                rightUi = shiny::tagList(bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                               icon = icon("calendar", lib = "glyphicon"),
                                                                               headerText = "Dernières mises à jour",

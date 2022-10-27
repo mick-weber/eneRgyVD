@@ -11,7 +11,8 @@ mod_elec_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
     # TABSETS for better readability of plot / table
-    shiny::tabsetPanel(
+    bs4Dash::tabsetPanel(
+      id = "tabset1",
       shiny::tabPanel(title = "Graphique",
 
                       # radioGroupButtons() for tab ----

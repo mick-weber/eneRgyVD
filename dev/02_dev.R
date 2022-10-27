@@ -28,10 +28,9 @@ usethis::use_package("scales")
 usethis::use_package("rjson")
 usethis::use_package("shinyWidgets")
 
-usethis::use_package("shinydashboard")
-usethis::use_package("shinydashboardPlus")
 usethis::use_package("bs4Dash")
 usethis::use_package("thematic") # for bs4Dash::useAutoColor()
+usethis::use_package("fresh")    # for bs4Dash custom theme
 
 usethis::use_package("shinycssloaders")
 usethis::use_package("shinyalert")

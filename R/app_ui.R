@@ -13,29 +13,37 @@ app_ui <- function(request) {
 
     # Your application UI logic
     bs4Dash::dashboardPage(
+      # Custom theme
+      freshTheme = eneRgy_theme, # utils_helpers.R
       # Header ----
-      bs4Dash::dashboardHeader(title = "eneRgy VD",
-                                          titleWidth = 300,
-                                          bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
-                                                                       icon = icon("calendar", lib = "glyphicon"),
-                                                                       headerText = "Dernières mises à jour",
-                                                                       bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
+      bs4Dash::dashboardHeader(titleWidth = 300,
+                               title = bs4Dash::dashboardBrand(
+                                 title = "eneRgy",
+                                 image = NULL, # add path to logo if needed
+                                 color = "warning",
+                                 href = "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/diren-energie/"
+                               ),
+                               rightUi = shiny::tagList(bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                                                              icon = icon("calendar", lib = "glyphicon"),
+                                                                              headerText = "Dernières mises à jour",
+                                                                              bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                                                         status = "info",
-                                                                                                        text = "Juin 2022 : données production électricité 2021"),
-                                                                       bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                                                        text = "06.22: données prod élec 2021"),
+                                                                              bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                                                         status = "info",
-                                                                                                        text = "Juin 2022 : données consommation électricité 2020")
-                                          ),# End dropdownMenu 'updates'
-                                          bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
-                                                                       icon = icon("envelope", lib = "font-awesome"),
-                                                                       headerText = "Retours et suggestions",
-                                                                       bs4Dash::notificationItem(text = "Nous contacter par e-mail",
-                                                                                                        href = paste0("mailto:", mail_address), # defined in utils_helpers.R
-                                                                                                        icon = icon("envelope", lib = "font-awesome"), status = "info")
-                                          )# End dropdownMenu 'contact'
+                                                                                                        text = "06.22: données conso élec 2020")
+                               ),# End dropdownMenu 'updates'
+                               bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                                     icon = icon("envelope", lib = "font-awesome"),
+                                                     headerText = "Retours et suggestions",
+                                                     bs4Dash::notificationItem(text = "Nous contacter par e-mail",
+                                                                               href = paste0("mailto:", mail_address), # defined in utils_helpers.R
+                                                                               icon = icon("envelope", lib = "font-awesome"), status = "info")
+                               )# End dropdownMenu 'contact'
+                               )# End tagList (rightUi)
 
 
-      ),# End dashboardHeader
+                               ),# End dashboardHeader
 
       # Sidebar ----
       bs4Dash::dashboardSidebar(

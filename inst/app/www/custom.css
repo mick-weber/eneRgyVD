@@ -1,0 +1,11 @@
+/* style.css */
+
+/* Colors of widgets text in the sidebar (differs from the main) */
+
+#inputs_1-selected_communes-label{
+	color: #bec5cb;
+}
+
+#inputs_1-selected_district-label{
+  color: #bec5cb;
+}

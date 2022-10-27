@@ -53,6 +53,45 @@ DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 ## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
+main_color_active <- "#26C026"
+
+## Custom {fresh} theme passed to bs4Dash in app_ui.R
+# Example from https://dreamrs.github.io/fresh/
+
+# Search bs4dash vars
+# fresh::search_vars_bs4dash(pattern = "sidebar") %>%
+#   View()
+
+eneRgy_theme <- fresh::create_theme(
+
+
+  fresh::bs4dash_vars(
+    navbar_light_color = main_color,
+    navbar_light_active_color = main_color_active,
+    navbar_light_hover_color = main_color_active
+  ),
+  fresh::bs4dash_yiq(
+    contrasted_threshold = 10,
+    text_dark = "#FFF",
+    text_light = "#272c30"
+  ),
+  fresh::bs4dash_layout(
+    main_bg = "#FFF"
+  ),
+  fresh::bs4dash_sidebar_light(
+    bg = "#272c30",
+    color = "#bec5cb",
+    hover_color = "#FFF",
+    submenu_bg = "#272c30",
+    submenu_color = "#bec5cb",
+    submenu_hover_color = "#FFF"
+  ),
+  fresh::bs4dash_status(
+    primary = main_color, danger = "#BF616A", light = "#272c30"
+  ) # ,fresh::bs4dash_color()
+
+)
+
 
 # Non-reactive objects for input widgets ----
 

@@ -13,22 +13,25 @@ mod_inputs_ui <- function(id){
   shiny::tagList(
 
     # selectizeInput() for municipalities ----
+
     shiny::selectizeInput(inputId = ns("selected_communes"),
-                   label = "Sélection par commune(s)",
-                   choices = communes_names,
-                   selected = NULL,
-                   multiple = TRUE,
-                   options = list(placeholder = "Plusieurs communes acceptées")),
+                          label = "Sélection par commune(s)",
+                          choices = communes_names,
+                          selected = NULL,
+                          multiple = TRUE,
+                          options = list(placeholder = "Plusieurs communes acceptées")
+    ),
 
     # selectizeInput() for district zoom ----
     # IF tabMap : Select input for zooming on the districts (WIP feature)
     shiny::conditionalPanel(
-       condition="input.sidebarMenu == 'tabMap'",
-    shiny::selectizeInput(inputId = ns("selected_district"),
-                   label = "Zoom sur un district",
-                   choices = districts_names,
-                   selected = 0,
-                   multiple = FALSE)),
+      condition="input.sidebarMenu == 'tabMap'",
+      shiny::selectizeInput(inputId = ns("selected_district"),
+                            label = "Zoom sur un district",
+                            choices = districts_names,
+                            selected = 0,
+                            multiple = FALSE)
+    ),
 
     # uiOutput for tabCons ----
 
@@ -156,11 +159,17 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       shiny::tagList(
+
+        tags$div(class = 'customSliderInput', # custom.css -> go green
+
         shiny::sliderInput(ns("cons_year"), label = "Choix des années",
                            min = inputVals$min_avail_cons,
                            max = inputVals$max_avail_cons,
                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
-                           step = 1L, sep = "", ticks = T))
+                           step = 1L, sep = "", ticks = T)
+
+        )
+        )
     })
 
 
@@ -170,11 +179,14 @@ mod_inputs_server <- function(id){
         req(input$selected_communes)
 
       shiny::tagList(
+
+        tags$div(class = 'customSliderInput', # custom.css -> go green
+
         shiny::sliderInput(ns("prod_year"), label = "Choix des années",
                     min = inputVals$min_avail_prod,
                     max = inputVals$max_avail_prod,
                     value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),
-                    step = 1L, sep = "", ticks = T),
+                    step = 1L, sep = "", ticks = T)),
 
         shinyWidgets::pickerInput(ns("prod_techs"), label = "Choix des technologies",
                                   choices = inputVals$techs_avail,

@@ -1,13 +1,45 @@
 /* style.css */
 
-/* Colors of widgets text in the sidebar (differs from the main) */
-
-#inputs_1-selected_communes-label{
-	color: #bec5cb;
+/* Colors widget text in the sidebar (differs from the dash' body) */
+#sidebarItemExpanded > div.os-padding > div > div{
+  color: #bec5cb;
 }
 
-#inputs_1-selected_district-label{
-  color: #bec5cb;
+
+/* Custom class for sliderInputs (go green for labs and slider) */
+
+.customSliderInput .irs--shiny .irs-bar {
+   background: #3A862D;
+   border-top: #3A862D;
+   border-bottom: #3A862D;
+}
+/* Label colors of 'from' and 'to' labels*/
+
+.customSliderInput .irs--shiny .irs-from,
+.customSliderInput .irs--shiny .irs-to{
+  background-color:#3A862D;
+}
+
+
+/* Remove minor ticks of sliderInput class */
+.customSliderInput .irs-grid-pol.small{
+  height: 0px;}
+
+.customSliderInput .irs--shiny .irs-grid-pol{
+  background-color:#bec5cb;
+}
+
+/* Prod techs widget in sidebar: display text in black */
+#inputs_1-prod_year_n_techs > div.form-group.shiny-input-container > div > button{
+  color:black;
+}
+
+
+/* Select/Unselect buttons for technologies select input: */
+/* same colors as selectizeInput selected items : lightgrey background, darkgrey text*/
+#inputs_1-prod_year_n_techs > div:nth-child(2) > div > div > div.bs-actionsbox > div > button{
+  background-color: #efefef;
+  color: #4f4f4f;
 }
 
 /*Increase generic font size*/
@@ -20,16 +52,10 @@ body {
   font-size:1em;
 }
 
-
 /*Change the shinyalert (sweet-alert) popup text display style*/
 body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
   text-align: center;}
 
-
-/*display map indication centered insted of left aligned*/
-#shiny-tab-tabMap > div:nth-child(1) > div.col-sm-8 > h4{
-  text-align: center;
-}
 
 /*Change map height to full height (100vh) minus header height (50px)+padding(15px)+title(20px)*/
 #map {
@@ -42,46 +68,28 @@ body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
 }
 
 /* Affects all the pre elements (stands for PREformatted text elements) rendered by renderText() */
-/*pre {
-/*  color: black;
-/*  background-color: white;
-/*  font-size:14px;
-/*  font-weight:bold;
-/*}
-/*
-/*/* custom class for shiny download buttons */
-/*.dlButton {
-/*  width:175px;
-/*  background-color:white;
-/*  color:#3A862D;
-/*}
-/*
-/*
-/*/* custom class for 'excel' buttons of datatable. We must remove initial background gradient first.*/
-/*div.dt-buttons > button.dt-button.buttons-csv.buttons-html5{
-/*  width:70px;
-/*  background:none;
-/*  background-color:white;
-/*  color:darkgreen;
-/*}
-/*
-/*/* custom class for 'csv' buttons of datatable. We must remove initial background gradient first.*/
-/*div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
-/*  width:70px;
-/*  background:none;
-/*  background-color:white;
-/*  color:darkgreen;
-/*}
-
-/* this targets value_callback textOutput() in the unit converter widget */
-#unit_converter-value_callback {
-  font-size:11px;
-  color:grey;
+pre {
+  color: black;
+  background-color: white;
+  font-size:14px;
+  font-weight:bold;
 }
 
-#unit_converter-duh_comment {
-  font-size:11px;
-  color:grey;
+/* custom class for shiny download buttons */
+.btn.dlButton{
+  width:175px;
+  color:#3A862D;
+  background-color:white;
+}
+
+
+/* custom class for Excel/csv buttons of datatable. We must remove initial background gradient rst.*/
+div.dt-buttons > button.dt-button.buttons-csv.buttons-html5,
+div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
+  width:70px;
+  background:none;
+  background-color:white;
+  color:darkgreen;
 }
 
 
@@ -91,3 +99,13 @@ body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
   top: calc(60%);
   left: calc(50%);
 }
+
+/* Class mandatory for the prettyRadioButtons in the header (mod_unit_converter.R)*/
+.dropdown{
+  margin-top:9px;
+  color:white;
+  font-size:1rem;
+}
+
+
+

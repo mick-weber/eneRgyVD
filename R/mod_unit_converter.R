@@ -11,17 +11,14 @@
 
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
-  tagList(
-    bs4Dash::dropdownMenu(
-      headerText = "Modifier les unités énergétiques",
-      title = "Unités",
-      badgeStatus = NULL, # avoids the useless notif number counting the widgets in the dropdownBlock
-      icon = icon("refresh", lib = "glyphicon"),
-
-      shinyWidgets::prettyRadioButtons(inputId = ns("in_unit"), label = "Choisir une unité",
-                                       choices = c("kWh", "MWh", "GWh", "TJ"),selected = "kWh",
-                                       inline = FALSE, width = "150px")
-)
+  tagList(tags$li(
+      shinyWidgets::prettyRadioButtons(inputId = ns("in_unit"), label = NULL,
+                                       choices = c("kWh", "MWh", "GWh", "TJ"),
+                                       selected = "kWh",
+                                       inline = TRUE,
+                                       status =  "default",
+                                       icon = icon("check"),
+                                       animation = "jelly",),class = "dropdown")
     )
 }
 

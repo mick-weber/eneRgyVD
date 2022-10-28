@@ -59,8 +59,8 @@ main_color_active <- "#26C026"
 # Example from https://dreamrs.github.io/fresh/
 
 # Search bs4dash vars
-# fresh::search_vars_bs4dash(pattern = "navbar") %>%
-#   View()
+fresh::search_vars_bs4dash(pattern = "navbar") %>%
+  View()
 
 eneRgy_theme <- fresh::create_theme(
 
@@ -69,9 +69,9 @@ eneRgy_theme <- fresh::create_theme(
   ),
 
   fresh::bs4dash_vars(
-    navbar_light_color = "#f1f2f3",
-    navbar_light_active_color = "FFF",
-    navbar_light_hover_color = "FFF"
+    navbar_dark_color = "white",
+    navbar_dark_active_color = main_color_active,
+    navbar_dark_hover_color = main_color_active
   ),
   fresh::bs4dash_yiq(
     contrasted_threshold = 10,

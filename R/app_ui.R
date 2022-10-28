@@ -13,6 +13,7 @@ app_ui <- function(request) {
 
     # Your application UI logic
     bs4Dash::dashboardPage(
+      dark = NULL,
       # Custom theme
       freshTheme = eneRgy_theme, # utils_helpers.R
       # Header ----
@@ -51,6 +52,7 @@ app_ui <- function(request) {
 
       # Sidebar ----
       bs4Dash::dashboardSidebar(
+        minified = FALSE,
         width = 300,
         bs4Dash::sidebarMenu(id = "sidebarMenu",
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
@@ -76,7 +78,7 @@ app_ui <- function(request) {
             fluidRow(
               column(width = 8,
                      # Title for select map
-                     h4("Sélectionnez des communes sur la carte ou dans la zone latérale"),
+                     h4(strong("Sélectionnez des communes sur la carte ou dans la zone latérale")),
                      # Leaflet select map
                       leaflet::leafletOutput("map") %>% # height defined in custom.css #map
                         shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R

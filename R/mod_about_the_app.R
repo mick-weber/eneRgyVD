@@ -42,6 +42,7 @@ mod_about_the_app_ui <- function(id){
 
                              bs4Dash::tabsetPanel(
                                tabPanel("Production d'électricité",
+                                        br(),
                                         tags$ul(
                                           tags$li(h5(strong("Production d'électricité : PRONOVO")),
                                                   p("L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
@@ -60,6 +61,7 @@ mod_about_the_app_ui <- function(id){
                                ),# End nested tabPanel 1/2
 
                 tabPanel("Consommation d'électricité",
+                         br(),
                          tags$ul(
                            tags$li(h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
                                    p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
@@ -117,7 +119,7 @@ mod_about_the_app_ui <- function(id){
               column(1, div(style = "margin-top: -10px;", # inline css for nice alignment with p()
                             shinydashboardPlus::socialButton(
                               href = "https://github.com/mick-weber/eneRgyVD",
-                              icon = icon("github")
+                              icon = icon("github", "fa-2x") # 2x bigger
                             ),# End socialbutton
               )# End div
               ),# End column

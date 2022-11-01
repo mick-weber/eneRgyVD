@@ -165,7 +165,7 @@ Here we will import at least these variables in the app :
 
 * `secteur`: the sector according to DGE-DIREN nomenclature (industry/services, households, transports, unknown, ...)
 
-* `consommation_kwh`: the amount of electrical energy, in kWh, consumed by the sector
+* `consommation`: the amount of electrical energy, in kWh as fed to the app, consumed by the sector
 
 
 Since 2020 is the first year where such data is available, there is currently only one year to display. More years will be added in the future, so the visualisations are compatible when the user selects more than one year.

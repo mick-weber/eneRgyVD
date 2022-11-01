@@ -6,6 +6,7 @@
 \usage{
 create_sunburst_plotly(
   data_sunburst,
+  unit,
   var_year,
   var_values,
   var_commune,

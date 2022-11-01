@@ -12,7 +12,7 @@
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   tagList(tags$li(
-      shinyWidgets::prettyRadioButtons(inputId = ns("in_unit"), label = NULL,
+      shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"), label = NULL,
                                        choices = c("kWh", "MWh", "GWh", "TJ"),
                                        selected = "kWh",
                                        inline = TRUE,
@@ -28,6 +28,16 @@ mod_unit_converter_ui <- function(id){
 mod_unit_converter_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+
+    selectedUnit <- reactiveValues()
+
+    observe({
+      selectedUnit$unit_to <- input$selected_unit
+    })
+
+    return(selectedUnit) # never forget this one
+
 })
 }
 

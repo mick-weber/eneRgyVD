@@ -9,8 +9,11 @@ app_server <- function(input, output, session) {
    info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
 
   ## Inputs module ----
-    # This retrieves the inputs saved in mod_inputs.R
 
+    # This retrieves the reactiveVal() selected unit to convert the dataframes from
+   selectedUnit <- mod_unit_converter_server("unit_converter")
+
+    # This retrieves the inputs saved in mod_inputs.R
    inputVals <- mod_inputs_server("inputs_1")
 
   # subset_cons_data ----
@@ -26,13 +29,17 @@ app_server <- function(input, output, session) {
      # waiting on these to get initialized (renderUIs)
      req(inputVals$min_selected_cons,
          inputVals$max_selected_cons,
-         inputVals$cons_dataset)
+         inputVals$cons_dataset,
+         selectedUnit$unit_to)
 
-     # further filter cons_dataset with selected min/max values
-
+     # further filter cons_dataset with selected min/max values and convert to selectedUnit()
+      # CONVERSION TEST IN PROGRESS
      inputVals$cons_dataset %>%
        dplyr::filter(annee >= inputVals$min_selected_cons,
-                     annee <= inputVals$max_selected_cons)
+                     annee <= inputVals$max_selected_cons)  %>%
+         convert_units(colnames = "consommation",
+                       unit_from = "kWh",
+                       unit_to = selectedUnit$unit_to)
 
    })
 
@@ -55,9 +62,13 @@ app_server <- function(input, output, session) {
      inputVals$prod_dataset %>%
        dplyr::filter(annee >= inputVals$min_selected_prod,
                      annee <= inputVals$max_selected_prod) %>%
-       dplyr::filter(categorie_diren %in% inputVals$techs_selected)
+       dplyr::filter(categorie_diren %in% inputVals$techs_selected) %>%
+        convert_units(colnames = contains(c("Injection", "Production", "Autoconso", "Puissance")),
+                      unit_from = "kWh",
+                      unit_to = selectedUnit$unit_to)
 
    }) # End reactive()
+
 
   # Sunburst data prod/cons ----
 
@@ -166,13 +177,14 @@ app_server <- function(input, output, session) {
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
                           subsetData = subset_cons_data,
+                          selectedUnit = selectedUnit,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_cons_data,
                           legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "secteur",
-                          var_values = "consommation_kwh",
+                          var_values = "consommation",
                           color_palette = colors_sectors,
                           third_rank = FALSE,
                           var_rank_3_1 = NULL, var_rank_3_2 = NULL,
@@ -187,6 +199,7 @@ app_server <- function(input, output, session) {
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
                           subsetData = subset_prod_data,
+                          selectedUnit = selectedUnit,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_prod_data,
                           legend_title = "Technologies",

@@ -4,7 +4,7 @@
 \alias{create_prod_table_dt}
 \title{create_table_dt}
 \usage{
-create_prod_table_dt(data)
+create_prod_table_dt(data, unit)
 }
 \arguments{
 \item{data}{Specific electricity production, DGE-DIREN data to transform to datatable.

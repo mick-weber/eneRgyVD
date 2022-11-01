@@ -127,8 +127,9 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 create_bar_plotly <- function(data,
                               var_year,
                               var_commune,
+                              unit, # input$selected_unit value retrieved in app_server
                               var_rank_2, # one of secteur, categorie_diren...
-                              var_values, # one of consommation_kwh, production_totale...
+                              var_values, # one of consommation, production_totale...
                               color_palette, # 'colors_categories',
                               stacked = TRUE, # stacked by default
                               free_y = FALSE,
@@ -142,15 +143,15 @@ create_bar_plotly <- function(data,
                         fill = .data[[var_rank_2]],
                         # Text is reused in ggplotly(tooltip = 'text')
                         text = paste0(.data[[var_rank_2]], "\n",
-                                      format(round(.data[[var_values]]/1e3, digits = 0), big.mark = "'"),
-                                      " MWh en ", .data[[var_year]])))+
+                                      format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+                                      paste(unit, "en"), .data[[var_year]])))+
     ggplot2::geom_col(position = if_else(condition = stacked, # arg
                                          true = "stack",
                                          false = "dodge"))+
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
-    ggplot2::labs( x = "", y = "MWh")+
+    ggplot2::labs( x = "", y = unit)+
     ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),
                         ncol = 2,
                         # if the toggle linked to the free_y argument is TRUE, then free y axis
@@ -193,6 +194,7 @@ create_bar_plotly <- function(data,
 #' @return an interactive plot
 
 create_sunburst_plotly <- function(data_sunburst,
+                                   unit, # input$selected_unit value retrieved in app_server
                                    var_year,
                                    var_values, var_commune, var_rank_2,
                                    third_rank,var_rank_3_1, var_rank_3_2){
@@ -248,7 +250,8 @@ create_sunburst_plotly <- function(data_sunburst,
 
   # We hadd the hover_values for the tooltip in plotly, in MWh for readability
   sunburst_df <- sunburst_df %>%
-    dplyr::mutate(values_hover = paste0(format(values/1e3, big.mark = "'", digits = 0, scientific = F), " MWh"))
+    dplyr::mutate(values_hover = paste(format(values, big.mark = "'", digits = 0, scientific = F),
+                                        unit))
 
   # plot & enjoy
   plotly::plot_ly(data = sunburst_df,
@@ -277,7 +280,7 @@ create_sunburst_plotly <- function(data_sunburst,
 #' @return A DT table with export functionalities
 #' @export
 
-create_prod_table_dt <- function(data){
+create_prod_table_dt <- function(data, unit){
 
   data %>%
     dplyr::select(-numero_de_la_commune) %>%
@@ -289,9 +292,17 @@ create_prod_table_dt <- function(data){
                                # replacements pairs below
                                c("_" = " ",
                                  "totale" = "")))) %>%
-    # add units
-    dplyr::rename_with(.cols = 4:6, ~paste0(.x, " [kWh]")) %>%
-    dplyr::rename_with(.cols = 7, ~paste0(.x, " [kW]")) %>%
+    # add energy units in brackets
+    dplyr::rename_with(.cols = contains(c("Injection", "Production", "Autoconso")), ~paste0(.x, " [", unit, "]")) %>%
+    # add power units in brackets (xWh -> xW ; TJ -> TJ/h)
+    dplyr::rename_with(.cols = contains("Puissance"), ~paste0(.x,
+                                          " [",
+                                          # !! change to str_detect(unit, "Wh", str_remove(...), str_add("/h))
+                                          ifelse(unit == "TJ",
+                                                 "TJ/h",
+                                                 stringr::str_remove(string = unit,
+                                                                     pattern = "h")),
+                                          "]")) %>%
     dplyr::mutate(
       # change year to factor %>%
       Annee = as.factor(Annee),
@@ -329,13 +340,13 @@ create_prod_table_dt <- function(data){
 #' @return A DT table with export functionalities
 #' @export
 
-create_cons_table_dt <- function(data){
+create_cons_table_dt <- function(data, unit){ # later use unit in the code to display the unit in table
 
   data %>%
     # clear out useless vars
     select(-code_secteur) %>%
     # put installed power in the last position
-    dplyr::relocate(commune,annee,secteur, consommation_kwh) %>%
+    dplyr::relocate(commune,annee,secteur, consommation) %>%
     # rename columns to title case, replace "_" and trim blank spaces
     dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
       stringr::str_replace_all(string = str_to_title(.x),pattern = "_", replacement = " "))) %>%
@@ -343,7 +354,7 @@ create_cons_table_dt <- function(data){
       # change year to factor %>%
       Annee = as.factor(Annee),
       # format numeric cols
-      across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
+      dplyr::across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
     #turn to DT
     DT::datatable(options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page
@@ -416,6 +427,32 @@ return_palette_cons_elec <- function(){
 
 }
 
+#' convert_units
+#'
+#' @param data the dataframe containing the columns where to convert units
+#' @param colnames the colnames where to convert units
+#' @param unit_from the unit to convert from
+#' @param unit_to the unit to convert to. Choice between "kWh", "MWh", "GWh", "TJ"
+#'
+#' @return the same dataframe with updated units on target colnames
+#' @export
+
+convert_units <- function(data,
+                          colnames, # to be defined how it should be passed
+                          unit_from = "kWh",
+                          unit_to){ # check if it's worth saving the widget selected unit in a specific variable before (in mod_inputs.R)
+
+  # Retrieves the right conversion factor unit_table in utils_helpers.R according to unit_to
+  conversion_factor <- units_table %>%
+    dplyr::filter(unit == unit_to) %>%
+    dplyr::pull(kWh)
+
+  # Applies the conversion factor to the target colnames of the dataframe (division)
+  data %>%
+    dplyr::mutate(dplyr::across(colnames, ~.x / conversion_factor))
 
 
+  # Check if this is correct form or if I need to assign the new dataframe (and return() it)
+
+}
 

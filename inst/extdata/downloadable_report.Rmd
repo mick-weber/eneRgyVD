@@ -103,7 +103,7 @@ params$cons_data %>%
     eneRgyVD::create_bar_plotly(var_year = "annee",
                                 var_commune = "commune",
                                 var_rank_2 = "secteur",
-                                var_values = "consommation_kwh",
+                                var_values = "consommation",
                                 color_palette = eneRgyVD::return_palette_cons_elec(),
                                 stacked = T,
                                 free_y = F,

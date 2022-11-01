@@ -102,6 +102,7 @@ mod_elec_charts_ui <- function(id){
 mod_elec_charts_server <- function(id,
                                    inputVals,
                                    subsetData, # filtered data for communes and selected years
+                                   selectedUnit, # unit selected in mod_unit_converter.R
                                    sunburstData, # specific data for sunburst
                                    legend_title, # for legend of barplot (either secteur/technologies)
                                    target_year, # which current year for the sunburst
@@ -141,6 +142,7 @@ mod_elec_charts_server <- function(id,
       if(input$tab_plot_type == "bar"){
 
         # Update the initialized FALSE toggle_status with the input$toggle_status
+        # WIP with selectedUnit$unit_to
 
         # PLOTLY BAR PLOT
         output$chart_1 <- plotly::renderPlotly({
@@ -149,6 +151,7 @@ mod_elec_charts_server <- function(id,
           create_bar_plotly(data = subsetData(),
                             var_year = var_year,
                             var_commune = var_commune,
+                            unit = selectedUnit$unit_to,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
@@ -160,13 +163,11 @@ mod_elec_charts_server <- function(id,
       else if(input$tab_plot_type == "sunburst"){
 
 
-        # sunburst data creation was here. ..
-
-
         # PLOTLY SUNBURST PLOT
         output$chart_1 <- plotly::renderPlotly({
 
-          create_sunburst_plotly(data_sunburst = sunburstData(), #subsetData_d(), # created just above
+          create_sunburst_plotly(data_sunburst = sunburstData(), #subsetData_d(), # created just abovez
+                                 unit = selectedUnit$unit_to,
                                  var_year = var_year, # var name
                                  var_values = var_values, # var name
                                  var_commune = var_commune, # var name
@@ -180,7 +181,8 @@ mod_elec_charts_server <- function(id,
     # Renders the DT table
     output$table_1 <- DT::renderDataTable({
 
-      fct_table_dt_type(data = subsetData())
+      fct_table_dt_type(data = subsetData(),
+                        unit = selectedUnit$unit_to)
 
     })# End renderDT
 

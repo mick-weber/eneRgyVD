@@ -73,6 +73,7 @@ mod_inputs_server <- function(id){
 
     })
 
+
     # tabProd inputs ----
 
     ## Reactive subset data  ----
@@ -101,6 +102,7 @@ mod_inputs_server <- function(id){
 
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
+
     })
 
     # [inputVals 2/3] Other inputs not influenced by selectInputs() else than commune
@@ -127,7 +129,7 @@ mod_inputs_server <- function(id){
         dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
 
-    }) # End observe
+    })# End observe
 
     # inputVals 4/3 TESTING ; WHEN WORKING ADD THIS IN APPROPRIATE PLACE
     # store the elec consumption and production values of the current selection
@@ -144,10 +146,10 @@ mod_inputs_server <- function(id){
 
       inputVals$common_year_elec_cons <- subset_elec_cons() %>%
         dplyr::filter(annee == last_common_elec_year) %>%
-        dplyr::summarise(consommation_kwh = sum(consommation_kwh, na.rm = T)) %>%
-        dplyr::pull(consommation_kwh) # kWh
+        dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
+        dplyr::pull(consommation) # kWh initially
 
-    })
+    })# End observe
 
 
     ## Render dynamic UI for renderUIs ----
@@ -167,10 +169,8 @@ mod_inputs_server <- function(id){
                            max = inputVals$max_avail_cons,
                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
                            step = 1L, sep = "", ticks = T)
-
-        )
-        )
-    })
+        ))# End tagList()
+    })# End renderUi()
 
 
     # renderUI for when tabProd is selected

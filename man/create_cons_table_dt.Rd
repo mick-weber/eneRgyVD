@@ -4,7 +4,7 @@
 \alias{create_cons_table_dt}
 \title{create_cons_table_dt}
 \usage{
-create_cons_table_dt(data)
+create_cons_table_dt(data, unit)
 }
 \arguments{
 \item{data}{Specific electricity consumption, DGE-DIREN data to transform to datatable.

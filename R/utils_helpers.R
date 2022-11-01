@@ -19,13 +19,6 @@ load("./data/elec_cons_doc.rda")
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 # Files others than .Rd are in ./inst/extdata/
 
-
-# ETAIT JUSTE A LA BASE ??
-
-# report_path <- tempfile(fileext = ".Rmd")
-# file.copy("./inst/extdata/downloadable_report.Rmd", report_path, overwrite = TRUE)
-
-
 # Generic utils ----
 
 ## E-mail address and links ----
@@ -47,6 +40,18 @@ link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-d
 
 DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 
+## Units conversion table ----
+# Must match the choices in header's widget
+# Linked to fct_helpers.R convert_units()'s function
+
+units_table <- dplyr::tribble(
+  ~unit, ~kWh,
+  "kWh", 1,
+  "MWh", 1e3,
+  "GWh", 1e6,
+  "TJ", 1/3.6*1e6
+)
+
 
 # Theme ----
 
@@ -59,8 +64,8 @@ main_color_active <- "#26C026"
 # Example from https://dreamrs.github.io/fresh/
 
 # Search bs4dash vars
-fresh::search_vars_bs4dash(pattern = "navbar") %>%
-  View()
+# fresh::search_vars_bs4dash(pattern = "navbar") %>%
+#   View()
 
 eneRgy_theme <- fresh::create_theme(
 
@@ -187,7 +192,7 @@ prod_elec_vd_last_year <- elec_prod_communes %>%
 
 cons_elec_vd_last_year <- elec_cons_communes %>%
   dplyr::filter(annee == last_common_elec_year) %>%
-  dplyr::summarise(consommation_kwh = sum(consommation_kwh, na.rm = TRUE)) %>%
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
   dplyr::pull()
 
 

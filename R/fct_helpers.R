@@ -144,7 +144,7 @@ create_bar_plotly <- function(data,
                         # Text is reused in ggplotly(tooltip = 'text')
                         text = paste0(.data[[var_rank_2]], "\n",
                                       format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-                                      paste(unit, "en"), .data[[var_year]])))+
+                                      paste(unit, "en "), .data[[var_year]])))+
     ggplot2::geom_col(position = if_else(condition = stacked, # arg
                                          true = "stack",
                                          false = "dodge"))+
@@ -232,7 +232,9 @@ create_sunburst_plotly <- function(data_sunburst,
 
     lastsubtotal_row <- subsubtotal_row %>%
       dplyr::select(-values, -labels) %>%
-      dplyr::mutate(Injection = .data[[var_rank_3_1]], Autonconsommation = .data[[var_rank_3_2]], .keep = "unused") %>%
+      dplyr::mutate(Injection = .data[[var_rank_3_1]],
+                    Autonconsommation = .data[[var_rank_3_2]],
+                    .keep = "unused") %>%
       tidyr::pivot_longer(cols = c(Injection, Autonconsommation),
                    names_to = "labels",
                    values_to = "values") %>%
@@ -283,31 +285,26 @@ create_sunburst_plotly <- function(data_sunburst,
 create_prod_table_dt <- function(data, unit){
 
   data %>%
-    dplyr::select(-numero_de_la_commune) %>%
+    # Basic clean up for table output
+    dplyr::mutate(
+      # change year to factor %>%
+      Année = as.factor(Année),
+      # format numeric cols
+      across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
+    dplyr::select(-`N° OFS`) %>%
     # put installed power in the last position
-    dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
-    # rename columns to title case, replace "_" and trim blank spaces
-    dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
-      stringr::str_replace_all(string = stringr::str_to_title(.x),
-                               # replacements pairs below
-                               c("_" = " ",
-                                 "totale" = "")))) %>%
+    dplyr::relocate(`Puissance électrique installée`, .after = dplyr::last_col()) %>%
     # add energy units in brackets
     dplyr::rename_with(.cols = contains(c("Injection", "Production", "Autoconso")), ~paste0(.x, " [", unit, "]")) %>%
     # add power units in brackets (xWh -> xW ; TJ -> TJ/h)
     dplyr::rename_with(.cols = contains("Puissance"), ~paste0(.x,
-                                          " [",
-                                          # !! change to str_detect(unit, "Wh", str_remove(...), str_add("/h))
-                                          ifelse(unit == "TJ",
-                                                 "TJ/h",
-                                                 stringr::str_remove(string = unit,
-                                                                     pattern = "h")),
-                                          "]")) %>%
-    dplyr::mutate(
-      # change year to factor %>%
-      Annee = as.factor(Annee),
-      # format numeric cols
-      across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
+                                                              " [",
+                                                              # !! change to str_detect(unit, "Wh", str_remove(...), str_add("/h))
+                                                              ifelse(unit == "TJ",
+                                                                     "TJ/h",
+                                                                     stringr::str_remove(string = unit,
+                                                                                         pattern = "h")),
+                                                              "]")) %>%
     #turn to DT
     DT::datatable(options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page
@@ -340,21 +337,22 @@ create_prod_table_dt <- function(data, unit){
 #' @return A DT table with export functionalities
 #' @export
 
-create_cons_table_dt <- function(data, unit){ # later use unit in the code to display the unit in table
+create_cons_table_dt <- function(data, unit){
 
   data %>%
-    # clear out useless vars
-    select(-code_secteur) %>%
-    # put installed power in the last position
-    dplyr::relocate(commune,annee,secteur, consommation) %>%
-    # rename columns to title case, replace "_" and trim blank spaces
-    dplyr::rename_with(.cols = dplyr::everything(), ~stringr::str_trim(
-      stringr::str_replace_all(string = str_to_title(.x),pattern = "_", replacement = " "))) %>%
+    # Basic clean up for table output
     dplyr::mutate(
-      # change year to factor %>%
-      Annee = as.factor(Annee),
+      # change year to factor
+      Année = as.factor(Année),
       # format numeric cols
       dplyr::across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
+
+    # clear out useless vars
+    select(-`Code secteur`) %>%
+    # put installed power in the last position
+    dplyr::relocate(Commune, Année, Secteur, Consommation) %>%
+    # rename Consommation with the unit in brackets
+    dplyr::rename_with(.cols = contains("Consommation"), ~paste0(.x, " [", unit, "]")) %>%
     #turn to DT
     DT::datatable(options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page

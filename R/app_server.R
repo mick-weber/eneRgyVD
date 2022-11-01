@@ -35,9 +35,9 @@ app_server <- function(input, output, session) {
      # further filter cons_dataset with selected min/max values and convert to selectedUnit()
       # CONVERSION TEST IN PROGRESS
      inputVals$cons_dataset %>%
-       dplyr::filter(annee >= inputVals$min_selected_cons,
-                     annee <= inputVals$max_selected_cons)  %>%
-         convert_units(colnames = "consommation",
+       dplyr::filter(Année >= inputVals$min_selected_cons,
+                     Année <= inputVals$max_selected_cons)  %>%
+         convert_units(colnames = "Consommation",
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
@@ -60,9 +60,9 @@ app_server <- function(input, output, session) {
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 
      inputVals$prod_dataset %>%
-       dplyr::filter(annee >= inputVals$min_selected_prod,
-                     annee <= inputVals$max_selected_prod) %>%
-       dplyr::filter(categorie_diren %in% inputVals$techs_selected) %>%
+       dplyr::filter(Année >= inputVals$min_selected_prod,
+                     Année <= inputVals$max_selected_prod) %>%
+       dplyr::filter(`Catégorie DIREN` %in% inputVals$techs_selected) %>%
         convert_units(colnames = contains(c("Injection", "Production", "Autoconso", "Puissance")),
                       unit_from = "kWh",
                       unit_to = selectedUnit$unit_to)
@@ -77,7 +77,7 @@ app_server <- function(input, output, session) {
     req(subset_prod_data())
 
     subset_prod_data() %>%
-      filter(annee == inputVals$max_selected_prod)
+      filter(Année == inputVals$max_selected_prod)
 
   })
 
@@ -86,7 +86,7 @@ app_server <- function(input, output, session) {
     req(subset_cons_data())
 
     subset_cons_data() %>%
-      filter(annee == inputVals$max_selected_cons)
+      filter(Année == inputVals$max_selected_cons)
 
   })
 
@@ -181,10 +181,10 @@ app_server <- function(input, output, session) {
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_cons_data,
                           legend_title = "Secteur",
-                          var_year = "annee",
-                          var_commune = "commune",
-                          var_rank_2 = "secteur",
-                          var_values = "consommation",
+                          var_year = "Année",
+                          var_commune = "Commune",
+                          var_rank_2 = "Secteur",
+                          var_values = "Consommation",
                           color_palette = colors_sectors,
                           third_rank = FALSE,
                           var_rank_3_1 = NULL, var_rank_3_2 = NULL,
@@ -203,19 +203,21 @@ app_server <- function(input, output, session) {
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_prod_data,
                           legend_title = "Technologies",
-                          var_year = "annee",
-                          var_commune = "commune",
-                          var_rank_2 = "categorie_diren",
-                          var_values = "production_totale",
+                          var_year = "Année",
+                          var_commune = "Commune",
+                          var_rank_2 = "Catégorie DIREN",
+                          var_values = "Production",
                           color_palette = colors_categories,
                           third_rank = TRUE,
-                          var_rank_3_1 = "injection_totale", var_rank_3_2 = "autoconso_totale",
+                          var_rank_3_1 = "Injection",
+                          var_rank_3_2 = "Autoconsommation",
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
                           # name of dl prefix to supply to download module
                           dl_prefix = "prod_elec_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
+
 
    ## tabMap: boxes for statistics ----
    # Module for rendering the vd collapse box

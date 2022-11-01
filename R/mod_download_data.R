@@ -21,7 +21,10 @@ mod_download_data_ui <- function(id){
 #' download_data Server Functions
 #'
 #' @noRd
-mod_download_data_server <- function(id, data, dl_prefix, doc_vars){
+mod_download_data_server <- function(id,
+                                     data,
+                                     dl_prefix,
+                                     doc_vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 

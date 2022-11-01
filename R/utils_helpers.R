@@ -126,8 +126,8 @@ districts_names <- sf_districts %>%
 ### Colors for categorie_diren ----
 
 categories_diren <- elec_prod %>%
-  dplyr::distinct(categorie_diren) %>%
-  dplyr::arrange(categorie_diren) %>%
+  dplyr::distinct(`Catégorie DIREN`) %>%
+  dplyr::arrange(`Catégorie DIREN`) %>%
   dplyr::pull()
 
 # We directly make a named vector since it's easier to spot what is what and we don't screw the order
@@ -154,13 +154,13 @@ colors_sectors <- c("Industrie/Services" = "#00CED1", # blue shade
 # From installation-specific to communes-specific (faster calculation)
 
 elec_prod_communes <- elec_prod %>%
-  dplyr::group_by(commune, annee, categorie_diren) %>%
+  dplyr::group_by(Commune, Année, `Catégorie DIREN`) %>%
   dplyr::summarise(dplyr::across(
-    .cols = c(puissance_electrique_installee,
-              production_totale,
-              injection_totale,
-              autoconso_totale), ~sum(.x, na.rm = T)),
-    numero_de_la_commune = dplyr::first(numero_de_la_commune)) %>%
+    .cols = c(`Puissance électrique installée`,
+              Production,
+              Injection,
+              Autoconsommation), ~sum(.x, na.rm = T)),
+    `N° OFS` = dplyr::first(`N° OFS`)) %>%
   dplyr::ungroup()
 
 ## Objects specific to the tabCons  ----
@@ -173,10 +173,10 @@ elec_prod_communes <- elec_prod %>%
 # This is to create the statistic boxes (tabMap) and compare similar years.
 
 last_common_elec_year <- dplyr::intersect(
-  elec_cons_communes %>% dplyr::distinct(annee),
-  elec_prod_communes %>% dplyr::distinct(annee)) %>%
-  dplyr::slice_max(annee) %>%
-  dplyr::pull(annee)
+  elec_cons_communes %>% dplyr::distinct(Année),
+  elec_prod_communes %>% dplyr::distinct(Année)) %>%
+  dplyr::slice_max(Année) %>%
+  dplyr::pull(Année)
 
 
 ### Fixed statistics for boxes ----
@@ -184,15 +184,15 @@ last_common_elec_year <- dplyr::intersect(
 #### VD electricity production for last common year
 
 prod_elec_vd_last_year <- elec_prod_communes %>%
-  dplyr::filter(annee == last_common_elec_year) %>%
-  dplyr::summarise(production_totale = sum(production_totale, na.rm = TRUE)) %>%
+  dplyr::filter(Année == last_common_elec_year) %>%
+  dplyr::summarise(Production = sum(Production, na.rm = TRUE)) %>%
   dplyr::pull()
 
 #### VD electricity consumption for last common year
 
 cons_elec_vd_last_year <- elec_cons_communes %>%
-  dplyr::filter(annee == last_common_elec_year) %>%
-  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
+  dplyr::filter(Année == last_common_elec_year) %>%
+  dplyr::summarise(Consommation = sum(Consommation, na.rm = TRUE)) %>%
   dplyr::pull()
 
 

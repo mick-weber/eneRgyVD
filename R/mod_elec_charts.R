@@ -187,7 +187,14 @@ mod_elec_charts_server <- function(id,
     })# End renderDT
 
     # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
-    download_data <- reactive({ subsetData() })
+    # testing new thing by adding unit change here too
+    download_data <- reactive({
+
+      subsetData()
+
+        })
+
+
 
     # Module to download DT table data
     mod_download_data_server("table_download",

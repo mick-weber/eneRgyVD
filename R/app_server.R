@@ -6,7 +6,36 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-   info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
+    info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
+
+   # Bookmarking feature : WIP (to be modularized later)
+   # https://www.anycodings.com/1questions/3651938/exclude-all-inputs-from-shiny-bookmarks
+
+   # List of authorized inputs for bookmarking
+   bookmarkingWhitelist <- c("inputs_1-selected_communes",  # which communes are selected
+                             "unit_converter-selected_unit" # which unit is selected
+   )
+
+   # Trigger bookmarking only if communes/units are modified
+   observeEvent({
+      inputVals$selectedCommunes
+      selectedUnit$unit_to}, {
+      session$doBookmark()
+   })
+
+   # Exclude everything but bookmarkingWhitelist above
+   ExcludedIDs <- reactiveVal(value = NULL)
+
+   observe({
+      toExclude <- setdiff(names(input), bookmarkingWhitelist)
+      setBookmarkExclude(toExclude)
+      ExcludedIDs(toExclude)
+   })
+
+   # Update url with bookmarking state
+   onBookmarked(function(url) {
+      updateQueryString(url)
+   })
 
   ## Inputs module ----
 

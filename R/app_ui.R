@@ -25,7 +25,8 @@ app_ui <- function(request) {
                                  href = "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/diren-energie/"
                                ),
 
-                               leftUi = mod_unit_converter_ui("unit_converter"),
+                               leftUi =  mod_unit_converter_ui("unit_converter"),
+
 
 
                                rightUi = shiny::tagList(bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
@@ -52,6 +53,7 @@ app_ui <- function(request) {
 
       # Sidebar ----
       bs4Dash::dashboardSidebar(
+        id = "tabs",
         minified = FALSE,
         width = 300,
         bs4Dash::sidebarMenu(id = "sidebarMenu",
@@ -64,7 +66,14 @@ app_ui <- function(request) {
 
         ## SelectInput module ----
         # Renders the sidebar inputs dynamically according to which tab is selected
-       mod_inputs_ui("inputs_1")
+       mod_inputs_ui("inputs_1"),
+
+
+       # New feature: bookmarking (to be modularized later)
+       br(),
+       shiny::bookmarkButton(id = "bookmark",
+                             label = "Marque-page",
+                             title = "Sauvegarder l'état de l'application et obtenir l'URL correspondant.")
 
       ),
 

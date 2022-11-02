@@ -52,6 +52,59 @@ units_table <- dplyr::tribble(
   "TJ", 1/3.6*1e6
 )
 
+## Column keywords ----
+## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
+energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation")
+power_col_keywords <- c("Puissance")
+
+## Prod colors and icons (prod) ----
+# Base tribble with categorie, icon and color
+prod_colors <- dplyr::tribble(~icon, ~`Catégorie DIREN`, ~color,
+                             as.character(icon("droplet")),  "Hydroélectricité","#6495ED",
+                             as.character(icon("sun")),  "Solaire", "#FFB90F",
+                             as.character(icon("apple")),  "Déchets méthanisables","#BFDB86",
+                             as.character(icon("leaf")),  "Biomasse agricole", "#48A649",
+                             as.character(icon("tree")),  "Bois-énergie", "#CC9E62",
+                             as.character(icon("industry")), "STEP", "#A58DE6",
+                             as.character(icon("fire")), "Déchets incinérables","#E67A78",
+                             as.character(icon("oil-can")), "Thermique fossile", "#747D82",
+                             as.character(icon("wind")), "Eolien", "#2596BE")
+
+
+# Used for table icons
+# Adding the color style in the html tag for the icon
+prod_icons <- prod_colors %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
+                                     replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
+  dplyr::select(-color)
+
+# Used for plots
+colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$`Catégorie DIREN`)
+
+## Cons colors and icons (cons) ----
+# Base tribble with sector, icon and color
+cons_colors <- dplyr::tribble(~icon, ~`Secteur`, ~color,
+                             as.character(icon("house")), "Industrie/Services","#6495ED",
+                             as.character(icon("industry")), "Ménages", "#FFB90F",
+                             as.character(icon("car")),  "Transports", "#BFDB86",
+                             as.character(icon("question")),  "Inconnu", "#BFDB86")
+# Used for table icons
+# Adding the color style in the html tag for the icon
+cons_icons <- cons_colors %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
+  dplyr::select(-color)
+
+
+# Used for plots
+# Be careful if sectors change name ! (SDN wrote them inconsistently here...)
+colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$Secteur)
+
+
+
+
 
 # Theme ----
 
@@ -129,26 +182,6 @@ categories_diren <- elec_prod %>%
   dplyr::distinct(`Catégorie DIREN`) %>%
   dplyr::arrange(`Catégorie DIREN`) %>%
   dplyr::pull()
-
-# We directly make a named vector since it's easier to spot what is what and we don't screw the order
-# Eolien was added as anticipated
-
-colors_categories <- c("Biomasse agricole" = "#48A649", # biomasse agricole
-                       "Bois-énergie" = "#CC9E62", # bois-énergie
-                       "Déchets incinérables" = "#BFDB86", # déchets méthanisables
-                       "Déchets méthanisables" = "#747D82", # déchets incinérables
-                       "Eolien" = "#6DD5E3", # éolien
-                       "Hydroélectricité" = "#6495ED", # hydroélectricité
-                       "Solaire" = "#FFB90F", # solaire
-                       "STEP" = "#A58DE6", # step
-                       "Thermique fossile" = "#E67A78") # thermique fossile
-
-# We also make a named vector for sectors of elec consumption data
-# Be careful if sectors change name ! (SDN wrote them inconsistently here...)
-colors_sectors <- c("Industrie/Services" = "#00CED1", # blue shade
-                    "Ménage" = "#FF6A6A", # red shade
-                    "Transports" = "#EEB422", # orange shade
-                    "Inconnu" = "#CCCCCC") # grey shade
 
 ### elec_prod_communes ----
 # From installation-specific to communes-specific (faster calculation)

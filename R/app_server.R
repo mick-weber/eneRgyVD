@@ -242,7 +242,9 @@ app_server <- function(input, output, session) {
 
    ## tabReport ----
    # Module for producing rmd report based on downloadable_report.Rmd
-   mod_download_rmd_server("rmd", inputVals = inputVals)
+   mod_download_rmd_server("rmd",
+                           inputVals = inputVals,
+                           selectedUnit = selectedUnit)
    ## tabInfo ----
    # Module for producing the text about the app
    mod_about_the_app_server("about")

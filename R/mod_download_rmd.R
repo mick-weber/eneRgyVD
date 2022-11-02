@@ -41,7 +41,7 @@ mod_download_rmd_ui <- function(id){
 #' download_rmd Server Functions
 #'
 #' @noRd
-mod_download_rmd_server <- function(id, inputVals){
+mod_download_rmd_server <- function(id, inputVals, selectedUnit){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -81,7 +81,8 @@ mod_download_rmd_server <- function(id, inputVals){
 
         params <- list(communes = inputVals$selectedCommunes,
                        prod_data = inputVals$prod_dataset,
-                       cons_data = inputVals$cons_dataset)
+                       cons_data = inputVals$cons_dataset,
+                       unit = selectedUnit$unit_to)
 
         # id <- showNotification(
         #   "Rendu du rapport html. Cette opération peut prendre quelques secondes...",
@@ -94,12 +95,12 @@ mod_download_rmd_server <- function(id, inputVals){
           showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
         }
 
-        id <- notify("Importation des données...")
+        id <- notify("Importation des paramètres...")
         on.exit(removeNotification(id), add = TRUE)
         Sys.sleep(1.5)
         notify("Arborescence des commutativités...", id = id)
         Sys.sleep(1.5)
-        notify("Peignage de girafe...", id = id)
+        notify("Conquête du Liechtenstein...", id = id)
         Sys.sleep(1.5)
         notify("Orthogonalisation de matrices", id = id)
         Sys.sleep(1.5)

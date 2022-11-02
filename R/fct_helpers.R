@@ -252,7 +252,11 @@ create_sunburst_plotly <- function(data_sunburst,
 
   # We hadd the hover_values for the tooltip in plotly, in MWh for readability
   sunburst_df <- sunburst_df %>%
-    dplyr::mutate(values_hover = paste(format(values, big.mark = "'", digits = 0, scientific = F),
+    dplyr::mutate(values_hover = paste(format(values,
+                                              big.mark = "'",
+                                              digits = 3,
+                                              drop0trailing = T,
+                                              scientific = F),
                                         unit))
 
   # plot & enjoy
@@ -290,23 +294,23 @@ create_prod_table_dt <- function(data, unit){
       # change year to factor %>%
       Année = as.factor(Année),
       # format numeric cols
-      across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
+      across(where(is.numeric), ~format(.x,
+                                        big.mark = "'",
+                                        digits = 3,
+                                        drop0trailing = TRUE,
+                                        scientific = FALSE))) %>%
     dplyr::select(-`N° OFS`) %>%
     # put installed power in the last position
     dplyr::relocate(`Puissance électrique installée`, .after = dplyr::last_col()) %>%
-    # add energy units in brackets
-    dplyr::rename_with(.cols = contains(c("Injection", "Production", "Autoconso")), ~paste0(.x, " [", unit, "]")) %>%
-    # add power units in brackets (xWh -> xW ; TJ -> TJ/h)
-    dplyr::rename_with(.cols = contains("Puissance"), ~paste0(.x,
-                                                              " [",
-                                                              # !! change to str_detect(unit, "Wh", str_remove(...), str_add("/h))
-                                                              ifelse(unit == "TJ",
-                                                                     "TJ/h",
-                                                                     stringr::str_remove(string = unit,
-                                                                                         pattern = "h")),
-                                                              "]")) %>%
+    # add energy units in brackets for energy/power related columns
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    # add icons HTML tags from utils_helpers.R
+    dplyr::left_join(prod_icons, by = "Catégorie DIREN") %>%
+    dplyr::relocate(icon, .before = `Catégorie DIREN`) %>% #
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
-    DT::datatable(options = list(paging = TRUE,    ## paginate the output
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
@@ -345,16 +349,24 @@ create_cons_table_dt <- function(data, unit){
       # change year to factor
       Année = as.factor(Année),
       # format numeric cols
-      dplyr::across(where(is.numeric), ~format(.x, big.mark = "'", digits = 0, scientific = FALSE))) %>%
-
+      dplyr::across(where(is.numeric), ~format(.x,
+                                               big.mark = "'",
+                                               digits = 3,
+                                               drop0trailing = TRUE,
+                                               scientific = FALSE))) %>%
     # clear out useless vars
     select(-`Code secteur`) %>%
     # put installed power in the last position
     dplyr::relocate(Commune, Année, Secteur, Consommation) %>%
-    # rename Consommation with the unit in brackets
-    dplyr::rename_with(.cols = contains("Consommation"), ~paste0(.x, " [", unit, "]")) %>%
+    # add energy units in brackets for energy/power related columns
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    # add icons HTML tags from utils_helpers.R
+    dplyr::left_join(cons_icons, by = "Secteur") %>%
+    dplyr::relocate(icon, .before = `Secteur`) %>% #
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
-    DT::datatable(options = list(paging = TRUE,    ## paginate the output
+    DT::datatable(escape = F, # rendering the icons instead of text
+      options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
@@ -451,6 +463,36 @@ convert_units <- function(data,
 
 
   # Check if this is correct form or if I need to assign the new dataframe (and return() it)
+
+}
+
+
+#' add_colnames_units
+#' returns unit extension in columns according to the currently selected unit
+#' of the app for power and energy
+#' @param data the dataframe
+#' @param unit the unit selected in the app
+#'
+#' @return dataframe with renamed columns
+#' @export
+#'
+#' @examples "Consommation" will become "Consommation kWh" if unit = kWh,
+#' and "Puissance" would become TJ/h if unit = TJ
+add_colname_units <- function(data, unit){
+
+  data %>%
+    # For all energy-related units
+    dplyr::rename_with(.cols = any_of(contains(energy_col_keywords)), # utils_helpers.R
+                       ~paste0(.x, " [", unit, "]")) %>%
+    # For all power-related units
+    dplyr::rename_with(.cols = any_of(contains(power_col_keywords)), # utils_helpers.R
+                       ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
+                               ifelse(
+                                 test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
+                                 yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
+                                 no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
+                               ), "]") # closing bracket for unit
+    )
 
 }
 

@@ -20,6 +20,7 @@ fontsize: 11pt
 #paramètres pour l'export Shiny
 params:
   communes: NULL
+  unit: NULL
   prod_data: NULL
   cons_data: NULL
   
@@ -92,7 +93,7 @@ Merci de votre compréhension.
 
 ```{r}
 params$cons_data %>%
-  eneRgyVD::create_cons_table_dt()
+  eneRgyVD::create_cons_table_dt(unit = params$unit)
 ```
 
 **Graphique**
@@ -100,7 +101,8 @@ params$cons_data %>%
 ```{r}
 
 params$cons_data %>%
-    eneRgyVD::create_bar_plotly(var_year = "Année",
+    eneRgyVD::create_bar_plotly(unit = params$unit,
+                                var_year = "Année",
                                 var_commune = "Commune",
                                 var_rank_2 = "Secteur",
                                 var_values = "Consommation",
@@ -118,7 +120,7 @@ params$cons_data %>%
 ```{r}
 
 params$prod_data %>% 
-    eneRgyVD::create_prod_table_dt()
+    eneRgyVD::create_prod_table_dt(unit = params$unit)
 
 ```
 
@@ -127,7 +129,8 @@ params$prod_data %>%
 ```{r}
 
 params$prod_data %>%
-    eneRgyVD::create_bar_plotly(var_year = "Année",
+    eneRgyVD::create_bar_plotly(unit = params$unit,
+                                var_year = "Année",
                                 var_commune = "Commune",
                                 var_rank_2 = "Catégorie DIREN",
                                 var_values = "Production",

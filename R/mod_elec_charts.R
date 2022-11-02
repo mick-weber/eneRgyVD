@@ -187,14 +187,17 @@ mod_elec_charts_server <- function(id,
     })# End renderDT
 
     # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
-    # testing new thing by adding unit change here too
+
+
     download_data <- reactive({
 
-      subsetData()
+
+      subsetData() %>%
+        # Add the currently selected unit in the colnames (conversion is already done)
+        # add energy units in brackets for energy/power related columns
+        add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
 
         })
-
-
 
     # Module to download DT table data
     mod_download_data_server("table_download",

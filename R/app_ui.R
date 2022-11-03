@@ -22,7 +22,7 @@ app_ui <- function(request) {
                                  title = "eneRgy",
                                  image = NULL, # add path to logo if needed
                                  color = "primary",
-                                 href = "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/diren-energie/"
+                                 href = link_diren # utils_helpers.R
                                ),
 
                                leftUi =  mod_unit_converter_ui("unit_converter"),
@@ -57,6 +57,7 @@ app_ui <- function(request) {
         minified = FALSE,
         width = 300,
         bs4Dash::sidebarMenu(id = "sidebarMenu",
+                             ## menuItems ----
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
@@ -64,18 +65,27 @@ app_ui <- function(request) {
                                     bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
         ),# End sidebarMenu
 
-        ## SelectInput module ----
+        ## Widgets module ----
         # Renders the sidebar inputs dynamically according to which tab is selected
        mod_inputs_ui("inputs_1"),
 
+       # Sidebar footer ()
+       tags$footer(
+       tags$a(
+         "@DGE-DIREN 2022",
+         target = "_blank",
+         href = link_diren
+       ),
+       style = "position: absolute; bottom:0; width: 80%; color: white; text-align: center;")
 
-       # New feature: bookmarking (to be modularized later)
-       br(),
-       shiny::bookmarkButton(id = "bookmark",
-                             label = "Marque-page",
-                             title = "Sauvegarder l'état de l'application et obtenir l'URL correspondant.")
 
-      ),
+
+
+      ),# End dashboardSidebar
+
+      # Footer ----
+
+      # None, messes the layout of plots
 
       # Body ----
       bs4Dash::dashboardBody(

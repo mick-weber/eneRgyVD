@@ -172,10 +172,16 @@ create_bar_plotly <- function(data,
                    axis.text.x = element_text(size = 12))+
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
+  # Access how many facets there are for height management
+
+  out <- ggplot2::ggplot_build(ggplot)
+  n_facets <- length(levels(out$data[[1]]$PANEL))
 
   # Turn to plotly object
   ggplot %>% plotly::ggplotly(tooltip = "text") %>% # refers to aes(text) defined in ggplot2
-    plotly::layout(legend = list(
+    plotly::layout(
+      height = ifelse(n_facets>4, 700, 400),
+      legend = list(
       orientation = "h", # puts the legend in the middle instead of default right
       y = 1.3 # elevates the legend so its above the plot, not below
     )) %>%

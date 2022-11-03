@@ -44,10 +44,10 @@
 
 /*Increase generic font size*/
 body {
-    font-size: 1.25em;
+    font-size: 1.35em;
 }
 
-/*Increase sidebar text size (+20%)*/
+/*Increase sidebar text size (not needed yet)*/
 #sidebarItemExpanded > ul > li{
   font-size:1em;
 }
@@ -106,3 +106,8 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
   color:white;
   font-size:1rem;
 }
+
+
+/* test for size of area for mod_elec_charts */
+
+#production_charts-chart_1 > div > div

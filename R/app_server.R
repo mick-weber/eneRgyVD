@@ -8,8 +8,7 @@ app_server <- function(input, output, session) {
 
     info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
 
-   # Bookmarking feature : WIP (to be modularized later)
-   # https://www.anycodings.com/1questions/3651938/exclude-all-inputs-from-shiny-bookmarks
+   # Bookmarking feature ----
 
    # List of authorized inputs for bookmarking
    bookmarkingWhitelist <- c("inputs_1-selected_communes",  # which communes are selected

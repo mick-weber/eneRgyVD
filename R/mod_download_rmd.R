@@ -102,9 +102,9 @@ mod_download_rmd_server <- function(id, inputVals, selectedUnit){
         Sys.sleep(1.5)
         notify("Conquête du Liechtenstein...", id = id)
         Sys.sleep(1.5)
-        notify("Orthogonalisation de matrices", id = id)
+        notify("Orthogonalisation de matrices...", id = id)
         Sys.sleep(1.5)
-        notify("Service gagnant...", id = id)
+        notify("Mise en orbite d'un lapin adulte...", id = id)
         Sys.sleep(1.5)
         notify("Élevage de moutons basques...", id = id)
 

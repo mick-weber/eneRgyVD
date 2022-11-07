@@ -14,8 +14,10 @@ mod_download_data_ui <- function(id){
     shiny::downloadButton(outputId = ns("download_csv"),
                           label = "CSV", class = "dlButton"),
     shiny::downloadButton(outputId = ns("download_excel"),
-                          label = "XLSX", class = "dlButton" ) # class defined in custom.css
-  )
+                          label = "XLSX", class = "dlButton" ), # class defined in custom.css
+
+    br()
+    )
 }
 
 #' download_data Server Functions

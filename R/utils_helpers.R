@@ -15,6 +15,10 @@ load("./data/elec_prod_doc.rda")
 load("./data/elec_cons_communes.rda")
 load("./data/elec_cons_doc.rda")
 
+## regener_communes data ----
+
+load("./data/regener_communes.rda")
+
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 # Files others than .Rd are in ./inst/extdata/
@@ -85,8 +89,8 @@ colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$`Catégorie
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
 cons_colors <- dplyr::tribble(~icon, ~`Secteur`, ~color,
-                             as.character(icon("house")), "Industrie/Services","#6495ED",
-                             as.character(icon("industry")), "Ménages", "#FFB90F",
+                             as.character(icon("industry")), "Industrie/Services","#6495ED",
+                             as.character(icon("house")), "Ménages", "#FFB90F",
                              as.character(icon("car")),  "Transports", "#BFDB86",
                              as.character(icon("question")),  "Inconnu", "#BFDB86")
 # Used for table icons

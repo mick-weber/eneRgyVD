@@ -71,7 +71,7 @@ app_server <- function(input, output, session) {
 
    })
 
-   # Subset data prod & cons ----
+   # subset_prod_data ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
    subset_prod_data <- reactive({
 
@@ -96,6 +96,30 @@ app_server <- function(input, output, session) {
                       unit_to = selectedUnit$unit_to)
 
    }) # End reactive()
+
+
+   # subset_regener_data
+
+   subset_regener_data <- reactive({
+
+      # explicitely require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+      )
+
+      # waiting on these to get initialized (renderUIs)
+      req(selectedUnit$unit_to)
+
+      # No filter needed yet for years, only year conversion
+      # CONVERSION TEST IN PROGRESS
+      inputVals$regener_dataset %>%
+         convert_units(colnames = "Consommation",
+                       unit_from = "kWh",
+                       unit_to = selectedUnit$unit_to)
+
+   })
+
+
 
 
   # Sunburst data prod/cons ----
@@ -245,6 +269,12 @@ app_server <- function(input, output, session) {
                           dl_prefix = "prod_elec_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
+
+   ## tabRegener: call the chart server logic ----
+
+   mod_regener_charts_server("regener_charts",
+                             data = subset_regener_data,
+                             var_commune = "Commune")
 
 
    ## tabMap: boxes for statistics ----

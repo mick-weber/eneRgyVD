@@ -61,6 +61,7 @@ app_ui <- function(request) {
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
+                                    bs4Dash::menuItem("RegEner", tabName = "tabRegener", icon = icon("fire", lib = "glyphicon")),
                                     bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
                                     bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
         ),# End sidebarMenu
@@ -144,11 +145,23 @@ app_ui <- function(request) {
             h4(strong("Production d'électricité par commune")),
             # breathing
             br(),
-            # Module for producing prod charts
 
+            # Module for producing prod charts
             mod_elec_charts_ui("production_charts")
 
           ),# End tabItem
+
+          ## tabRegener
+          bs4Dash::tabItem(
+            tabName = "tabRegener",
+            h4(strong("Données du Registre énergétique des bâtiments (RegEner)")),
+
+            # Module for producing regener plots
+            mod_regener_charts_ui("regener_charts")
+
+
+          ),# End tabItem
+
           ## tabReport ----
           bs4Dash::tabItem(
             tabName = "tabReport",

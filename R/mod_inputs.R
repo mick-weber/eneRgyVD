@@ -90,6 +90,20 @@ mod_inputs_server <- function(id){
 
     })
 
+
+    # tabRegener inputs ----
+    # Subset aggregated regener data with the currently selected commune(s)
+
+    subset_regener <- reactive({
+
+      req(input$selected_communes)
+
+      regener_communes %>%
+        filter(Commune %in% input$selected_communes)
+
+    })
+
+
     ## Storing all useful values in inputVals ----
     # [inputVals 0/3] Initializing the inputVals item
 
@@ -113,6 +127,10 @@ mod_inputs_server <- function(id){
 
       # store the commune prod dataset already filtered
       inputVals$prod_dataset <- subset_elec_prod()
+
+      # store the regener commune dataset already filtered
+
+      inputVals$regener_dataset <- subset_regener()
 
       # store min & max !available! years from consumption data to feed sliderInput()
 

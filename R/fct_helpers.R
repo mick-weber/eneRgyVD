@@ -474,8 +474,9 @@ convert_units <- function(data,
 
 
 #' add_colnames_units
-#' returns unit extension in columns according to the currently selected unit
+#' returns unit extension in target columns according to the currently selected unit
 #' of the app for power and energy
+#'
 #' @param data the dataframe
 #' @param unit the unit selected in the app
 #'
@@ -502,3 +503,37 @@ add_colname_units <- function(data, unit){
 
 }
 
+
+#' create_alluvial_chart
+#' creates a ggplot2 alluvial chart using the ggalluvial library and heat building
+#' consumption data from an aggregated RegEner dataset
+#' @return
+#' @export
+#'
+#' @examples
+create_alluvial_chart <- function(data, var_commune){
+
+  # When the grouping/lumping will be located elsewhere, parentheses can be dropped
+  data() %>%
+    # For each commune we keep the 4 most important AE, the 5th is lumped
+    group_by(.data[[var_commune]]) %>%
+    mutate(AE = fct_lump_n(AE, n = 4, w = Consommation, other_level = "Autres")) %>%
+    ggplot(aes(axis1 = AE, axis2 = Usage,
+               y = Consommation, label = Consommation))+
+    geom_alluvium(aes(fill = AE),
+                  width = 2/8, reverse = FALSE) +
+    geom_stratum(alpha = .25, width = 2/8, reverse = FALSE) +
+    geom_text(stat = "stratum",
+              aes(label =
+                    paste0(after_stat(stratum),
+                           "\n",
+                           scales::percent(after_stat(prop), accuracy = 1))),
+              reverse = FALSE) +
+    scale_x_continuous(breaks = 1:2, labels = c("Conso", "Usage")) +
+    scale_fill_viridis_d(option = "plasma")+
+    ggplot2::facet_wrap(facets = vars(.data[[var_commune]]), scales = "free")+
+    theme_void()+
+    theme(legend.position = "none")
+
+
+}

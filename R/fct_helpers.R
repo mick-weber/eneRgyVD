@@ -173,14 +173,15 @@ create_bar_plotly <- function(data,
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
   # Access how many facets there are for height management
-
   out <- ggplot2::ggplot_build(ggplot)
   n_facets <- length(levels(out$data[[1]]$PANEL))
 
   # Turn to plotly object
-  ggplot %>% plotly::ggplotly(tooltip = "text") %>% # refers to aes(text) defined in ggplot2
+  ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
+                              height = ifelse(n_facets>n_facets_limit, # utils_helpers.R
+                                              height_facet_above_limit,
+                                              height_facet_under_limit)) %>%
     plotly::layout(
-      height = ifelse(n_facets>4, 700, 400),
       legend = list(
       orientation = "h", # puts the legend in the middle instead of default right
       y = 1.3 # elevates the legend so its above the plot, not below
@@ -514,26 +515,39 @@ add_colname_units <- function(data, unit){
 create_alluvial_chart <- function(data, var_commune){
 
   # When the grouping/lumping will be located elsewhere, parentheses can be dropped
-  data() %>%
+    data() %>%
     # For each commune we keep the 4 most important AE, the 5th is lumped
-    group_by(.data[[var_commune]]) %>%
-    mutate(AE = fct_lump_n(AE, n = 4, w = Consommation, other_level = "Autres")) %>%
-    ggplot(aes(axis1 = AE, axis2 = Usage,
+    dplyr::group_by(.data[[var_commune]]) %>%
+    dplyr::mutate(AE = forcats::fct_lump_n(AE, n = 4, w = Consommation, other_level = "Autres")) %>%
+    dplyr::mutate(AE = forcats::fct_reorder(AE, .x = Consommation, .fun = sum)) %>%
+    dplyr::mutate(Usage = forcats::fct_relevel(Usage, c("Pertes", "ECS", "Chauffage"))) %>%
+    dplyr::ungroup() %>%
+    ggplot2::ggplot(ggplot2::aes(axis1 = AE, axis2 = Usage,
                y = Consommation, label = Consommation))+
-    geom_alluvium(aes(fill = AE),
-                  width = 2/8, reverse = FALSE) +
-    geom_stratum(alpha = .25, width = 2/8, reverse = FALSE) +
-    geom_text(stat = "stratum",
+    ggalluvial::geom_alluvium(ggplot2::aes(fill = AE),
+                  width = 3/8, reverse = FALSE) +
+    ggalluvial::geom_stratum(alpha = .25, width = 3/8, reverse = FALSE) +
+    ggplot2::geom_text(stat = ggalluvial::StatStratum,
               aes(label =
                     paste0(after_stat(stratum),
-                           "\n",
+                           " ",
                            scales::percent(after_stat(prop), accuracy = 1))),
               reverse = FALSE) +
-    scale_x_continuous(breaks = 1:2, labels = c("Conso", "Usage")) +
+    ggplot2::scale_x_continuous(breaks = 1:2, labels = c("Conso", "Usage")) +
     scale_fill_viridis_d(option = "plasma")+
-    ggplot2::facet_wrap(facets = vars(.data[[var_commune]]), scales = "free")+
-    theme_void()+
-    theme(legend.position = "none")
-
+    ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),
+                        scales = "free",
+                        ncol = 2)+
+    ggplot2::theme_void()+
+    ggplot2::theme(legend.position = "none",
+                   strip.text = element_text(size =16),
+                   axis.text.x = element_text(size = 14))
 
 }
+#
+# library(tidyverse)
+# regener_communes %>%
+#   dplyr::filter(Commune == "Aclens") %>%
+#   create_alluvial_chart(var_commune = "Commune")
+
+

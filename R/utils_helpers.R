@@ -107,7 +107,16 @@ cons_icons <- cons_colors %>%
 colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$Secteur)
 
 
+## Facetted plot's height ----
 
+# Number of facets starting from which a height increase is necessary
+n_facets_limit <- 4
+
+# Height of facet plot's below limit
+height_facet_under_limit <- 400
+
+# Height of facet plot's above limit
+height_facet_above_limit <- 700
 
 
 # Theme ----

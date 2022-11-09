@@ -55,7 +55,7 @@ body {
     font-size: 1.35em;
 }
 
-/*Increase sidebar text size (not needed yet)*/
+/*Increase sidebar text size */
 #sidebarItemExpanded > ul > li{
   font-size:1em;
 }
@@ -88,6 +88,19 @@ pre {
   width:175px;
   color:#3A862D;
   background-color:white;
+}
+
+/* custom class for shinywidget prettyRadioButtons (plot/table types selections)*/
+
+.btn.radiobtn{
+  background-color:white;
+}
+.btn.radiobtn.active{
+  border-width: 1.5px;
+  border-color:#3A862D;
+}
+.btn.radiobtn.btn:hover{
+  background-color:#F5F5F5;
 }
 
 

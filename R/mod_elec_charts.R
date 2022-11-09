@@ -14,58 +14,56 @@ mod_elec_charts_ui <- function(id){
     bs4Dash::tabsetPanel(
       id = "tabset1",
       shiny::tabPanel(title = "Graphique",
+                      # breathing
+                      br(),
 
                       # radioGroupButtons() for tab ----
+                      shinyWidgets::radioGroupButtons(
+                        inputId = ns("tab_plot_type"),
+                        label = "Sélection du type de graphique",
+                        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
+                                    `<i class='fa fa-pie-chart'></i>` = "sunburst"),
+                        justified = TRUE,
+                        width = "25%"),
 
-                      shiny::wellPanel(style = "background: transparent",
-                                       shinyWidgets::radioGroupButtons(
-                                         inputId = ns("tab_plot_type"),
-                                         label = "Sélection du type de graphique",
-                                         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
-                                                     `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-                                         justified = TRUE,
-                                         width = "25%"),
+                      # prettyToggle 1/2 for bar plot
+                      shiny::conditionalPanel(
+                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                        condition = "output.toggle && input.tab_plot_type == 'bar'",
+                        ns = ns,
 
-                                       # prettyToggle 1/2 for bar plot
-                                       shiny::conditionalPanel(
-                                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                         condition = "output.toggle && input.tab_plot_type == 'bar'",
-                                         ns = ns,
+                        shinyWidgets::prettyToggle(
+                          inputId = ns("toggle_status"),
+                          label_on = "Axe des ordonnées libéré !", status_on = "success",
+                          label_off = "Libérer l'axe des ordonnées ?", status_off = "info",
+                          bigger = T,
+                          shape = "curve",
+                          animation = "pulse")
+                      ),# End first conditionalPanel
 
-                                         shinyWidgets::prettyToggle(
-                                           inputId = ns("toggle_status"),
-                                           label_on = "Axe des ordonnées libéré !", status_on = "success",
-                                           label_off = "Libérer l'axe des ordonnées ?", status_off = "info",
-                                           bigger = T,
-                                           shape = "curve",
-                                           animation = "pulse")
-                                       ),# End first conditionalPanel
+                      # prettyToggle 2/2 for bar plot
+                      shiny::conditionalPanel(
+                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                        condition = "output.commune && input.tab_plot_type == 'bar'",
+                        ns = ns,
 
-                                       # prettyToggle 2/2 for bar plot
-                                       shiny::conditionalPanel(
-                                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                         condition = "output.commune && input.tab_plot_type == 'bar'",
-                                         ns = ns,
+                        shinyWidgets::prettyToggle(
+                          inputId = ns("stacked_status"),
+                          label_on = "Barres empilées", status_on = "success",
+                          label_off = "Barres adjacentes", status_off = "info",
+                          bigger = T,
+                          value = TRUE, # defaults to stacked
+                          shape = "curve",
+                          animation = "pulse")),
 
-                                         shinyWidgets::prettyToggle(
-                                           inputId = ns("stacked_status"),
-                                           label_on = "Barres empilées", status_on = "success",
-                                           label_off = "Barres adjacentes", status_off = "info",
-                                           bigger = T,
-                                           value = TRUE, # defaults to stacked
-                                           shape = "curve",
-                                           animation = "pulse")),
+                      # Simple text to inform how the sunburst year works, if selected
+                      shiny::conditionalPanel(
+                        condition = "input.tab_plot_type == 'sunburst'",
+                        ns = ns,
 
-                                       # Simple text to inform how the sunburst year works, if selected
-                                       shiny::conditionalPanel(
-                                         condition = "input.tab_plot_type == 'sunburst'",
-                                         ns = ns,
+                        tags$p("L'année affichée correspond à l'année la plus récente de la barre latérale.")
 
-                                         tags$p("L'année affichée correspond à l'année la plus récente de la barre latérale.")
-
-                                       )
-
-                      ),# End wellPanel
+                      ),# End conditionalPanel
 
                       # # breathing
                       # br(),

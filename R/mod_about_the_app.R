@@ -51,14 +51,14 @@ mod_about_the_app_ui <- function(id){
                 nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application.",
                 tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur PRONOVO AG", target = "_blank")),# open in new tab
                 p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."))
-                                        ),# End tags$ul 1/2
+                                        ),# End tags$ul 1/3
                 br(),
 
                 # Documentation table for electricity production
                 DT::dataTableOutput(ns("elec_prod_doc")),
                 br()
 
-                               ),# End nested tabPanel 1/2
+                               ),# End nested tabPanel 1/3
 
                 tabPanel("Consommation d'électricité",
                          br(),
@@ -70,14 +70,34 @@ mod_about_the_app_ui <- function(id){
                 p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
                 compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
                 les données peuvent prendre quelques mois à être disponibles dans l'application."))
-                         ),# End tags$ul 2/2
+                         ),# End tags$ul 2/3
                 br(),
 
                 # Documentation table for electricity production
                 DT::dataTableOutput(ns("elec_cons_doc")),
                 br()
 
-                )# End nested tabPanel 2/2
+                ),# End nested tabPanel 2/3
+
+                tabPanel("Chaleur bâtiments",
+                         br(),
+                         tags$ul(
+                           tags$li(h5(strong("Chaleur des bâtiments : exploitation du registre des énergies vaudois (RegEner)")),
+                                   p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
+                                     des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
+                                     (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
+                                     registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
+                                     de chaleur peuvent être renseignés, la consommation est estimée selon la surface de référence énergétique, l'année et l'affectation du bâtiment
+                                     ainsi que la présence d'une ou de plusieurs rénovations. Les données issues du RegEner et qui alimentent cette application
+                                     sont le résultat d'agrégations du RegEner."))
+                         ),# End tags$ul 2/3
+                br(),
+
+                # Documentation table for electricity production
+                DT::dataTableOutput(ns("regener_doc")),
+                br()
+
+                )# End nested tabPanel 2/3
                              )# End nested tabsetPanel
                       )# End column
       ),# End tabPanel 'Données'
@@ -156,6 +176,12 @@ mod_about_the_app_server <- function(id){
       elec_cons_doc %>%  # loaded in utils_helpers.R
         create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
 
+    })
+
+
+    output$regener_doc <- DT::renderDataTable({
+      regener_doc %>%
+        create_doc_table_dt(doc_prefix = "doc_regener_")
     })
 
   })

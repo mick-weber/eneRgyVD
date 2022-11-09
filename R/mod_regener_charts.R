@@ -16,19 +16,18 @@ mod_regener_charts_ui <- function(id){
     bs4Dash::tabsetPanel(
       id = "tabset1",
       shiny::tabPanel(title = "Graphique",
+                      # breating
+                      br(),
 
                       # radioGroupButtons() for tab ----
 
-                      shiny::wellPanel(style = "background: transparent",
-                                       shinyWidgets::radioGroupButtons(
-                                         inputId = ns("tab_plot_type"),
-                                         label = "Sélection du type de graphique",
-                                         choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
-                                                     `<i class='fa fa-bar-chart'></i>` = "bar"),
-                                         justified = TRUE,
-                                         width = "25%")
-
-                      ),# End wellPanel
+                      shinyWidgets::radioGroupButtons(
+                        inputId = ns("tab_plot_type"),
+                        label = "Sélection du type de graphique",
+                        choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
+                                    `<i class='fa fa-bar-chart'></i>` = "bar"),
+                        justified = TRUE,
+                        width = "25%"),
 
                       # # breathing
                       # br(),
@@ -48,19 +47,14 @@ mod_regener_charts_ui <- function(id){
                              br(),
 
                              # radioGroupButtons() for tab ----
+                             shinyWidgets::radioGroupButtons(
+                               inputId = ns("tab_table_type"),
+                               label = "Sélection du type de table",
+                               choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
+                                           `<i class='fa fa-bar-chart'></i>` = "bar"),
+                               justified = TRUE,
+                               width = "25%"),
 
-                             shiny::wellPanel(style = "background: transparent",
-                                              shinyWidgets::radioGroupButtons(
-                                                inputId = ns("tab_table_type"),
-                                                label = "Sélection du type de table",
-                                                choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
-                                                            `<i class='fa fa-bar-chart'></i>` = "bar"),
-                                                justified = TRUE,
-                                                width = "25%")
-
-                             ),# End wellPanel
-                             # breating
-                             br(),
                              # Download module
                              mod_download_data_ui(ns("table_download")),
 

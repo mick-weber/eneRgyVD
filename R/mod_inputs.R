@@ -98,7 +98,7 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-      regener_communes %>%
+      regener_cons_ae_use %>%
         filter(Commune %in% input$selected_communes)
 
     })

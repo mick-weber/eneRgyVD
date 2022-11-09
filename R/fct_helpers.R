@@ -512,19 +512,35 @@ add_colname_units <- function(data, unit){
 #' @export
 #'
 #' @examples
-create_alluvial_chart <- function(data, var_commune){
+create_alluvial_chart <- function(data,
+                                  var_commune,
+                                  var_flow,
+                                  var_from,
+                                  label_from,
+                                  var_to,
+                                  label_to){
+# Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
+  # Very tough subject, no idea why this ' := ' or {{ }} are required
+
+    data <- data() %>%
+      # we lump factors both left and right of alluvia to 4 max (for readability)
+      # var_to will only be pertinent for the 'affectation' plot
+
+      dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
+                                                        n = 4,
+                                                        w = .data[[var_flow]],
+                                                        other_level = "Autres")) %>%
+      dplyr::mutate({{var_to}} := forcats::fct_lump_n(f = .data[[var_to]],
+                                                        n = 4,
+                                                        w = .data[[var_flow]],
+                                                        other_level = "Autres"))
+
 
   # When the grouping/lumping will be located elsewhere, parentheses can be dropped
-    data() %>%
-    # For each commune we keep the 4 most important AE, the 5th is lumped
-    dplyr::group_by(.data[[var_commune]]) %>%
-    dplyr::mutate(AE = forcats::fct_lump_n(AE, n = 4, w = Consommation, other_level = "Autres")) %>%
-    dplyr::mutate(AE = forcats::fct_reorder(AE, .x = Consommation, .fun = sum)) %>%
-    dplyr::mutate(Usage = forcats::fct_relevel(Usage, c("Pertes", "ECS", "Chauffage"))) %>%
-    dplyr::ungroup() %>%
-    ggplot2::ggplot(ggplot2::aes(axis1 = AE, axis2 = Usage,
-               y = Consommation, label = Consommation))+
-    ggalluvial::geom_alluvium(ggplot2::aes(fill = AE),
+    data %>%
+    ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]], axis2 = .data[[var_to]],
+               y = .data[[var_flow]], label = .data[[var_flow]]))+
+    ggalluvial::geom_alluvium(ggplot2::aes(fill = .data[[var_from]]),
                   width = 3/8, reverse = FALSE) +
     ggalluvial::geom_stratum(alpha = .25, width = 3/8, reverse = FALSE) +
     ggplot2::geom_text(stat = ggalluvial::StatStratum,
@@ -533,9 +549,9 @@ create_alluvial_chart <- function(data, var_commune){
                            " ",
                            scales::percent(after_stat(prop), accuracy = 1))),
               reverse = FALSE) +
-    ggplot2::scale_x_continuous(breaks = 1:2, labels = c("Conso", "Usage")) +
+    ggplot2::scale_x_continuous(breaks = 1:2, labels = c(label_from, label_to)) +
     scale_fill_viridis_d(option = "plasma")+
-    ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),
+    ggplot2::facet_wrap(facets = var_commune,
                         scales = "free",
                         ncol = 2)+
     ggplot2::theme_void()+
@@ -544,10 +560,13 @@ create_alluvial_chart <- function(data, var_commune){
                    axis.text.x = element_text(size = 14))
 
 }
+
 #
-# library(tidyverse)
-# regener_communes %>%
-#   dplyr::filter(Commune == "Aclens") %>%
-#   create_alluvial_chart(var_commune = "Commune")
+# regener_cons_ae_use %>%
+#   filter(Commune == "Aclens") %>%
+#   create_alluvial_chart(var_commune = "Commune", var_flow = "Consommation",var_from = "AE", label_from = "AE", var_to = "Usage", label_to = "Usage")
+#
+
+
 
 

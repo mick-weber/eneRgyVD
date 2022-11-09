@@ -23,8 +23,8 @@ mod_regener_charts_ui <- function(id){
                                        shinyWidgets::radioGroupButtons(
                                          inputId = ns("tab_plot_type"),
                                          label = "Sélection du type de graphique",
-                                         choices = c(`<i class='fa fa-bar-chart'></i>` = "flow",
-                                                     `<i class='fa fa-pie-chart'></i>` = "bar"),
+                                         choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
+                                                     `<i class='fa fa-bar-chart'></i>` = "bar"),
                                          justified = TRUE,
                                          width = "25%")
 
@@ -67,7 +67,14 @@ mod_regener_charts_ui <- function(id){
 #' regener_charts Server Functions
 #'
 #' @noRd
-mod_regener_charts_server <- function(id, data, var_commune){
+mod_regener_charts_server <- function(id,
+                                      data,
+                                      var_commune,
+                                      var_flow,
+                                      var_from,
+                                      label_from,
+                                      var_to,
+                                      label_to){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -78,7 +85,12 @@ mod_regener_charts_server <- function(id, data, var_commune){
     ggplot_alluvial <- reactive({
 
       data %>%
-        create_alluvial_chart(var_commune = var_commune)
+        create_alluvial_chart(var_commune = var_commune,
+                              var_flow = var_flow,
+                              var_from = var_from,
+                              label_from = label_from,
+                              var_to = var_to,
+                              label_to = label_to)
 
     })
 
@@ -98,6 +110,8 @@ mod_regener_charts_server <- function(id, data, var_commune){
 
     observe({
 
+      if(input$tab_plot_type == "flow"){
+
       output$chart_alluvial <- shiny::renderPlot({
 
         validate(
@@ -109,7 +123,24 @@ mod_regener_charts_server <- function(id, data, var_commune){
 
       },height = ceiling(n_facets$alluvial/2)*400) # 1,2,4,6,8,... change height every two facets+
 
-    })# End observe
+      }# End if tab...
+      else if(input$tab_plot_type == "bar"){
+
+
+        output$chart_alluvial <- shiny::renderPlot({
+
+
+          dplyr::tribble(~a, ~b,
+                         1,2) %>%
+            ggplot2::ggplot()+
+            ggplot2::geom_bar(ggplot2::aes(x = a))
+
+
+        }, height = 400)
+
+      }# End elseif
+
+      })# End observe
   })
 }
 

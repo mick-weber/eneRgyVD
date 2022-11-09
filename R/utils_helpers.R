@@ -17,7 +17,8 @@ load("./data/elec_cons_doc.rda")
 
 ## regener_communes data ----
 
-load("./data/regener_communes.rda")
+load("./data/regener_cons_ae_use.rda")
+load("./data/regener_cons_ae_aff.rda")
 
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports

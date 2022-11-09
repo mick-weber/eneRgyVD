@@ -61,7 +61,7 @@ app_ui <- function(request) {
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
-                                    bs4Dash::menuItem("RegEner", tabName = "tabRegener", icon = icon("fire", lib = "glyphicon")),
+                                    bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire", lib = "glyphicon")),
                                     bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
                                     bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
         ),# End sidebarMenu
@@ -154,7 +154,9 @@ app_ui <- function(request) {
           ## tabRegener
           bs4Dash::tabItem(
             tabName = "tabRegener",
-            h4(strong("Données du Registre énergétique des bâtiments (RegEner)")),
+            h4(strong("Consommation théorique des bâtiments")),
+            # breathing
+            br(),
 
             # Module for producing regener plots
             mod_regener_charts_ui("regener_charts")

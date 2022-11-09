@@ -21,7 +21,7 @@ mod_elec_charts_ui <- function(id){
                                        shinyWidgets::radioGroupButtons(
                                          inputId = ns("tab_plot_type"),
                                          label = "Sélection du type de graphique",
-                                         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
+                                         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
                                                      `<i class='fa fa-pie-chart'></i>` = "sunburst"),
                                          justified = TRUE,
                                          width = "25%"),

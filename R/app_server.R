@@ -274,7 +274,12 @@ app_server <- function(input, output, session) {
 
    mod_regener_charts_server("regener_charts",
                              data = subset_regener_data,
-                             var_commune = "Commune")
+                             var_commune = "Commune",
+                             var_flow = "Consommation",
+                             var_from = "AE",
+                             label_from = "Consommation",
+                             var_to = "Usage",
+                             label_to = "Usage")
 
 
    ## tabMap: boxes for statistics ----

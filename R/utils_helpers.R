@@ -62,6 +62,7 @@ units_table <- dplyr::tribble(
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation")
 power_col_keywords <- c("Puissance")
 
+
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
 prod_colors <- dplyr::tribble(~icon, ~`Catégorie DIREN`, ~color,

@@ -6,7 +6,15 @@
 creates a ggplot2 alluvial chart using the ggalluvial library and heat building
 consumption data from an aggregated RegEner dataset}
 \usage{
-create_alluvial_chart(data, var_commune)
+create_alluvial_chart(
+  data,
+  var_commune,
+  var_flow,
+  var_from,
+  label_from,
+  var_to,
+  label_to
+)
 }
 \description{
 create_alluvial_chart

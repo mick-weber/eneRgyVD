@@ -15,11 +15,14 @@ app_server <- function(input, output, session) {
                              "unit_converter-selected_unit" # which unit is selected
    )
 
-   # Trigger bookmarking only if communes/units are modified
+   # Trigger bookmarking only if communes OR units are modified
    observeEvent({
+
       inputVals$selectedCommunes
-      selectedUnit$unit_to}, {
+      selectedUnit$unit_to},{
+
       session$doBookmark()
+
    })
 
    # Exclude everything but bookmarkingWhitelist above
@@ -97,10 +100,10 @@ app_server <- function(input, output, session) {
 
    }) # End reactive()
 
+   # subset regener (x2)----
+   # subset_rgr1 : regener by commune, cons, ae, use
 
-   # subset_regener_data
-
-   subset_regener_data <- reactive({
+   subset_rgr_1 <- reactive({
 
       # explicitely require communes to be selected
       validate(
@@ -112,13 +115,34 @@ app_server <- function(input, output, session) {
 
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
-      inputVals$regener_dataset %>%
+      inputVals$rgr_1 %>%
          convert_units(colnames = "Consommation",
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
    })
 
+
+   # subset_rgr1 : regener by commune, cons, ae, aff
+
+   subset_rgr_2 <- reactive({
+
+      # explicitely require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+      )
+
+      # waiting on these to get initialized (renderUIs)
+      req(selectedUnit$unit_to)
+
+      # No filter needed yet for years, only year conversion
+      # CONVERSION TEST IN PROGRESS
+      inputVals$rgr_2 %>%
+         convert_units(colnames = "Consommation",
+                       unit_from = "kWh",
+                       unit_to = selectedUnit$unit_to)
+
+   })
 
 
 
@@ -273,13 +297,10 @@ app_server <- function(input, output, session) {
    ## tabRegener: call the chart server logic ----
 
    mod_regener_charts_server("regener_charts",
-                             data = subset_regener_data,
-                             var_commune = "Commune",
-                             var_flow = "Consommation",
-                             var_from = "AE",
-                             label_from = "Consommation",
-                             var_to = "Usage",
-                             label_to = "Usage")
+                             inputVals = inputVals,
+                             selectedUnit = selectedUnit,
+                             subset_rgr_1 = subset_rgr_1,
+                             subset_rgr_2 = subset_rgr_2)
 
 
    ## tabMap: boxes for statistics ----

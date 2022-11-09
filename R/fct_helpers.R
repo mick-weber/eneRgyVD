@@ -530,8 +530,8 @@ create_alluvial_chart <- function(data,
                                                         n = 4,
                                                         w = .data[[var_flow]],
                                                         other_level = "Autres")) %>%
-      dplyr::mutate({{var_to}} := forcats::fct_lump_n(f = .data[[var_to]],
-                                                        n = 4,
+      dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
+                                                        prop = .05, # 5% min
                                                         w = .data[[var_flow]],
                                                         other_level = "Autres"))
 
@@ -561,12 +561,56 @@ create_alluvial_chart <- function(data,
 
 }
 
-#
-# regener_cons_ae_use %>%
-#   filter(Commune == "Aclens") %>%
-#   create_alluvial_chart(var_commune = "Commune", var_flow = "Consommation",var_from = "AE", label_from = "AE", var_to = "Usage", label_to = "Usage")
-#
+
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
+create_regener_table_dt <- function(data, unit){
+
+  data %>%
+    # Basic clean up for table output
+    dplyr::mutate(
+      # change year to factor
+      # Année = as.factor(Année), # if needed later
+      # format numeric cols
+      dplyr::across(Consommation, ~format(.x,
+                                               big.mark = "'",
+                                               digits = 3,
+                                               drop0trailing = TRUE,
+                                               scientific = FALSE))) %>%
+    # add energy units in brackets for energy/power related columns
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    # add icons HTML tags from utils_helpers.R
+    # dplyr::left_join(ae_icons, by = "AE") %>% to be implemented
+    # dplyr::relocate(icon, .before = "AE) %>%  to be implemented
+    # dplyr::rename(" " = "icon") %>% # empty colname for icons
+    #turn to DT
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  options = list(paging = TRUE,    ## paginate the output
+                                 pageLength = 15,  ## number of rows to output for each page
+                                 scrollY = TRUE,   ## enable scrolling on Y axis
+                                 autoWidth = TRUE, ## use smart column width handling
+                                 server = FALSE,   ## use server-side processing
+                                 dom = 'Bfrtip',
+                                 # Buttons not needed anymore since mod_download_data.R is spot on
+                                 # buttons = list(
+                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
+                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                                 columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R
+                  ),
+                  #extensions = 'Buttons',
+                  selection = 'single', ## enable selection of a single row
+                  #filter = 'bottom',              ## include column filters at the bottom
+                  rownames = FALSE               ## don't show row numbers/names
+    ) # End DT
 
 
+
+}
 
 

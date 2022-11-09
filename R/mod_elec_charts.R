@@ -173,7 +173,8 @@ mod_elec_charts_server <- function(id,
                                  var_commune = var_commune, # var name
                                  var_rank_2 = var_rank_2, # var name
                                  third_rank = third_rank, # we do have a third layer (rank_3_1+rank_3_2)
-                                 var_rank_3_1 = var_rank_3_1, var_rank_3_2 = var_rank_3_2) # var names pivotted
+                                 var_rank_3_1 = var_rank_3_1,
+                                 var_rank_3_2 = var_rank_3_2) # var names pivotted
         })# End renderPlotly
       }# End else if
     })# End observe

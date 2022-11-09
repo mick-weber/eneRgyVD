@@ -94,11 +94,22 @@ mod_inputs_server <- function(id){
     # tabRegener inputs ----
     # Subset aggregated regener data with the currently selected commune(s)
 
-    subset_regener <- reactive({
+    # 1/2: regener by commune, consumption, ae, use
+    subset_rgr_1 <- reactive({
 
       req(input$selected_communes)
 
       regener_cons_ae_use %>%
+        filter(Commune %in% input$selected_communes)
+
+    })
+
+    # 1/2: regener by commune, consumption, ae, aff
+    subset_rgr_2 <- reactive({
+
+      req(input$selected_communes)
+
+      regener_cons_ae_aff %>%
         filter(Commune %in% input$selected_communes)
 
     })
@@ -130,7 +141,8 @@ mod_inputs_server <- function(id){
 
       # store the regener commune dataset already filtered
 
-      inputVals$regener_dataset <- subset_regener()
+      inputVals$rgr_1 <- subset_rgr_1()
+      inputVals$rgr_2 <- subset_rgr_2()
 
       # store min & max !available! years from consumption data to feed sliderInput()
 

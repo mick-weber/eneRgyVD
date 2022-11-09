@@ -181,7 +181,7 @@ mod_about_the_app_server <- function(id){
 
     output$regener_doc <- DT::renderDataTable({
       regener_doc %>%
-        create_doc_table_dt(doc_prefix = "doc_regener_")
+        create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
     })
 
   })

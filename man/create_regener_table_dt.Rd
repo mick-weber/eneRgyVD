@@ -2,10 +2,10 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_regener_table_dt}
 \alias{create_regener_table_dt}
-\title{Title}
+\title{create_regener_table_dt}
 \usage{
 create_regener_table_dt(data, unit)
 }
 \description{
-Title
+create_regener_table_dt
 }

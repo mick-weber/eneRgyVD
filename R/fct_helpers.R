@@ -484,8 +484,8 @@ convert_units <- function(data,
 #' @return dataframe with renamed columns
 #' @export
 #'
-#' @examples "Consommation" will become "Consommation kWh" if unit = kWh,
-#' and "Puissance" would become TJ/h if unit = TJ
+#' @examples Consommation will become Consommation kWh if unit = kWh,
+#' and Puissance would become TJ/h if unit = TJ
 add_colname_units <- function(data, unit){
 
   data %>%
@@ -508,10 +508,9 @@ add_colname_units <- function(data, unit){
 #' create_alluvial_chart
 #' creates a ggplot2 alluvial chart using the ggalluvial library and heat building
 #' consumption data from an aggregated RegEner dataset
-#' @return
+#' @return a ggplot2 object for regener alluvial visualisations
 #' @export
-#'
-#' @examples
+
 create_alluvial_chart <- function(data,
                                   var_commune,
                                   var_flow,
@@ -519,25 +518,25 @@ create_alluvial_chart <- function(data,
                                   label_from,
                                   var_to,
                                   label_to){
-# Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
+
+
+        # lumping factors both left and right of alluvia to 4 max (for readability)
+
+  data <- data() %>%
+    dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
+                                                      n = 3,
+                                                      w = .data[[var_flow]],
+                                                      other_level = "Autres sources"))%>%
+    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
+                                                    prop = 0.08, # 8% min
+                                                    w = .data[[var_flow]],
+                                                    other_level = "Autres"))
+  # Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
   # Very tough subject, no idea why this ' := ' or {{ }} are required
 
-    # data <- data() %>%
-    #   # we lump factors both left and right of alluvia to 4 max (for readability)
-    #   # var_to will only be pertinent for the 'affectation' plot
-    #
-    #   dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
-    #                                                     n = 4,
-    #                                                     w = .data[[var_flow]],
-    #                                                     other_level = "Autres"))%>%
-    #   dplyr::mutate({{var_to}} := forcats::fct_lump_n(f = .data[[var_to]],
-    #                                                     n = 4, # 5% min
-    #                                                     w = .data[[var_flow]],
-    #                                                     other_level = "Autres"))
 
-
-  # When the grouping/lumping will be located elsewhere, parentheses can be dropped
-    data() %>%
+        # data plotting
+    data %>%
     ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]], axis2 = .data[[var_to]],
                y = .data[[var_flow]], label = .data[[var_flow]]))+
     ggalluvial::geom_alluvium(ggplot2::aes(fill = .data[[var_from]]),
@@ -557,17 +556,18 @@ create_alluvial_chart <- function(data,
     ggplot2::theme_void()+
     ggplot2::theme(legend.position = "none",
                    strip.text = element_text(size =16),
-                   axis.text.x = element_text(size = 14))
+                   axis.text.x = element_text(size = 14)) %>%
+      suppressWarnings() # avoid annoying warning due to 'Autres' <fct> in both strata
 
 }
 
 
 #' create_regener_table_dt
 #'
-#' @return
+#' @return a datatable object for regener datasets
 #' @export
 #'
-#' @examples
+
 create_regener_table_dt <- function(data, unit){
 
   data %>%

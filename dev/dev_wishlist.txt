@@ -1,6 +1,0 @@
-
-# Access number of facets
-
-Anytime when using the number of facets in a facetted plot, I access it through ggbuild(ggplot) etc. which is a mess to do
-
-A better alternative, since 1 facet = 1 commune, is to use length(inputVals$selectedCommunes) instead. This makes it one value modified at top-level of the app, rather than accessing multiple times in each plot

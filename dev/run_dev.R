@@ -12,6 +12,8 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # Run the application
+
+options(shiny.autoload.r=FALSE)
 run_app()
 
 

@@ -185,7 +185,7 @@ mod_regener_charts_server <- function(id,
     mod_download_data_server("table_download",
                              data = download_data, # see if() above
                              dl_prefix = "regener_",
-                             doc_vars = iris) # dl preffix for file name, passed into app_server.R
+                             doc_vars = regener_doc) # dl preffix for file name, passed into app_server.R
 
 
   })

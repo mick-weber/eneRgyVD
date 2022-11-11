@@ -19,7 +19,7 @@ app_ui <- function(request) {
       # Header ----
       bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
                                title = bs4Dash::dashboardBrand(
-                                 title = "eneRgy",
+                                 title = "eneRgy VD",
                                  image = NULL, # add path to logo if needed
                                  color = "primary",
                                  href = link_diren # utils_helpers.R
@@ -73,7 +73,7 @@ app_ui <- function(request) {
        # Sidebar footer ()
        tags$footer(
        tags$a(
-         "@DGE-DIREN 2022",
+         "@DGE-DIREN 2022 (v.02)",
          target = "_blank",
          href = link_diren
        ),

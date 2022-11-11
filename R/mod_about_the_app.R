@@ -108,8 +108,7 @@ mod_about_the_app_ui <- function(id){
                              # breathing
                              br(),
                              tags$h4(strong("Protection des données")),
-                             tags$p("Attente de confirmation de l'appui juridique DGE-DIREN que les données par communes présentent dans l'application
-           ne sont pas sujettes à restrictions juridiques. Pour cette raison, des données aléatoires sont temporairement diffusées.")
+                             tags$p("Les données étant agrégées pour chaque commune, celles-ci peuvent être diffusées librement.")
                       )# End column
       ),# End tabPanel 'Confidentialité'
 
@@ -125,11 +124,11 @@ mod_about_the_app_ui <- function(id){
                                     tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),
                                     "qui permet la création simple d'applications web interactives. L'architecture de l'application est construite
             à l'aide de la",
-            tags$a(href = "https://github.com/ThinkR-open/golem", "librairie golem", target = "_blank"),
+            tags$a(href = "https://github.com/ThinkR-open/golem", "librairie golem (ThinkR)", target = "_blank"),
             "et le contenu des visualisations par de multiples librairies issues notamment du",
             tags$a(href = "https://www.tidyverse.org/", "tidyverse.", target = "_blank"),
             "De plus amples demandes d'informations peuvent être adressées directement à l'e-mail de contact",
-            tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"),
+            tags$a (href = paste0("mailto:", mail_address), mail_address,target = "_blank"),
             "."),
             br(),
             br(),

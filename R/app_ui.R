@@ -2,7 +2,7 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny shinydashboard bs4Dash
+#' @import shiny
 #' @noRd
 
 app_ui <- function(request) {
@@ -86,7 +86,7 @@ app_ui <- function(request) {
 
       # Footer ----
 
-      # None, messes the layout of plots
+      # (None, messes with the plot arrangements)
 
       # Body ----
       bs4Dash::dashboardBody(

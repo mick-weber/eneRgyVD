@@ -65,7 +65,7 @@ mod_collapse_stats_box_server <- function(id,
         bs4Dash::descriptionBlock(
           number = year,
           header = scales::label_percent(accuracy = .1)(production_value/consumption_value),
-          text = htmltools::HTML(paste0("Taux de couverture", tags$br(), "électrique annuel")),
+          text = htmltools::HTML(paste0("Taux de couverture", tags$br(), "electrique annuel")),
           rightBorder = FALSE
         )# End descriptionBlock
       )# End column

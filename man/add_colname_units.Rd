@@ -21,7 +21,3 @@ add_colnames_units
 returns unit extension in target columns according to the currently selected unit
 of the app for power and energy
 }
-\examples{
-"Consommation" will become "Consommation kWh" if unit = kWh,
-and "Puissance" would become TJ/h if unit = TJ
-}

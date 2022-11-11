@@ -8,7 +8,7 @@ Creates minimalistic documentation table with download feature}
 create_doc_table_dt(data, doc_prefix)
 }
 \arguments{
-\item{data}{}
+\item{data}{the dataset containing variables and descriptions}
 }
 \value{
 A DT object

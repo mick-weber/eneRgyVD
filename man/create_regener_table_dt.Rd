@@ -6,6 +6,9 @@
 \usage{
 create_regener_table_dt(data, unit)
 }
+\value{
+a datatable object for regener datasets
+}
 \description{
 create_regener_table_dt
 }

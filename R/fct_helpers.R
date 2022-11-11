@@ -299,7 +299,7 @@ create_prod_table_dt <- function(data, unit){
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor %>%
-      Année = as.factor(Année),
+      Annee = as.factor(Annee),
       # format numeric cols
       across(where(is.numeric), ~format(.x,
                                         big.mark = "'",
@@ -308,12 +308,12 @@ create_prod_table_dt <- function(data, unit){
                                         scientific = FALSE))) %>%
     dplyr::select(-`N° OFS`) %>%
     # put installed power in the last position
-    dplyr::relocate(`Puissance électrique installée`, .after = dplyr::last_col()) %>%
+    dplyr::relocate(`Puissance electrique installee`, .after = dplyr::last_col()) %>%
     # add energy units in brackets for energy/power related columns
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(prod_icons, by = "Catégorie DIREN") %>%
-    dplyr::relocate(icon, .before = `Catégorie DIREN`) %>% #
+    dplyr::left_join(prod_icons, by = "Categorie DIREN") %>%
+    dplyr::relocate(icon, .before = `Categorie DIREN`) %>% #
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
@@ -354,7 +354,7 @@ create_cons_table_dt <- function(data, unit){
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor
-      Année = as.factor(Année),
+      Annee = as.factor(Annee),
       # format numeric cols
       dplyr::across(where(is.numeric), ~format(.x,
                                                big.mark = "'",
@@ -364,7 +364,7 @@ create_cons_table_dt <- function(data, unit){
     # clear out useless vars
     select(-`Code secteur`) %>%
     # put installed power in the last position
-    dplyr::relocate(Commune, Année, Secteur, Consommation) %>%
+    dplyr::relocate(Commune, Annee, Secteur, Consommation) %>%
     # add energy units in brackets for energy/power related columns
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     # add icons HTML tags from utils_helpers.R
@@ -397,7 +397,7 @@ create_cons_table_dt <- function(data, unit){
 
 #' create_doc_table_dt
 #' Creates minimalistic documentation table with download feature
-#' @param data
+#' @param data the dataset containing variables and descriptions
 #'
 #' @return A DT object
 #' @export
@@ -483,9 +483,7 @@ convert_units <- function(data,
 #'
 #' @return dataframe with renamed columns
 #' @export
-#'
-#' @examples Consommation will become Consommation kWh if unit = kWh,
-#' and Puissance would become TJ/h if unit = TJ
+
 add_colname_units <- function(data, unit){
 
   data %>%
@@ -574,7 +572,7 @@ create_regener_table_dt <- function(data, unit){
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor
-      # Année = as.factor(Année), # if needed later
+      # Annee = as.factor(Annee), # if needed later
       # format numeric cols
       dplyr::across(Consommation, ~format(.x,
                                                big.mark = "'",

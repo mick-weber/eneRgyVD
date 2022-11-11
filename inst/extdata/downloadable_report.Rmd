@@ -102,7 +102,7 @@ params$cons_data %>%
 
 params$cons_data %>%
     eneRgyVD::create_bar_plotly(unit = params$unit,
-                                var_year = "Année",
+                                var_year = "Annee",
                                 var_commune = "Commune",
                                 var_rank_2 = "Secteur",
                                 var_values = "Consommation",
@@ -130,9 +130,9 @@ params$prod_data %>%
 
 params$prod_data %>%
     eneRgyVD::create_bar_plotly(unit = params$unit,
-                                var_year = "Année",
+                                var_year = "Annee",
                                 var_commune = "Commune",
-                                var_rank_2 = "Catégorie DIREN",
+                                var_rank_2 = "Categorie DIREN",
                                 var_values = "Production",
                                 color_palette = eneRgyVD::return_palette_prod_elec(),
                                 stacked = T,

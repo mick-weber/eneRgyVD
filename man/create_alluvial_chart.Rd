@@ -16,6 +16,9 @@ create_alluvial_chart(
   label_to
 )
 }
+\value{
+a ggplot2 object for regener alluvial visualisations
+}
 \description{
 create_alluvial_chart
 creates a ggplot2 alluvial chart using the ggalluvial library and heat building

@@ -7,8 +7,7 @@ Description: PKG_DESC.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
-Imports: 
-    bookdown,
+Imports:
     bs4Dash,
     config (>= 0.3.1),
     dplyr,
@@ -18,11 +17,11 @@ Imports:
     ggalluvial,
     ggplot2,
     golem (>= 0.3.2),
+    htmltools,
     knitr,
     leaflet,
     leaflet.extras,
     magrittr,
-    pkgload,
     plotly,
     purrr,
     readr,
@@ -33,13 +32,10 @@ Imports:
     shiny (>= 1.7.1),
     shinyalert,
     shinycssloaders,
-    shinydashboard,
     shinydashboardPlus,
     shinyWidgets,
     stringr,
-    thematic,
     tidyr,
-    tidyverse,
     writexl
 Suggests: 
     spelling (>= 2.2),

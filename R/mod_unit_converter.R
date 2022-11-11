@@ -5,8 +5,7 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
-#' @importFrom shinyWidgets prettyRadioButtons
+
 
 
 mod_unit_converter_ui <- function(id){

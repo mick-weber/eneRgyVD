@@ -66,7 +66,7 @@ power_col_keywords <- c("Puissance")
 
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
-prod_colors <- dplyr::tribble(~icon, ~`Catégorie DIREN`, ~color,
+prod_colors <- dplyr::tribble(~icon, ~`Categorie DIREN`, ~color,
                              as.character(icon("droplet")),  "Hydroélectricité","#6495ED",
                              as.character(icon("sun")),  "Solaire", "#FFB90F",
                              as.character(icon("apple")),  "Déchets méthanisables","#BFDB86",
@@ -87,7 +87,7 @@ prod_icons <- prod_colors %>%
   dplyr::select(-color)
 
 # Used for plots
-colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$`Catégorie DIREN`)
+colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$`Categorie DIREN`)
 
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
@@ -195,17 +195,17 @@ districts_names <- sf_districts %>%
 ### Colors for categorie_diren ----
 
 categories_diren <- elec_prod %>%
-  dplyr::distinct(`Catégorie DIREN`) %>%
-  dplyr::arrange(`Catégorie DIREN`) %>%
+  dplyr::distinct(`Categorie DIREN`) %>%
+  dplyr::arrange(`Categorie DIREN`) %>%
   dplyr::pull()
 
 ### elec_prod_communes ----
 # From installation-specific to communes-specific (faster calculation)
 
 elec_prod_communes <- elec_prod %>%
-  dplyr::group_by(Commune, Année, `Catégorie DIREN`) %>%
+  dplyr::group_by(Commune, Annee, `Categorie DIREN`) %>%
   dplyr::summarise(dplyr::across(
-    .cols = c(`Puissance électrique installée`,
+    .cols = c(`Puissance electrique installee`,
               Production,
               Injection,
               Autoconsommation), ~sum(.x, na.rm = T)),
@@ -222,10 +222,10 @@ elec_prod_communes <- elec_prod %>%
 # This is to create the statistic boxes (tabMap) and compare similar years.
 
 last_common_elec_year <- dplyr::intersect(
-  elec_cons_communes %>% dplyr::distinct(Année),
-  elec_prod_communes %>% dplyr::distinct(Année)) %>%
-  dplyr::slice_max(Année) %>%
-  dplyr::pull(Année)
+  elec_cons_communes %>% dplyr::distinct(Annee),
+  elec_prod_communes %>% dplyr::distinct(Annee)) %>%
+  dplyr::slice_max(Annee) %>%
+  dplyr::pull(Annee)
 
 
 ### Fixed statistics for boxes ----
@@ -233,14 +233,14 @@ last_common_elec_year <- dplyr::intersect(
 #### VD electricity production for last common year
 
 prod_elec_vd_last_year <- elec_prod_communes %>%
-  dplyr::filter(Année == last_common_elec_year) %>%
+  dplyr::filter(Annee == last_common_elec_year) %>%
   dplyr::summarise(Production = sum(Production, na.rm = TRUE)) %>%
   dplyr::pull()
 
 #### VD electricity consumption for last common year
 
 cons_elec_vd_last_year <- elec_cons_communes %>%
-  dplyr::filter(Année == last_common_elec_year) %>%
+  dplyr::filter(Annee == last_common_elec_year) %>%
   dplyr::summarise(Consommation = sum(Consommation, na.rm = TRUE)) %>%
   dplyr::pull()
 

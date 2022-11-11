@@ -146,17 +146,17 @@ mod_inputs_server <- function(id){
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
-      inputVals$min_avail_cons <- min(subset_elec_cons()$Année)
-      inputVals$max_avail_cons <- max(subset_elec_cons()$Année)
+      inputVals$min_avail_cons <- min(subset_elec_cons()$Annee)
+      inputVals$max_avail_cons <- max(subset_elec_cons()$Annee)
 
       # store min & max !available! years to feed sliderInput()
       # CHANGE PARAMS WITH PROD LATER  ($min_avail_prod and max_avail_prod for consistency with cons)
-      inputVals$min_avail_prod <- min(subset_elec_prod()$Année)
-      inputVals$max_avail_prod <- max(subset_elec_prod()$Année)
+      inputVals$min_avail_prod <- min(subset_elec_prod()$Annee)
+      inputVals$max_avail_prod <- max(subset_elec_prod()$Annee)
 
       # store list of !available! techs to feed pickerInput()
       inputVals$techs_avail <- subset_elec_prod() %>%
-        dplyr::distinct(`Catégorie DIREN`) %>%
+        dplyr::distinct(`Categorie DIREN`) %>%
         dplyr::pull()
 
     })# End observe
@@ -170,12 +170,12 @@ mod_inputs_server <- function(id){
       req(subset_elec_prod(), subset_elec_cons())
 
       inputVals$common_year_elec_prod <- subset_elec_prod() %>%
-        dplyr::filter(Année == last_common_elec_year) %>%
+        dplyr::filter(Annee == last_common_elec_year) %>%
         dplyr::summarise(Production = sum(Production, na.rm = T)) %>%
         dplyr::pull(Production) # kWh
 
       inputVals$common_year_elec_cons <- subset_elec_cons() %>%
-        dplyr::filter(Année == last_common_elec_year) %>%
+        dplyr::filter(Annee == last_common_elec_year) %>%
         dplyr::summarise(Consommation = sum(Consommation, na.rm = T)) %>%
         dplyr::pull(Consommation) # kWh initially
 
@@ -194,7 +194,7 @@ mod_inputs_server <- function(id){
 
         tags$div(class = 'customSliderInput', # custom.css -> go green
 
-        shiny::sliderInput(ns("cons_year"), label = "Choix des années",
+        shiny::sliderInput(ns("cons_year"), label = "Choix des Annees",
                            min = inputVals$min_avail_cons,
                            max = inputVals$max_avail_cons,
                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
@@ -212,7 +212,7 @@ mod_inputs_server <- function(id){
 
         tags$div(class = 'customSliderInput', # custom.css -> go green
 
-        shiny::sliderInput(ns("prod_year"), label = "Choix des années",
+        shiny::sliderInput(ns("prod_year"), label = "Choix des Annees",
                     min = inputVals$min_avail_prod,
                     max = inputVals$max_avail_prod,
                     value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),

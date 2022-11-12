@@ -299,22 +299,22 @@ create_prod_table_dt <- function(data, unit){
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor %>%
-      Annee = as.factor(Annee),
+      annee = as.factor(annee),
       # format numeric cols
       across(where(is.numeric), ~format(.x,
                                         big.mark = "'",
                                         digits = 3,
                                         drop0trailing = TRUE,
                                         scientific = FALSE))) %>%
-    dplyr::select(-`N° OFS`) %>%
+    dplyr::select(-numero_de_la_commune) %>%
     # put installed power in the last position
-    dplyr::relocate(`Puissance electrique installee`, .after = dplyr::last_col()) %>%
-    # add energy units in brackets for energy/power related columns
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(prod_icons, by = "Categorie DIREN") %>%
-    dplyr::relocate(icon, .before = `Categorie DIREN`) %>% #
+    dplyr::left_join(prod_icons, by = "categorie_diren") %>%
+    dplyr::relocate(icon, .before = categorie_diren) %>% #
     dplyr::rename(" " = "icon") %>% # empty colname for icons
+    rename_fr_colnames() %>%  # fct_helpers.R
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   options = list(paging = TRUE,    ## paginate the output
@@ -354,7 +354,7 @@ create_cons_table_dt <- function(data, unit){
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor
-      Annee = as.factor(Annee),
+      annee = as.factor(annee),
       # format numeric cols
       dplyr::across(where(is.numeric), ~format(.x,
                                                big.mark = "'",
@@ -362,15 +362,15 @@ create_cons_table_dt <- function(data, unit){
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
     # clear out useless vars
-    select(-`Code secteur`) %>%
+    select(-code_secteur) %>%
     # put installed power in the last position
-    dplyr::relocate(Commune, Annee, Secteur, Consommation) %>%
-    # add energy units in brackets for energy/power related columns
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    dplyr::relocate(commune, annee, secteur, consommation) %>%
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(cons_icons, by = "Secteur") %>%
-    dplyr::relocate(icon, .before = `Secteur`) %>% #
+    dplyr::left_join(cons_icons, by = "secteur") %>%
+    dplyr::relocate(icon, .before = secteur) %>% #
     dplyr::rename(" " = "icon") %>% # empty colname for icons
+    rename_fr_colnames() %>% # fct_helpers.R
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
       options = list(paging = TRUE,    ## paginate the output
@@ -476,7 +476,8 @@ convert_units <- function(data,
 
 #' add_colnames_units
 #' returns unit extension in target columns according to the currently selected unit
-#' of the app for power and energy
+#' of the app for power and energy related colnames. Should be called before making
+#' nicely formatted columns with rename_fr_colnames()
 #'
 #' @param data the dataframe
 #' @param unit the unit selected in the app
@@ -524,11 +525,12 @@ create_alluvial_chart <- function(data,
     dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
                                                       n = 3,
                                                       w = .data[[var_flow]],
-                                                      other_level = "Autres sources"))%>%
-    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
-                                                    prop = 0.08, # 8% min
-                                                    w = .data[[var_flow]],
-                                                    other_level = "Autres"))
+                                                      other_level = "Autres sources"))
+  # %>%
+  #   dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
+  #                                                   prop = 0.08, # 8% min
+  #                                                   w = .data[[var_flow]],
+  #                                                   other_level = "Autres"))
   # Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
   # Very tough subject, no idea why this ' := ' or {{ }} are required
 
@@ -574,18 +576,18 @@ create_regener_table_dt <- function(data, unit){
       # change year to factor
       # Annee = as.factor(Annee), # if needed later
       # format numeric cols
-      dplyr::across(Consommation, ~format(.x,
+      dplyr::across(consommation, ~format(.x,
                                                big.mark = "'",
                                                digits = 3,
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
-    # add energy units in brackets for energy/power related columns
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
     # add icons HTML tags from utils_helpers.R
-    # dplyr::left_join(ae_icons, by = "AE") %>% to be implemented
-    # dplyr::relocate(icon, .before = "AE) %>%  to be implemented
+    # dplyr::left_join(ae_icons, by = "ae") %>% to be implemented
+    # dplyr::relocate(icon, .before = "ae) %>%  to be implemented
     # dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
+    rename_fr_colnames() %>% # fct_helpers.R
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
     DT::datatable(escape = F, # rendering the icons instead of text
                   options = list(paging = TRUE,    ## paginate the output
                                  pageLength = 15,  ## number of rows to output for each page
@@ -607,8 +609,29 @@ create_regener_table_dt <- function(data, unit){
                   rownames = FALSE               ## don't show row numbers/names
     ) # End DT
 
+}
+
+#' rename_fr_colnames
+#' A generic function that aims at adding correct french accents inside the create_x_table_dt functions
+#' @return a dataframe with modified colnames, title case, accents where needed and space instead of underscore.
+#' @export
+
+rename_fr_colnames <- function(data){
+
+  data %>%
+    rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) %>%
+    rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
+                pattern = "_", replacement = " ") %>%
+    rename_with(.cols = everything(), .fn = stringr::str_replace_all, replace_fr_accents) # utils_helpers.R
 
 
 }
+
+
+
+
+
+
+
 
 

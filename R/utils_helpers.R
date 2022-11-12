@@ -23,6 +23,10 @@ load("./data/regener_doc.rda")
 
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
+
+report_path <- tempfile(fileext = ".Rmd")
+file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
+
 # Files others than .Rd are in ./inst/extdata/
 
 # Generic utils ----
@@ -32,6 +36,7 @@ load("./data/regener_doc.rda")
 
 mail_address <- "stat.energie@vd.ch"
 link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
+
 
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library
@@ -44,7 +49,7 @@ link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-d
 ### Load json french language file for DT library
 # Files others than .Rd are in ./inst/extdata/
 
-DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
+DT_fr_language <- rjson::fromJSON(file = "./data/DT_fr_language.json")
 
 ## Units conversion table ----
 # Must match the choices in header's widget
@@ -59,14 +64,25 @@ units_table <- dplyr::tribble(
 )
 
 ## Column keywords ----
+
+## List of non-ASCII words that should replace internal colnames
+replace_fr_accents <- c("electricite" = "électricité",
+                        "electrique" = "électrique",
+                        "energetique" = "énergétique",
+                        "Categorie" = "Catégorie",
+                        "installee" = "installée",
+                        "Annee" = "Année",
+                        "ae" = "Agent énergétique")
+
 ## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation")
 power_col_keywords <- c("Puissance")
 
 
+
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
-prod_colors <- dplyr::tribble(~icon, ~`Categorie DIREN`, ~color,
+prod_colors <- dplyr::tribble(~icon, ~categorie_diren, ~color,
                              as.character(icon("droplet")),  "Hydroélectricité","#6495ED",
                              as.character(icon("sun")),  "Solaire", "#FFB90F",
                              as.character(icon("apple")),  "Déchets méthanisables","#BFDB86",
@@ -87,11 +103,11 @@ prod_icons <- prod_colors %>%
   dplyr::select(-color)
 
 # Used for plots
-colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$`Categorie DIREN`)
+colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie_diren)
 
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
-cons_colors <- dplyr::tribble(~icon, ~`Secteur`, ~color,
+cons_colors <- dplyr::tribble(~icon, ~secteur, ~color,
                              as.character(icon("industry")), "Industrie/Services","#6495ED",
                              as.character(icon("house")), "Ménages", "#FFB90F",
                              as.character(icon("car")),  "Transports", "#BFDB86",
@@ -107,7 +123,7 @@ cons_icons <- cons_colors %>%
 
 # Used for plots
 # Be careful if sectors change name ! (SDN wrote them inconsistently here...)
-colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$Secteur)
+colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$secteur)
 
 
 ## Facetted plot's height ----
@@ -131,10 +147,6 @@ main_color_active <- "#26C026"
 
 ## Custom {fresh} theme passed to bs4Dash in app_ui.R
 # Example from https://dreamrs.github.io/fresh/
-
-# Search bs4dash vars
-# fresh::search_vars_bs4dash(pattern = "navbar") %>%
-#   View()
 
 eneRgy_theme <- fresh::create_theme(
 
@@ -195,21 +207,21 @@ districts_names <- sf_districts %>%
 ### Colors for categorie_diren ----
 
 categories_diren <- elec_prod %>%
-  dplyr::distinct(`Categorie DIREN`) %>%
-  dplyr::arrange(`Categorie DIREN`) %>%
+  dplyr::distinct(categorie_diren) %>%
+  dplyr::arrange(categorie_diren) %>%
   dplyr::pull()
 
 ### elec_prod_communes ----
 # From installation-specific to communes-specific (faster calculation)
 
 elec_prod_communes <- elec_prod %>%
-  dplyr::group_by(Commune, Annee, `Categorie DIREN`) %>%
+  dplyr::group_by(commune, annee, categorie_diren) %>%
   dplyr::summarise(dplyr::across(
-    .cols = c(`Puissance electrique installee`,
-              Production,
-              Injection,
-              Autoconsommation), ~sum(.x, na.rm = T)),
-    `N° OFS` = dplyr::first(`N° OFS`)) %>%
+    .cols = c(puissance_electrique_installee,
+              production,
+              injection,
+              autoconsommation), ~sum(.x, na.rm = T)),
+    numero_de_la_commune = dplyr::first(numero_de_la_commune)) %>%
   dplyr::ungroup()
 
 ## Objects specific to the tabCons  ----
@@ -222,10 +234,10 @@ elec_prod_communes <- elec_prod %>%
 # This is to create the statistic boxes (tabMap) and compare similar years.
 
 last_common_elec_year <- dplyr::intersect(
-  elec_cons_communes %>% dplyr::distinct(Annee),
-  elec_prod_communes %>% dplyr::distinct(Annee)) %>%
-  dplyr::slice_max(Annee) %>%
-  dplyr::pull(Annee)
+  elec_cons_communes %>% dplyr::distinct(annee),
+  elec_prod_communes %>% dplyr::distinct(annee)) %>%
+  dplyr::slice_max(annee) %>%
+  dplyr::pull(annee)
 
 
 ### Fixed statistics for boxes ----
@@ -233,15 +245,15 @@ last_common_elec_year <- dplyr::intersect(
 #### VD electricity production for last common year
 
 prod_elec_vd_last_year <- elec_prod_communes %>%
-  dplyr::filter(Annee == last_common_elec_year) %>%
-  dplyr::summarise(Production = sum(Production, na.rm = TRUE)) %>%
+  dplyr::filter(annee == last_common_elec_year) %>%
+  dplyr::summarise(production = sum(production, na.rm = TRUE)) %>%
   dplyr::pull()
 
 #### VD electricity consumption for last common year
 
 cons_elec_vd_last_year <- elec_cons_communes %>%
-  dplyr::filter(Annee == last_common_elec_year) %>%
-  dplyr::summarise(Consommation = sum(Consommation, na.rm = TRUE)) %>%
+  dplyr::filter(annee == last_common_elec_year) %>%
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
   dplyr::pull()
 
 

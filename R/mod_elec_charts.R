@@ -194,7 +194,8 @@ mod_elec_charts_server <- function(id,
       subsetData() %>%
         # Add the currently selected unit in the colnames (conversion is already done)
         # add energy units in brackets for energy/power related columns
-        add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
+        add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
+        rename_fr_colnames() # fct_helpers.R
 
         })
 

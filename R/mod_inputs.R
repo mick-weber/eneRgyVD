@@ -69,7 +69,7 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       elec_cons_communes %>%
-        filter(Commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes)
 
     })
 
@@ -86,7 +86,7 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       elec_prod_communes %>%
-        filter(Commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes)
 
     })
 
@@ -100,7 +100,7 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       regener_cons_ae_use %>%
-        filter(Commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes)
 
     })
 
@@ -110,7 +110,7 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       regener_cons_ae_aff %>%
-        filter(Commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes)
 
     })
 
@@ -146,17 +146,17 @@ mod_inputs_server <- function(id){
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
-      inputVals$min_avail_cons <- min(subset_elec_cons()$Annee)
-      inputVals$max_avail_cons <- max(subset_elec_cons()$Annee)
+      inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
+      inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
 
       # store min & max !available! years to feed sliderInput()
       # CHANGE PARAMS WITH PROD LATER  ($min_avail_prod and max_avail_prod for consistency with cons)
-      inputVals$min_avail_prod <- min(subset_elec_prod()$Annee)
-      inputVals$max_avail_prod <- max(subset_elec_prod()$Annee)
+      inputVals$min_avail_prod <- min(subset_elec_prod()$annee)
+      inputVals$max_avail_prod <- max(subset_elec_prod()$annee)
 
       # store list of !available! techs to feed pickerInput()
       inputVals$techs_avail <- subset_elec_prod() %>%
-        dplyr::distinct(`Categorie DIREN`) %>%
+        dplyr::distinct(categorie_diren) %>%
         dplyr::pull()
 
     })# End observe
@@ -170,14 +170,14 @@ mod_inputs_server <- function(id){
       req(subset_elec_prod(), subset_elec_cons())
 
       inputVals$common_year_elec_prod <- subset_elec_prod() %>%
-        dplyr::filter(Annee == last_common_elec_year) %>%
-        dplyr::summarise(Production = sum(Production, na.rm = T)) %>%
-        dplyr::pull(Production) # kWh
+        dplyr::filter(annee == last_common_elec_year) %>%
+        dplyr::summarise(production = sum(production, na.rm = T)) %>%
+        dplyr::pull(production) # kWh
 
       inputVals$common_year_elec_cons <- subset_elec_cons() %>%
-        dplyr::filter(Annee == last_common_elec_year) %>%
-        dplyr::summarise(Consommation = sum(Consommation, na.rm = T)) %>%
-        dplyr::pull(Consommation) # kWh initially
+        dplyr::filter(annee == last_common_elec_year) %>%
+        dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
+        dplyr::pull(consommation) # kWh initially
 
     })# End observe
 
@@ -194,7 +194,7 @@ mod_inputs_server <- function(id){
 
         tags$div(class = 'customSliderInput', # custom.css -> go green
 
-        shiny::sliderInput(ns("cons_year"), label = "Choix des Annees",
+        shiny::sliderInput(ns("cons_year"), label = "Choix des années",
                            min = inputVals$min_avail_cons,
                            max = inputVals$max_avail_cons,
                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
@@ -212,7 +212,7 @@ mod_inputs_server <- function(id){
 
         tags$div(class = 'customSliderInput', # custom.css -> go green
 
-        shiny::sliderInput(ns("prod_year"), label = "Choix des Annees",
+        shiny::sliderInput(ns("prod_year"), label = "Choix des années",
                     min = inputVals$min_avail_prod,
                     max = inputVals$max_avail_prod,
                     value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),

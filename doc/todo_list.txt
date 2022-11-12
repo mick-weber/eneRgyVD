@@ -1,0 +1,7 @@
+* Change name of variables such as categorie_diren -> categorie, ae -> agent_energetique, etc. so that the least work is needed inside the app
+
+* Add icons for regener dataset
+
+* Update downloadable_report.Rmd
+
+* 

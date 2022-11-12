@@ -66,9 +66,9 @@ app_server <- function(input, output, session) {
      # further filter cons_dataset with selected min/max values and convert to selectedUnit()
       # CONVERSION TEST IN PROGRESS
      inputVals$cons_dataset %>%
-       dplyr::filter(Annee >= inputVals$min_selected_cons,
-                     Annee <= inputVals$max_selected_cons)  %>%
-         convert_units(colnames = "Consommation",
+       dplyr::filter(annee >= inputVals$min_selected_cons,
+                     annee <= inputVals$max_selected_cons)  %>%
+         convert_units(colnames = "consommation",
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
@@ -91,10 +91,10 @@ app_server <- function(input, output, session) {
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 
      inputVals$prod_dataset %>%
-       dplyr::filter(Annee >= inputVals$min_selected_prod,
-                     Annee <= inputVals$max_selected_prod) %>%
-       dplyr::filter(`Categorie DIREN` %in% inputVals$techs_selected) %>%
-        convert_units(colnames = contains(c("Injection", "Production", "Autoconso", "Puissance")),
+       dplyr::filter(annee >= inputVals$min_selected_prod,
+                     annee <= inputVals$max_selected_prod) %>%
+       dplyr::filter(categorie_diren %in% inputVals$techs_selected) %>%
+        convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh",
                       unit_to = selectedUnit$unit_to)
 
@@ -116,7 +116,7 @@ app_server <- function(input, output, session) {
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
       inputVals$rgr_1 %>%
-         convert_units(colnames = "Consommation",
+         convert_units(colnames = "consommation",
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
@@ -138,7 +138,7 @@ app_server <- function(input, output, session) {
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
       inputVals$rgr_2 %>%
-         convert_units(colnames = "Consommation",
+         convert_units(colnames = "consommation",
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
@@ -153,7 +153,7 @@ app_server <- function(input, output, session) {
     req(subset_prod_data())
 
     subset_prod_data() %>%
-      filter(Annee == inputVals$max_selected_prod)
+      filter(annee == inputVals$max_selected_prod)
 
   })
 
@@ -162,7 +162,7 @@ app_server <- function(input, output, session) {
     req(subset_cons_data())
 
     subset_cons_data() %>%
-      filter(Annee == inputVals$max_selected_cons)
+      filter(annee == inputVals$max_selected_cons)
 
   })
 
@@ -256,11 +256,11 @@ app_server <- function(input, output, session) {
                           selectedUnit = selectedUnit,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_cons_data,
-                          legend_title = "Secteur",
-                          var_year = "Annee",
-                          var_commune = "Commune",
-                          var_rank_2 = "Secteur",
-                          var_values = "Consommation",
+                          legend_title = "secteur",
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_rank_2 = "secteur",
+                          var_values = "consommation",
                           color_palette = colors_sectors,
                           third_rank = FALSE,
                           var_rank_3_1 = NULL, var_rank_3_2 = NULL,
@@ -279,14 +279,14 @@ app_server <- function(input, output, session) {
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_prod_data,
                           legend_title = "Technologies",
-                          var_year = "Annee",
-                          var_commune = "Commune",
-                          var_rank_2 = "Categorie DIREN",
-                          var_values = "Production",
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_rank_2 = "categorie_diren",
+                          var_values = "production",
                           color_palette = colors_categories,
                           third_rank = TRUE,
-                          var_rank_3_1 = "Injection",
-                          var_rank_3_2 = "Autoconsommation",
+                          var_rank_3_1 = "injection",
+                          var_rank_3_2 = "autoconsommation",
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
                           # name of dl prefix to supply to download module

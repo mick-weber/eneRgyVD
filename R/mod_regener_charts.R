@@ -95,12 +95,12 @@ mod_regener_charts_server <- function(id,
       output$chart_alluvial <- shiny::renderPlot({
 
         subset_rgr_1 %>%
-          create_alluvial_chart(var_commune = "Commune",
-                                var_flow = "Consommation",
-                                var_from = "AE",
-                                label_from = "Consommation",
-                                var_to = "Usage",
-                                label_to = "Usage")
+          create_alluvial_chart(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                label_from = "consommation",
+                                var_to = "usage",
+                                label_to = "usage")
 
 
 
@@ -117,12 +117,12 @@ mod_regener_charts_server <- function(id,
         output$chart_alluvial <- shiny::renderPlot({
 
           subset_rgr_2 %>%
-            create_alluvial_chart(var_commune = "Commune",
-                                  var_flow = "Consommation",
-                                  var_from = "AE",
-                                  label_from = "Consommation",
-                                  var_to = "Affectation",
-                                  label_to = "Affectation")
+            create_alluvial_chart(var_commune = "commune",
+                                  var_flow = "consommation",
+                                  var_from = "ae",
+                                  label_from = "consommation",
+                                  var_to = "affectation",
+                                  label_to = "affectation")
 
 
         }, height = ifelse(test = is.null(inputVals$selectedCommunes),
@@ -167,15 +167,15 @@ mod_regener_charts_server <- function(id,
 
         subset_rgr_1() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
-
+          add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
+          rename_fr_colnames() # fct_helpers.R
       }
       else if(input$tab_table_type == "bar"){
 
         subset_rgr_2() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
-
+          add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
+          rename_fr_colnames() # fct_helpers.R
 
       }
 

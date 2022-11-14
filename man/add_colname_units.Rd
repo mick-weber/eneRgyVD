@@ -4,7 +4,8 @@
 \alias{add_colname_units}
 \title{add_colnames_units
 returns unit extension in target columns according to the currently selected unit
-of the app for power and energy}
+of the app for power and energy related colnames. Should be called before making
+nicely formatted columns with rename_fr_colnames()}
 \usage{
 add_colname_units(data, unit)
 }
@@ -19,5 +20,6 @@ dataframe with renamed columns
 \description{
 add_colnames_units
 returns unit extension in target columns according to the currently selected unit
-of the app for power and energy
+of the app for power and energy related colnames. Should be called before making
+nicely formatted columns with rename_fr_colnames()
 }

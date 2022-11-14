@@ -522,15 +522,15 @@ create_alluvial_chart <- function(data,
         # lumping factors both left and right of alluvia to 4 max (for readability)
 
   data <- data() %>%
+    group_by(commune) %>% # !! must group_by commune
     dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
                                                       n = 3,
                                                       w = .data[[var_flow]],
-                                                      other_level = "Autres sources"))
-  # %>%
-  #   dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
-  #                                                   prop = 0.08, # 8% min
-  #                                                   w = .data[[var_flow]],
-  #                                                   other_level = "Autres"))
+                                                      other_level = "Autres sources")) %>%
+    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
+                                                    prop = 0.08, # 8% min
+                                                    w = .data[[var_flow]],
+                                                    other_level = "Autres"))
   # Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
   # Very tough subject, no idea why this ' := ' or {{ }} are required
 

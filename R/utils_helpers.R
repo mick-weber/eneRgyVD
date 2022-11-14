@@ -7,7 +7,7 @@ load("./data/sf_lacs.rda")
 
 ## electricity_production data ----
 
-load("./data/elec_prod.rda")
+load("./data/elec_prod_communes.rda")
 load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
@@ -100,7 +100,8 @@ prod_icons <- prod_colors %>%
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
                                      replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color)
+  dplyr::select(-color) %>%
+  dplyr::ungroup()
 
 # Used for plots
 colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie_diren)
@@ -118,7 +119,8 @@ cons_icons <- cons_colors %>%
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
                                             replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color)
+  dplyr::select(-color) %>%
+  dplyr::ungroup()
 
 
 # Used for plots
@@ -206,23 +208,10 @@ districts_names <- sf_districts %>%
 
 ### Colors for categorie_diren ----
 
-categories_diren <- elec_prod %>%
+categories_diren <- elec_prod_communes %>%
   dplyr::distinct(categorie_diren) %>%
   dplyr::arrange(categorie_diren) %>%
   dplyr::pull()
-
-### elec_prod_communes ----
-# From installation-specific to communes-specific (faster calculation)
-
-elec_prod_communes <- elec_prod %>%
-  dplyr::group_by(commune, annee, categorie_diren) %>%
-  dplyr::summarise(dplyr::across(
-    .cols = c(puissance_electrique_installee,
-              production,
-              injection,
-              autoconsommation), ~sum(.x, na.rm = T)),
-    numero_de_la_commune = dplyr::first(numero_de_la_commune)) %>%
-  dplyr::ungroup()
 
 ## Objects specific to the tabCons  ----
 # to be populated

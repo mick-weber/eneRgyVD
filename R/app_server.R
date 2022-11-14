@@ -42,7 +42,10 @@ app_server <- function(input, output, session) {
    ## Tabs redirecting ----
    # in app_ui.R we have actionButtons to redirect in 'mode_about_the_app.R' data tabs
 
-   observeEvent(input$cons_data_help | input$prod_data_help | input$rg_data_help, {
+   observeEvent(ignoreInit = TRUE, # don't trigger at initialisation
+                # below: input action buttons (app_ui.R) for each tab
+                c(input$cons_data_help, input$prod_data_help, input$rg_data_help), {
+               # below: target destination after clicking any of these buttons
       bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
       bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
    })

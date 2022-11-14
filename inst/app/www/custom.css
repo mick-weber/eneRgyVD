@@ -90,6 +90,13 @@ pre {
   background-color:white;
 }
 
+/* custom class for info actionButtons (app_ui.R) */
+.btn.infoButton{
+  color:#3A862D;
+  background-color:white;
+}
+
+
 /* custom class for shinywidget prettyRadioButtons (plot/table types selections)*/
 
 .btn.radiobtn{

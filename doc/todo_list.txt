@@ -1,7 +1,13 @@
 * Change name of variables such as categorie_diren -> categorie, ae -> agent_energetique, etc. so that the least work is needed inside the app
 
+* statboxes should be changed with units + change capital titles to sentence
+
+* Update documentation after colnames change
+
 * Add icons for regener dataset
 
 * Update downloadable_report.Rmd
 
-* 
+* Modify entry structure of prod_elec to communes, not installation (not planned to use such detailed data yet)
+
+* add redirect links to the methodological overview from each data tab

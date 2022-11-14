@@ -132,9 +132,13 @@ app_ui <- function(request) {
           ## tabCons ----
           bs4Dash::tabItem(
             tabName = "tabCons",
-            h4(strong("Consommation d'électricité par commune")),
+            fluidRow(h4(strong("Consommation d'électricité par commune")),
+                     HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),
+                     actionButton("cons_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
             br(),
+            # to about_the_app module (test)
+
 
             mod_elec_charts_ui("consumption_charts")
 
@@ -142,7 +146,9 @@ app_ui <- function(request) {
           ## tabProd ----
           bs4Dash::tabItem(
             tabName = "tabProd",
-            h4(strong("Production d'électricité par commune")),
+            fluidRow(h4(strong("Production d'électricité par commune")),
+                     HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),
+                     actionButton("prod_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
             br(),
 
@@ -154,7 +160,9 @@ app_ui <- function(request) {
           ## tabRegener
           bs4Dash::tabItem(
             tabName = "tabRegener",
-            h4(strong("Consommation théorique des bâtiments")),
+            fluidRow(h4(strong("Consommation théorique des bâtiments")),
+                     HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),
+                     actionButton("rg_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
             br(),
 

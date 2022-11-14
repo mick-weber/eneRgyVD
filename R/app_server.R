@@ -39,7 +39,18 @@ app_server <- function(input, output, session) {
       updateQueryString(url)
    })
 
-  ## Inputs module ----
+   ## Tabs redirecting ----
+   # in app_ui.R we have actionButtons to redirect in 'mode_about_the_app.R' data tabs
+
+   observeEvent(input$cons_data_help | input$prod_data_help | input$rg_data_help, {
+      bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
+      bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
+   })
+
+
+
+
+   ## Inputs module ----
 
     # This retrieves the reactiveVal() selected unit to convert the dataframes from
    selectedUnit <- mod_unit_converter_server("unit_converter")

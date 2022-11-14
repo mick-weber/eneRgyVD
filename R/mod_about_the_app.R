@@ -11,7 +11,7 @@ mod_about_the_app_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    bs4Dash::tabsetPanel(
+    bs4Dash::tabsetPanel(id = ns("tabset"),
 
       shiny::tabPanel(title = "Général",
                       column(width = 8,
@@ -33,14 +33,13 @@ mod_about_the_app_ui <- function(id){
                       )),
       shiny::tabPanel(title = "Données",
 
-
                       column(width = 11,
                              # breathing
                              br(),
                              h4(strong("Sources des données")),
                              tags$p("Les sources de données suivantes sont utilisées : "),
 
-                             bs4Dash::tabsetPanel(
+                             bs4Dash::tabsetPanel(id = ns("nested_tabset"),
                                tabPanel("Production d'électricité",
                                         br(),
                                         tags$ul(

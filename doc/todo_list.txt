@@ -1,7 +1,6 @@
-* statboxes should be changed with units + change capital titles to sentence
-
-* Update documentation after colnames change
-
-* Add icons for regener dataset
 
 * Update downloadable_report.Rmd
+
+* Add year to regener dataset
+
+* Add palette

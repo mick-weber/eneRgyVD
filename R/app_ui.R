@@ -101,7 +101,7 @@ app_ui <- function(request) {
             fluidRow(
               column(width = 8,
                      # Title for select map
-                     h5(strong("Sélectionnez des communes sur la carte ou dans la zone latérale")),
+                     h4(strong("Sélectionnez des communes sur la carte ou dans la zone latérale")),
                      # Leaflet select map
                       leaflet::leafletOutput("map") %>% # height defined in custom.css #map
                         shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
@@ -135,7 +135,7 @@ app_ui <- function(request) {
           ## tabCons ----
           bs4Dash::tabItem(
             tabName = "tabCons",
-            fluidRow(h5(strong("Consommation d'électricité par commune")),
+            fluidRow(h4(strong("Consommation d'électricité par commune")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
                      actionButton("cons_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
@@ -149,7 +149,7 @@ app_ui <- function(request) {
           ## tabProd ----
           bs4Dash::tabItem(
             tabName = "tabProd",
-            fluidRow(h5(strong("Production d'électricité par commune")),
+            fluidRow(h4(strong("Production d'électricité par commune")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
                      actionButton("prod_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
@@ -163,7 +163,7 @@ app_ui <- function(request) {
           ## tabRegener
           bs4Dash::tabItem(
             tabName = "tabRegener",
-            fluidRow(h5(strong("Consommation théorique des bâtiments")),
+            fluidRow(h4(strong("Consommation théorique des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
                      actionButton("rg_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
@@ -179,7 +179,7 @@ app_ui <- function(request) {
           bs4Dash::tabItem(
             tabName = "tabReport",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
-            h5(strong("Générer un rapport énergétique")),
+            h4(strong("Générer un rapport énergétique")),
 
             # Module for producing rmd report based on downloadable_report.Rmd. Renders the button.
             mod_download_rmd_ui("rmd")
@@ -189,7 +189,7 @@ app_ui <- function(request) {
           bs4Dash::tabItem(
             tabName = "tabInfo",
             # Tab's title is here, but the rest of text is in the module to ease the reading of app_ui.R
-            h5(strong("À propos")),
+            h4(strong("À propos")),
             br(),
 
             # Module for producing the tab content (html mostly)

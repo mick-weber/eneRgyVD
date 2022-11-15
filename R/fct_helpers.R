@@ -444,8 +444,9 @@ return_palette_cons_elec <- function(){
 
 }
 
-#' convert_units
-#'
+#' convert_units()
+#' Converts units either from dataframe (in target columns) or directly from a numeric value
+#' according to which current unit is selected in the application
 #' @param data the dataframe containing the columns where to convert units
 #' @param colnames the colnames where to convert units
 #' @param unit_from the unit to convert from
@@ -464,10 +465,16 @@ convert_units <- function(data,
     dplyr::filter(unit == unit_to) %>%
     dplyr::pull(kWh)
 
+  # If we have a dataframe we call mutate
+  if(is.data.frame(data)){
   # Applies the conversion factor to the target colnames of the dataframe (division)
   data %>%
     dplyr::mutate(dplyr::across(colnames, ~.x / conversion_factor))
+  }else{
+    # if numeric value (not df) we directly apply the conversion factor
+    data/conversion_factor
 
+  }
 
   # Check if this is correct form or if I need to assign the new dataframe (and return() it)
 
@@ -518,38 +525,27 @@ create_alluvial_chart <- function(data,
                                   var_to,
                                   label_to){
 
-
-        # lumping factors both left and right of alluvia to 4 max (for readability)
-
-  data <- data() %>%
-    group_by(commune) %>% # !! must group_by commune
-    dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
-                                                      n = 3,
-                                                      w = .data[[var_flow]],
-                                                      other_level = "Autres sources")) %>%
-    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
-                                                    prop = 0.08, # 8% min
-                                                    w = .data[[var_flow]],
-                                                    other_level = "Autres"))
   # Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
   # Very tough subject, no idea why this ' := ' or {{ }} are required
 
 
         # data plotting
     data %>%
-    ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]], axis2 = .data[[var_to]],
-               y = .data[[var_flow]], label = .data[[var_flow]]))+
+    ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]],
+                                 axis2 = .data[[var_to]],
+                                 y = .data[[var_flow]],
+                                 label = .data[[var_flow]]))+
     ggalluvial::geom_alluvium(ggplot2::aes(fill = .data[[var_from]]),
                   width = 3/8, reverse = FALSE) +
     ggalluvial::geom_stratum(alpha = .25, width = 3/8, reverse = FALSE) +
-    ggplot2::geom_text(stat = ggalluvial::StatStratum,
-              aes(label =
-                    paste0(after_stat(stratum),
+    ggplot2::geom_label(stat = ggalluvial::StatStratum,
+                        alpha = .65, size = 4.5,
+              aes(label = paste0(after_stat(stratum),
                            " ",
-                           scales::percent(after_stat(prop), accuracy = 1))),
+                           scales::percent(after_stat(prop), accuracy = 0.1))),
               reverse = FALSE) +
     ggplot2::scale_x_continuous(breaks = 1:2, labels = c(label_from, label_to)) +
-    scale_fill_viridis_d(option = "plasma")+
+    scale_fill_viridis_d(option = "plasma")+ # change to right palette when ready
     ggplot2::facet_wrap(facets = var_commune,
                         scales = "free",
                         ncol = 2)+
@@ -561,6 +557,34 @@ create_alluvial_chart <- function(data,
 
 }
 
+
+#' lump_alluvial_factors()
+#'
+#' @param data
+#' @param var_from
+#' @param var_flow
+#' @param var_to
+#'
+#' @return
+#' @export
+
+lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to){
+
+  # lumping factors both left and right of alluvia to 4 max (for readability)
+  # fct_lump_prop won't lump a factor ALONE, there needs to be 2 factors to meet the prop criteria
+
+  data %>%
+  dplyr::group_by(.data[[var_commune]]) %>% # !! must group_by commune
+    dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
+                                                      n = 3,
+                                                      w = .data[[var_flow]],
+                                                      other_level = "Autres sources")) %>%
+    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
+                                                       prop = 0.1, # 10% min to appear individually
+                                                       w = .data[[var_flow]],
+                                                       other_level = "Autres"))
+
+}
 
 #' create_regener_table_dt
 #'
@@ -582,9 +606,9 @@ create_regener_table_dt <- function(data, unit){
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
     # add icons HTML tags from utils_helpers.R
-    # dplyr::left_join(ae_icons, by = "ae") %>% to be implemented
-    # dplyr::relocate(icon, .before = "ae) %>%  to be implemented
-    # dplyr::rename(" " = "icon") %>% # empty colname for icons
+    dplyr::left_join(regener_icons, by = "ae") %>%
+    dplyr::relocate(icon, .before = "ae") %>%
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
     rename_fr_colnames() %>% # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R

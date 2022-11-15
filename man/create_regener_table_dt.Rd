@@ -2,7 +2,8 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_regener_table_dt}
 \alias{create_regener_table_dt}
-\title{create_regener_table_dt}
+\title{create_regener_table_dt()
+creates a DT table with custom formatting and html icons}
 \usage{
 create_regener_table_dt(data, unit)
 }
@@ -10,5 +11,6 @@ create_regener_table_dt(data, unit)
 a datatable object for regener datasets
 }
 \description{
-create_regener_table_dt
+create_regener_table_dt()
+creates a DT table with custom formatting and html icons
 }

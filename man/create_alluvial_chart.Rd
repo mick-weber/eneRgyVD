@@ -2,9 +2,9 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_alluvial_chart}
 \alias{create_alluvial_chart}
-\title{create_alluvial_chart
-creates a ggplot2 alluvial chart using the ggalluvial library and heat building
-consumption data from an aggregated RegEner dataset}
+\title{create_alluvial_chart()
+creates a ggplot2 alluvial plot using ggalluvial library and uses labels and variable
+names as arguments for a flexible data input}
 \usage{
 create_alluvial_chart(
   data,
@@ -16,11 +16,22 @@ create_alluvial_chart(
   label_to
 )
 }
+\arguments{
+\item{data}{the dataset used to create the ggalluvial plot}
+
+\item{var_flow}{the variable that quantifies the flows from `var_from` to `var_to`}
+
+\item{var_from}{the variable for the left stratum}
+
+\item{var_to}{the variable for the right stratum
+creates a ggplot2 alluvial chart using the ggalluvial library and heat building
+consumption data from an aggregated RegEner dataset}
+}
 \value{
 a ggplot2 object for regener alluvial visualisations
 }
 \description{
-create_alluvial_chart
-creates a ggplot2 alluvial chart using the ggalluvial library and heat building
-consumption data from an aggregated RegEner dataset
+create_alluvial_chart()
+creates a ggplot2 alluvial plot using ggalluvial library and uses labels and variable
+names as arguments for a flexible data input
 }

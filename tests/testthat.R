@@ -1,4 +1,1 @@
-library(testthat)
-library(eneRgyVD)
-
-test_check("eneRgyVD")
+shinytest2::test_app()

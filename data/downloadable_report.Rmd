@@ -57,7 +57,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = '
 # Source the app file that contains plotting functions.
 #  Not sure this will work without locating it in temp 
 
-
+ 
 ```
 
 ```{css basic-theme, echo = FALSE}
@@ -165,29 +165,32 @@ params$regener_data_2 %>%
 ```
 
 
-**Graphique selon usage** 
+Graphique Sankey
 
 ```{r}
-# params$regener_data_1 %>%
-#   eneRgyVD::create_alluvial_chart(var_commune = "commune",
-#                                   var_flow = "consommation",
-#                                   var_from = "ae",
-#                                   label_from = "Consommation",
-#                                   var_to = "usage",
-#                                   label_to = "Usage")
-# 
-# regener_cons_ae_use %>% 
-#   dplyr::filter(commune %in% c("Aclens", "Agiez")) %>% 
-#   create_alluvial_chart(var_commune = "commune",
-#                         var_flow = "consommation",
-#                         var_from = "ae",
-#                         label_from = "Consommation",
-#                         var_to = "usage",
-#                         label_to = "Usage")
-
+# Use # of communes so that some plot chunk's height can be sized accordingly
+# # 400 being default px for 1 row, 0.0104 is the approx conversion from px to inch
+height_facet_plots = ceiling(length(params$communes)/2)*400*0.01
 
 ```
 
+
+
+```{r fig.height= height_facet_plots, fig.width = 12}
+
+params$regener_data_1 %>%
+  lump_alluvial_factors(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                var_to = "usage") %>%
+  eneRgyVD::create_alluvial_chart(var_commune = "commune",
+                                  var_flow = "consommation",
+                                  var_from = "ae",
+                                  label_from = "Consommation",
+                                  var_to = "usage",
+                                  label_to = "Usage")
+
+```
 
 
 

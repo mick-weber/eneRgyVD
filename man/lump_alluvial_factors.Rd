@@ -2,13 +2,26 @@
 % Please edit documentation in R/fct_helpers.R
 \name{lump_alluvial_factors}
 \alias{lump_alluvial_factors}
-\title{lump_alluvial_factors()}
+\title{lump_alluvial_factors()
+takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
+according to two {forcats} functions which arguments should be modified in the code}
 \usage{
-lump_alluvial_factors(data, var_from, var_flow, var_to)
+lump_alluvial_factors(data, var_commune, var_from, var_flow, var_to)
 }
 \arguments{
-\item{var_to}{}
+\item{data}{the dataset used to create the ggalluvial plot}
+
+\item{var_from}{the variable for the left stratum}
+
+\item{var_flow}{the variable that quantifies the flows from `var_from` to `var_to`}
+
+\item{var_to}{the variable for the right stratum}
+}
+\value{
+a ggplot object
 }
 \description{
 lump_alluvial_factors()
+takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
+according to two {forcats} functions which arguments should be modified in the code
 }

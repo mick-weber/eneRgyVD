@@ -95,7 +95,7 @@ covrpage::covrpage()
 ## CI ----
 ## Use this part of the script if you need to set up a CI
 ## service for your application
-##
+
 ## (You'll need GitHub there)
 usethis::use_github()
 
@@ -112,6 +112,9 @@ usethis::use_github_action_pr_commands()
 # Travis CI
 usethis::use_travis()
 usethis::use_travis_badge()
+
+# Licence
+usethis::use_gpl_license(version = 3, include_future = TRUE)
 
 # AppVeyor
 usethis::use_appveyor()

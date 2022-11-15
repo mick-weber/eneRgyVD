@@ -1,6 +1,15 @@
+# https://cran.r-project.org/web/packages/shinytest2/vignettes/shinytest2.html
+
+library(shinytest2)
 library(eneRgyVD)
 
-# https://rstudio.github.io/shinytest2/articles/using-monkey-testing.html
+
+# record_test(".")
+
+
+# Using gremlins.js
+
+#https://rstudio.github.io/shinytest2/articles/using-monkey-testing.html
 
 headless_app <- AppDriver$new(
   app_dir = ".",view = T,
@@ -37,13 +46,14 @@ headless_app$get_js("typeof window.gremlins")
 
 # Run this in Chrome's console
 
+# Or this to have a message for test sunccess
 # const horde = gremlins.createHorde();
-# horde.unleash();
-
 # horde
 # .unleash()
 # .then(() => {
 #   console.log('Gremlins test success')
 # });
 
+# Check the logs
 
+headless_app$get_logs()

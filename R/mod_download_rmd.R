@@ -41,7 +41,9 @@ mod_download_rmd_ui <- function(id){
 #' download_rmd Server Functions
 #'
 #' @noRd
-mod_download_rmd_server <- function(id, inputVals, selectedUnit){
+mod_download_rmd_server <- function(id,
+                                    inputVals,
+                                    selectedUnit){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -82,6 +84,8 @@ mod_download_rmd_server <- function(id, inputVals, selectedUnit){
         params <- list(communes = inputVals$selectedCommunes,
                        prod_data = inputVals$prod_dataset,
                        cons_data = inputVals$cons_dataset,
+                       regener_data_1 = inputVals$rgr_1,
+                       regener_data_2 = inputVals$rgr_2,
                        unit = selectedUnit$unit_to)
 
         # id <- showNotification(

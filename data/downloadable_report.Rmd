@@ -23,6 +23,8 @@ params:
   unit: NULL
   prod_data: NULL
   cons_data: NULL
+  regener_data_1: NULL
+  regener_data_2: NULL
   
 ---
 
@@ -140,6 +142,54 @@ params$prod_data %>%
                                 legend_title = "Technologies")
 
 ```
+
+## Chaleur des bâtiments
+
+**Table des consommations selon usage**
+
+```{r}
+
+params$regener_data_1 %>%
+  eneRgyVD::create_regener_table_dt(unit = params$unit)
+
+```
+
+
+**Table des consommations selon affectation**
+
+```{r}
+
+params$regener_data_2 %>%
+  eneRgyVD::create_regener_table_dt(unit = params$unit)
+
+```
+
+
+**Graphique selon usage** 
+
+```{r}
+# params$regener_data_1 %>%
+#   eneRgyVD::create_alluvial_chart(var_commune = "commune",
+#                                   var_flow = "consommation",
+#                                   var_from = "ae",
+#                                   label_from = "Consommation",
+#                                   var_to = "usage",
+#                                   label_to = "Usage")
+# 
+# regener_cons_ae_use %>% 
+#   dplyr::filter(commune %in% c("Aclens", "Agiez")) %>% 
+#   create_alluvial_chart(var_commune = "commune",
+#                         var_flow = "consommation",
+#                         var_from = "ae",
+#                         label_from = "Consommation",
+#                         var_to = "usage",
+#                         label_to = "Usage")
+
+
+```
+
+
+
 
 # Contact
 

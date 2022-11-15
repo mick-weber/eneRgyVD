@@ -133,9 +133,7 @@ app_server <- function(input, output, session) {
          convert_units(colnames = "consommation",
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
-
    })
-
 
    # subset_rgr1 : regener by commune, cons, ae, aff
 
@@ -321,6 +319,7 @@ app_server <- function(input, output, session) {
    # Module for rendering the vd collapse box
    mod_collapse_stats_box_server("vd_box",
                                  title = "Canton de Vaud",
+                                 selectedUnit = selectedUnit,
                                  production_value = prod_elec_vd_last_year, # utils_helpers.R
                                  consumption_value = cons_elec_vd_last_year, # utils_helpers.R
                                  year = last_common_elec_year) # utils_helpers.R
@@ -332,6 +331,7 @@ app_server <- function(input, output, session) {
 
      mod_collapse_stats_box_server("communes_box",
                                    title = "Commune(s) sélectionnée(s)",
+                                   selectedUnit = selectedUnit,
                                    production_value = inputVals$common_year_elec_prod, # mod_inputs.R
                                    consumption_value = inputVals$common_year_elec_cons, # mod_inputs.R
                                    year = last_common_elec_year) # utils_helpers.R

@@ -24,8 +24,8 @@ mod_regener_charts_ui <- function(id){
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
                         label = "Sélection du type de graphique",
-                        choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
-                                    `<i class='fa fa-bar-chart'></i>` = "bar"),
+                        choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
+                                    `<i class='fa fa-house'></i> Par affectation` = "bar"),
                         justified = TRUE,
                         width = "25%"),
 
@@ -50,8 +50,8 @@ mod_regener_charts_ui <- function(id){
                              shinyWidgets::radioGroupButtons(
                                inputId = ns("tab_table_type"),
                                label = "Sélection du type de table",
-                               choices = c(`<i class='fa fa-bars-staggered'></i>` = "flow",
-                                           `<i class='fa fa-bar-chart'></i>` = "bar"),
+                               choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
+                                           `<i class='fa fa-house'></i> Par affectation` = "bar"),
                                justified = TRUE,
                                width = "25%"),
 
@@ -94,13 +94,17 @@ mod_regener_charts_server <- function(id,
         # Alluvial plot 1 : conso -> usage
       output$chart_alluvial <- shiny::renderPlot({
 
-        subset_rgr_1 %>%
+        subset_rgr_1() %>%
+          lump_alluvial_factors(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                var_to = "usage") %>%
           create_alluvial_chart(var_commune = "commune",
                                 var_flow = "consommation",
                                 var_from = "ae",
-                                label_from = "consommation",
+                                label_from = "Consommation",
                                 var_to = "usage",
-                                label_to = "usage")
+                                label_to = "Usage")
 
 
 
@@ -116,13 +120,17 @@ mod_regener_charts_server <- function(id,
         # Alluvial plot 2 : conso -> aff
         output$chart_alluvial <- shiny::renderPlot({
 
-          subset_rgr_2 %>%
+          subset_rgr_2() %>%
+            lump_alluvial_factors(var_commune = "commune",
+                                  var_flow = "consommation",
+                                  var_from = "ae",
+                                  var_to = "affectation") %>%
             create_alluvial_chart(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
-                                  label_from = "consommation",
+                                  label_from = "Consommation",
                                   var_to = "affectation",
-                                  label_to = "affectation")
+                                  label_to = "Affectation")
 
 
         }, height = ifelse(test = is.null(inputVals$selectedCommunes),

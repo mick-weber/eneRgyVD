@@ -511,7 +511,14 @@ add_colname_units <- function(data, unit){
 }
 
 
-#' create_alluvial_chart
+#' create_alluvial_chart()
+#' creates a ggplot2 alluvial plot using ggalluvial library and uses labels and variable
+#' names as arguments for a flexible data input
+#'
+#' @param data the dataset used to create the ggalluvial plot
+#' @param var_from the variable for the left stratum
+#' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
+#' @param var_to the variable for the right stratum
 #' creates a ggplot2 alluvial chart using the ggalluvial library and heat building
 #' consumption data from an aggregated RegEner dataset
 #' @return a ggplot2 object for regener alluvial visualisations
@@ -559,13 +566,15 @@ create_alluvial_chart <- function(data,
 
 
 #' lump_alluvial_factors()
+#' takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
+#' according to two {forcats} functions which arguments should be modified in the code
 #'
-#' @param data
-#' @param var_from
-#' @param var_flow
-#' @param var_to
+#' @param data the dataset used to create the ggalluvial plot
+#' @param var_from the variable for the left stratum
+#' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
+#' @param var_to the variable for the right stratum
 #'
-#' @return
+#' @return a ggplot object
 #' @export
 
 lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to){
@@ -586,11 +595,11 @@ lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to)
 
 }
 
-#' create_regener_table_dt
+#' create_regener_table_dt()
+#' creates a DT table with custom formatting and html icons
 #'
 #' @return a datatable object for regener datasets
 #' @export
-#'
 
 create_regener_table_dt <- function(data, unit){
 

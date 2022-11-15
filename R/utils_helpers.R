@@ -103,7 +103,7 @@ prod_icons <- prod_colors %>%
   dplyr::select(-color) %>%
   dplyr::ungroup()
 
-# Used for plots
+# Used for plots: named vector with level + associated color
 colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie_diren)
 
 ## Cons colors and icons (cons) ----
@@ -123,9 +123,35 @@ cons_icons <- cons_colors %>%
   dplyr::ungroup()
 
 
-# Used for plots
+# Used for plots: named vector with level + associated color
 # Be careful if sectors change name ! (SDN wrote them inconsistently here...)
 colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$secteur)
+
+
+## Regener AE icons (rg) ----
+# Base tribble for AE, color and icon
+
+regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
+                              as.character(icon("tree")), "Bois", "#CC9E62",
+                              as.character(icon("industry")), "CAD", "#A58DE6",
+                              as.character(icon("bolt")), "Electricité (direct)", "#FF870F",
+                              as.character(icon("bolt-lightning")), "Electricité (PAC)", "#FFEF0F",
+                              as.character(icon("fire-flame-simple")), "Gaz", "#477fc1", #gaznat
+                              as.character(icon("fire-flame-simple")), "Mazout", "#5d5f63",
+                              as.character(icon("sun")), "Solaire thermique", "#FFB90F"
+                              )
+
+# Used for table icons
+# Adding the color style in the html tag for the icon
+regener_icons <- regener_colors %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
+  dplyr::select(-color) %>%
+  dplyr::ungroup()
+
+# Used for plots: named vector with level + associated color
+colors_ae <- regener_colors$color %>% setNames(nm = regener_colors$ae)
 
 
 ## Facetted plot's height ----
@@ -258,29 +284,6 @@ bboxes <- districts_names %>%
 ## Add & fill the Canton bbox in our bboxes using the whole districts borders
 
 bboxes$Canton <- sf_districts %>% sf::st_bbox()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

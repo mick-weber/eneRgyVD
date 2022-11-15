@@ -12,7 +12,7 @@ mod_elec_charts_ui <- function(id){
   tagList(
     # TABSETS for better readability of plot / table
     bs4Dash::tabsetPanel(
-      id = "tabset1",
+      id = "tabset_elec",
       shiny::tabPanel(title = "Graphique",
                       # breathing
                       br(),

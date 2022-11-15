@@ -87,8 +87,9 @@ mod_about_the_app_ui <- function(id){
                                      (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
                                      registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
                                      de chaleur peuvent être renseignés, la consommation est estimée selon la surface de référence énergétique, l'année et l'affectation du bâtiment
-                                     ainsi que la présence d'une ou de plusieurs rénovations. Les données issues du RegEner et qui alimentent cette application
-                                     sont le résultat d'agrégations du RegEner."))
+                                     ainsi que la présence d'une ou de plusieurs rénovations. Ces consommations sont théoriques mais fondées sur des données de consommation empiriques.
+                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner.
+                                     Davantage de détails peuvent être fournis sur demande à", tags$a (href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank")))
                          ),# End tags$ul 2/3
                 br(),
 
@@ -127,9 +128,11 @@ mod_about_the_app_ui <- function(id){
             "et le contenu des visualisations par de multiples librairies issues notamment du",
             tags$a(href = "https://www.tidyverse.org/", "tidyverse.", target = "_blank"),
             "De plus amples demandes d'informations peuvent être adressées directement à l'e-mail de contact",
-            tags$a (href = paste0("mailto:", mail_address), mail_address,target = "_blank"),
+            tags$a(href = paste0("mailto:", mail_address), mail_address,target = "_blank"),
             "."),
             br(),
+            tags$p("Ce projet est sous licence open source GNU General Public Licence ",
+                   tags$a(href = "https://www.gnu.org/licenses/gpl-3.0.en.html", "GPLv3.", target = "_blank")),
             br(),
             br(),
             # the fluidrow is here to force the horizontal alignment of github button + p()

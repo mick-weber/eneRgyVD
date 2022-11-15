@@ -14,11 +14,17 @@ mod_regener_charts_ui <- function(id){
 
     # TABSETS for better readability of plot / table
     bs4Dash::tabsetPanel(
-      id = "tabset1",
+      id = "tabset_rg",
       shiny::tabPanel(title = "Graphique",
                       # breating
                       br(),
-
+                      column(width = 10,
+                      # Alluvial plots description (in a column for better display)
+                      tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
+                             se répartit pour satisfaire les besoins en chaleur du bâtiment (ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage
+                             autre que calorifique), selon l'usage ou l'affectation principale des bâtiments. Il s'agit d'estimations théoriques fondées sur la base de données empiriques.
+                             Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques.")
+                      ),# End column
                       # radioGroupButtons() for tab ----
 
                       shinyWidgets::radioGroupButtons(

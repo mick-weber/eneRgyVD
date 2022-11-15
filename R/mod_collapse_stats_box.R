@@ -21,6 +21,7 @@ mod_collapse_stats_box_ui <- function(id){
 #' @noRd
 mod_collapse_stats_box_server <- function(id,
                                           title,
+                                          selectedUnit,
                                           production_value,
                                           consumption_value,
                                           year){
@@ -43,7 +44,8 @@ mod_collapse_stats_box_server <- function(id,
             bs4Dash::descriptionBlock(
               marginBottom = TRUE,
               number = year,
-              header = paste0(format(production_value/1e6, big.mark = "'", digits = 1), " GWh"),
+              # header: we paste the value in kwh and pass it to convert_units(), and we format it
+              header = paste(format(production_value %>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
               text = htmltools::HTML(paste0("Production", tags$br(), "d'électricité")),
               rightBorder = TRUE
             )# End descriptionBlock
@@ -52,7 +54,8 @@ mod_collapse_stats_box_server <- function(id,
             width = 6,
             bs4Dash::descriptionBlock(
               number = year,
-              header = paste0(format(consumption_value/1e6, big.mark = "'", digits = 1), " GWh"),
+              # header: we paste the value in kwh and pass it to convert_units(), and we format it
+              header = paste(format(consumption_value%>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
               text = htmltools::HTML(paste0("Consommation", tags$br(), "d'électricité")),
               rightBorder = FALSE
             )# End descriptionBlock
@@ -64,6 +67,7 @@ mod_collapse_stats_box_server <- function(id,
         width = 12,
         bs4Dash::descriptionBlock(
           number = year,
+          # header: no need for unit conversion since it's percents
           header = scales::label_percent(accuracy = .1)(production_value/consumption_value),
           text = htmltools::HTML(paste0("Taux de couverture", tags$br(), "electrique annuel")),
           rightBorder = FALSE

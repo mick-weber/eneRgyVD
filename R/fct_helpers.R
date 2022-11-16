@@ -306,7 +306,7 @@ create_prod_table_dt <- function(data, unit){
                                         digits = 3,
                                         drop0trailing = TRUE,
                                         scientific = FALSE))) %>%
-    dplyr::select(-numero_de_la_commune) %>%
+    dplyr::select(-c(numero_de_la_commune, nombre_installations_total)) %>%
     # put installed power in the last position
     dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
     # add icons HTML tags from utils_helpers.R

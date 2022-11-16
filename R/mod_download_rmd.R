@@ -53,12 +53,12 @@ mod_download_rmd_server <- function(id,
                "Sélectionner au moins une commune pour générer un rapport."))
 
         # Nicely format the selected commune(s)
-        tags$strong(knitr::combine_words(words = inputVals$selectedCommunes,
+      h4(tags$strong(knitr::combine_words(words = inputVals$selectedCommunes,
                              sep = ", ",
                              and = " et ",
-                             oxford_comma = F), style = "font-size:medium;")
+                             oxford_comma = F)))
 
-    })
+    })# End renderPrint
 
 
     output$dl_button <- shiny::renderUI({
@@ -109,7 +109,7 @@ mod_download_rmd_server <- function(id,
         notify("Orthogonalisation de matrices...", id = id)
         Sys.sleep(1.5)
         notify("Mise en orbite d'un lapin adulte...", id = id)
-        Sys.sleep(1.5)
+        Sys.sleep(2)
         notify("Élevage de moutons basques...", id = id)
 
 

@@ -2,8 +2,21 @@
 * make new function for DT::datatable() to insert inside create_table_fcts and add argument
   so that we can select if this is a 'rmd-display' table (with excel buttons) or an 'app-display' table (without excel buttons which are added in shiny because better and nicer format flexibility)
 
-* Add year to regener dataset
+//Général
+* Poser cadre gris clair autour de leaflet map
+* Autoriser téléchargemeent uniquement lorsque length(inputVals$selected_communes > 0) --> message d'erreur sinon
+* Plotly : voir si on peut déplacer la barre mi-opaque plotly ou la supprimer/réduire
 
-* Add palette to regener
+//mod_inputs.R
+* Passer le selectInput en RadioButtonGroup input pour voir toutes les technologies sélectionnables ( ! à l'espace libre dans la sidebar) 
 
+// mod_elec_charts.R
+* Ajouter légende graphiques mod_elec_charts.R
+* Dédoubler les boutons d'abcisse et positionnement barres (radio button switch)
 * virer 'diren' de 'categorie_diren' le plus tôt possible et ajuster le code
+* Sunburst : Augmenter taille / centrer au milieu 
+
+//mod_regener_charts.R
+* Rajouter colonne pct dans mod_regener_charts (table) -> direct dans la fonction
+* Rajouter légende pour CAD/ECS qqpart 
+* Add year to regener dataset

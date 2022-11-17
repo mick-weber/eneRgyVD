@@ -5,9 +5,9 @@ account: dge-diren
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6459124
-bundleId: 6517004
+bundleId: 6524191
 url: https://dge-diren.shinyapps.io/energyvd/
-when: 1668533142.12309
-lastSyncTime: 1668533142.12309
+when: 1668677730.0864
+lastSyncTime: 1668677730.0864
 asMultiple: FALSE
 asStatic: FALSE

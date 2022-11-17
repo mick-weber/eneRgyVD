@@ -306,7 +306,9 @@ create_prod_table_dt <- function(data, unit){
                                         digits = 3,
                                         drop0trailing = TRUE,
                                         scientific = FALSE))) %>%
-    dplyr::select(-c(numero_de_la_commune, nombre_installations_total)) %>%
+    dplyr::select(-c(numero_de_la_commune,
+                     nombre_installations_total,
+                     district)) %>%
     # put installed power in the last position
     dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
     # add icons HTML tags from utils_helpers.R
@@ -327,7 +329,7 @@ create_prod_table_dt <- function(data, unit){
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
                                  #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
-                                 columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                   language = DT_fr_language # from utils_helpers.R !
     ),
@@ -383,7 +385,7 @@ create_cons_table_dt <- function(data, unit){
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
                                  #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
-                                 columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                  language = DT_fr_language # from utils_helpers.R
     ),
@@ -632,7 +634,7 @@ create_regener_table_dt <- function(data, unit){
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
                                  #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
-                                 columnDefs = list(list(targets = c(0,1), className = 'dt-center')),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                  language = DT_fr_language # from utils_helpers.R
                   ),

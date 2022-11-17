@@ -1,6 +1,9 @@
 
-* Update downloadable_report.Rmd
+* make new function for DT::datatable() to insert inside create_table_fcts and add argument
+  so that we can select if this is a 'rmd-display' table (with excel buttons) or an 'app-display' table (without excel buttons which are added in shiny because better and nicer format flexibility)
 
 * Add year to regener dataset
 
-* Add palette
+* Add palette to regener
+
+* virer 'diren' de 'categorie_diren' le plus tôt possible et ajuster le code

@@ -66,13 +66,14 @@ units_table <- dplyr::tribble(
 ## Column keywords ----
 
 ## List of non-ASCII words that should replace internal colnames
+# Note that colnames are already in a 'sentence' format (i.e. Ae and not ae)
 replace_fr_accents <- c("electricite" = "électricité",
                         "electrique" = "électrique",
                         "energetique" = "énergétique",
                         "Categorie" = "Catégorie",
                         "installee" = "installée",
                         "Annee" = "Année",
-                        "ae" = "Agent énergétique")
+                        "Ae" = "Agent énergétique")
 
 ## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation")

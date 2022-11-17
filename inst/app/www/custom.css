@@ -37,9 +37,16 @@
   background-color:#bec5cb;
 }
 
-/* Prod techs widget in sidebar: display text in black */
+/* Prod year widget in sidebar: display text in black */
 #inputs_1-prod_year_n_techs > div.form-group.shiny-input-container > div > button{
   color:black;
+}
+
+/* Prod unavailable techs labels: display text darker than available ones */
+#inputs_1-prod_techs_na > div,
+#inputs_1-prod_techs_na > label{
+  color:#818898;
+  font-size: 0.9em;
 }
 
 

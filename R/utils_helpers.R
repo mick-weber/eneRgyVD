@@ -104,7 +104,7 @@ prod_icons <- prod_colors %>%
   dplyr::select(-color) %>%
   dplyr::ungroup()
 
-# Used for plots: named vector with level + associated color
+# Palette for plots: named vector with level + associated color
 colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie_diren)
 
 ## Cons colors and icons (cons) ----
@@ -124,7 +124,7 @@ cons_icons <- cons_colors %>%
   dplyr::ungroup()
 
 
-# Used for plots: named vector with level + associated color
+# Palette for plots: named vector with level + associated color
 # Be careful if sectors change name ! (SDN wrote them inconsistently here...)
 colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$secteur)
 

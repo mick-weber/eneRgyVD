@@ -150,7 +150,6 @@ mod_inputs_server <- function(id){
       inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
 
       # store min & max !available! years to feed sliderInput()
-      # CHANGE PARAMS WITH PROD LATER  ($min_avail_prod and max_avail_prod for consistency with cons)
       inputVals$min_avail_prod <- min(subset_elec_prod()$annee)
       inputVals$max_avail_prod <- max(subset_elec_prod()$annee)
 
@@ -199,6 +198,10 @@ mod_inputs_server <- function(id){
                            max = inputVals$max_avail_cons,
                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
                            step = 1L, sep = "", ticks = T)
+
+
+
+
         ))# End tagList()
     })# End renderUi()
 
@@ -218,22 +221,45 @@ mod_inputs_server <- function(id){
                     value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),
                     step = 1L, sep = "", ticks = T)),
 
-        shinyWidgets::pickerInput(ns("prod_techs"), label = "Choix des technologies",
-                                  choices = inputVals$techs_avail,
-                                  selected = inputVals$techs_avail,
-                                  multiple = T,
-                                  options=shinyWidgets::pickerOptions(
-                                    title = "Technologies disponibles",
-                                    actionsBox = TRUE,
-                                    deselectAllText = "Tout déselectionner",
-                                    selectAllText = "Tout sélectionner",
-                                    noneSelectedText = "Aucune sélection"),
-                                  choicesOpt = list(
-                                    # we apply css iteratively on each element using length(techs)
-                                    # https://stackoverflow.com/questions/54081254/pickerinput-font-or-background-color
-                                    style = rep(("color: black; background: white;"),
-                                                length(inputVals$techs_avail)))
-                                  ) # End pickerInput()
+        # shinyWidgets::pickerInput(ns("prod_techs"), label = "Choix des technologies",
+        #                           choices = inputVals$techs_avail,
+        #                           selected = inputVals$techs_avail,
+        #                           multiple = T,
+        #                           options=shinyWidgets::pickerOptions(
+        #                             title = "Technologies disponibles",
+        #                             actionsBox = TRUE,
+        #                             deselectAllText = "Tout déselectionner",
+        #                             selectAllText = "Tout sélectionner",
+        #                             noneSelectedText = "Aucune sélection"),
+        #                           choicesOpt = list(
+        #                             # we apply css iteratively on each element using length(techs)
+        #                             # https://stackoverflow.com/questions/54081254/pickerinput-font-or-background-color
+        #                             style = rep(("color: black; background: white;"),
+        #                                         length(inputVals$techs_avail)))
+        #                           ) # End pickerInput()
+
+        # For SELECTABLE technologies : these checkboxes are linked to other server parts
+        shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs"), label = "Choix des technologies",
+                                         choices = inputVals$techs_avail,
+                                         selected = inputVals$techs_avail,
+                                         inline = FALSE,
+                                         bigger = TRUE,
+                                         status =  "default",
+                                         icon = icon("check"),
+                                         animation = "jelly"),
+        # For NON-SELECTABLE technologies : only for visual !
+        shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs_na"), label = "Non représentées :",
+                                          # Show unavailable technologies for UX
+                                          choices = setdiff(categories_diren, # utils_helpers.R
+                                                            inputVals$techs_avail),  # mod_inputs.R
+                                          selected = setdiff(categories_diren, # utils_helpers.R
+                                                             inputVals$techs_avail),
+                                          inline = FALSE,
+                                          fill = TRUE,
+                                          outline = TRUE,
+                                          status =  "default",
+                                          icon = icon("heart-crack")),
+
       ) # End tagList
     }) # End renderUI
 

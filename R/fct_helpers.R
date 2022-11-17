@@ -446,6 +446,26 @@ return_palette_cons_elec <- function(){
 
 }
 
+
+
+#' return_palette_regener()
+#' returns the color palette for energy sources in the regener dataset
+#' @return a vector with categorical data and hex color strings
+#' @export
+
+return_palette_regener <- function(){
+
+  # We take the initial AE colors and we add a 'Autres sources' which is
+  # the 'other_level' from fct_lump_n() used inside the 'create_alluvial_chart()' fun
+
+  colors_ae_others <- c(colors_ae,
+                        "Autres sources" = "#6CFF6C")
+
+  return(colors_ae_others)
+
+}
+
+
 #' convert_units()
 #' Converts units either from dataframe (in target columns) or directly from a numeric value
 #' according to which current unit is selected in the application
@@ -554,7 +574,7 @@ create_alluvial_chart <- function(data,
                            scales::percent(after_stat(prop), accuracy = 0.1))),
               reverse = FALSE) +
     ggplot2::scale_x_continuous(breaks = 1:2, labels = c(label_from, label_to)) +
-    scale_fill_viridis_d(option = "plasma")+ # change to right palette when ready
+    ggplot2::scale_fill_manual(values =  return_palette_regener())+ # fcts_helpers.R
     ggplot2::facet_wrap(facets = var_commune,
                         scales = "free",
                         ncol = 2)+

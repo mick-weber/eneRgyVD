@@ -290,6 +290,3 @@ bboxes$Canton <- sf_districts %>% sf::st_bbox()
 
 
 
-
-
-

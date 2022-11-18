@@ -2,7 +2,6 @@
 
 
 /* bs4DashBrand title custom */
-
 #tabs > a{
   text-align:center;
   font-weight:bold;
@@ -15,14 +14,13 @@
 }
 
 /* Custom class for sliderInputs (go green for labs and slider) */
-
 .customSliderInput .irs--shiny .irs-bar {
    background: #3A862D;
    border-top: #3A862D;
    border-bottom: #3A862D;
 }
-/* Label colors of 'from' and 'to' labels*/
 
+/* Label colors of 'from' and 'to' labels*/
 .customSliderInput .irs--shiny .irs-from,
 .customSliderInput .irs--shiny .irs-to{
   background-color:#3A862D;
@@ -42,11 +40,18 @@
   color:black;
 }
 
-/* Prod unavailable techs labels: display text darker than available ones */
-#inputs_1-prod_techs_na > div,
-#inputs_1-prod_techs_na > label{
+/* List of unavailable techs : remove bullet points+darken+diminish padding*/
+.sidebar_na_title{
   color:#818898;
-  font-size: 0.9em;
+  padding-left:15px;
+  margin-bottom:5px;
+  font-weight:bold;
+}
+
+.sidebar_na_list{
+  list-style: none;
+  color:#818898;
+  padding-left:40px;
 }
 
 
@@ -65,6 +70,14 @@ body {
 /*Increase sidebar text size */
 #sidebarItemExpanded > ul > li{
   font-size:1em;
+}
+
+/*leaflet map border*/
+
+#map{
+  border-style:solid;
+  border-width:1px;
+  border-color:#e8e8e8;
 }
 
 /*Change the shinyalert (sweet-alert) popup text display style*/
@@ -92,7 +105,7 @@ pre {
 
 /* custom class for shiny download buttons */
 .btn.dlButton{
-  width:175px;
+  width:150px;
   color:#3A862D;
   background-color:white;
 }

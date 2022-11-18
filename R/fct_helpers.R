@@ -26,6 +26,25 @@ info_dev_message <- function(){
 
 }
 
+
+dl_requires_data_message <-  function(){
+
+  shinyalert::shinyalert(title = "Duh.",
+                         text = "DUH DUH DUH",
+                         html = TRUE,
+                         size = "xs",
+                         closeOnEsc = TRUE,
+                         closeOnClickOutside = TRUE,
+                         type = "warning",
+                         showConfirmButton = TRUE,
+                         showCancelButton = FALSE,
+                         confirmButtonText = "OK",
+                         timer = 0,
+                         animation = "pop"
+  )
+
+}
+
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
@@ -186,7 +205,8 @@ create_bar_plotly <- function(data,
       orientation = "h", # puts the legend in the middle instead of default right
       y = 1.3 # elevates the legend so its above the plot, not below
     )) %>%
-    config(locale = "fr")
+    config(modeBarButtons = list(list("toImage")),
+           locale = "fr")
 }
 
 #' create_sunburst_plotly
@@ -277,7 +297,8 @@ create_sunburst_plotly <- function(data_sunburst,
                   width = "800px" # important because otherwise it's too much on the right
                   ) %>%
     # change to fr
-    plotly::config(locale = "fr")
+    plotly::config(modeBarButtons = list(list("toImage")),
+                   locale = "fr")
 
 
 } # end function

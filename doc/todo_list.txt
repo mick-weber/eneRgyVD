@@ -1,19 +1,14 @@
 
 //Général
-* Poser cadre gris clair autour de leaflet map
-* Autoriser téléchargemeent uniquement lorsque length(inputVals$selected_communes > 0) --> message d'erreur sinon
-* Plotly : voir si on peut déplacer la barre mi-opaque plotly ou la supprimer/réduire
-
-//mod_inputs.R
-* Passer le selectInput en RadioButtonGroup input pour voir toutes les technologies sélectionnables ( ! à l'espace libre dans la sidebar) 
+* Autoriser téléchargemeent uniquement lorsque length(inputVals$selected_communes > 0) --> message d'erreur sinon : Galère
 
 // mod_elec_charts.R
 * Ajouter légende graphiques mod_elec_charts.R
 * Dédoubler les boutons d'abcisse et positionnement barres (radio button switch)
 * virer 'diren' de 'categorie_diren' le plus tôt possible et ajuster le code
-* Sunburst : Augmenter taille / centrer au milieu 
+* Sunburst : Augmenter taille / centrer au milieu
 
 //mod_regener_charts.R
 * Rajouter colonne pct dans mod_regener_charts (table) -> direct dans la fonction
-* Rajouter légende pour CAD/ECS qqpart 
+* Rajouter légende pour CAD/ECS qqpart
 * Add year to regener dataset

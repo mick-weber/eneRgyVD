@@ -144,13 +144,14 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 #' @export
 
 create_bar_plotly <- function(data,
+                              inputVals,
                               var_year,
                               var_commune,
                               unit, # input$selected_unit value retrieved in app_server
                               var_rank_2, # one of secteur, categorie_diren...
                               var_values, # one of consommation, production_totale...
                               color_palette, # 'colors_categories',
-                              stacked = TRUE, # stacked by default
+                              dodge = FALSE, # stacked by default
                               free_y = FALSE,
                               legend_title){
 
@@ -164,9 +165,9 @@ create_bar_plotly <- function(data,
                         text = paste0(.data[[var_rank_2]], "\n",
                                       format(round(.data[[var_values]], digits = 0), big.mark = "'"),
                                       paste(unit, "en "), .data[[var_year]])))+
-    ggplot2::geom_col(position = if_else(condition = stacked, # arg
-                                         true = "stack",
-                                         false = "dodge"))+
+    ggplot2::geom_col(position = if_else(condition = dodge, # arg
+                                         true = "dodge",
+                                         false = "stack"))+
     ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
@@ -192,8 +193,7 @@ create_bar_plotly <- function(data,
     ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
 
   # Access how many facets there are for height management
-  out <- ggplot2::ggplot_build(ggplot)
-  n_facets <- length(levels(out$data[[1]]$PANEL))
+  n_facets <- length(inputVals$selectedCommunes)
 
   # Turn to plotly object
   ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
@@ -223,8 +223,12 @@ create_bar_plotly <- function(data,
 create_sunburst_plotly <- function(data_sunburst,
                                    unit, # input$selected_unit value retrieved in app_server
                                    var_year,
-                                   var_values, var_commune, var_rank_2,
-                                   third_rank,var_rank_3_1, var_rank_3_2){
+                                   var_values,
+                                   var_commune,
+                                   var_rank_2,
+                                   third_rank,
+                                   var_rank_3_1,
+                                   var_rank_3_2){
 
   # store the year for the center of sunburst plot label.
   label_year <- max(data_sunburst[[var_year]])
@@ -292,9 +296,12 @@ create_sunburst_plotly <- function(data_sunburst,
                   labels= ~labels,
                   parents = ~parents,
                   values= ~values,
-                  hoverinfo = "text", hovertext = sunburst_df$values_hover,
-                  type='sunburst', branchvalues = 'total',
-                  width = "800px" # important because otherwise it's too much on the right
+                  hoverinfo = "text",
+                  hovertext = sunburst_df$values_hover,
+                  type='sunburst',
+                  branchvalues = 'total',
+                  width = "100px"
+                  #width = "800px" # important because otherwise it's too much on the right
                   ) %>%
     # change to fr
     plotly::config(modeBarButtons = list(list("toImage")),
@@ -647,7 +654,9 @@ lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to)
 create_regener_table_dt <- function(data, unit){
 
   data %>%
-    # Basic clean up for table output
+    # Set pct_commune to % display (output for dl is in numeric)
+    dplyr::mutate(pct_commune = scales::percent(
+      pct_commune, accuracy = 0.01)) %>%
     dplyr::mutate(
       # change year to factor
       # Annee = as.factor(Annee), # if needed later
@@ -657,8 +666,10 @@ create_regener_table_dt <- function(data, unit){
                                                digits = 3,
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
+
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons, by = "ae") %>%
+    dplyr::relocate(pct_commune, .after = "consommation") %>%
     dplyr::relocate(icon, .before = "ae") %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT

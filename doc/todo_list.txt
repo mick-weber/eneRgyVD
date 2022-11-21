@@ -1,6 +1,15 @@
 
 //Général
+
+Basse priorité: 
+
 * Autoriser téléchargemeent uniquement lorsque length(inputVals$selected_communes > 0) --> message d'erreur sinon : Galère
+* DL des fichiers de documentation : j'ai une en-tête 'eneRgyVD' dans des cellules fusionnées, pas vraiment souhaitable donc à éviter si possible.
+-> Possibilité : ajouter les modules de boutons de téléchargement dans chaque tabPanel() et virer les boutons DT::
+-> Boutons DL dans les rapports .Rmd : trouver une solution... ?!
+
+
+//sidebar
 
 // mod_elec_charts.R
 * Ajouter légende graphiques mod_elec_charts.R
@@ -9,6 +18,7 @@
 * Sunburst : Augmenter taille / centrer au milieu
 
 //mod_regener_charts.R
-* Rajouter colonne pct dans mod_regener_charts (table) -> direct dans la fonction
-* Rajouter légende pour CAD/ECS qqpart
-* Add year to regener dataset
+* Add year to regener dataset [ ADDED DISCLAIMER ]
+
+
+// Ajouter lexique ! 

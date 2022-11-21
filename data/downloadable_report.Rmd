@@ -104,6 +104,7 @@ params$cons_data %>%
 
 params$cons_data %>%
     eneRgyVD::create_bar_plotly(unit = params$unit,
+                                inputVals = inputVals,
                                 var_year = "annee",
                                 var_commune = "commune",
                                 var_rank_2 = "secteur",
@@ -132,6 +133,7 @@ params$prod_data %>%
 
 params$prod_data %>%
     eneRgyVD::create_bar_plotly(unit = params$unit,
+                                inputVals = inputVals,
                                 var_year = "annee",
                                 var_commune = "commune",
                                 var_rank_2 = "categorie_diren",

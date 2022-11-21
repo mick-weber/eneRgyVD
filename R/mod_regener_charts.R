@@ -23,7 +23,8 @@ mod_regener_charts_ui <- function(id){
                       tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
                              se répartit pour satisfaire les besoins en chaleur du bâtiment (ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage
                              autre que calorifique), selon l'usage ou l'affectation principale des bâtiments. Il s'agit d'estimations théoriques fondées sur la base de données empiriques.
-                             Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques.")
+                             Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques."),
+                      tags$p("Ces données reflètent un état des connaissances à mi-2022. L'évolution de ces données est en cours d'élaboration."),
                       ),# End column
                       # radioGroupButtons() for tab ----
 

@@ -1,5 +1,9 @@
 /* style.css */
 
+html{
+  padding-bottom:10px;
+}
+
 
 /* bs4DashBrand title custom */
 #tabs > a{

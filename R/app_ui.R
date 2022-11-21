@@ -79,10 +79,8 @@ app_ui <- function(request) {
          "@DGE-DIREN 2022 (v.02)",
          target = "_blank",
          href = link_diren
-       ),
-       style = "position: absolute; bottom:0; width: 80%; color: white; text-align: center;")
-
-
+       ), # css below should be in custom.css
+       style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: white;text-align: right;background-color: #343a40;")
 
 
       ),# End dashboardSidebar

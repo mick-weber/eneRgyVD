@@ -6,6 +6,7 @@
 \usage{
 create_bar_plotly(
   data,
+  inputVals,
   var_year,
   var_commune,
   unit,

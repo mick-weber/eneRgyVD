@@ -26,35 +26,44 @@ mod_elec_charts_ui <- function(id){
                         justified = TRUE,
                         width = "25%"),
 
-                      # prettyToggle 1/2 for bar plot
-                      shiny::conditionalPanel(
-                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                        condition = "output.toggle && input.tab_plot_type == 'bar'",
-                        ns = ns,
+                      fluidRow( # to display the two switches inline
 
-                        shinyWidgets::prettyToggle(
-                          inputId = ns("toggle_status"),
-                          label_on = "Axe des ordonnées libéré !", status_on = "success",
-                          label_off = "Libérer l'axe des ordonnées ?", status_off = "info",
-                          bigger = T,
-                          shape = "curve",
-                          animation = "pulse")
-                      ),# End first conditionalPanel
-
-                      # prettyToggle 2/2 for bar plot
+                      # materialSwitch 1/2 for bar plot
                       shiny::conditionalPanel(
                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
                         condition = "output.commune && input.tab_plot_type == 'bar'",
                         ns = ns,
 
-                        shinyWidgets::prettyToggle(
-                          inputId = ns("stacked_status"),
-                          label_on = "Barres empilées", status_on = "success",
-                          label_off = "Barres adjacentes", status_off = "info",
-                          bigger = T,
-                          value = TRUE, # defaults to stacked
-                          shape = "curve",
-                          animation = "pulse")),
+                        tags$div(
+                          shinyWidgets::materialSwitch(
+                            inputId = ns("stacked_status"),
+                            value = FALSE,
+                            status = "success",
+                            label = "Barres empilées", inline = TRUE),
+                          tags$span("adjacentes")
+                        )),
+
+                      # Spaces between the two toggles
+                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+
+                      # materialSwitch 2/2 for bar plot
+                      shiny::conditionalPanel(
+                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                        condition = "output.toggle && input.tab_plot_type == 'bar'",
+                        ns = ns,
+
+                        tags$div(
+                          shinyWidgets::materialSwitch(
+                            inputId = ns("toggle_status"),
+                            value = FALSE,
+                            label = "Axe vertical commun",
+                            status = "success",
+                            inline = TRUE),
+                          tags$span("indépendant")
+                        )# End tags$div
+                      )# End 2nd conditionalPanel
+
+                      ),# End fluidrow for plot switches
 
                       # Simple text to inform how the sunburst year works, if selected
                       shiny::conditionalPanel(
@@ -147,13 +156,14 @@ mod_elec_charts_server <- function(id,
 
           # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData(),
+                            inputVals = inputVals,
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = selectedUnit$unit_to,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
-                            stacked = input$stacked_status, # if T -> 'stack', F -> 'dodge'
+                            dodge = input$stacked_status, # if T -> 'stack', F -> 'dodge'
                             free_y = input$toggle_status, # reactive(input$toggle_status)
                             legend_title = legend_title) # links to ifelse in facet_wrap(scales = ...)
         })# End renderPlotly

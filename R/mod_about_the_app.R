@@ -103,12 +103,13 @@ mod_about_the_app_ui <- function(id){
       ),# End tabPanel 'Données'
 
 
-      shiny::tabPanel(title = "Confidentialité",
+      shiny::tabPanel(title = "Lexique",
                       column(width = 8,
                              # breathing
                              br(),
-                             tags$h4(strong("Protection des données")),
-                             tags$p("Les données étant agrégées pour chaque commune, celles-ci peuvent être diffusées librement.")
+                             tags$h4(strong("Lexique")),
+                             tags$p("Ci-dessous un lexique des principales abbréviations utilisées dans cette application.")
+                             # !!! ADD TABLE MODULE HERE !!!
                       )# End column
       ),# End tabPanel 'Confidentialité'
 

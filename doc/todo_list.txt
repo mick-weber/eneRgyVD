@@ -8,17 +8,21 @@ Basse priorité:
 -> Possibilité : ajouter les modules de boutons de téléchargement dans chaque tabPanel() et virer les boutons DT::
 -> Boutons DL dans les rapports .Rmd : trouver une solution... ?!
 
-
-//sidebar
-
 // mod_elec_charts.R
-* Ajouter légende graphiques mod_elec_charts.R
-* Dédoubler les boutons d'abcisse et positionnement barres (radio button switch)
 * virer 'diren' de 'categorie_diren' le plus tôt possible et ajuster le code
-* Sunburst : Augmenter taille / centrer au milieu
 
 //mod_regener_charts.R
-* Add year to regener dataset [ ADDED DISCLAIMER ]
+* Add year to regener dataset [ ADDED DISCLAIMER TEMPORARILY ]
 
 
-// Ajouter lexique ! 
+Priorité haute : 
+// Ajouter lexique dans about (via data-raw -> dic.rda -> DT table)
+// mod_elec_charts.R
+* Ajouter légende graphiques mod_elec_charts.R
+* Sunburst : Augmenter taille / centrer au milieu (if... inside UI part ??)
+
+
+
+//features
+
+* Add cantonal comparisons + cantonal entry as dataset (high intensity work)

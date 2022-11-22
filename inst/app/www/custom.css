@@ -1,16 +1,27 @@
 /* style.css */
 
-html{
-  padding-bottom:10px;
-}
-
 
 /* bs4DashBrand title custom */
-#tabs > a{
+.titleClassDGE{
+  font-size:12px;
   text-align:center;
   font-weight:bold;
-  font-family:Monospace,Verdana;
+  font-family:Arial,Monospace,Verdana;
 }
+
+.titleClassDIREN{
+  font-size:20px;
+  text-align:center;
+  font-weight:bold;
+  font-family:Arial,Monospace,Verdana;
+}
+
+/* Color of title, somehow can't access it directly in .titleClass */
+#sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDIREN > a,
+#sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDGE > a{
+  color:white;
+}
+
 
 /* Colors widget text in the sidebar (differs from the dash' body) */
 #sidebarItemExpanded > div.os-padding > div > div{
@@ -114,6 +125,12 @@ pre {
   background-color:white;
 }
 
+.btn.dlButtonXL{
+  width:250px;
+  color:#3A862D;
+  background-color:white;
+}
+
 /* custom class for info actionButtons (app_ui.R) */
 .btn.infoButton{
   color:#3A862D;
@@ -163,5 +180,22 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
   margin-top:9px;
   color:white;
   font-size:1rem;
+}
+
+/*Class for sunburst, add padding to center */
+.sunburstClass{
+  padding-left:250px;
+}
+
+/* Empty for now : class for bar plot */
+.barClass{
+
+}
+
+
+/* test materialSwitch https://github.com/dreamRs/shinyWidgets/blob/master/inst/assets/material-switch/material-switch.css*/
+/* label when unswitched : blue, when switched : default success (green) */
+.material-switch > label::before {
+    background: lightblue;
 }
 

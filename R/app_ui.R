@@ -18,18 +18,29 @@ app_ui <- function(request) {
       freshTheme = eneRgy_theme, # utils_helpers.R
       # Header ----
       bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
-                               title = bs4Dash::dashboardBrand(
-                                 title = "eneRgy VD",
-                                 image = NULL, # add path to logo if needed
-                                 color = "primary",
-                                 href = link_diren # utils_helpers.R
-                               ),
+                               sidebarIcon = icon("arrows-left-right-to-line"),
 
-                               leftUi =  mod_unit_converter_ui("unit_converter"),
+                               # title = bs4Dash::dashboardBrand(
+                               #   title = HTML(paste("DGE",
+                               #                      "Direction de l'énergie", sep="<br/>")),
+                               #   image = NULL, # add path to logo if needed
+                               #   color = "primary",
+                               #   href = link_diren # utils_helpers.R
+                               # ),
+      # leftUi
+                               leftUi = tags$li(style = "padding-left:100px;",
+                                                h4(strong("Statistiques énergétiques des communes vaudoises")),
+                                                class = "dropdown"),
+      # rightUi
+                               rightUi =
+                               shiny::tagList(
 
+                                 mod_unit_converter_ui("unit_converter"),
 
+                                 tags$li(
+                                   class = "dropdown"),
 
-                               rightUi = shiny::tagList(bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                 bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                               icon = icon("calendar", lib = "glyphicon"),
                                                                               headerText = "Dernières mises à jour",
                                                                               bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
@@ -61,6 +72,21 @@ app_ui <- function(request) {
         width = 300,
         bs4Dash::sidebarMenu(id = "sidebarMenu",
                              ## menuItems ----
+                             tags$div(class = "titleClassDGE",
+                                      tags$a(
+                                        href = link_diren,
+                                        target = "_blank",
+                                        "Direction générale de l'environnement"
+                                        )),
+                             tags$div(class = "titleClassDIREN",
+                                      tags$a(href = link_diren,
+                                             target = "_blank",
+                                             "Direction de l'énergie",
+                                             )
+                                      ),# End tags$div for title
+
+                             br(), # between title and menuItems
+
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
@@ -76,18 +102,14 @@ app_ui <- function(request) {
        # Sidebar footer ()
        tags$footer(
        tags$a(
-         "@DGE-DIREN 2022 (v.02)",
-         target = "_blank",
+         "@DGE-DIREN 2022",
+         target = "_blank", # new tab
          href = link_diren
        ), # css below should be in custom.css
-       style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: white;text-align: right;background-color: #343a40;")
+       style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: darkgrey;text-align: right;background-color: transparent;")
 
 
       ),# End dashboardSidebar
-
-      # Footer ----
-
-      # (None, messes with the plot arrangements)
 
       # Body ----
       bs4Dash::dashboardBody(

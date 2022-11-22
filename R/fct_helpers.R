@@ -300,8 +300,7 @@ create_sunburst_plotly <- function(data_sunburst,
                   hovertext = sunburst_df$values_hover,
                   type='sunburst',
                   branchvalues = 'total',
-                  width = "100px"
-                  #width = "800px" # important because otherwise it's too much on the right
+                  height = 600, width = 600 # decent size
                   ) %>%
     # change to fr
     plotly::config(modeBarButtons = list(list("toImage")),
@@ -438,12 +437,13 @@ create_doc_table_dt <- function(data, doc_prefix){
     DT::datatable(rownames = FALSE, # no index col
                   extensions = "Buttons",
                   options = list(
-      dom = "Bti", # Button ; table ; information summary
+      dom = "Bfti", # Button ; filter; table ; information summary
       buttons = list(
         list(extend = 'csv', filename = paste0(doc_prefix, Sys.Date())),
         list(extend = 'excel', filename = paste0(doc_prefix, Sys.Date()))),
-
-      paging = FALSE,
+      columnDefs = list(list(targets = 0, className = 'dt-center')), # or "_all"
+      paging = TRUE,
+      pageLength = 20,
       scrollY = FALSE,
       autoWidth = TRUE,
       language = DT_fr_language # from utils_helpers.R

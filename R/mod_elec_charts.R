@@ -34,17 +34,20 @@ mod_elec_charts_ui <- function(id){
                         condition = "output.commune && input.tab_plot_type == 'bar'",
                         ns = ns,
 
-                        tags$div(
+                        tags$div(style = "padding-left:80px", # align with facets
+                                 tags$div(style = "padding-right:30px; border-right: 1px solid lightgrey;", # separator with next toggle
                           shinyWidgets::materialSwitch(
                             inputId = ns("stacked_status"),
                             value = FALSE,
                             status = "success",
-                            label = "Barres empilées", inline = TRUE),
-                          tags$span("adjacentes")
-                        )),
+                            label = strong("Barres empilées"), inline = TRUE),
+                          tags$span(strong("adjacentes"))
+                        ))# End 2x tags$div()
+                        ),# End conditionalPanel 1/2
 
                       # Spaces between the two toggles
-                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
 
                       # materialSwitch 2/2 for bar plot
                       shiny::conditionalPanel(
@@ -56,10 +59,10 @@ mod_elec_charts_ui <- function(id){
                           shinyWidgets::materialSwitch(
                             inputId = ns("toggle_status"),
                             value = FALSE,
-                            label = "Axe vertical commun",
+                            label = strong("Axe vertical commun"),
                             status = "success",
                             inline = TRUE),
-                          tags$span("indépendant")
+                          tags$span(strong("indépendant"))
                         )# End tags$div
                       )# End 2nd conditionalPanel
 
@@ -78,9 +81,9 @@ mod_elec_charts_ui <- function(id){
                       # br(),
 
                       # Conditional plotly (bar/sunburst) ----
+                      # Rendered server side so that we can check if sunburst, then we apply a css class for padding
+                      uiOutput(ns("plot_render_ui"))
 
-                      plotly::plotlyOutput(ns("chart_1")) %>%
-                        shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
 
 
       ),# End tabPanel 'Graphique'
@@ -144,7 +147,9 @@ mod_elec_charts_server <- function(id,
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Render plot selectively based on radioButton above
-    observe({
+    # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
+
+    output$plot_render_ui <- renderUI({
 
       if(input$tab_plot_type == "bar"){
 
@@ -185,7 +190,15 @@ mod_elec_charts_server <- function(id,
                                  var_rank_3_2 = var_rank_3_2) # var names pivotted
         })# End renderPlotly
       }# End else if
-    })# End observe
+
+      # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
+
+      tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
+      plotly::plotlyOutput(ns("chart_1")) %>%
+        shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
+      )
+
+    })# End renderUI
 
     # Renders the DT table
     output$table_1 <- DT::renderDataTable({

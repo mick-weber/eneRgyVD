@@ -37,6 +37,9 @@ mod_about_the_app_ui <- function(id){
                              # breathing
                              br(),
                              h4(strong("Sources des données")),
+                             tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
+                                    Néanmoins, l'exactitude de ces informations ne peut être garantie."),
+                             br(),
                              tags$p("Les sources de données suivantes sont utilisées : "),
 
                              bs4Dash::tabsetPanel(id = ns("nested_tabset"),
@@ -103,13 +106,14 @@ mod_about_the_app_ui <- function(id){
       ),# End tabPanel 'Données'
 
 
-      shiny::tabPanel(title = "Lexique",
+      shiny::tabPanel(title = "Glossaire",
                       column(width = 8,
                              # breathing
                              br(),
-                             tags$h4(strong("Lexique")),
-                             tags$p("Ci-dessous un lexique des principales abbréviations utilisées dans cette application.")
-                             # !!! ADD TABLE MODULE HERE !!!
+                             tags$h4(strong("Glossaire")),
+                             tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
+                             DT::dataTableOutput(ns("glossary_table")),
+
                       )# End column
       ),# End tabPanel 'Confidentialité'
 
@@ -184,6 +188,13 @@ mod_about_the_app_server <- function(id){
     output$regener_doc <- DT::renderDataTable({
       regener_doc %>%
         create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
+    })
+
+
+
+    output$glossary_table <- DT::renderDataTable({
+      glossary %>%
+        create_doc_table_dt(doc_prefix = "glossaire_")
     })
 
   })

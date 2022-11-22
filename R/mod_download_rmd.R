@@ -68,7 +68,7 @@ mod_download_rmd_server <- function(id,
       shiny::downloadButton(
       outputId = ns("report"),
       label = "Générer un rapport",
-      class = "dlButton" # class defined in custom.css
+      class = "dlButtonXL" # class defined in custom.css
       )
     })
 

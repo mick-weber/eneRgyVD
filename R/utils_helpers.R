@@ -21,6 +21,10 @@ load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
 load("./data/regener_doc.rda")
 
+## glossary ----
+load("./data/glossary.rda")
+
+
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 

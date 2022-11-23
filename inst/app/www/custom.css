@@ -14,9 +14,11 @@
   text-align:center;
   font-weight:bold;
   font-family:Arial,Monospace,Verdana;
+  border-bottom:1px solid slategrey;
+  padding-bottom:5px;
 }
 
-/* Color of title, somehow can't access it directly in .titleClass */
+/* Color of DGE/DIREN titles, somehow can't access it directly in .titleClass > a */
 #sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDIREN > a,
 #sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDGE > a{
   color:white;

@@ -35,7 +35,7 @@ mod_elec_charts_ui <- function(id){
                         ns = ns,
 
                         tags$div(style = "padding-left:80px", # align with facets
-                                 tags$div(style = "padding-right:30px; border-right: 1px solid lightgrey;", # separator with next toggle
+                                 tags$div(
                           shinyWidgets::materialSwitch(
                             inputId = ns("stacked_status"),
                             value = FALSE,
@@ -56,6 +56,7 @@ mod_elec_charts_ui <- function(id){
                         ns = ns,
 
                         tags$div(
+                          style = "padding-left:30px; border-left: 1px solid lightgrey;", # separator with prev toggle
                           shinyWidgets::materialSwitch(
                             inputId = ns("toggle_status"),
                             value = FALSE,
@@ -118,7 +119,7 @@ mod_elec_charts_server <- function(id,
                                    target_year, # which current year for the sunburst
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
-                                   var_rank_2, # categorical var ('secteur'/'categorie_diren', ...)
+                                   var_rank_2, # categorical var ('secteur'/'categorie', ...)
                                    var_values, # prod/consumption kwh
                                    color_palette, # utils_helpers.R
                                    third_rank, # boolean
@@ -161,14 +162,14 @@ mod_elec_charts_server <- function(id,
 
           # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData(),
-                            inputVals = inputVals,
+                            n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = selectedUnit$unit_to,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
-                            dodge = input$stacked_status, # if T -> 'stack', F -> 'dodge'
+                            dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
                             free_y = input$toggle_status, # reactive(input$toggle_status)
                             legend_title = legend_title) # links to ifelse in facet_wrap(scales = ...)
         })# End renderPlotly

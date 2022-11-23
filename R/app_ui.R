@@ -22,18 +22,20 @@ app_ui <- function(request) {
 
       # Title                   # Title is custom made inside sidebar directly
 
-      # leftUi
+      ## leftUi ----
                                leftUi = tags$li(style = "padding-left:100px;",
-                                                h4(strong("Statistiques énergétiques des communes vaudoises")),
+                                                h4(strong("Statistiques énergétiques des communes vaudoises (développement)")),
                                                 class = "dropdown"),
-      # rightUi
+      ## rightUi ----
                                rightUi =
+        ### unit converter ----
                                shiny::tagList(
 
                                  mod_unit_converter_ui("unit_converter"),
 
-                                 tags$li(
-                                   class = "dropdown"),
+                                 # tags$li(
+                                 #   class = "dropdown"),
+        ### notifs & contact ----
 
                                  bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                               icon = icon("calendar", lib = "glyphicon"),

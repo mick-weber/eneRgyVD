@@ -87,7 +87,7 @@ power_col_keywords <- c("Puissance")
 
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
-prod_colors <- dplyr::tribble(~icon, ~categorie_diren, ~color,
+prod_colors <- dplyr::tribble(~icon, ~categorie, ~color,
                              as.character(icon("droplet")),  "Hydroélectricité","#6495ED",
                              as.character(icon("sun")),  "Solaire", "#FFB90F",
                              as.character(icon("apple")),  "Déchets méthanisables","#BFDB86",
@@ -109,7 +109,7 @@ prod_icons <- prod_colors %>%
   dplyr::ungroup()
 
 # Palette for plots: named vector with level + associated color
-colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie_diren)
+colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie)
 
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
@@ -237,11 +237,11 @@ districts_names <- sf_districts %>%
 
 ## Objects specific to the tabProd  ----
 
-### Colors for categorie_diren ----
+### Colors for categorie ----
 
 categories_diren <- elec_prod_communes %>%
-  dplyr::distinct(categorie_diren) %>%
-  dplyr::arrange(categorie_diren) %>%
+  dplyr::distinct(categorie) %>%
+  dplyr::arrange(categorie) %>%
   dplyr::pull()
 
 ## Objects specific to the tabCons  ----

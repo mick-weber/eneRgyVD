@@ -38,7 +38,7 @@ mod_about_the_app_ui <- function(id){
                              br(),
                              h4(strong("Sources des données")),
                              tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
-                                    Néanmoins, l'exactitude de ces informations ne peut être garantie."),
+                                    Néanmoins, l'exactitude de ces informations ne peut être garantie. En cas d'incohérence, n'hésitez pas à prendre contact afin d'en clarifier les causes probables."),
                              br(),
                              tags$p("Les sources de données suivantes sont utilisées : "),
 
@@ -127,7 +127,7 @@ mod_about_the_app_ui <- function(id){
                              tags$h4(strong("Technologie")),
                              tags$p("Cette application est programmée avec le language",
                                     tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),
-                                    "qui permet la création simple d'applications web interactives. L'architecture de l'application est construite
+                                    "qui permet la création d'applications web interactives. L'architecture de l'application est construite
             à l'aide de la",
             tags$a(href = "https://github.com/ThinkR-open/golem", "librairie golem (ThinkR)", target = "_blank"),
             "et le contenu des visualisations par de multiples librairies issues notamment du",

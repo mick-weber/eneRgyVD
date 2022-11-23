@@ -107,7 +107,7 @@ app_server <- function(input, output, session) {
      inputVals$prod_dataset %>%
        dplyr::filter(annee >= inputVals$min_selected_prod,
                      annee <= inputVals$max_selected_prod) %>%
-       dplyr::filter(categorie_diren %in% inputVals$techs_selected) %>%
+       dplyr::filter(categorie %in% inputVals$techs_selected) %>%
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh",
                       unit_to = selectedUnit$unit_to)
@@ -268,7 +268,7 @@ app_server <- function(input, output, session) {
                           selectedUnit = selectedUnit,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_cons_data,
-                          legend_title = "secteur",
+                          legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "secteur",
@@ -293,7 +293,7 @@ app_server <- function(input, output, session) {
                           legend_title = "Technologies",
                           var_year = "annee",
                           var_commune = "commune",
-                          var_rank_2 = "categorie_diren",
+                          var_rank_2 = "categorie",
                           var_values = "production",
                           color_palette = colors_categories,
                           third_rank = TRUE,

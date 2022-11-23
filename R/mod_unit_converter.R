@@ -11,16 +11,15 @@
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   #tagList(
-    tags$li(
+    tags$li(class = "dropdown", # dropdown class required
       shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"), label = NULL,
                                        choices = c("kWh", "MWh", "GWh", "TJ"),
                                        selected = "kWh",
                                        inline = TRUE,
                                        status =  "default",
                                        icon = icon("check"),
-                                       animation = "jelly",),
-      class = "dropdown") # dropdown class required
-    #)# End tagList
+                                       animation = "jelly")
+      )# End tags$li
 }
 
 #' unit_converter Server Functions

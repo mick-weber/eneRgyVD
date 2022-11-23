@@ -155,7 +155,7 @@ mod_inputs_server <- function(id){
 
       # store list of !available! techs to feed pickerInput()
       inputVals$techs_avail <- subset_elec_prod() %>%
-        dplyr::distinct(categorie_diren) %>%
+        dplyr::distinct(categorie) %>%
         dplyr::pull()
 
     })# End observe

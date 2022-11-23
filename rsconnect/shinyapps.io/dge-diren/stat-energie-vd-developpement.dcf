@@ -1,0 +1,13 @@
+name: stat-energie-vd-developpement
+title: stat-energie-vd-developpement
+username:
+account: dge-diren
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7713008
+bundleId: 6546374
+url: https://dge-diren.shinyapps.io/stat-energie-vd-developpement/
+when: 1669198922.19198
+lastSyncTime: 1669198922.19198
+asMultiple: FALSE
+asStatic: FALSE

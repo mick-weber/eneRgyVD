@@ -149,7 +149,7 @@ Here we import at least these variables in the app:
 
 * `annee`: the year of the data
  
-* `categorie_diren`: the type of electricity generation technology according to DGE-DIREN nomenclature
+* `categorie`: the type of electricity generation technology according to DGE-DIREN nomenclature
 
 * `production_totale`: the amount of electricity generated, in kWh
 

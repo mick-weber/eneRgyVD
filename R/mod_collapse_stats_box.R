@@ -46,7 +46,7 @@ mod_collapse_stats_box_server <- function(id,
               number = year,
               # header: we paste the value in kwh and pass it to convert_units(), and we format it
               header = paste(format(production_value %>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
-              text = htmltools::HTML(paste0("Production", tags$br(), "d'électricité")),
+              text = htmltools::HTML(paste0("Production", tags$br(), "électrique")),
               rightBorder = TRUE
             )# End descriptionBlock
           ),# End column
@@ -56,7 +56,7 @@ mod_collapse_stats_box_server <- function(id,
               number = year,
               # header: we paste the value in kwh and pass it to convert_units(), and we format it
               header = paste(format(consumption_value%>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
-              text = htmltools::HTML(paste0("Consommation", tags$br(), "d'électricité")),
+              text = htmltools::HTML(paste0("Consommation", tags$br(), "électrique")),
               rightBorder = FALSE
             )# End descriptionBlock
           )# End column

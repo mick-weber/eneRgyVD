@@ -10,7 +10,7 @@ output:
     df_print: paged
     number_sections: yes
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
     toc_float: TRUE
     code_download: TRUE
 fontsize: 11pt
@@ -83,34 +83,34 @@ color:midnightblue;
 }
 ```
 
-Ce rapport a été généré depuis l'application eneRgyVD.
-Cette fonctionnalité n'est **pas encore complètement développée** et le sera dans les prochaines semaines.
+Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/).
+Cette fonctionnalité n'est pas encore entièrement développée et le sera dans les prochains mois.
 Merci de votre compréhension.
 
 # Rapport énergétique pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`
 
 ## Consommation d'électricité
 
-**Tableau de données**
+### Tableau
 
 ```{r}
 params$cons_data %>%
   eneRgyVD::create_cons_table_dt(unit = params$unit)
 ```
 
-**Graphique**
+### Graphique
 
 ```{r}
 
 params$cons_data %>%
     eneRgyVD::create_bar_plotly(unit = params$unit,
-                                inputVals = inputVals,
+                                n_communes = length(params$communes),
                                 var_year = "annee",
                                 var_commune = "commune",
                                 var_rank_2 = "secteur",
                                 var_values = "consommation",
                                 color_palette = eneRgyVD::return_palette_cons_elec(),
-                                stacked = T,
+                                dodge = F,
                                 free_y = F,
                                 legend_title = "Secteurs")
 
@@ -118,7 +118,7 @@ params$cons_data %>%
 
 ## Production d'électricité
 
-**Tableau de données**
+### Tableau
 
 ```{r}
 
@@ -127,19 +127,19 @@ params$prod_data %>%
 
 ```
 
-**Graphique**
+### Graphique
 
 ```{r}
 
 params$prod_data %>%
     eneRgyVD::create_bar_plotly(unit = params$unit,
-                                inputVals = inputVals,
+                                n_communes = length(params$communes),
                                 var_year = "annee",
                                 var_commune = "commune",
-                                var_rank_2 = "categorie_diren",
+                                var_rank_2 = "categorie",
                                 var_values = "production",
                                 color_palette = eneRgyVD::return_palette_prod_elec(),
-                                stacked = T,
+                                dodge = F,
                                 free_y = F,
                                 legend_title = "Technologies")
 
@@ -147,7 +147,9 @@ params$prod_data %>%
 
 ## Chaleur des bâtiments
 
-**Table des consommations selon usage**
+### Tableaux
+
+Par usage : 
 
 ```{r}
 
@@ -157,7 +159,7 @@ params$regener_data_1 %>%
 ```
 
 
-**Table des consommations selon affectation**
+Par affectation :
 
 ```{r}
 
@@ -167,7 +169,7 @@ params$regener_data_2 %>%
 ```
 
 
-Graphique Sankey
+### Graphiques
 
 ```{r}
 # Use # of communes so that some plot chunk's height can be sized accordingly
@@ -197,6 +199,8 @@ params$regener_data_1 %>%
 
 
 # Contact
+
+Pour tout problème, suggestion d'amélioration ou remarque, n'hésitez pas à prendre contact avec le service en charge de ce projet :
 
 DGE-DIREN, [stat.energie@vd.ch](mailto:stat.energie@vd.ch)
 

@@ -5,15 +5,15 @@
 
 info_dev_message <- function(){
 
-  shinyalert::shinyalert(title = "Bienvenue sur eneRgyVD !",
+  shinyalert::shinyalert(title = "Bienvenue sur stat-energie-vd !",
                          text = paste0("Cette application est en cours de développement.",
                                        tags$br(),
-                                       "Pour des raisons juridiques, les données communales ont été temporairement
+                                       "Pour des raisons liées au développement, les données communales ont été temporairement
                                        remplacées par des valeurs aléatoires, celles-ci ne reflètent donc pas la réalité.
                                        Plus d'informations sur cette application en cliquant sur 'À propos`
-                                       dans la barre latérale."),
+                                       dans la barre latérale. Ce lien url est temporaire et sera remplacé prochainement lorsque l'application sera déployée."),
                          html = TRUE,
-                         size = "s",
+                         size = "m",
                          closeOnEsc = TRUE,
                          closeOnClickOutside = TRUE,
                          type = "info",
@@ -144,11 +144,11 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 #' @export
 
 create_bar_plotly <- function(data,
-                              inputVals,
+                              n_communes,
                               var_year,
                               var_commune,
                               unit, # input$selected_unit value retrieved in app_server
-                              var_rank_2, # one of secteur, categorie_diren...
+                              var_rank_2, # one of secteur, categorie...
                               var_values, # one of consommation, production_totale...
                               color_palette, # 'colors_categories',
                               dodge = FALSE, # stacked by default
@@ -192,10 +192,10 @@ create_bar_plotly <- function(data,
                    legend.key.size = unit(2, "cm"),
                    panel.spacing.x = unit(.05, "cm"),
                    panel.spacing.y = unit(0.5, "cm"),
-                   axis.text.x = element_text(size = 12))
+                   axis.text.x = element_text(size = 10))
 
   # Access how many facets there are for height management
-  n_facets <- length(inputVals$selectedCommunes)
+  n_facets <- n_communes
 
   # Turn to plotly object
   ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
@@ -249,7 +249,7 @@ create_sunburst_plotly <- function(data_sunburst,
            parents = "Total",
            ids = paste0("Total - ",labels), .keep = "unused")
 
-  # total per rank_2 (either categorie_diren or secteur)
+  # total per rank_2 (either categorie or secteur)
   subsubtotal_row <- data_sunburst %>%
     dplyr::mutate(labels = .data[[var_rank_2]],
            values = .data[[var_values]],
@@ -336,13 +336,12 @@ create_prod_table_dt <- function(data, unit){
                                         drop0trailing = TRUE,
                                         scientific = FALSE))) %>%
     dplyr::select(-c(numero_de_la_commune,
-                     nombre_installations_total,
                      district)) %>%
     # put installed power in the last position
     dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(prod_icons, by = "categorie_diren") %>%
-    dplyr::relocate(icon, .before = categorie_diren) %>% #
+    dplyr::left_join(prod_icons, by = "categorie") %>%
+    dplyr::relocate(icon, .before = categorie) %>% #
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     rename_fr_colnames() %>%  # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R

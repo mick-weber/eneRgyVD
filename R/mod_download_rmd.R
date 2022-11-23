@@ -20,9 +20,10 @@ mod_download_rmd_ui <- function(id){
     p("Celui-ci contient les éléments suivants :"),
     # [u]nordered [l]ist of [l]ist [i]tems
     tags$ul(
-      tags$li("Des chiffres-clés (élaborer...)"),
       tags$li("Les données & graphiques relatifs à la production d'électricité."),
       tags$li("Les données & graphiques relatifs à la consommation d'électricité."),
+      tags$li("Les données & graphiques relatifs à la consommation théorique des bâtiments."),
+      tags$li("Des chiffres-clés (à venir...)")
     ),
     br(),
 

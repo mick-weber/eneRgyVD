@@ -16,13 +16,9 @@ Basse priorité:
 
 
 Priorité haute : 
-// Ajouter lexique dans about (via data-raw -> dic.rda -> DT table)
-// mod_elec_charts.R
-* Ajouter légende graphiques mod_elec_charts.R
-* Sunburst : Augmenter taille / centrer au milieu (if... inside UI part ??)
 
-
-
-//features
+//upcoming features
 
 * Add cantonal comparisons + cantonal entry as dataset (high intensity work)
+
+* Add statistics for RegEner (#buildings heated with...  ,  renovation rate, ...)

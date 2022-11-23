@@ -20,13 +20,8 @@ app_ui <- function(request) {
       bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
                                sidebarIcon = icon("arrows-left-right-to-line"),
 
-                               # title = bs4Dash::dashboardBrand(
-                               #   title = HTML(paste("DGE",
-                               #                      "Direction de l'énergie", sep="<br/>")),
-                               #   image = NULL, # add path to logo if needed
-                               #   color = "primary",
-                               #   href = link_diren # utils_helpers.R
-                               # ),
+      # Title                   # Title is custom made inside sidebar directly
+
       # leftUi
                                leftUi = tags$li(style = "padding-left:100px;",
                                                 h4(strong("Statistiques énergétiques des communes vaudoises")),
@@ -71,10 +66,12 @@ app_ui <- function(request) {
         minified = FALSE,
         width = 300,
         bs4Dash::sidebarMenu(id = "sidebarMenu",
-                             ## menuItems ----
+
+                             ## Title (custom) ----
+
                              tags$div(class = "titleClassDGE",
                                       tags$a(
-                                        href = link_diren,
+                                        href = link_dge,
                                         target = "_blank",
                                         "Direction générale de l'environnement"
                                         )),
@@ -86,6 +83,8 @@ app_ui <- function(request) {
                                       ),# End tags$div for title
 
                              br(), # between title and menuItems
+
+                             ## menuItems ----
 
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
                                     bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),

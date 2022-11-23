@@ -164,11 +164,14 @@ create_bar_plotly <- function(data,
                         # Text is reused in ggplotly(tooltip = 'text')
                         text = paste0(.data[[var_rank_2]], "\n",
                                       format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-                                      paste(unit, "en "), .data[[var_year]])))+
+                                      paste("", unit, "en "), .data[[var_year]])))+
     ggplot2::geom_col(position = if_else(condition = dodge, # arg
                                          true = "dodge",
                                          false = "stack"))+
-    ggplot2::scale_y_continuous(labels = scales::label_number(big.mark = "'", accuracy = 1))+
+    ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
+                                                scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3),
+                                                scales::label_number(big.mark = "'", accuracy = 1))
+                                )+
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = unit)+
@@ -187,8 +190,8 @@ create_bar_plotly <- function(data,
                    legend.text = element_text(size = 12),
                    legend.title = element_text(size = 12),
                    legend.key.size = unit(2, "cm"),
-                   panel.spacing.x = unit(.1, "cm"),
-                   panel.spacing.y = unit(1, "cm"),
+                   panel.spacing.x = unit(.05, "cm"),
+                   panel.spacing.y = unit(0.5, "cm"),
                    axis.text.x = element_text(size = 12))
 
   # Access how many facets there are for height management

@@ -159,7 +159,7 @@ create_bar_plotly <- function(data,
   # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data %>%
     ggplot2::ggplot(aes(x = as.factor(.data[[var_year]]),
-                        y = .data[[var_values]]/1e3,
+                        y = .data[[var_values]],
                         fill = .data[[var_rank_2]],
                         # Text is reused in ggplotly(tooltip = 'text')
                         text = paste0(.data[[var_rank_2]], "\n",
@@ -189,8 +189,7 @@ create_bar_plotly <- function(data,
                    legend.key.size = unit(2, "cm"),
                    panel.spacing.x = unit(.1, "cm"),
                    panel.spacing.y = unit(1, "cm"),
-                   axis.text.x = element_text(size = 12))+
-    ggplot2::guides(fill = guide_legend(nrow = 1)) # restrict to one row of legend
+                   axis.text.x = element_text(size = 12))
 
   # Access how many facets there are for height management
   n_facets <- length(inputVals$selectedCommunes)
@@ -203,7 +202,7 @@ create_bar_plotly <- function(data,
     plotly::layout(
       legend = list(
       orientation = "h", # puts the legend in the middle instead of default right
-      y = 1.3 # elevates the legend so its above the plot, not below
+      y = 1.25 # elevates the legend so its above the plot, not below
     )) %>%
     config(modeBarButtons = list(list("toImage")),
            locale = "fr")

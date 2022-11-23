@@ -40,7 +40,7 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 mail_address <- "stat.energie@vd.ch"
 link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
-
+link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
 
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library
@@ -176,7 +176,7 @@ height_facet_above_limit <- 700
 ## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
-main_color_active <- "#26C026"
+main_color_active <- "#204919" #  lighter : "#26C026"
 
 ## Custom {fresh} theme passed to bs4Dash in app_ui.R
 # Example from https://dreamrs.github.io/fresh/

@@ -33,9 +33,11 @@ app_ui <- function(request) {
 
                                  mod_unit_converter_ui("unit_converter"),
 
-                                 # tags$li(
-                                 #   class = "dropdown"),
+
         ### notifs & contact ----
+
+        tags$li(
+          class = "dropdown",
 
                                  bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                               icon = icon("calendar", lib = "glyphicon"),
@@ -50,13 +52,14 @@ app_ui <- function(request) {
                                                                                                         status = "info",
                                                                                                         text = "06.22: données conso élec 2020")
                                ),# End dropdownMenu 'updates'
-                               bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
+          bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                      icon = icon("envelope", lib = "font-awesome"),
                                                      headerText = "Retours et suggestions",
                                                      bs4Dash::notificationItem(text = "Nous contacter par e-mail",
                                                                                href = paste0("mailto:", mail_address), # defined in utils_helpers.R
                                                                                icon = icon("envelope", lib = "font-awesome"), status = "info")
                                )# End dropdownMenu 'contact'
+        )# End tags$li
                                )# End tagList (rightUi)
 
 
@@ -181,7 +184,7 @@ app_ui <- function(request) {
 
           ),# End tabItem
 
-          ## tabRegener
+          ## tabRegener ----
           bs4Dash::tabItem(
             tabName = "tabRegener",
             fluidRow(h4(strong("Consommation théorique des bâtiments")),

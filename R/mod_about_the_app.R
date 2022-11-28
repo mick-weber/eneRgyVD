@@ -71,7 +71,9 @@ mod_about_the_app_ui <- function(id){
                 et ce sont ces données agrégées par commune qui alimentent cette application."),
                 p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
                 compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
-                les données peuvent prendre quelques mois à être disponibles dans l'application."))
+                les données peuvent prendre quelques mois à être disponibles dans l'application.",
+                tags$strong("Les répartitions sectorielles sont encore hautement incertaines, la méthode diffère notamment selon chaque gestionnaire de réseau.
+                            Une meilleure catégorisation et davantage d'harmonisation sont souhaitées à terme mais c'est un long processus.")))
                          ),# End tags$ul 2/3
                 br(),
 
@@ -85,14 +87,15 @@ mod_about_the_app_ui <- function(id){
                          br(),
                          tags$ul(
                            tags$li(h5(strong("Chaleur des bâtiments : exploitation du registre des énergies vaudois (RegEner)")),
-                                   p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
+                                   tags$p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
                                      des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
                                      (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
                                      registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
                                      de chaleur peuvent être renseignés, la consommation est estimée selon la surface de référence énergétique, l'année et l'affectation du bâtiment
                                      ainsi que la présence d'une ou de plusieurs rénovations. Ces consommations sont théoriques mais fondées sur des données de consommation empiriques.
                                      Les données qui alimentent cette application sont le résultat d'agrégations du RegEner.
-                                     Davantage de détails peuvent être fournis sur demande à", tags$a (href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank")))
+                                     Davantage de détails peuvent être fournis sur demande à", tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
+                                     "Un document de synthèse méthodologique est prévu prochainement pour présenter la méthode utilisée."))
                          ),# End tags$ul 2/3
                 br(),
 

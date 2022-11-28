@@ -21,4 +21,13 @@ Priorité haute :
 
 * Add cantonal comparisons + cantonal entry as dataset (high intensity work)
 
-* Add statistics for RegEner (#buildings heated with...  ,  renovation rate, ...)
+* Stuff overview comparison with regener data as well (not only electrical)
+
+* Add statistics for RegEner (#buildings heated with...  , m2 area, renovation rate, ...)
+
+
+// thoughts 
+
+* allow the option to make one report per commune (not implemented), or one report for all communes (implemented)
+
+* add a 'data robustness' ranking for each dataset (*** ; ** ; * ) as Quantis did (primary data quality + methodology incertitude rankings)

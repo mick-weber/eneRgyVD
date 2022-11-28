@@ -14,7 +14,7 @@ mod_unit_converter_ui <- function(id){
     tags$li(class = "dropdown", # dropdown class required
       shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"), label = NULL,
                                        choices = c("kWh", "MWh", "GWh", "TJ"),
-                                       selected = "kWh",
+                                       selected = "MWh",
                                        inline = TRUE,
                                        status =  "default",
                                        icon = icon("check"),

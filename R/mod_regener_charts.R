@@ -20,11 +20,14 @@ mod_regener_charts_ui <- function(id){
                       br(),
                       column(width = 10,
                       # Alluvial plots description (in a column for better display)
-                      tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
-                             se répartit pour satisfaire les besoins en chaleur du bâtiment (ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage
-                             autre que calorifique), selon l'usage ou l'affectation principale des bâtiments. Il s'agit d'estimations théoriques fondées sur la base de données empiriques.
-                             Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques."),
-                      tags$p("Ces données reflètent un état des connaissances à mi-2022. L'évolution de ces données est en cours d'élaboration."),
+                      tags$p(
+ "Ces graphiques illustrent comment la consommation de différents agents énergétiques
+ se répartit pour satisfaire les besoins en chaleur du bâtiment selon l'usage ou l'affectation principale des bâtiments.",
+ strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
+ "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
+ pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
+
+                      tags$p("Ces données reflètent un état des connaissances à mi-2022. L'évolution de ces données est en cours d'élaboration et sera disponible à moyen terme."),
                       ),# End column
                       # radioGroupButtons() for tab ----
 

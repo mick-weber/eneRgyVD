@@ -335,13 +335,13 @@ create_prod_table_dt <- function(data, unit){
                                         digits = 3,
                                         drop0trailing = TRUE,
                                         scientific = FALSE))) %>%
-    dplyr::select(-c(numero_de_la_commune,
-                     district)) %>%
-    # put installed power in the last position
-    dplyr::relocate(puissance_electrique_installee, .after = dplyr::last_col()) %>%
+    dplyr::select(-c(numero_de_la_commune)) %>%
+    dplyr::relocate(commune, annee, categorie,
+                    production, injection, autoconsommation,
+                    puissance_electrique_installee) %>%
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(prod_icons, by = "categorie") %>%
-    dplyr::relocate(icon, .before = categorie) %>% #
+    dplyr::relocate(icon, .before = categorie) %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     rename_fr_colnames() %>%  # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R

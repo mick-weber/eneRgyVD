@@ -166,17 +166,24 @@ mod_inputs_server <- function(id){
 
     observe({
 
-      req(subset_elec_prod(), subset_elec_cons())
+      req(subset_elec_prod(), subset_elec_cons(), subset_rgr_1())
 
+      # Statbox value for current selection's aggregated electricity production
       inputVals$common_year_elec_prod <- subset_elec_prod() %>%
         dplyr::filter(annee == last_common_elec_year) %>%
         dplyr::summarise(production = sum(production, na.rm = T)) %>%
-        dplyr::pull(production) # kWh
+        dplyr::pull(production)
 
+      # Statbox value for current selection's aggregated electricity consumption
       inputVals$common_year_elec_cons <- subset_elec_cons() %>%
         dplyr::filter(annee == last_common_elec_year) %>%
         dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
-        dplyr::pull(consommation) # kWh initially
+        dplyr::pull(consommation)
+      # Statbox value for current selection's aggregated buildings thermal consumption
+      inputVals$max_year_rg_cons <- subset_rgr_1() %>%
+        dplyr::filter(annee == max(annee)) %>%
+        dplyr::summarise(consommation=sum(consommation, na.rm = T)) %>%
+        dplyr::pull(consommation)
 
     })# End observe
 

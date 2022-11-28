@@ -58,7 +58,7 @@ color:midnightblue;
 }
 ```
 
-**The application can be accessed here : [https://dge-diren.shinyapps.io/energyvd/](https://dge-diren.shinyapps.io/energyvd/)**
+**The application can be accessed here : ** <fill url>
 
 # 1) Why eneRgyVD ?
 
@@ -192,9 +192,11 @@ Since 2020 is the first year where such data is available, there is currently on
 
 3. A tab dedicated to electricity consumption data. Three visualisations are generated: a bar plot which can be stacked or not, and a sunburst graph and a table. The data can be downloaded in CSV or Excel format.
 
-4. A report tab which offers the user to download a html `.Rmd` report of the different visualisations available in the app for the current municipalities selection. The report is very basic for now, but can easily be developed in the future.
+4. A tab dedicated to theoretical building consumption data. Two visualisations are generated: an alluvial plot for consumption per affectation or usage, and a table for each alluvial data. The data can be downloaded in CSV or Excel format.
 
-5. A information tab which provides some context and a contact point for feedbacks and questions
+5. A report tab which offers the user to download a html `.Rmd` report of the different visualisations available in the app for the current municipalities selection. The report is very basic for now, but can easily be developed in the future.
+
+6. A information tab which provides some context and a contact point for feedbacks and questions, as well as basic documentation for each tab.
 
 # 4) Technical details
 
@@ -270,7 +272,43 @@ Here's a non exhaustive list of developments that can be expected :
 
 While I reckon the app would benefit some interesting features and should be more thoroughly documented (especially the testing side), I am happy to submit this app version as my capstone project of the [ADSCV EPFL Extension school formation](https://www.extensionschool.ch/learn/applied-data-science-communication-visualization) program. 
 
-I would like to thank all my EPFL instructors which have provided great support as well as an amazing course to learn interactive visualiastion and web development using R shiny. Starting from just knowing how to make a bar plot all the way to this application is something truly satisfying and beneficial. This provides new skills that are much needed in my work environment, hopefully helping moving towards a more data-informed world.  
+I would like to thank all my EPFL instructors which have provided great support as well as an amazing course to learn interactive visualiastion and web development using R shiny. Starting from just knowing how to make a bar plot all the way to this application is something truly satisfying and beneficial. This provides new skills that are much needed in my work environment, hopefully helping moving towards a more data-informed world.
+
+# 7) Next features
+
+## a) High priority
+
+* [ ] Add tabInd for main indicateurs (ratio)
+
+* [x] Add MWh as default  
+
+* [ ] Adding buildings potential for renovation
+
+* [ ] Update tabMap's statboxes for buildings consumption
+
+* [ ] Adding basic statistics about RegEner (m2 SRE, etc.)
+
+* [ ] Add graph about buildings ages and relative consumption (IBC)
+
+
+## b) Medium priority
+
+* [ ] Adding a 'per district' view
+
+* [ ] Adding some more details about sectorial split for electricity consumption
+
+This one is quite time intensive to make, to what use ?
+
+
+
+## c) Small easy fixes
+
+* [x] Buildings' heat: put some text in bold about the perimeter (surface heating + hot water only)
+
+# 8) Known issues
+
+* `bs4Dash::notificationItem()`'s `href` argument does not work in the current (28.11.2022) CRAN version, but is fixed in the dev version
+
 
 
 

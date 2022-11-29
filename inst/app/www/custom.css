@@ -201,3 +201,8 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
     background: lightblue;
 }
 
+
+/* icon class for icons in statboxes */
+.iconColor{
+  color:lightgrey;
+}

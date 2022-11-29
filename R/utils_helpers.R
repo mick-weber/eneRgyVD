@@ -276,6 +276,13 @@ cons_elec_vd_last_year <- elec_cons_communes %>%
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
   dplyr::pull()
 
+#### VD heat consumption for last common year
+
+cons_rg_vd_last_year <- regener_cons_ae_aff %>%
+  # dplyr::filter(annee == last_common_elec_year) %>% when year is here
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
+  dplyr::pull()
+
 
 ### Map-specific ----
 # We retrieve the coordinates

@@ -179,9 +179,10 @@ mod_inputs_server <- function(id){
         dplyr::filter(annee == last_common_elec_year) %>%
         dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
         dplyr::pull(consommation)
+
       # Statbox value for current selection's aggregated buildings thermal consumption
       inputVals$max_year_rg_cons <- subset_rgr_1() %>%
-        dplyr::filter(annee == max(annee)) %>%
+        # dplyr::filter(annee == max(annee)) %>%  When added !!
         dplyr::summarise(consommation=sum(consommation, na.rm = T)) %>%
         dplyr::pull(consommation)
 

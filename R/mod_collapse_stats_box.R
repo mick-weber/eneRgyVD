@@ -22,8 +22,9 @@ mod_collapse_stats_box_ui <- function(id){
 mod_collapse_stats_box_server <- function(id,
                                           title,
                                           selectedUnit,
-                                          production_value,
-                                          consumption_value,
+                                          prod_elec_value,
+                                          cons_elec_value,
+                                          cons_rg_value,
                                           year){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -40,62 +41,53 @@ mod_collapse_stats_box_server <- function(id,
         status = "success",
         fluidRow(
           column(
-            width = 4,
+            width = 6,
             bs4Dash::descriptionBlock(
               marginBottom = TRUE,
               number = year,
               # header: we paste the value in kwh and pass it to convert_units(), and we format it
-              header = paste(format(production_value %>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
-              text = htmltools::HTML(paste0("Production", tags$br(), "électrique")),
+              header = paste(format(prod_elec_value %>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
+              text = tags$p("Production", icon("bolt", class = "iconColor")),
               rightBorder = TRUE
             )# End descriptionBlock 1/3
           ),# End column
           column(
-            width = 4,
+            width = 6,
             bs4Dash::descriptionBlock(
               number = year,
-              # header: we paste the value in kwh and pass it to convert_units(), and we format it
-              header = paste(format(consumption_value%>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
-              text = htmltools::HTML(paste0("Consommation", tags$br(), "électrique")),
+              # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
+              header = paste(format(cons_elec_value%>% convert_units(unit_to = selectedUnit$unit_to),
+                                    big.mark = "'", digits = 1, scientific = FALSE),
+                             selectedUnit$unit_to),
+              text = tags$p("Consommation", icon("bolt", class = "iconColor")),
               rightBorder = FALSE
             )# End descriptionBlock 2/3
-          ),# End column
+          )# End column
+        ),# End fluidRow1
+        fluidRow(
           column(
-            width = 4,
+            width = 6,
             bs4Dash::descriptionBlock(
               number = year,
               # header: no need for unit conversion since it's percents
-              header = scales::label_percent(accuracy = .1)(production_value/consumption_value),
-              text = htmltools::HTML(paste0("Taux de couverture", tags$br(), "electrique annuel")),
+              header = scales::label_percent(accuracy = .1)(prod_elec_value/cons_elec_value),
+              text = tags$p("Part production", icon("bolt", class = "iconColor")),
               rightBorder = FALSE
             )# End descriptionBlock 3/3
           ),# End column
-        ),# End 1st fluidrow
-
-        fluidRow(
       column(
         width = 6, # adjust if needed
         bs4Dash::descriptionBlock(
-          number = 2021,
-          # header: no need for unit conversion since it's percents
-          header = format(1e8, big.mark = "'", digits = 1, scientific = FALSE), # ADD ARGUMENT FOR REGENER VALUE HERE + ADD ARGUMENT in SERVER + add ARGUMENTS when calling moddule (app_server)
-          text = htmltools::HTML(paste0("Consommation thermique", tags$br(), "bâtiments")),
+          number = 2021, # !! change when available
+          # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
+          header = paste(format(cons_rg_value %>% convert_units(unit_to = selectedUnit$unit_to),
+                                big.mark = "'", digits = 1, scientific = FALSE),
+                         selectedUnit$unit_to),
+          text = tags$p("Consommation", icon("fire", class = "iconColor")),
           rightBorder = FALSE
         )# End descriptionBlock
-      ),# End column
-      column(
-        width = 6, # adjust if needed
-        bs4Dash::descriptionBlock(
-          number = 2021,
-          # header: no need for unit conversion since it's percents
-          # ADD ARGUMENT FOR REGENER VALUE HERE + ADD ARGUMENT in SERVER + add ARGUMENTS when calling moddule (app_server)
-          header = HTML(paste0(format(1e7, big.mark = "'", digits = 0, scientific = FALSE),
-                               " m", tags$sup("2"))), # show in m2 -> needs HTML() + tags$sup
-          text = htmltools::HTML(paste0("Surface référence", tags$br(), "énergétique")),
-          rightBorder = FALSE
-        )# End descriptionBlock
-      )
-      )# End 2nd fluidRow
+      )# End column
+      )# End fluidRow2
       )# End box
     })# End renderUI
   })# End moduleServer

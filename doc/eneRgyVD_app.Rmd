@@ -278,9 +278,7 @@ I would like to thank all my EPFL instructors which have provided great support 
 
 ## a) High priority
 
-* [ ] Add tabInd for main indicateurs (ratio)
-
-* [x] Add MWh as default  
+* [ ] Add tabInd for main indicateurs (elec shares, regener main outputs) with purrr and a replication of some boxes .. I think.
 
 * [ ] Adding buildings potential for renovation
 
@@ -289,6 +287,8 @@ I would like to thank all my EPFL instructors which have provided great support 
 * [ ] Adding basic statistics about RegEner (m2 SRE, etc.)
 
 * [ ] Add graph about buildings ages and relative consumption (IBC)
+
+* [x] Add MWh as default 
 
 
 ## b) Medium priority

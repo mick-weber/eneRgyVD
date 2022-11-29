@@ -19,6 +19,8 @@ Priorité haute :
 
 //upcoming features
 
+* Configure statboxes for Regener data (add args for module, server call etc.) 
+
 * Add cantonal comparisons + cantonal entry as dataset (high intensity work)
 
 * Stuff overview comparison with regener data as well (not only electrical)

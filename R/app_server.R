@@ -320,8 +320,9 @@ app_server <- function(input, output, session) {
    mod_collapse_stats_box_server("vd_box",
                                  title = "Canton de Vaud",
                                  selectedUnit = selectedUnit,
-                                 production_value = prod_elec_vd_last_year, # utils_helpers.R
-                                 consumption_value = cons_elec_vd_last_year, # utils_helpers.R
+                                 prod_elec_value = prod_elec_vd_last_year, # utils_helpers.R
+                                 cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
+                                 cons_rg_value = cons_rg_vd_last_year, # utils_helpers.R
                                  year = last_common_elec_year) # utils_helpers.R
 
   # Dynamic module for rendering the communes collapse box
@@ -332,8 +333,9 @@ app_server <- function(input, output, session) {
      mod_collapse_stats_box_server("communes_box",
                                    title = "Commune(s) sélectionnée(s)",
                                    selectedUnit = selectedUnit,
-                                   production_value = inputVals$common_year_elec_prod, # mod_inputs.R
-                                   consumption_value = inputVals$common_year_elec_cons, # mod_inputs.R
+                                   prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
+                                   cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
+                                   cons_rg_value = inputVals$max_year_rg_cons,
                                    year = last_common_elec_year) # utils_helpers.R
    })
 

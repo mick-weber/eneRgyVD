@@ -72,7 +72,7 @@ mod_collapse_stats_box_server <- function(id,
               # header: no need for unit conversion since it's percents
               header = scales::label_percent(accuracy = .1)(prod_elec_value/cons_elec_value),
               text = tags$p("Part production", icon("bolt", class = "iconColor")),
-              rightBorder = FALSE
+              rightBorder = TRUE
             )# End descriptionBlock 3/3
           ),# End column
       column(

@@ -278,7 +278,12 @@ I would like to thank all my EPFL instructors which have provided great support 
 
 ## a) High priority
 
-* [ ] Add tabInd for main indicateurs (elec shares, regener main outputs) with purrr and a replication of some boxes .. I think.
+* [ ] Add tabInd for main indicateurs (elec shares, regener main outputs)
+
+  First things first: make tables of what data to display (see with CPD)
+
+  When done : Use boxes layout to allow to fold/unfold communes ?
+
 
 * [ ] Adding buildings potential for renovation
 

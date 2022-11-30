@@ -197,7 +197,7 @@ create_bar_plotly <- function(data,
   # Access how many facets there are for height management
   n_facets <- n_communes
 
-  # Turn to plotly object
+  # Turn to plotly object and deal with plotting sizes
   ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
                               height = ifelse(n_facets>n_facets_limit, # utils_helpers.R
                                               height_facet_above_limit,

@@ -1,0 +1,42 @@
+Rapport initialisé le 2022-12-05 13:49:04 pour le script RegEner.Rmd.
+Rechercher le mot 'erreur' afin de vérifier si tout s'est bien déroulé. Les informations peuvent également pointer des disfonctionnements.
+Recensement des dates d'extraction des bases secondaires (ancien -> récent) : 
+...Date de l'extraction pour PB : 2022-03-08
+...Date de l'extraction pour RCB : 2022-06-23
+...Date de l'extraction pour RegBL : 2022-09-22
+...Date de l'extraction pour MOVD/NPCS : 2022-12-05
+...Date de l'extraction pour HBAT LIDAT : 2022-12-05
+Information (codes GSTAT). Les codes GSTAT figurants dans le RegBL filtré sont désormais les suivants : 1004.
+Succès (MOVD/NPCS). Les données de mensuration ne contiennent pas d'EGID à double.
+Succès (MOVD/NPCS). Chaque empreinte au sol possède une information unique de surface.
+Information (GAREA_CORR). La surface au sol corrigée GAREA_CORR amène à une réduction de 5% par rapport à GAREA.
+Succès (AFF_SIA_1). Tous les EGID sont explicitement concernés par une règle d'attribution GKAT/GKLAS.
+Succès (GWAERZH1 manquants). Tous les EGID avec producteurs de chauffage principaux manquants ont pu être déduits à partir de leur source d'énergie lorsque disponible.
+Succès (GWAERZW1 manquants). Aucun cas d'EGID avec GWAERZW1 manquant mais GENW1 existant, donc aucun GWAERZW1 à déduire manuellement. 
+Information (AFF_SIA_1). Sur les 232221 EGID considérés, il y a 143807 EGID avec une affectation chauffée contre 88414 considérés comme non chauffés.
+Information (AFF_SIA_1). Effectifs pour Affectation 0 : 88414
+Information (AFF_SIA_1). Effectifs pour Affectation 1 : 50239
+Information (AFF_SIA_1). Effectifs pour Affectation 2 : 82227
+Information (AFF_SIA_1). Effectifs pour Affectation 3 : 1502
+Information (AFF_SIA_1). Effectifs pour Affectation 4 : 1080
+Information (AFF_SIA_1). Effectifs pour Affectation 5 : 1493
+Information (AFF_SIA_1). Effectifs pour Affectation 6 : 49
+Information (AFF_SIA_1). Effectifs pour Affectation 7 : 532
+Information (AFF_SIA_1). Effectifs pour Affectation 8 : 394
+Information (AFF_SIA_1). Effectifs pour Affectation 9 : 1950
+Information (AFF_SIA_1). Effectifs pour Affectation 10 : 2197
+Information (AFF_SIA_1). Effectifs pour Affectation 11 : 115
+Information (AFF_SIA_1). Effectifs pour Affectation 13 : 1841
+Information (AFF_SIA_1). Effectifs pour Affectation 14 : 185
+Information (AFF_SIA_1). Effectifs pour Affectation 98 : 1
+Information (AFF_SIA_1). Effectifs pour Affectation 99 : 2
+Succès (Affectations). Il n'y a pas de paires d'affectations incohérentes issues de l'appariement GKAT/GKLAS.
+Succès (GASTW). Aucun EGID ne possède un nombre d'étages chauffés GASTW inférieur à 1 ou supérieur à 100.
+Information (GASTW). L'importation du RCB daté a permis de renseigner les niveaux de 1855 EGID, et l'importation de HBAT 1177 EGID. Il reste 609 EGID chauffés sans information d'étage estimée.
+Information (SRE). Sur tous les EGID chauffés, 535 n'ont pas de SRE disponible.
+Succès (GWAERZ(H/W)_PART). Tous les EGIDs avec un système chauffage et/ou ECS secondaire possèdent une valeur GWAERZ(H/W)_PART non-nulle.
+Information (GBAUJ). Le nombre d'EGID chauffés sans année de construction est de 63, soit 0.0% des EGID chauffés.
+Information (RENOV_LEGERE/LOURDE_DATE). Sur les 143'826 EGID chauffés, 33'535 ont excl. une rénovation légère recensée, 1'376 ont excl. une rénovation lourde recensée, et 1'606 ont une rénovation légère et une rénovation lourde recensées.
+Information (ENER_EPOQUE). Sur les 143'826 EGID chauffés, 63 ne possèdent pas de date ou de période de construction.
+Succès (rendements). Aucun doublon de type (Ch./ECS), GWAERZ et GEN détecté dans les rendements, la jointure est saine.
+Résultats (Consommation). Des résultats plus détaillés sont disponibles dans le script, section 'Validation'.

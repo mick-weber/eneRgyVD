@@ -89,14 +89,17 @@ app_ui <- function(request) {
 
                              br(), # between title and menuItems
 
-                             ## menuItems ----
+                             ## menuItems & subItems ----
 
-                                    bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("globe", lib = "glyphicon")),
-                                    bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("flash", lib = "glyphicon")),
-                                    bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("flash", lib = "glyphicon")),
-                                    bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire", lib = "glyphicon")),
-                                    bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file", lib = "glyphicon")),
-                                    bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("info-sign", lib = "glyphicon"))
+                                    bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("earth-americas")),
+                                    bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
+                                    bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
+                                    bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
+                                                      bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds", icon = icon("arrow-right-to-bracket")),
+                                                      bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons", icon = icon("arrow-right-from-bracket")),
+                                                      bs4Dash::menuSubItem("Autres", tabName = "tabRegenerOthers", icon = icon("ellipsis-vertical"))),
+                                    bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
+                                    bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info"))
         ),# End sidebarMenu
 
         ## Widgets module ----
@@ -161,7 +164,7 @@ app_ui <- function(request) {
             tabName = "tabCons",
             fluidRow(h4(strong("Consommation d'électricité par commune")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("cons_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+                     actionButton("cons_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
             br(),
             # to about_the_app module (test)
@@ -175,7 +178,7 @@ app_ui <- function(request) {
             tabName = "tabProd",
             fluidRow(h4(strong("Production d'électricité par commune")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("prod_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+                     actionButton("prod_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
             br(),
 
@@ -185,19 +188,54 @@ app_ui <- function(request) {
           ),# End tabItem
 
           ## tabRegener ----
+          ### Needs subitem ----
+
           bs4Dash::tabItem(
-            tabName = "tabRegener",
+            tabName = "tabRegenerNeeds",
+            fluidRow(h4(strong("Besoins théoriques des bâtiments")),
+                     HTML('&nbsp;'), HTML('&nbsp;'),
+                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
+                                  class = "infoButton")), # no label
+            # breathing
+            br(),
+
+            # Module for producing regener need plots
+            mod_regener_needs_charts_ui("regener_needs")
+
+
+          ),# End tabItem
+
+
+          ### Cons subitem ----
+          bs4Dash::tabItem(
+            tabName = "tabRegenerCons",
             fluidRow(h4(strong("Consommation théorique des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_data_help", label = NULL, icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
             # breathing
             br(),
 
             # Module for producing regener plots
-            mod_regener_charts_ui("regener_charts")
+            mod_regener_cons_charts_ui("regener_cons")
 
 
           ),# End tabItem
+
+          ### Others subitem----
+          bs4Dash::tabItem(
+            tabName = "tabRegenerOthers",
+            fluidRow(h4(strong("Autres informations des bâtiments")),
+                     HTML('&nbsp;'), HTML('&nbsp;'),
+                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+            # breathing
+            br(),
+
+            # Module for producing regener plots
+            # To be added later
+
+
+          ),# End tabItem
+
 
           ## tabReport ----
           bs4Dash::tabItem(

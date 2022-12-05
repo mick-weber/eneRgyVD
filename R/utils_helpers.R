@@ -19,6 +19,7 @@ load("./data/elec_cons_doc.rda")
 
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
+load("./data/regener_needs.rda")
 load("./data/regener_doc.rda")
 
 ## glossary ----
@@ -77,10 +78,11 @@ replace_fr_accents <- c("electricite" = "électricité",
                         "Categorie" = "Catégorie",
                         "installee" = "installée",
                         "Annee" = "Année",
-                        "Ae" = "Agent énergétique")
+                        "Ae" = "Agent énergétique",
+                        "optimises" = "optimisés")
 
 ## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
-energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation")
+energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
 power_col_keywords <- c("Puissance")
 
 
@@ -109,7 +111,7 @@ prod_icons <- prod_colors %>%
   dplyr::ungroup()
 
 # Palette for plots: named vector with level + associated color
-colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie)
+colors_categories <- prod_colors$color %>%setNames(nm = prod_colors$categorie)
 
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
@@ -157,6 +159,27 @@ regener_icons <- regener_colors %>%
 
 # Used for plots: named vector with level + associated color
 colors_ae <- regener_colors$color %>% setNames(nm = regener_colors$ae)
+
+## Regener type icons (rg) ----
+
+# Base tribble for AE, color and icon
+
+regener_colors_type <- dplyr::tribble(~icon, ~type, ~color,
+                                      as.character(icon("fire")), "Chauffage", "#DC143C",
+                                      as.character(icon("droplet")), "ECS", "#6495ED"
+)
+
+# Used for table icons
+# Adding the color style in the html tag for the icon
+regener_icons_type <- regener_colors_type %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
+  dplyr::select(-color) %>%
+  dplyr::ungroup()
+
+# Used for plots: named vector with level + associated color
+colors_rg_type <- regener_colors_type$color %>% setNames(nm = regener_colors_type$type)
 
 
 ## Facetted plot's height ----

@@ -31,7 +31,6 @@ usethis::use_package("rjson")
 usethis::use_package("shinyWidgets")
 
 usethis::use_package("bs4Dash")
-# usethis::use_package("shinydashboard")
 usethis::use_package("shinydashboardPlus")
 usethis::use_package("fresh")    # for bs4Dash custom theme
 
@@ -55,8 +54,10 @@ golem::add_module(name = "communes_boxes", with_test = TRUE)
 golem::add_module(name = "download_rmd", with_test = TRUE)
 golem::add_module(name = "about_the_app", with_test = TRUE)
 golem::add_module(name = "elec_charts", with_test = TRUE)
-golem::add_module(name = "regener_charts", with_test = TRUE)
+golem::add_module(name = "regener_cons_charts", with_test = TRUE)
+golem::add_module(name = "regener_needs_charts", with_test = TRUE)
 
+# Such module would be ideal but is not working currently
 golem::add_module(name = "map", with_test = TRUE)
 
 

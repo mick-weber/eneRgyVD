@@ -424,6 +424,56 @@ create_cons_table_dt <- function(data, unit){
     ) # End DT
 }
 
+#' create_rg_needs_table_dt
+#' @param data Specific regener needs dataset to transform to datatable.
+#' Must follow specific data format which can be found in /data
+#' @return a DT table with export functionnalities
+#' @export
+
+create_rg_needs_table_dt <- function(data, unit){
+
+  data %>%
+    # Basic clean up for table output
+    dplyr::mutate(
+      # change year (etat for rg dataset) to factor
+      etat = as.factor(etat),
+      # format numeric cols
+      dplyr::across(where(is.numeric), ~format(.x,
+                                               big.mark = "'",
+                                               digits = 3,
+                                               drop0trailing = TRUE,
+                                               scientific = FALSE))) %>%
+    # put installed power in the last position
+    dplyr::relocate(commune, etat, type, besoins) %>%
+    # add icons HTML tags from utils_helpers.R
+    dplyr::left_join(regener_icons_type, by = "type") %>%
+    dplyr::relocate(icon, .before = type) %>% #
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
+    rename_fr_colnames() %>% # fct_helpers.R
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    #turn to DT
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  options = list(paging = TRUE,    ## paginate the output
+                                 pageLength = 15,  ## number of rows to output for each page
+                                 scrollY = TRUE,   ## enable scrolling on Y axis
+                                 autoWidth = TRUE, ## use smart column width handling
+                                 server = FALSE,   ## use server-side processing
+                                 dom = 'Bfrtip',
+                                 # Buttons not needed anymore since mod_download_data.R is spot on
+                                 # buttons = list(
+                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
+                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R
+                  ),
+                  #extensions = 'Buttons',
+                  selection = 'single', ## enable selection of a single row
+                  #filter = 'bottom',              ## include column filters at the bottom
+                  rownames = FALSE               ## don't show row numbers/names
+    ) # End DT
+
+}
 
 #' create_doc_table_dt
 #' Creates minimalistic documentation table with download feature
@@ -710,15 +760,10 @@ rename_fr_colnames <- function(data){
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) %>%
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
                 pattern = "_", replacement = " ") %>%
-    rename_with(.cols = everything(), .fn = stringr::str_replace_all, replace_fr_accents) # utils_helpers.R
-
+    rename_with(.cols = everything(), .fn = stringr::str_replace_all,
+                replace_fr_accents) # utils_helpers.R
 
 }
-
-
-
-
-
 
 
 

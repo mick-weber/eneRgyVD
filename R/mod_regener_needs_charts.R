@@ -1,21 +1,31 @@
-#' elec_charts UI Function
+#' regener_needs_charts UI Function
 #'
-#' @description A shiny Module which produces the different chart for the tab of the app. It
+#' @description A shiny Module.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_elec_charts_ui <- function(id){
+mod_regener_needs_charts_ui <- function(id){
   ns <- NS(id)
+
+
   tagList(
     # TABSETS for better readability of plot / table
     bs4Dash::tabsetPanel(
-      id = "tabset_elec",
+      id = "tabset_rg_needs",
       shiny::tabPanel(title = "Graphique",
-                      # breathing
+                      # breating
                       br(),
+                      column(width = 10,
+                             # Disclaimer for regener needs data (in a column for better display)
+                             tags$p(
+                               "Ces graphiques illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
+                               l'eau chaude sanitaire et chauffage des locaux.",
+                               strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
+                               "Plus d'informations, notamment sur les besoins optimisés, dans la section 'À propos'.")
+                      ),# End column
 
                       # radioGroupButtons() for tab ----
                       shinyWidgets::radioGroupButtons(
@@ -28,44 +38,44 @@ mod_elec_charts_ui <- function(id){
 
                       fluidRow( # to display the two switches inline
 
-                      # materialSwitch 1/2 for bar plot
-                      shiny::conditionalPanel(
-                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                        condition = "output.commune && input.tab_plot_type == 'bar'",
-                        ns = ns,
+                        # materialSwitch 1/2 for bar plot
+                        shiny::conditionalPanel(
+                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                          condition = "output.commune && input.tab_plot_type == 'bar'",
+                          ns = ns,
 
-                        tags$div(style = "padding-left:80px", # align with facets
-                                 tags$div(
-                          shinyWidgets::materialSwitch(
-                            inputId = ns("stacked_status"),
-                            value = FALSE,
-                            status = "success",
-                            label = strong("Barres empilées"), inline = TRUE),
-                          tags$span(strong("adjacentes"))
-                        ))# End 2x tags$div()
+                          tags$div(style = "padding-left:80px", # align with facets
+                                   tags$div(
+                                     shinyWidgets::materialSwitch(
+                                       inputId = ns("stacked_status"),
+                                       value = FALSE,
+                                       status = "success",
+                                       label = strong("Barres empilées"), inline = TRUE),
+                                     tags$span(strong("adjacentes"))
+                                   ))# End 2x tags$div()
                         ),# End conditionalPanel 1/2
 
-                      # Spaces between the two toggles
-                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
-                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                        # Spaces between the two toggles
+                        HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                        HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
 
-                      # materialSwitch 2/2 for bar plot
-                      shiny::conditionalPanel(
-                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                        condition = "output.toggle && input.tab_plot_type == 'bar'",
-                        ns = ns,
+                        # materialSwitch 2/2 for bar plot
+                        shiny::conditionalPanel(
+                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                          condition = "output.toggle && input.tab_plot_type == 'bar'",
+                          ns = ns,
 
-                        tags$div(
-                          style = "padding-left:30px; border-left: 1px solid lightgrey;", # separator with prev toggle
-                          shinyWidgets::materialSwitch(
-                            inputId = ns("toggle_status"),
-                            value = FALSE,
-                            label = strong("Axe vertical commun"),
-                            status = "success",
-                            inline = TRUE),
-                          tags$span(strong("indépendant"))
-                        )# End tags$div
-                      )# End 2nd conditionalPanel
+                          tags$div(
+                            style = "padding-left:30px; border-left: 1px solid lightgrey;", # separator with prev toggle
+                            shinyWidgets::materialSwitch(
+                              inputId = ns("toggle_status"),
+                              value = FALSE,
+                              label = strong("Axe vertical commun"),
+                              status = "success",
+                              inline = TRUE),
+                            tags$span(strong("indépendant"))
+                          )# End tags$div
+                        )# End 2nd conditionalPanel
 
                       ),# End fluidrow for plot switches
 
@@ -86,9 +96,11 @@ mod_elec_charts_ui <- function(id){
                       uiOutput(ns("plot_render_ui"))
 
 
+
       ),# End tabPanel 'Graphique'
 
       shiny::tabPanel(title = "Table",
+
                       column(width = 11,
                              # breathing
                              br(),
@@ -104,31 +116,31 @@ mod_elec_charts_ui <- function(id){
       )# End tabPanel 'Table'
     )# End tabsetPanel
   )# End tagList
+
 }
 
-#' elec_charts Server Functions
+#' regener_needs_charts Server Functions
 #'
 #' @noRd
-mod_elec_charts_server <- function(id,
-                                   inputVals,
-                                   subsetData, # filtered data for communes and selected years
-                                   selectedUnit, # unit selected in mod_unit_converter.R
-                                   sunburstData, # specific data for sunburst
-                                   legend_title, # for legend of barplot (either secteur/technologies)
-                                   target_year, # which current year for the sunburst
-                                   var_year, # 'annee'
-                                   var_commune, # 'commune'
-                                   var_rank_2, # categorical var ('secteur'/'categorie', ...)
-                                   var_values, # prod/consumption kwh
-                                   color_palette, # utils_helpers.R
-                                   third_rank, # boolean
-                                   var_rank_3_1, # var 1/2 to pivot for the last level of sunburst, if third_rank
-                                   var_rank_3_2, # var 2/2
-                                   fct_table_dt_type, # table function to pass (data specific)
-                                   dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
-                                   doc_vars){ # the non-reactive documentation file for variables description
-  moduleServer(id, function(input, output, session){
-
+mod_regener_needs_charts_server <- function(id,
+                                            inputVals,
+                                            subsetData, # filtered data for communes and selected years
+                                            selectedUnit, # unit selected in mod_unit_converter.R
+                                            sunburstData, # specific data for sunburst
+                                            legend_title, # for legend of barplot (either secteur/technologies)
+                                            target_year, # which current year for the sunburst
+                                            var_year, # 'annee'
+                                            var_commune, # 'commune'
+                                            var_rank_2, # categorical var ('secteur'/'categorie', ...)
+                                            var_values, # prod/consumption kwh
+                                            color_palette, # utils_helpers.R
+                                            third_rank, # boolean
+                                            var_rank_3_1, # var 1/2 to pivot for the last level of sunburst, if third_rank exists
+                                            var_rank_3_2, # var 2/2
+                                            fct_table_dt_type, # table function to pass (data specific)
+                                            dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                            doc_vars){
+  moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     # Initialize toggle free_y condition for conditionalPanel in ui
@@ -191,11 +203,10 @@ mod_elec_charts_server <- function(id,
         })# End renderPlotly
       }# End else if
 
-      # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
-
+      # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
-      plotly::plotlyOutput(ns("chart_1")) %>%
-        shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
+               plotly::plotlyOutput(ns("chart_1")) %>%
+                 shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
       )
 
     })# End renderUI
@@ -220,12 +231,19 @@ mod_elec_charts_server <- function(id,
         add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
         rename_fr_colnames() # fct_helpers.R
 
-        })
+    })
 
     # Module to download DT table data
     mod_download_data_server("table_download",
                              data = download_data,
                              dl_prefix = dl_prefix,
                              doc_vars = doc_vars) # dl preffix for file name, passed into app_server.R
-  }) # End ModuleServer
-} # End server
+
+  })
+}
+
+## To be copied in the UI
+# mod_regener_needs_charts_ui("regener_needs_charts_1")
+
+## To be copied in the server
+# mod_regener_needs_charts_server("regener_needs_charts_1")

@@ -7,33 +7,32 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_regener_charts_ui <- function(id){
+mod_regener_cons_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
 
 
     # TABSETS for better readability of plot / table
     bs4Dash::tabsetPanel(
-      id = "tabset_rg",
+      id = "tabset_rg_cons",
       shiny::tabPanel(title = "Graphique",
                       # breating
                       br(),
                       column(width = 10,
-                      # Alluvial plots description (in a column for better display)
-                      tags$p(
- "Ces graphiques illustrent comment la consommation de différents agents énergétiques
+                      # Disclaimer for regener cons data (in a column for better display)
+                      tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
  se répartit pour satisfaire les besoins en chaleur du bâtiment selon l'usage ou l'affectation principale des bâtiments.",
  strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
  "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
-                      tags$p("Ces données reflètent un état des connaissances à mi-2022. L'évolution de ces données est en cours d'élaboration et sera disponible à moyen terme."),
+ tags$p("Ces données reflètent un état des connaissances à mi-2022. Une mise à disposition historisée de ces données est en cours d'élaboration et sera disponible à moyen terme."),
                       ),# End column
                       # radioGroupButtons() for tab ----
 
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
-                        label = "Sélection du type de graphique",
+                        label = "Type de consommation",
                         choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                     `<i class='fa fa-house'></i> Par affectation` = "bar"),
                         justified = TRUE,
@@ -59,7 +58,7 @@ mod_regener_charts_ui <- function(id){
                              # radioGroupButtons() for tab ----
                              shinyWidgets::radioGroupButtons(
                                inputId = ns("tab_table_type"),
-                               label = "Sélection du type de table",
+                               label = "Type de consommation",
                                choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                            `<i class='fa fa-house'></i> Par affectation` = "bar"),
                                justified = TRUE,
@@ -86,7 +85,7 @@ mod_regener_charts_ui <- function(id){
 #' regener_charts Server Functions
 #'
 #' @noRd
-mod_regener_charts_server <- function(id,
+mod_regener_cons_charts_server <- function(id,
                                       selectedUnit,
                                       inputVals, # for facet height
                                       subset_rgr_1, # conso->use
@@ -210,7 +209,7 @@ mod_regener_charts_server <- function(id,
 }
 
 ## To be copied in the UI
-# mod_regener_charts_ui("regener_charts_1")
+# mod_regener_cons_charts_ui("regener_charts_1")
 
 ## To be copied in the server
-# mod_regener_charts_server("regener_charts_1")
+# mod_regener_cons_charts_server("regener_charts_1")

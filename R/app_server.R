@@ -114,7 +114,7 @@ app_server <- function(input, output, session) {
 
    }) # End reactive()
 
-   # subset regener (x2)----
+   # subset regener (x3)----
    # subset_rgr1 : regener by commune, cons, ae, use
 
    subset_rgr_1 <- reactive({
@@ -151,6 +151,25 @@ app_server <- function(input, output, session) {
       # CONVERSION TEST IN PROGRESS
       inputVals$rgr_2 %>%
          convert_units(colnames = "consommation",
+                       unit_from = "kWh",
+                       unit_to = selectedUnit$unit_to)
+
+   })
+
+   subset_rgr_needs <- reactive({
+
+      # explicitely require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+      )
+
+      # waiting on these to get initialized (renderUIs)
+      req(selectedUnit$unit_to)
+
+      # No filter needed yet for years, only year conversion
+      # CONVERSION TEST IN PROGRESS
+      inputVals$rgr_needs %>%
+         convert_units(colnames = c("besoins", "besoins_optimises"),
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
@@ -307,12 +326,31 @@ app_server <- function(input, output, session) {
                           doc_vars = elec_prod_doc)
 
    ## tabRegener: call the chart server logic ----
+   ### regener_cons ----
 
-   mod_regener_charts_server("regener_charts",
+   mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
                              selectedUnit = selectedUnit,
                              subset_rgr_1 = subset_rgr_1,
                              subset_rgr_2 = subset_rgr_2)
+   ### regener_needs ----
+   mod_regener_needs_charts_server("regener_needs",
+                                   inputVals = inputVals,
+                                   subsetData = subset_rgr_needs, # filtered data for communes and selected years
+                                   selectedUnit = selectedUnit, # unit selected in mod_unit_converter.R
+                                   sunburstData = subset_rgr_needs, # no interactivity with sliders yet, so pointless
+                                   legend_title = "Usages", # for legend of barplot (either secteur/technologies)
+                                   var_year = "etat", # 'etat' instead of 'annee' better reflects the dataset
+                                   var_commune = "commune", # 'commune'
+                                   var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
+                                   var_values = "besoins", # prod/consumption/besoins
+                                   color_palette = colors_rg_type, # utils_helpers.R
+                                   third_rank = FALSE, # boolean
+                                   var_rank_3_1 = NULL, var_rank_3_2 = NULL,
+                                   fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
+                                   dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                   doc_vars = regener_doc # utils_helpers.R
+                                   )
 
 
    ## tabMap: boxes for statistics ----

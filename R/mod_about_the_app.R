@@ -91,11 +91,14 @@ mod_about_the_app_ui <- function(id){
                                      des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
                                      (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
                                      registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
-                                     de chaleur peuvent être renseignés, la consommation est estimée selon la surface de référence énergétique, l'année et l'affectation du bâtiment
-                                     ainsi que la présence d'une ou de plusieurs rénovations. Ces consommations sont théoriques mais fondées sur des données de consommation empiriques.
-                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner.
-                                     Davantage de détails peuvent être fournis sur demande à", tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
-                                     "Un document de synthèse méthodologique est prévu prochainement pour présenter la méthode utilisée."))
+                                     de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment
+                                     ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques.
+                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner.",
+                                     "Les", strong("besoins optimisés"), "traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
+                                     après 2001 étaient assaini énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
+                                     br(),
+                                     "Davantage de détails peuvent être fournis sur demande à", tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
+                                     "Un document de synthèse méthodologique est prévu prochainement afin de présenter la méthode appliquée."))
                          ),# End tags$ul 2/3
                 br(),
 

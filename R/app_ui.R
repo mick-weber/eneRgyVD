@@ -95,9 +95,9 @@ app_ui <- function(request) {
                                     bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
                                     bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
-                                                      bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds", icon = icon("arrow-right-to-bracket")),
-                                                      bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons", icon = icon("arrow-right-from-bracket")),
-                                                      bs4Dash::menuSubItem("Autres", tabName = "tabRegenerOthers", icon = icon("ellipsis-vertical"))),
+                                                      bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
+                                                      bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
+                                                      bs4Dash::menuSubItem("Autres", tabName = "tabRegenerOthers")),
                                     bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
                                     bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info"))
         ),# End sidebarMenu

@@ -169,7 +169,27 @@ app_server <- function(input, output, session) {
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
       inputVals$rgr_needs %>%
-         convert_units(colnames = c("besoins", "besoins_optimises"),
+         convert_units(colnames = contains("besoins"),
+                       unit_from = "kWh",
+                       unit_to = selectedUnit$unit_to)
+
+   })
+
+
+   subset_rgr_needs_long <- reactive({
+
+      # explicitely require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+      )
+
+      # waiting on these to get initialized (renderUIs)
+      req(selectedUnit$unit_to)
+
+      # No filter needed yet for years, only year conversion
+      # CONVERSION TEST IN PROGRESS
+      inputVals$rgr_needs_long %>%
+         convert_units(colnames = c("besoins"),
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
 
@@ -337,6 +357,7 @@ app_server <- function(input, output, session) {
    mod_regener_needs_charts_server("regener_needs",
                                    inputVals = inputVals,
                                    subsetData = subset_rgr_needs, # filtered data for communes and selected years
+                                   subsetDataLong = subset_rgr_needs_long,
                                    selectedUnit = selectedUnit, # unit selected in mod_unit_converter.R
                                    sunburstData = subset_rgr_needs, # no interactivity with sliders yet, so pointless
                                    legend_title = "Usages", # for legend of barplot (either secteur/technologies)

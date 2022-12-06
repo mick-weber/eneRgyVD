@@ -471,7 +471,7 @@ create_rg_needs_table_dt <- function(data, unit){
                   selection = 'single', ## enable selection of a single row
                   #filter = 'bottom',              ## include column filters at the bottom
                   rownames = FALSE               ## don't show row numbers/names
-    ) # End DT
+    )# End DT
 
 }
 

@@ -17,6 +17,8 @@ mod_elec_charts_ui <- function(id){
                       # breathing
                       br(),
 
+                      fluidRow( # to display the plot buttons + materialswitches
+
                       # radioGroupButtons() for tab ----
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
@@ -26,7 +28,7 @@ mod_elec_charts_ui <- function(id){
                         justified = TRUE,
                         width = "25%"),
 
-                      fluidRow( # to display the two switches inline
+
 
                       # materialSwitch 1/2 for bar plot
                       shiny::conditionalPanel(
@@ -34,7 +36,7 @@ mod_elec_charts_ui <- function(id){
                         condition = "output.commune && input.tab_plot_type == 'bar'",
                         ns = ns,
 
-                        tags$div(style = "padding-left:80px", # align with facets
+                        tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
                                  tags$div(
                           shinyWidgets::materialSwitch(
                             inputId = ns("stacked_status"),
@@ -56,7 +58,7 @@ mod_elec_charts_ui <- function(id){
                         ns = ns,
 
                         tags$div(
-                          style = "padding-left:30px; border-left: 1px solid lightgrey;", # separator with prev toggle
+                          style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
                           shinyWidgets::materialSwitch(
                             inputId = ns("toggle_status"),
                             value = FALSE,
@@ -67,7 +69,7 @@ mod_elec_charts_ui <- function(id){
                         )# End tags$div
                       )# End 2nd conditionalPanel
 
-                      ),# End fluidrow for plot switches
+                      ),# End fluidrow for plot buttons + materialswitches
 
                       # Simple text to inform how the sunburst year works, if selected
                       shiny::conditionalPanel(

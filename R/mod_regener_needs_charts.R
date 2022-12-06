@@ -15,6 +15,7 @@ mod_regener_needs_charts_ui <- function(id){
     # TABSETS for better readability of plot / table
     bs4Dash::tabsetPanel(
       id = "tabset_rg_needs",
+      # tabPanel 'Graphique' ----
       shiny::tabPanel(title = "Graphique",
                       # breating
                       br(),
@@ -24,19 +25,20 @@ mod_regener_needs_charts_ui <- function(id){
                                "Ces graphiques illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
                                l'eau chaude sanitaire et chauffage des locaux.",
                                strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
-                               "Plus d'informations, notamment sur les besoins optimisés, dans la section 'À propos'.")
+                               "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus.")
                       ),# End column
 
-                      # radioGroupButtons() for tab ----
+
+                      fluidRow( # to display the plot buttons + materialswitches inline
+
+                      ## radioGroupButtons() for tab ----
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
                         label = "Sélection du type de graphique",
-                        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
+                        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
                                     `<i class='fa fa-pie-chart'></i>` = "sunburst"),
                         justified = TRUE,
                         width = "25%"),
-
-                      fluidRow( # to display the two switches inline
 
                         # materialSwitch 1/2 for bar plot
                         shiny::conditionalPanel(
@@ -44,7 +46,7 @@ mod_regener_needs_charts_ui <- function(id){
                           condition = "output.commune && input.tab_plot_type == 'bar'",
                           ns = ns,
 
-                          tags$div(style = "padding-left:80px", # align with facets
+                          tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
                                    tags$div(
                                      shinyWidgets::materialSwitch(
                                        inputId = ns("stacked_status"),
@@ -66,7 +68,7 @@ mod_regener_needs_charts_ui <- function(id){
                           ns = ns,
 
                           tags$div(
-                            style = "padding-left:30px; border-left: 1px solid lightgrey;", # separator with prev toggle
+                            style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
                             shinyWidgets::materialSwitch(
                               inputId = ns("toggle_status"),
                               value = FALSE,
@@ -77,7 +79,7 @@ mod_regener_needs_charts_ui <- function(id){
                           )# End tags$div
                         )# End 2nd conditionalPanel
 
-                      ),# End fluidrow for plot switches
+                      ),# End fluidrow for plot buttons + materialswitches
 
                       # Simple text to inform how the sunburst year works, if selected
                       shiny::conditionalPanel(
@@ -91,7 +93,7 @@ mod_regener_needs_charts_ui <- function(id){
                       # # breathing
                       # br(),
 
-                      # Conditional plotly (bar/sunburst) ----
+                      ## Conditional plotly (bar/sunburst) ----
                       # Rendered server side so that we can check if sunburst, then we apply a css class for padding
                       uiOutput(ns("plot_render_ui"))
 
@@ -99,16 +101,16 @@ mod_regener_needs_charts_ui <- function(id){
 
       ),# End tabPanel 'Graphique'
 
+      # tabPanel 'Table' ----
       shiny::tabPanel(title = "Table",
 
                       column(width = 11,
                              # breathing
                              br(),
+                             tags$p("Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
+                             br(),
                              # Download module
                              mod_download_data_ui(ns("table_download")),
-
-                             # breathing
-                             br(),
                              # DT table
                              DT::dataTableOutput(ns("table_1")) %>%
                                shinycssloaders::withSpinner(color= main_color)
@@ -125,6 +127,7 @@ mod_regener_needs_charts_ui <- function(id){
 mod_regener_needs_charts_server <- function(id,
                                             inputVals,
                                             subsetData, # filtered data for communes and selected years
+                                            subsetDataLong, # filtered data, long format for barplot optimal needs
                                             selectedUnit, # unit selected in mod_unit_converter.R
                                             sunburstData, # specific data for sunburst
                                             legend_title, # for legend of barplot (either secteur/technologies)
@@ -172,7 +175,7 @@ mod_regener_needs_charts_server <- function(id,
         output$chart_1 <- plotly::renderPlotly({
 
           # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetData(),
+          create_bar_plotly(data = subsetDataLong(), # before :subsetData()
                             n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
                             var_commune = var_commune,
@@ -201,13 +204,13 @@ mod_regener_needs_charts_server <- function(id,
                                  var_rank_3_1 = var_rank_3_1,
                                  var_rank_3_2 = var_rank_3_2) # var names pivotted
         })# End renderPlotly
-      }# End else if
+      } # End else if
 
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
                plotly::plotlyOutput(ns("chart_1")) %>%
                  shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
-      )
+      )#End div
 
     })# End renderUI
 
@@ -220,8 +223,6 @@ mod_regener_needs_charts_server <- function(id,
     })# End renderDT
 
     # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
-
-
     download_data <- reactive({
 
 

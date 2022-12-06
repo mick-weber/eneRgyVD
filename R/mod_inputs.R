@@ -127,17 +127,6 @@ mod_inputs_server <- function(id){
 
     })
 
-  # 3/3 same needs but long for barplot
-
-    subset_rgr_needs_long <- reactive({
-
-      req(input$selected_communes)
-
-      regener_needs_long %>%
-        filter(commune %in% input$selected_communes)
-
-    })
-
 
     ## Storing all useful values in inputVals ----
     # [inputVals 0/3] Initializing the inputVals item
@@ -169,7 +158,6 @@ mod_inputs_server <- function(id){
       inputVals$rgr_2 <- subset_rgr_2()
 
       inputVals$rgr_needs <- subset_rgr_needs()
-      inputVals$rgr_needs_long <- subset_rgr_needs_long()
 
       # store min & max !available! years from consumption data to feed sliderInput()
 

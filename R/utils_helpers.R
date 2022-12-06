@@ -1,3 +1,8 @@
+# place ça où ça belongs
+regener_current_year <- 2022
+
+
+
 # Loading .rda objects ----
 ## sf data ----
 
@@ -20,9 +25,7 @@ load("./data/elec_cons_doc.rda")
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
 load("./data/regener_needs.rda")
-load("./data/regener_needs_long.rda") # for barplot
 load("./data/regener_doc.rda")
-
 
 ## glossary ----
 load("./data/glossary.rda")
@@ -271,6 +274,10 @@ categories_diren <- elec_prod_communes %>%
 
 ## Objects specific to the tabCons  ----
 # to be populated
+
+## Objects specific to the tabRegener  ----
+
+regener_current_year <- 2022  # used for create_sunburst_plotly() specific to regener data...
 
 ## Objects specific to the tabMap  ----
 

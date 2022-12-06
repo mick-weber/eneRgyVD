@@ -86,7 +86,7 @@ mod_regener_needs_charts_ui <- function(id){
                         condition = "input.tab_plot_type == 'sunburst'",
                         ns = ns,
 
-                        tags$p("L'année affichée correspond à l'année la plus récente de la barre latérale.")
+                        tags$p("Seuls les besoins actuels théoriques sont affichés sur ce graphique.")
 
                       ),# End conditionalPanel
 
@@ -127,9 +127,7 @@ mod_regener_needs_charts_ui <- function(id){
 mod_regener_needs_charts_server <- function(id,
                                             inputVals,
                                             subsetData, # filtered data for communes and selected years
-                                            subsetDataLong, # filtered data, long format for barplot optimal needs
                                             selectedUnit, # unit selected in mod_unit_converter.R
-                                            sunburstData, # specific data for sunburst
                                             legend_title, # for legend of barplot (either secteur/technologies)
                                             target_year, # which current year for the sunburst
                                             var_year, # 'annee'
@@ -145,6 +143,27 @@ mod_regener_needs_charts_server <- function(id,
                                             doc_vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # We process subsetData() in a nice, wide format for the table and sunburst
+    subsetData_wide <- reactive({
+
+      subsetData() %>%
+        tidyr::pivot_wider(names_from = "statut",
+                           values_from = "besoins") # not passed as arguments (could be if needed)
+    })
+
+    # We also process subsetData_wide() in a compatible format for create_sunburst_plotly()
+    subsetData_sunburst <- reactive({
+
+      subsetData_wide() %>%  # not passed as arguments (could be if needed)
+        dplyr::rename(besoins = `Besoins actuels`) #
+
+    })
+
+
+
+
+
 
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
@@ -175,7 +194,7 @@ mod_regener_needs_charts_server <- function(id,
         output$chart_1 <- plotly::renderPlotly({
 
           # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetDataLong(), # before :subsetData()
+          create_bar_plotly(data = subsetData(),
                             n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
                             var_commune = var_commune,
@@ -194,7 +213,7 @@ mod_regener_needs_charts_server <- function(id,
         # PLOTLY SUNBURST PLOT
         output$chart_1 <- plotly::renderPlotly({
 
-          create_sunburst_plotly(data_sunburst = sunburstData(), #subsetData_d(), # created just abovez
+          create_sunburst_plotly(data_sunburst = subsetData_sunburst(), # must be adapted later
                                  unit = selectedUnit$unit_to,
                                  var_year = var_year, # var name
                                  var_values = var_values, # var name
@@ -217,7 +236,7 @@ mod_regener_needs_charts_server <- function(id,
     # Renders the DT table
     output$table_1 <- DT::renderDataTable({
 
-      fct_table_dt_type(data = subsetData(),
+      fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
                         unit = selectedUnit$unit_to)
 
     })# End renderDT
@@ -226,11 +245,11 @@ mod_regener_needs_charts_server <- function(id,
     download_data <- reactive({
 
 
-      subsetData() %>%
+      subsetData() %>% # We let the data in a long format
         # Add the currently selected unit in the colnames (conversion is already done)
         # add energy units in brackets for energy/power related columns
-        add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
-        rename_fr_colnames() # fct_helpers.R
+        rename_fr_colnames() %>%  # fct_helpers.R
+        add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
 
     })
 

@@ -233,10 +233,16 @@ create_sunburst_plotly <- function(data_sunburst,
                                    var_rank_3_2){
 
   # store the year for the center of sunburst plot label.
-  label_year <- max(data_sunburst[[var_year]])
+  # For the mod_regener_needs_charts.R specificities, we directly pass the 2022 value
+  label_year <- if(is.numeric(data_sunburst[[var_year]])){
+    max(data_sunburst[[var_year]])
+  }else{
+    regener_current_year
+  }
 
   # overall total (layer 0)
-  total_row <- data_sunburst %>% summarise(values = sum(.data[[var_values]])) %>%
+  total_row <- data_sunburst %>%
+    summarise(values = sum(.data[[var_values]])) %>%
     dplyr::mutate(labels = as.character(label_year), # center of sunburst label
            parents = NA,
            ids = "Total")
@@ -444,7 +450,7 @@ create_rg_needs_table_dt <- function(data, unit){
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
     # put installed power in the last position
-    dplyr::relocate(commune, etat, type, besoins) %>%
+    dplyr::relocate(commune, etat, type) %>%
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons_type, by = "type") %>%
     dplyr::relocate(icon, .before = type) %>% #

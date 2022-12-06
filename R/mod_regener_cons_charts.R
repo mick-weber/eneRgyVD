@@ -191,8 +191,8 @@ mod_regener_cons_charts_server <- function(id,
 
         subset_rgr_2() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
-          rename_fr_colnames() # fct_helpers.R
+          rename_fr_colnames() %>%  # fct_helpers.R
+          add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
 
       }
 

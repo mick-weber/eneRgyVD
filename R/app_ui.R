@@ -230,6 +230,8 @@ app_ui <- function(request) {
             # breathing
             br(),
 
+            tags$p(h4("Travaux en cours..."), shiny::icon("heart-pulse"))
+
             # Module for producing regener plots
             # To be added later
 

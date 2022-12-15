@@ -25,6 +25,7 @@ load("./data/elec_cons_doc.rda")
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
 load("./data/regener_needs.rda")
+load("./data/regener_misc.rda")
 load("./data/regener_doc.rda")
 
 ## glossary ----

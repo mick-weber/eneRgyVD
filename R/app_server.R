@@ -6,6 +6,8 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
+   # Dev message ----
+
     info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
 
    # Bookmarking feature ----
@@ -53,13 +55,24 @@ app_server <- function(input, output, session) {
 
 
 
-   ## Inputs module ----
+   # Inputs module ----
 
-    # This retrieves the reactiveVal() selected unit to convert the dataframes from
+    # This returns the reactiveVal() selected unit to convert the dataframes from
    selectedUnit <- mod_unit_converter_server("unit_converter")
 
     # This retrieves the inputs saved in mod_inputs.R
    inputVals <- mod_inputs_server("inputs_1")
+
+   ### Browser dimensions ----
+   # height/width values are stored in inputVals because it's convenient
+   # these are used for some dynamic plots sizing
+
+   observe({
+
+      inputVals$browser_width <- shinybrowser::get_width()
+      inputVals$browser_height <- shinybrowser::get_height()
+
+   })
 
   # subset_cons_data ----
    ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
@@ -156,6 +169,7 @@ app_server <- function(input, output, session) {
 
    })
 
+      # subset_rgr_needs : regener by commune, needs, use
    subset_rgr_needs <- reactive({
 
       # explicitely require communes to be selected
@@ -172,6 +186,24 @@ app_server <- function(input, output, session) {
          convert_units(colnames = contains("besoins"),
                        unit_from = "kWh",
                        unit_to = selectedUnit$unit_to)
+
+   })
+
+
+      # subset_rgr_misc : regener by commune and misc columns
+      # Note : we don't need to apply conver_units() so we would not need the
+      # code below here, but this code is for consistency with other data imports
+   subset_rgr_misc <- reactive({
+
+      # explicitely require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+      )
+
+      # waiting on these to get initialized (renderUIs)
+      req(selectedUnit$unit_to)
+
+      inputVals$rgr_misc
 
    })
 
@@ -325,14 +357,14 @@ app_server <- function(input, output, session) {
                           doc_vars = elec_prod_doc)
 
    ## tabRegener: call the chart server logic ----
-   ### regener_cons ----
+   ### mod regener_cons ----
 
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
                              selectedUnit = selectedUnit,
                              subset_rgr_1 = subset_rgr_1,
                              subset_rgr_2 = subset_rgr_2)
-   ### regener_needs ----
+   ### mod regener_needs ----
    mod_regener_needs_charts_server("regener_needs",
                                    inputVals = inputVals,
                                    subsetData = subset_rgr_needs, # filtered data for communes and selected years
@@ -349,6 +381,13 @@ app_server <- function(input, output, session) {
                                    dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars = regener_doc # utils_helpers.R
                                    )
+
+   ### mod regener_misc ----
+   mod_regener_misc_charts_server("regener_misc",
+                                  subsetData = subset_rgr_misc,
+                                  selectedUnit = selectedUnit,
+                                  dl_prefix = "regener_autres_",
+                                  doc_vars = regener_doc)
 
 
    ## tabMap: boxes for statistics ----

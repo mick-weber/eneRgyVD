@@ -153,7 +153,9 @@ create_bar_plotly <- function(data,
                               color_palette, # 'colors_categories',
                               dodge = FALSE, # stacked by default
                               free_y = FALSE,
-                              legend_title){
+                              legend_title,
+                              web_width,
+                              web_height){
 
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
@@ -201,7 +203,8 @@ create_bar_plotly <- function(data,
   ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
                               height = ifelse(n_facets>n_facets_limit, # utils_helpers.R
                                               height_facet_above_limit,
-                                              height_facet_under_limit)) %>%
+                                              height_facet_under_limit)
+                              ) %>%
     plotly::layout(
       legend = list(
       orientation = "h", # puts the legend in the middle instead of default right
@@ -449,7 +452,7 @@ create_rg_needs_table_dt <- function(data, unit){
                                                digits = 3,
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
-    # put installed power in the last position
+    # relocate
     dplyr::relocate(commune, etat, type) %>%
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons_type, by = "type") %>%
@@ -486,7 +489,6 @@ create_rg_needs_table_dt <- function(data, unit){
 #' @param data the dataset containing variables and descriptions
 #'
 #' @return A DT object
-#' @export
 
 create_doc_table_dt <- function(data, doc_prefix){
 
@@ -505,6 +507,52 @@ create_doc_table_dt <- function(data, doc_prefix){
       autoWidth = TRUE,
       language = DT_fr_language # from utils_helpers.R
     ))
+
+}
+
+
+#' create_rg_misc_table_dt
+#' @param data the dataset containing variables and descriptions
+#' @return a DT object
+#' @export
+
+create_rg_misc_table_dt <- function(data){
+
+  data %>%
+    # Basic clean up for table output
+    dplyr::mutate(
+      # change year (etat for rg dataset) to factor
+      etat = as.factor(etat),
+      # format numeric cols
+      dplyr::across(where(is.numeric), ~format(.x,
+                                               big.mark = "'",
+                                               digits = 3,
+                                               drop0trailing = TRUE,
+                                               scientific = FALSE))) %>%
+    dplyr::relocate(commune, etat) %>%
+    rename_fr_colnames() %>% # fct_helpers.R
+    # add_colname_units(unit = unit) %>%  # fct_helpers.R
+    #turn to DT
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  options = list(paging = TRUE,    ## paginate the output
+                                 pageLength = 15,  ## number of rows to output for each page
+                                 scrollY = TRUE,   ## enable scrolling on Y axis
+                                 autoWidth = TRUE, ## use smart column width handling
+                                 server = FALSE,   ## use server-side processing
+                                 dom = 'Bfrtip',
+                                 # Buttons not needed anymore since mod_download_data.R is spot on
+                                 # buttons = list(
+                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
+                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R
+                  ),
+                  #extensions = 'Buttons',
+                  selection = 'single', ## enable selection of a single row
+                  #filter = 'bottom',              ## include column filters at the bottom
+                  rownames = FALSE               ## don't show row numbers/names
+    )# End DT
 
 }
 
@@ -770,7 +818,4 @@ rename_fr_colnames <- function(data){
                 replace_fr_accents) # utils_helpers.R
 
 }
-
-
-
 

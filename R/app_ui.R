@@ -11,6 +11,9 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
 
+    # Shinybrowser identifies the web browser for use in app_server.R
+    shinybrowser::detect(),
+
     # Your application UI logic
     bs4Dash::dashboardPage(
       dark = NULL,
@@ -97,7 +100,7 @@ app_ui <- function(request) {
                                     bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
                                                       bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
                                                       bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
-                                                      bs4Dash::menuSubItem("Autres", tabName = "tabRegenerOthers")),
+                                                      bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
                                     bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
                                     bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info"))
         ),# End sidebarMenu
@@ -211,29 +214,32 @@ app_ui <- function(request) {
             tabName = "tabRegenerCons",
             fluidRow(h4(strong("Consommation théorique des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
+                                  class = "infoButton")), # no label
             # breathing
             br(),
 
             # Module for producing regener plots
             mod_regener_cons_charts_ui("regener_cons")
 
-
           ),# End tabItem
 
-          ### Others subitem----
+          ### Misc subitem----
           bs4Dash::tabItem(
-            tabName = "tabRegenerOthers",
+            tabName = "tabRegenerMisc",
             fluidRow(h4(strong("Autres informations des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
+                                  class = "infoButton")), # no label
             # breathing
             br(),
 
-            tags$p(h4("Travaux en cours..."), shiny::icon("heart-pulse"))
+            h4("Travaux en cours..."),
+
+            shiny::icon("heart-pulse"),
 
             # Module for producing regener plots
-            # To be added later
+            mod_regener_misc_charts_ui("regener_misc")
 
 
           ),# End tabItem

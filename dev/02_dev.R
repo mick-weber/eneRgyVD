@@ -56,6 +56,7 @@ golem::add_module(name = "about_the_app", with_test = TRUE)
 golem::add_module(name = "elec_charts", with_test = TRUE)
 golem::add_module(name = "regener_cons_charts", with_test = TRUE)
 golem::add_module(name = "regener_needs_charts", with_test = TRUE)
+golem::add_module(name = "regener_misc_charts", with_test = TRUE)
 
 # Such module would be ideal but is not working currently
 golem::add_module(name = "map", with_test = TRUE)

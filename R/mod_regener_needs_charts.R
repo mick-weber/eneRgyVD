@@ -160,11 +160,6 @@ mod_regener_needs_charts_server <- function(id,
 
     })
 
-
-
-
-
-
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
       length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
@@ -183,6 +178,8 @@ mod_regener_needs_charts_server <- function(id,
     # Render plot selectively based on radioButton above
     # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
 
+    # renderUI ----
+
     output$plot_render_ui <- renderUI({
 
       if(input$tab_plot_type == "bar"){
@@ -190,8 +187,10 @@ mod_regener_needs_charts_server <- function(id,
         # Update the initialized FALSE toggle_status with the input$toggle_status
         # WIP with selectedUnit$unit_to
 
-        # PLOTLY BAR PLOT
-        output$chart_1 <- plotly::renderPlotly({
+        # ...PLOTLY BAR PLOT ----
+        output$chart_1 <-
+
+            plotly::renderPlotly({
 
           # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData(),
@@ -206,11 +205,12 @@ mod_regener_needs_charts_server <- function(id,
                             free_y = input$toggle_status, # reactive(input$toggle_status)
                             legend_title = legend_title) # links to ifelse in facet_wrap(scales = ...)
         })# End renderPlotly
+
       }# End if
       else if(input$tab_plot_type == "sunburst"){
 
 
-        # PLOTLY SUNBURST PLOT
+        # ...PLOTLY SUNBURST PLOT ----
         output$chart_1 <- plotly::renderPlotly({
 
           create_sunburst_plotly(data_sunburst = subsetData_sunburst(), # must be adapted later
@@ -233,7 +233,7 @@ mod_regener_needs_charts_server <- function(id,
 
     })# End renderUI
 
-    # Renders the DT table
+    # Renders the DT table ----
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
@@ -253,7 +253,7 @@ mod_regener_needs_charts_server <- function(id,
 
     })
 
-    # Module to download DT table data
+    # Module to download DT table data ----
     mod_download_data_server("table_download",
                              data = download_data,
                              dl_prefix = dl_prefix,

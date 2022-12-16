@@ -13,55 +13,63 @@ mod_about_the_app_ui <- function(id){
 
     bs4Dash::tabsetPanel(id = ns("tabset"),
 
-      shiny::tabPanel(title = "Général",
-                      column(width = 8,
-                             # breathing
-                             br(),
-                             h4(strong("Pourquoi eneRgyVD ?")),
-                             tags$p("Le but de cette application est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
+                         # tabPanel 'Général' ----
+                         shiny::tabPanel(title = "Général",
+                                         column(width = 8,
+                                                # breathing
+                                                br(),
+                                                h4(strong("Pourquoi eneRgyVD ?")),
+                                                tags$p("Le but de cette application est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter simplement."),
-                             # breathing
-                             br(),
-                             h4(strong("Contact")),
-                             tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'Unité Données et Indicateurs via ",
-                                    tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
-                                    ", qui est l'unité transversale de la",
-                                    tags$a (href = link_diren, "direction de l'énergie de l'Etat de Vaud (DGE-DIREN)",
-                                            target = "_blank"),
-                                    "chargée des données énergétiques.")
-                      )),
-      shiny::tabPanel(title = "Données",
+           # breathing
+           br(),
+           h4(strong("Contact")),
+           tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'Unité Données et Indicateurs via ",
+                  tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
+                  ", qui est l'unité transversale de la",
+                  tags$a (href = link_diren, "direction de l'énergie de l'Etat de Vaud (DGE-DIREN)",
+                          target = "_blank"),
+                  "chargée des données énergétiques.")
+                                         )),
+           # tabPanel 'Données' ----
+           shiny::tabPanel(title = "Données",
 
-                      column(width = 11,
-                             # breathing
-                             br(),
-                             h4(strong("Sources des données")),
-                             tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
+                           column(width = 11,
+                                  # breathing
+                                  br(),
+                                  h4(strong("Sources des données")),
+                                  tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
                                     Néanmoins, l'exactitude de ces informations ne peut être garantie. En cas d'incohérence, n'hésitez pas à prendre contact afin d'en clarifier les causes probables."),
-                             br(),
-                             tags$p("Les sources de données suivantes sont utilisées : "),
+                                  br(),
+                                  tags$p("Les sources de données suivantes sont utilisées : "),
 
-                             bs4Dash::tabsetPanel(id = ns("nested_tabset"),
-                               tabPanel("Production d'électricité",
-                                        br(),
-                                        tags$ul(
-                                          tags$li(h5(strong("Production d'électricité : PRONOVO")),
-                                                  p("L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
+                                  ## tabsetPanel (nested) ----
+                                  bs4Dash::tabsetPanel(id = ns("nested_tabset"),type = "pills",
+
+
+
+                ### Prod élec ----
+                tabPanel("Production d'électricité",
+                br(),
+                tags$ul(
+                  tags$li(h5(strong("Production d'électricité : PRONOVO")),
+                          p("L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
                 pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables.
                 Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles,
                 nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application.",
                 tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur PRONOVO AG", target = "_blank")),# open in new tab
                 p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."))
-                                        ),# End tags$ul 1/3
+                                                                ),# End tags$ul 1/3
                 br(),
 
                 # Documentation table for electricity production
                 DT::dataTableOutput(ns("elec_prod_doc")),
                 br()
 
-                               ),# End nested tabPanel 1/3
+                                                       ),# End nested tabPanel 1/3
 
+                ### Cons élec ----
                 tabPanel("Consommation d'électricité",
                          br(),
                          tags$ul(
@@ -83,6 +91,7 @@ mod_about_the_app_ui <- function(id){
 
                 ),# End nested tabPanel 2/3
 
+                ### Regener ----
                 tabPanel("Chaleur bâtiments",
                          br(),
                          tags$ul(
@@ -100,40 +109,41 @@ mod_about_the_app_ui <- function(id){
                                      "Davantage de détails peuvent être fournis sur demande à", tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
                                      "Un document de synthèse méthodologique est prévu prochainement afin de présenter la méthode appliquée."))
                          ),# End tags$ul 2/3
-                br(),
+                         br(),
 
-                # Documentation table for electricity production
-                DT::dataTableOutput(ns("regener_doc")),
-                br()
+                         # Documentation table for electricity production
+                         DT::dataTableOutput(ns("regener_doc")),
+                         br()
 
-                )# End nested tabPanel 2/3
-                             )# End nested tabsetPanel
-                      )# End column
-      ),# End tabPanel 'Données'
+                )# End nested tabPanel 3/3
+                                  )# End nested tabsetPanel within 'Données'
+                           )# End column
+           ),# End tabPanel 'Données'
+
+           # Glossaire ----
+
+           shiny::tabPanel(title = "Glossaire",
+                           column(width = 8,
+                                  # breathing
+                                  br(),
+                                  tags$h4(strong("Glossaire")),
+                                  tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
+                                  DT::dataTableOutput(ns("glossary_table")),
+
+                           )# End column
+           ),# End tabPanel 'Confidentialité'
+
+           # Techno ----
+           shiny::tabPanel(title = "Technologie",
 
 
-      shiny::tabPanel(title = "Glossaire",
-                      column(width = 8,
-                             # breathing
-                             br(),
-                             tags$h4(strong("Glossaire")),
-                             tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
-                             DT::dataTableOutput(ns("glossary_table")),
-
-                      )# End column
-      ),# End tabPanel 'Confidentialité'
-
-
-      shiny::tabPanel(title = "Technologie",
-
-
-                      column(width = 8,
-                             # breathing
-                             br(),
-                             tags$h4(strong("Technologie")),
-                             tags$p("Cette application est programmée avec le language",
-                                    tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),
-                                    "qui permet la création d'applications web interactives. L'architecture de l'application est construite
+                           column(width = 8,
+                                  # breathing
+                                  br(),
+                                  tags$h4(strong("Technologie")),
+                                  tags$p("Cette application est programmée avec le language",
+                                         tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),
+                                         "qui permet la création d'applications web interactives. L'architecture de l'application est construite
             à l'aide de la",
             tags$a(href = "https://github.com/ThinkR-open/golem", "librairie golem (ThinkR)", target = "_blank"),
             "et le contenu des visualisations par de multiples librairies issues notamment du",
@@ -157,8 +167,8 @@ mod_about_the_app_ui <- function(id){
               ),# End column
               column(3, p("Code complet sur GitHub"))
             )# End fluidRow
-                      )# End column
-      )# End tabPanel 'Technologie'
+                           )# End column
+           )# End tabPanel 'Technologie'
 
 
     )# End main tabsetPanel
@@ -206,17 +216,17 @@ mod_about_the_app_server <- function(id){
   })
 }
 
-  # # testing module
-  # nameApp <- function() {
-  #     ui <- fluidPage(
-  #       mod_about_the_app_ui("id")
-  #     )
-  #     server <- function(input, output, session) {
-  #       mod_about_the_app_server("id")
-  #     }
-  #     shinyApp(ui, server)
-  # }
-  # nameApp()
+# # testing module
+# nameApp <- function() {
+#     ui <- fluidPage(
+#       mod_about_the_app_ui("id")
+#     )
+#     server <- function(input, output, session) {
+#       mod_about_the_app_server("id")
+#     }
+#     shinyApp(ui, server)
+# }
+# nameApp()
 
 
 

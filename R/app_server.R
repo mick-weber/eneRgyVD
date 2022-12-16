@@ -3,6 +3,7 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny sf
+#' @importFrom purrr pwalk pluck
 #' @noRd
 app_server <- function(input, output, session) {
 
@@ -44,14 +45,29 @@ app_server <- function(input, output, session) {
    ## Tabs redirecting ----
    # in app_ui.R we have actionButtons to redirect in 'mode_about_the_app.R' data tabs
 
-   observeEvent(ignoreInit = TRUE, # don't trigger at initialisation
-                # below: input action buttons (app_ui.R) for each tab
-                c(input$cons_data_help, input$prod_data_help, input$rg_data_help), {
-               # below: target destination after clicking any of these buttons
-      bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
-      bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
-   })
+   # To avoid repetitive coding, we make a tribble of input events and target tabpanels
+   #  only the last tabpanel is required, the others can be hard-coded in the purrr::walk
 
+   subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
+                  "cons_data_help", "Consommation d'électricité",
+                  "prod_data_help", "Production d'électricité",
+                  "rg_needs_help", "Chaleur bâtiments",
+                  "rg_cons_help", "Chaleur bâtiments",
+                  "rg_misc_help", "Chaleur bâtiments")
+
+   # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
+   purrr::pwalk(subpanels_tribble,
+                ~ shiny::observeEvent(
+                   input[[.x]], {
+
+                      # First we redirect to sidebar's tabInfo
+                   bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
+                      # Then we update to the first tabPanel 'Données' (in 'about-' mod)
+                   bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
+                      # Last we update the nested tabPanel with subpanels_tribble$tabpanel_name
+                   bs4Dash::updatebs4TabItems(session, "about-nested_tabset", selected = .y)
+                   }
+                   )) #End pwalk
 
 
 
@@ -69,8 +85,8 @@ app_server <- function(input, output, session) {
 
    observe({
 
-      inputVals$browser_width <- shinybrowser::get_width()
-      inputVals$browser_height <- shinybrowser::get_height()
+      inputVals$web_width <- shinybrowser::get_width()  # store width
+      inputVals$web_height <- shinybrowser::get_height() # store height
 
    })
 

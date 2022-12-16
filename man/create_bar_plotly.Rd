@@ -15,7 +15,9 @@ create_bar_plotly(
   color_palette,
   dodge = FALSE,
   free_y = FALSE,
-  legend_title
+  legend_title,
+  web_width,
+  web_height
 )
 }
 \arguments{

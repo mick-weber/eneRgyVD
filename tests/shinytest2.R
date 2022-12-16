@@ -57,3 +57,8 @@ headless_app$get_js("typeof window.gremlins")
 # Check the logs
 
 headless_app$get_logs()
+
+
+# testing
+
+shinytest2::record_test()

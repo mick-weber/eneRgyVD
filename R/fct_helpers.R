@@ -191,6 +191,7 @@ create_bar_plotly <- function(data,
                      size =10, color = "white"),
                    legend.text = element_text(size = 12),
                    legend.title = element_text(size = 12),
+                   legend.background = element_rect(fill = NA), # transparent
                    legend.key.size = unit(2, "cm"),
                    panel.spacing.x = unit(.05, "cm"),
                    panel.spacing.y = unit(0.5, "cm"),
@@ -201,9 +202,13 @@ create_bar_plotly <- function(data,
 
   # Turn to plotly object and deal with plotting sizes
   ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
-                              height = ifelse(n_facets>n_facets_limit, # utils_helpers.R
-                                              height_facet_above_limit,
-                                              height_facet_under_limit)
+
+                              height = return_dynamic_size(which = 'height',
+                                                           web_size = web_height,
+                                                           n_facets = n_facets),
+                              width = return_dynamic_size(which = 'width',
+                                                           web_size = web_width,
+                                                           n_facets = n_facets)
                               ) %>%
     plotly::layout(
       legend = list(
@@ -816,6 +821,55 @@ rename_fr_colnames <- function(data){
                 pattern = "_", replacement = " ") %>%
     rename_with(.cols = everything(), .fn = stringr::str_replace_all,
                 replace_fr_accents) # utils_helpers.R
+
+}
+
+#' return_dynamic_size
+#' Returns a px value used for dynamic facet plots based on web display size and number of facets.
+#' A facet row is typically well displayed at around 1/6 of the screen's height
+#' @param which either 'width' or 'height'
+#' @param web_size px size of either width or height, typically obtained with {shinybrowser}
+#'
+#' @return a numeric value corresponding to px
+#' @export
+
+return_dynamic_size <- function(which, web_size, n_facets){
+
+  if(which == "height"){
+
+    # This returns the correct number of facetted rows
+    # Note : valid only when there are 2 facets per row
+    n_facet_rows <- (n_facets+ (n_facets %% 2))/2
+
+    # Empirically found web-relative height per facetted row
+    px_per_row <- web_size/6
+
+    # Empirically found absolute legend height
+    legend_height <- 250 # px
+
+    # Plot height acc. to number of rows and legend height
+
+    plot_height <- legend_height + n_facet_rows * px_per_row # px/row
+
+    return(plot_height)
+
+
+  }else if(which == "width"){
+    # For width, we return 75% of useful space if one facet, 90% if more than 1
+
+    plot_width <- ifelse(
+      # test :
+      test = n_facets == 1,
+      # Yes (1 facet) : web width - sidebar (300) * 75%
+        yes = (web_size-300)*0.75,
+      # No (More than 1 facet) : web width - sidebar (300) * 95%
+        no = (web_size-300)*0.95)
+
+    return(plot_width)
+
+  }else{
+    stop("'which' arg can only be of type 'height' or 'width'.")
+  }
 
 }
 

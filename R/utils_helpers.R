@@ -1,7 +1,4 @@
-# place ça où ça belongs
-regener_current_year <- 2022
-
-
+# This script loads and stores all 'static' or initial objects fed to the app
 
 # Loading .rda objects ----
 ## sf data ----
@@ -41,6 +38,22 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 # Files others than .Rd are in ./inst/extdata/
 
 # Generic utils ----
+
+## Sidebar width ----
+
+sidebar_width <- 300 # px ; used in custom.css & plotting fns with inputVals$web_width/height
+
+## Facetted plot's height ----
+
+# Number of facets starting from which a height increase is necessary
+n_facets_limit <- 4
+
+# Height of facet plot's below limit
+height_facet_under_limit <- 400
+
+# Height of facet plot's above limit
+height_facet_above_limit <- 700
+
 
 ## E-mail address and links ----
 # Used for mod_about_the_app.R and/or contact notificationMenu in ui.R
@@ -117,7 +130,7 @@ prod_icons <- prod_colors %>%
   dplyr::ungroup()
 
 # Palette for plots: named vector with level + associated color
-colors_categories <- prod_colors$color %>%setNames(nm = prod_colors$categorie)
+colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie)
 
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
@@ -186,19 +199,6 @@ regener_icons_type <- regener_colors_type %>%
 
 # Used for plots: named vector with level + associated color
 colors_rg_type <- regener_colors_type$color %>% setNames(nm = regener_colors_type$type)
-
-
-## Facetted plot's height ----
-
-# Number of facets starting from which a height increase is necessary
-n_facets_limit <- 4
-
-# Height of facet plot's below limit
-height_facet_under_limit <- 400
-
-# Height of facet plot's above limit
-height_facet_above_limit <- 700
-
 
 # Theme ----
 

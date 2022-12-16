@@ -11,7 +11,7 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
 
-    # Shinybrowser identifies the web browser for use in app_server.R
+    # Shinybrowser identifies the web browser for use in app_server.R/fct_helpers.R
     shinybrowser::detect(),
 
     # Your application UI logic
@@ -72,7 +72,7 @@ app_ui <- function(request) {
       bs4Dash::dashboardSidebar(
         id = "tabs",
         minified = FALSE,
-        width = 300,
+        width = sidebar_width, # utils_helpers.R
         bs4Dash::sidebarMenu(id = "sidebarMenu",
 
                              ## Title (custom) ----
@@ -197,7 +197,7 @@ app_ui <- function(request) {
             tabName = "tabRegenerNeeds",
             fluidRow(h4(strong("Besoins théoriques des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
+                     actionButton("rg_needs_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
                                   class = "infoButton")), # no label
             # breathing
             br(),
@@ -214,7 +214,7 @@ app_ui <- function(request) {
             tabName = "tabRegenerCons",
             fluidRow(h4(strong("Consommation théorique des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
+                     actionButton("rg_cons_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
                                   class = "infoButton")), # no label
             # breathing
             br(),
@@ -229,7 +229,7 @@ app_ui <- function(request) {
             tabName = "tabRegenerMisc",
             fluidRow(h4(strong("Autres informations des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
+                     actionButton("rg_misc_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
                                   class = "infoButton")), # no label
             # breathing
             br(),

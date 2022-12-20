@@ -13,7 +13,7 @@ mod_download_data_ui <- function(id){
     h5("Télécharger les données"),
 
     fluidRow(
-    uiOutput(ns("download_ui_csv")), HTML("&nbsp;"), # whitespace
+    uiOutput(ns("download_ui_csv")), HTML("&nbsp;"), # ws
     uiOutput(ns("download_ui_excel"))
     )# End fluidRow
     )# End tagList

@@ -11,7 +11,7 @@
 mod_download_rmd_ui <- function(id){
   ns <- NS(id)
   tagList(
-
+    # 1/2 Report ----
     br(),
     br(),
     p("En cliquant sur le button ci-dessous, un rapport HTML sera automatiquement généré pour : "),
@@ -31,10 +31,23 @@ mod_download_rmd_ui <- function(id){
     uiOutput(ns("dl_button")),
 
     br(),
-    br(),
-    br(),
     p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
       style = "color:grey;"),
+
+    # Breathing
+    br(),
+    br(),
+    br(),
+
+    # 2/2 Download all ----
+
+    h4(strong("Télécharger toutes les données")),
+    br(),
+    br(),
+    p("En cliquant sur le button ci-dessous, toutes les données pour la sélection seront téléchargées : "),
+    uiOutput(ns("dl_all_button_ui"))
+
+
 
   )
 }
@@ -47,6 +60,10 @@ mod_download_rmd_server <- function(id,
                                     selectedUnit){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # 1/2 : Report ----
+
+    # Remind which communes are selected (or ask for at least one)
 
     output$selected_communes <- renderPrint({
 
@@ -62,6 +79,8 @@ mod_download_rmd_server <- function(id,
     })# End renderPrint
 
 
+    # Download button for rmd
+
     output$dl_button <- shiny::renderUI({
 
       req(inputVals$selectedCommunes)
@@ -73,6 +92,8 @@ mod_download_rmd_server <- function(id,
       )
     })
 
+
+    # Download handler
 
     output$report <- downloadHandler(
       filename = paste0("eneRgyVD_rapport_",Sys.Date(),".html"),
@@ -89,16 +110,11 @@ mod_download_rmd_server <- function(id,
                        regener_data_2 = inputVals$rgr_2,
                        unit = selectedUnit$unit_to)
 
-        # id <- showNotification(
-        #   "Rendu du rapport html. Cette opération peut prendre quelques secondes...",
-        #   duration = NULL,
-        #   closeButton = FALSE
-        # )
-        # on.exit(removeNotification(id), add = TRUE)
-
         notify <- function(msg, id = NULL) {
           showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
         }
+
+        # Distraction notifications...
 
         id <- notify("Importation des paramètres...")
         on.exit(removeNotification(id), add = TRUE)
@@ -114,6 +130,7 @@ mod_download_rmd_server <- function(id,
         notify("Élevage de moutons basques...", id = id)
 
 
+        # Calling rmd render with params & paths
 
         rmarkdown::render(report_path, # utils_helpers.R !
                           output_file = file,
@@ -123,6 +140,54 @@ mod_download_rmd_server <- function(id,
         )
       }
     )
+
+    # 2/2 : Download all ----
+
+
+    output$dl_all_button_ui <- shiny::renderUI({
+
+      req(inputVals$selectedCommunes)
+
+      shiny::downloadButton(
+        outputId = ns("download_all_excel"),
+        label = "Tout télécharger",
+        class = "dlButtonXL" # class defined in custom.css
+      )
+    })
+
+
+    # XLSX handler
+
+    # We add documentation for XLSX since it's easy (CSV would require two separate files which must be in a ZIP...)
+
+    download_all_sheets <- reactive({
+      # List all pertinent inputVals$<datasets> from mod_inputs.R
+      list(
+        cons_elec = inputVals$cons_dataset,
+        prod_elec = inputVals$prod_dataset,
+        regener_besoins = inputVals$rgr_needs,
+        regener_cons_1 = inputVals$rgr_1,
+        regener_cons_2 = inputVals$rgr_2,
+        regener_autres = inputVals$rgr_misc
+      )
+      })
+
+    # When button (server-side) is clicked; download all sheets as xlsx
+    output$download_all_excel <- downloadHandler(
+      filename = paste0("global_", Sys.Date(), ".xlsx"),
+      content = function(file){
+        writexl::write_xlsx(download_all_sheets(), path = file)
+      }
+    )
+
+
+
+
+
+
+
+
+
 
   })
 }

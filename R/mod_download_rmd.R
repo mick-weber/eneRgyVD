@@ -12,39 +12,23 @@ mod_download_rmd_ui <- function(id){
   ns <- NS(id)
   tagList(
     # 1/2 Report ----
-    br(),
-    br(),
-    p("En cliquant sur le button ci-dessous, un rapport HTML sera automatiquement généré pour : "),
     shiny::htmlOutput(ns("selected_communes")), # htmlOutput because we style it in server
-    br(),
-    p("Celui-ci contient les éléments suivants :"),
-    # [u]nordered [l]ist of [l]ist [i]tems
-    tags$ul(
-      tags$li("Les données & graphiques relatifs à la production d'électricité."),
-      tags$li("Les données & graphiques relatifs à la consommation d'électricité."),
-      tags$li("Les données & graphiques relatifs à la consommation théorique des bâtiments."),
-      tags$li("Des chiffres-clés (à venir...)")
-    ),
     br(),
 
     # Add dynamic download button here (only if commune(s) selected)
     uiOutput(ns("dl_button")),
 
     br(),
-    p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
-      style = "color:grey;"),
-
     # Breathing
-    br(),
-    br(),
     br(),
 
     # 2/2 Download all ----
 
     h4(strong("Télécharger toutes les données")),
     br(),
-    br(),
-    p("En cliquant sur le button ci-dessous, toutes les données pour la sélection seront téléchargées : "),
+    # moved to server side
+    # p("En cliquant sur le button ci-dessous, toutes les données pour la sélection seront téléchargées : "),
+    shiny::htmlOutput(ns("download_all_sentence")),
     uiOutput(ns("dl_all_button_ui"))
 
 
@@ -63,18 +47,36 @@ mod_download_rmd_server <- function(id,
 
     # 1/2 : Report ----
 
-    # Remind which communes are selected (or ask for at least one)
+    # Conditionally display report details text when a commune is selected
 
     output$selected_communes <- renderPrint({
 
       validate(need(inputVals$selectedCommunes,
                "Sélectionner au moins une commune pour générer un rapport."))
 
+      shiny::tagList(
+        # Introduce the report feature
+      p("En cliquant sur le button ci-dessous, un rapport HTML sera automatiquement généré pour : "),
         # Nicely format the selected commune(s)
       h4(tags$strong(knitr::combine_words(words = inputVals$selectedCommunes,
                              sep = ", ",
                              and = " et ",
-                             oxford_comma = F)))
+                             oxford_comma = F),
+                     # Green font
+                     style = "color:#3A862D;")),
+      br(),
+      p("Celui-ci contient les éléments suivants :"),
+      # [u]nordered [l]ist of [l]ist [i]tems
+      tags$ul(
+        tags$li("Les données & graphiques relatifs à la production d'électricité."),
+        tags$li("Les données & graphiques relatifs à la consommation d'électricité."),
+        tags$li("Les données & graphiques relatifs à la consommation théorique des bâtiments."),
+        tags$li("Des chiffres-clés (en développement...)")
+      ),# End ul
+      br(),
+      p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
+        style = "color:grey;"),
+      )# End tagList
 
     })# End renderPrint
 
@@ -104,11 +106,15 @@ mod_download_rmd_server <- function(id,
 
 
         params <- list(communes = inputVals$selectedCommunes,
+                       unit = selectedUnit$unit_to,
+                       web_width = inputVals$web_width,
+                       web_height = inputVals$web_height,
                        prod_data = inputVals$prod_dataset,
                        cons_data = inputVals$cons_dataset,
+                       regener_data_0 = inputVals$rgr_needs,
                        regener_data_1 = inputVals$rgr_1,
                        regener_data_2 = inputVals$rgr_2,
-                       unit = selectedUnit$unit_to)
+                       regener_data_3 = inputVals$rgr_misc)
 
         notify <- function(msg, id = NULL) {
           showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
@@ -142,6 +148,16 @@ mod_download_rmd_server <- function(id,
     )
 
     # 2/2 : Download all ----
+
+
+    output$download_all_sentence <- shiny::renderPrint({
+
+      validate(need(inputVals$selectedCommunes,
+                    "Sélectionner au moins une commune pour générer un rapport."))
+
+      p("En cliquant sur le button ci-dessous, toutes les données pour la sélection seront téléchargées au format xlsx : ")
+
+    })
 
 
     output$dl_all_button_ui <- shiny::renderUI({

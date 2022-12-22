@@ -36,6 +36,7 @@ usethis::use_package("fresh")    # for bs4Dash custom theme
 
 usethis::use_package("shinycssloaders")
 usethis::use_package("shinyalert")
+usethis::use_package("shinybrowser")
 usethis::use_package("leaflet")
 usethis::use_package("leaflet.extras")
 usethis::use_package("sf")

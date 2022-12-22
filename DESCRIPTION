@@ -31,6 +31,7 @@ Imports:
     sf,
     shiny (>= 1.7.1),
     shinyalert,
+    shinybrowser,
     shinycssloaders,
     shinydashboardPlus,
     shinyWidgets,

@@ -112,7 +112,7 @@ app_ui <- function(request) {
        # Sidebar footer ()
        tags$footer(
        tags$a(
-         "@DGE-DIREN 2022",
+         "@DGE-DIREN 2023",
          target = "_blank", # new tab
          href = link_diren
        ), # css below should be in custom.css

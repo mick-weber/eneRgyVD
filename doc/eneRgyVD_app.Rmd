@@ -118,7 +118,7 @@ Each year, the Canton de Vaud receives from Pronovo **two files**: one with a re
 
 * Completing the estimate of electricity own consumption for several technologies
 
-Originally, since the data records the owners' name and address, its use is covered by specific legislation and must be treated with special care. For this reason, the cleaned dataset has been anonymised. Data is availably starting from 2015, until 2020 (data for 2021 is not available yet, but will be soon).
+Originally, since the data records the owners' name and address, its use is covered by specific legislation and must be treated with special care. For this reason, the cleaned dataset has been aggregated by municipality. Data is available starting from 2015 with several months latency for the latest year.
 
 ### ii. Electricity consumption of municipalities
 

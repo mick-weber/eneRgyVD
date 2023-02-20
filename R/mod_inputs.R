@@ -19,7 +19,7 @@ mod_inputs_ui <- function(id){
                           choices = communes_names,
                           selected = NULL,
                           multiple = TRUE,
-                          options = list(placeholder = "Plusieurs communes acceptées")
+                          options = list(placeholder = "Plusieurs acceptées")
     ),
 
     # selectizeInput() for district zoom ----

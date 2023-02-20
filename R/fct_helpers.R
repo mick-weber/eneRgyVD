@@ -654,19 +654,42 @@ convert_units <- function(data,
 
 add_colname_units <- function(data, unit){
 
-  data %>%
-    # For all energy-related units
-    dplyr::rename_with(.cols = any_of(contains(energy_col_keywords)), # utils_helpers.R
-                       ~paste0(.x, " [", unit, "]")) %>%
-    # For all power-related units
-    dplyr::rename_with(.cols = any_of(contains(power_col_keywords)), # utils_helpers.R
-                       ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
-                               ifelse(
-                                 test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
-                                 yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
-                                 no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
-                               ), "]") # closing bracket for unit
-    )
+  # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way
+  #  I found to work. Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
+
+  # Step 1 : rename vars if contains energy related keywords and add the power unit in brackets
+  if(any(str_detect(string = colnames(data),
+                    pattern = regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
+
+    data <- data |>
+      # For all energy-related units
+      dplyr::rename_with(.cols = contains(energy_col_keywords, # utils_helpers.R
+                                          ignore.case = TRUE),
+                         ~paste0(.x, " [", unit, "]"))
+
+  }else data
+
+
+  # Step 2 : rename vars if contains power related keywords and add the power unit in brackets
+  # This step works if related after Step 1
+  if(any(str_detect(string = colnames(data),
+                    pattern = regex(paste0(power_col_keywords,
+                                           collapse = "|"),
+                                    ignore_case = TRUE)))){
+
+    data %>%
+      # For all power-related units
+      dplyr::rename_with(.cols = contains(power_col_keywords, # utils_helpers.R
+                                          ignore.case = TRUE),
+                         ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
+                                 ifelse(
+                                   test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
+                                   yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
+                                   no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
+                                 ), "]") # closing bracket for unit
+      )
+
+  }else data
 
 }
 

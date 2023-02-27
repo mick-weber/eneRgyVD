@@ -658,8 +658,8 @@ add_colname_units <- function(data, unit){
   #  I found to work. Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
 
   # Step 1 : rename vars if contains energy related keywords and add the power unit in brackets
-  if(any(str_detect(string = colnames(data),
-                    pattern = regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
+  if(any(stringr::str_detect(string = colnames(data),
+                    pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
 
     data <- data |>
       # For all energy-related units
@@ -672,8 +672,8 @@ add_colname_units <- function(data, unit){
 
   # Step 2 : rename vars if contains power related keywords and add the power unit in brackets
   # This step works if related after Step 1
-  if(any(str_detect(string = colnames(data),
-                    pattern = regex(paste0(power_col_keywords,
+  if(any(stringr::str_detect(string = colnames(data),
+                    pattern = stringr::regex(paste0(power_col_keywords,
                                            collapse = "|"),
                                     ignore_case = TRUE)))){
 

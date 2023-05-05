@@ -41,7 +41,7 @@ mod_collapse_stats_box_server <- function(id,
         status = "success",
         fluidRow(
           column(
-            width = 6,
+            width = 12, # before: 6 !!CONS_ELEC removed!!
             bs4Dash::descriptionBlock(
               marginBottom = TRUE,
               number = year,
@@ -51,42 +51,46 @@ mod_collapse_stats_box_server <- function(id,
               rightBorder = TRUE
             )# End descriptionBlock 1/3
           ),# End column
-          column(
-            width = 6,
-            bs4Dash::descriptionBlock(
-              number = year,
-              # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
-              header = paste(format(cons_elec_value%>% convert_units(unit_to = selectedUnit$unit_to),
-                                    big.mark = "'", digits = 1, scientific = FALSE),
-                             selectedUnit$unit_to),
-              text = tags$p("Consommation", icon("bolt", class = "iconColor")),
-              rightBorder = FALSE
-            )# End descriptionBlock 2/3
-          )# End column
+
+          # !!CONS_ELEC removed!! # column(
+          # !!CONS_ELEC removed!! #   width = 6,
+          # !!CONS_ELEC removed!! #   bs4Dash::descriptionBlock(
+          # !!CONS_ELEC removed!! #     number = year,
+          # !!CONS_ELEC removed!! #     # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
+          # !!CONS_ELEC removed!! #     header = paste(format(cons_elec_value%>% convert_units(unit_to = selectedUnit$unit_to),
+          # !!CONS_ELEC removed!! #                           big.mark = "'", digits = 1, scientific = FALSE),
+          # !!CONS_ELEC removed!! #                    selectedUnit$unit_to),
+          # !!CONS_ELEC removed!! #     text = tags$p("Consommation", icon("bolt", class = "iconColor")),
+          # !!CONS_ELEC removed!! #     rightBorder = FALSE
+          # !!CONS_ELEC removed!! #   )# End descriptionBlock 2/3
+          # !!CONS_ELEC removed!! # )# End column
+
         ),# End fluidRow1
-        fluidRow(
-          column(
-            width = 6,
-            bs4Dash::descriptionBlock(
-              number = year,
-              # header: no need for unit conversion since it's percents
-              header = scales::label_percent(accuracy = .1)(prod_elec_value/cons_elec_value),
-              text = tags$p("Part production", icon("bolt", class = "iconColor")),
-              rightBorder = TRUE
-            )# End descriptionBlock 3/3
-          ),# End column
-      column(
-        width = 6, # adjust if needed
-        bs4Dash::descriptionBlock(
-          number = 2021, # !! change when available
-          # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
-          header = paste(format(cons_rg_value %>% convert_units(unit_to = selectedUnit$unit_to),
-                                big.mark = "'", digits = 1, scientific = FALSE),
-                         selectedUnit$unit_to),
-          text = tags$p("Consommation", icon("fire", class = "iconColor")),
-          rightBorder = FALSE
-        )# End descriptionBlock
-      )# End column
+
+         fluidRow(
+        # !!CONS_ELEC removed!! #   column(
+        # !!CONS_ELEC removed!! #     width = 6,
+        # !!CONS_ELEC removed!! #     bs4Dash::descriptionBlock(
+        # !!CONS_ELEC removed!! #       number = year,
+        # !!CONS_ELEC removed!! #       # header: no need for unit conversion since it's percents
+        # !!CONS_ELEC removed!! #       header = scales::label_percent(accuracy = .1)(prod_elec_value/cons_elec_value),
+        # !!CONS_ELEC removed!! #       text = tags$p("Part production", icon("bolt", class = "iconColor")),
+        # !!CONS_ELEC removed!! #       rightBorder = TRUE
+        # !!CONS_ELEC removed!! #     )# End descriptionBlock 3/3
+        # !!CONS_ELEC removed!! #   ),# End column
+
+        column(
+          width = 12, # before: 6 !!CONS_ELEC removed!!
+          bs4Dash::descriptionBlock(
+            number = 2021, # !! change when available
+            # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
+            header = paste(format(cons_rg_value %>% convert_units(unit_to = selectedUnit$unit_to),
+                                  big.mark = "'", digits = 1, scientific = FALSE),
+                           selectedUnit$unit_to),
+            text = tags$p("Consommation", icon("fire", class = "iconColor")),
+            rightBorder = FALSE
+          )# End descriptionBlock
+        )# End column
       )# End fluidRow2
       )# End box
     })# End renderUI

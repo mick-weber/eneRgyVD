@@ -14,8 +14,8 @@ load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
 
-load("./data/elec_cons_communes.rda")
-load("./data/elec_cons_doc.rda")
+# !!CONS_ELEC removed!! load("./data/elec_cons_communes.rda")
+# !!CONS_ELEC removed!! load("./data/elec_cons_doc.rda")
 
 ## regener_communes data ----
 
@@ -198,7 +198,7 @@ regener_icons_type <- regener_colors_type %>%
   dplyr::ungroup()
 
 # Used for plots: named vector with level + associated color
-colors_rg_type <- regener_colors_type$color %>% setNames(nm = regener_colors_type$type)
+colors_rg_type <- regener_colors_type$color %>%setNames(nm = regener_colors_type$type)
 
 # Theme ----
 
@@ -283,14 +283,16 @@ regener_current_year <- 2022  # used for create_sunburst_plotly() specific to re
 ## Objects specific to the tabMap  ----
 
 ### Common electricity year ----
-# We seek for the year that is common to both electricity and production datasets
+# We seek for the year that is common to both electricity consumption and production datasets
 # This is to create the statistic boxes (tabMap) and compare similar years.
 
-last_common_elec_year <- dplyr::intersect(
-  elec_cons_communes %>% dplyr::distinct(annee),
-  elec_prod_communes %>% dplyr::distinct(annee)) %>%
-  dplyr::slice_max(annee) %>%
-  dplyr::pull(annee)
+last_common_elec_year <- max(elec_prod_communes$annee) # When prod elec alone
+
+  # !!CONS_ELEC removed!! # dplyr::intersect(
+  # !!CONS_ELEC removed!! # elec_cons_communes %>% dplyr::distinct(annee),
+  # !!CONS_ELEC removed!! # elec_prod_communes %>% dplyr::distinct(annee)) %>%
+  # !!CONS_ELEC removed!! # dplyr::slice_max(annee) %>%
+  # !!CONS_ELEC removed!! # dplyr::pull(annee)
 
 
 ### Fixed statistics for boxes ----
@@ -304,10 +306,12 @@ prod_elec_vd_last_year <- elec_prod_communes %>%
 
 #### VD electricity consumption for last common year
 
-cons_elec_vd_last_year <- elec_cons_communes %>%
-  dplyr::filter(annee == last_common_elec_year) %>%
-  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
-  dplyr::pull()
+cons_elec_vd_last_year <- NULL   # so we keep most code unchanged in mod_collapse_stats_box.R !!
+
+# !!CONS_ELEC removed!! #  cons_elec_vd_last_year <- elec_cons_communes %>%
+# !!CONS_ELEC removed!! #   dplyr::filter(annee == last_common_elec_year) %>%
+# !!CONS_ELEC removed!! #   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
+# !!CONS_ELEC removed!! #   dplyr::pull()
 
 #### VD heat consumption for last common year
 
@@ -329,8 +333,5 @@ bboxes <- districts_names %>%
 ## Add & fill the Canton bbox in our bboxes using the whole districts borders
 
 bboxes$Canton <- sf_districts %>% sf::st_bbox()
-
-
-
 
 

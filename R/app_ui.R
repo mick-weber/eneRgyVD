@@ -47,13 +47,10 @@ app_ui <- function(request) {
                                                                               headerText = "Dernières mises à jour",
                                                                               bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                                                         status = "info",
-                                                                                                        text = "11.22: données regener"),
+                                                                                                        text = "03.23: Ajout données production + chaleur"),
                                                                               bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                                                         status = "info",
-                                                                                                        text = "06.22: données prod élec 2021"),
-                                                                              bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
-                                                                                                        status = "info",
-                                                                                                        text = "06.22: données conso élec 2020")
+                                                                                                        text = "03.23: Mise en ligne du profil")
                                ),# End dropdownMenu 'updates'
           bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                      icon = icon("envelope", lib = "font-awesome"),
@@ -95,7 +92,7 @@ app_ui <- function(request) {
                              ## menuItems & subItems ----
 
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("earth-americas")),
-                                    bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
+                             # !!CONS_ELEC removed!! # bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
                                     bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
                                                       bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
@@ -116,7 +113,8 @@ app_ui <- function(request) {
          target = "_blank", # new tab
          href = link_diren
        ), # css below should be in custom.css
-       style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: darkgrey;text-align: right;background-color: transparent;")
+       style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: darkgrey;text-align: right;background-color: transparent;"
+       )
 
 
       ),# End dashboardSidebar
@@ -162,20 +160,22 @@ app_ui <- function(request) {
             )
           )# End fluidRow
           ),# End tabItem
+
           ## tabCons ----
-          bs4Dash::tabItem(
-            tabName = "tabCons",
-            fluidRow(h4(strong("Consommation d'électricité par commune")),
-                     HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("cons_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
-            # breathing
-            br(),
-            # to about_the_app module (test)
+          # !!CONS_ELEC removed!! # bs4Dash::tabItem(
+          # !!CONS_ELEC removed!! #   tabName = "tabCons",
+          # !!CONS_ELEC removed!! #   fluidRow(h4(strong("Consommation d'électricité par commune")),
+          # !!CONS_ELEC removed!! #            HTML('&nbsp;'), HTML('&nbsp;'),
+          # !!CONS_ELEC removed!! #            actionButton("cons_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+          # !!CONS_ELEC removed!! #   # breathing
+          # !!CONS_ELEC removed!! #   br(),
+          # !!CONS_ELEC removed!! #   # to about_the_app module (test)
+          # !!CONS_ELEC removed!! #
+          # !!CONS_ELEC removed!! #
+          # !!CONS_ELEC removed!! #   mod_elec_charts_ui("consumption_charts")
+          # !!CONS_ELEC removed!! #
+          # !!CONS_ELEC removed!! # ),# End tabItem
 
-
-            mod_elec_charts_ui("consumption_charts")
-
-          ),# End tabItem
           ## tabProd ----
           bs4Dash::tabItem(
             tabName = "tabProd",

@@ -18,12 +18,18 @@
   padding-bottom:5px;
 }
 
+/* bs4Dash bs4DropdownMenu's width for notifications to display correctly */
+.dropdown-menu-lg{
+  max-width:fit-content!important;
+  max-height:fit-content!important;
+  padding:0;
+}
+
 /* Color of DGE/DIREN titles, somehow can't access it directly in .titleClass > a */
 #sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDIREN > a,
 #sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDGE > a{
   color:white;
 }
-
 
 /* Colors widget text in the sidebar (differs from the dash' body) */
 #sidebarItemExpanded > div.os-padding > div > div{

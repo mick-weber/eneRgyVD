@@ -69,27 +69,27 @@ mod_about_the_app_ui <- function(id){
 
                                                        ),# End nested tabPanel 1/3
 
-                ### Cons élec ----
-                tabPanel("Consommation d'électricité",
-                         br(),
-                         tags$ul(
-                           tags$li(h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
-                                   p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
-                point de mesure du territoire vaudois a pu être récoltée, le type de client associé à chaque point de mesure a été catégorisé en secteurs,
-                et ce sont ces données agrégées par commune qui alimentent cette application."),
-                p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
-                compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
-                les données peuvent prendre quelques mois à être disponibles dans l'application.",
-                tags$strong("Les répartitions sectorielles sont encore hautement incertaines, la méthode diffère notamment selon chaque gestionnaire de réseau.
-                            Une meilleure catégorisation et davantage d'harmonisation sont souhaitées à terme mais c'est un long processus.")))
-                         ),# End tags$ul 2/3
-                br(),
-
-                # Documentation table for electricity production
-                DT::dataTableOutput(ns("elec_cons_doc")),
-                br()
-
-                ),# End nested tabPanel 2/3
+                ### Cons elec ----
+                # !!CONS_ELEC removed!! # tabPanel("Consommation d'électricité",
+                # !!CONS_ELEC removed!! #          br(),
+                # !!CONS_ELEC removed!! #          tags$ul(
+                # !!CONS_ELEC removed!! #            tags$li(h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
+                # !!CONS_ELEC removed!! #                    p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
+                # !!CONS_ELEC removed!! # point de mesure du territoire vaudois a pu être récoltée, le type de client associé à chaque point de mesure a été catégorisé en secteurs,
+                # !!CONS_ELEC removed!! # et ce sont ces données agrégées par commune qui alimentent cette application."),
+                # !!CONS_ELEC removed!! # p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
+                # !!CONS_ELEC removed!! # compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
+                # !!CONS_ELEC removed!! # les données peuvent prendre quelques mois à être disponibles dans l'application.",
+                # !!CONS_ELEC removed!! # tags$strong("Les répartitions sectorielles sont encore hautement incertaines, la méthode diffère notamment selon chaque gestionnaire de réseau.
+                # !!CONS_ELEC removed!! #             Une meilleure catégorisation et davantage d'harmonisation sont souhaitées à terme mais c'est un long processus.")))
+                # !!CONS_ELEC removed!! #          ),# End tags$ul 2/3
+                # !!CONS_ELEC removed!! # br(),
+                # !!CONS_ELEC removed!! #
+                # !!CONS_ELEC removed!! # # Documentation table for electricity production
+                # !!CONS_ELEC removed!! # DT::dataTableOutput(ns("elec_cons_doc")),
+                # !!CONS_ELEC removed!! # br()
+                # !!CONS_ELEC removed!! #
+                # !!CONS_ELEC removed!! # ),# End nested tabPanel 2/3
 
                 ### Regener ----
                 tabPanel("Chaleur bâtiments",
@@ -193,12 +193,13 @@ mod_about_the_app_server <- function(id){
     })
 
     # Table for electricity consumption documentation
-    output$elec_cons_doc <- DT::renderDataTable({
 
-      elec_cons_doc %>%  # loaded in utils_helpers.R
-        create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
-
-    })
+    # !!CONS_ELEC removed!! # output$elec_cons_doc <- DT::renderDataTable({
+    # !!CONS_ELEC removed!! #
+    # !!CONS_ELEC removed!! #   elec_cons_doc %>%  # loaded in utils_helpers.R
+    # !!CONS_ELEC removed!! #     create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
+    # !!CONS_ELEC removed!! #
+    # !!CONS_ELEC removed!! # })
 
 
     output$regener_doc <- DT::renderDataTable({

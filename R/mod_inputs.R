@@ -58,20 +58,28 @@ mod_inputs_ui <- function(id){
 #' sideboard_inputs Server Functions
 #'
 #' @noRd
-mod_inputs_server <- function(id){
+mod_inputs_server <- function(id,
+                              selectedUnit # app_server.R <- mod_unit_converter.R
+                              ){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    # Important note ----
+    ## Unit conversion is made here, at the root of inputVals, for each dataset
+
     # tabCons inputs ----
 
-    subset_elec_cons <- reactive({
-
-      req(input$selected_communes)
-
-      elec_cons_communes %>%
-        filter(commune %in% input$selected_communes)
-
-    })
+    # !! CONS_ELEC removed !! # subset_elec_cons <- reactive({
+    # !! CONS_ELEC removed !! #
+    # !! CONS_ELEC removed !! #   req(input$selected_communes)
+    # !! CONS_ELEC removed !! #
+    # !! CONS_ELEC removed !! #   elec_cons_communes %>%
+    # !! CONS_ELEC removed !! #     filter(commune %in% input$selected_communes) |>
+    # !! CONS_ELEC removed !! #     convert_units(colnames = "consommation",
+    # !! CONS_ELEC removed !! #                   unit_from = "kWh",
+    # !! CONS_ELEC removed !! #                   unit_to = selectedUnit$unit_to)
+    # !! CONS_ELEC removed !! #
+    # !! CONS_ELEC removed !! # })
 
 
     # tabProd inputs ----
@@ -86,7 +94,10 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       elec_prod_communes %>%
-        filter(commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes) |>
+        convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
+                      unit_from = "kWh",
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -102,7 +113,10 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       regener_cons_ae_use %>%
-        filter(commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes) %>%
+        convert_units(colnames = "consommation",
+                      unit_from = "kWh",
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -114,7 +128,10 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       regener_cons_ae_aff %>%
-        filter(commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes) %>%
+        convert_units(colnames = "consommation",
+                      unit_from = "kWh",
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -126,7 +143,10 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       regener_needs %>%
-        filter(commune %in% input$selected_communes)
+        filter(commune %in% input$selected_communes) %>%
+        convert_units(colnames = contains("besoins"),
+                      unit_from = "kWh",
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -178,8 +198,8 @@ mod_inputs_server <- function(id){
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
-      inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
-      inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
+      # !!CONS_ELEC removed!! #  inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
+      # !!CONS_ELEC removed!! # inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
 
       # store min & max !available! years to feed sliderInput()
       inputVals$min_avail_prod <- min(subset_elec_prod()$annee)
@@ -198,7 +218,9 @@ mod_inputs_server <- function(id){
 
     observe({
 
-      req(subset_elec_prod(), subset_elec_cons(), subset_rgr_1())
+      req(subset_elec_prod(),
+          # !!CONS_ELEC removed!! # subset_elec_cons(),
+          subset_rgr_1())
 
       # Statbox value for current selection's aggregated electricity production
       inputVals$common_year_elec_prod <- subset_elec_prod() %>%
@@ -207,10 +229,11 @@ mod_inputs_server <- function(id){
         dplyr::pull(production)
 
       # Statbox value for current selection's aggregated electricity consumption
-      inputVals$common_year_elec_cons <- subset_elec_cons() %>%
-        dplyr::filter(annee == last_common_elec_year) %>%
-        dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
-        dplyr::pull(consommation)
+
+      # !!CONS_ELEC removed!! # inputVals$common_year_elec_cons <- subset_elec_cons() %>%
+      # !!CONS_ELEC removed!! #   dplyr::filter(annee == last_common_elec_year) %>%
+      # !!CONS_ELEC removed!! #   dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
+      # !!CONS_ELEC removed!! #   dplyr::pull(consommation)
 
       # Statbox value for current selection's aggregated buildings thermal consumption
       inputVals$max_year_rg_cons <- subset_rgr_1() %>%

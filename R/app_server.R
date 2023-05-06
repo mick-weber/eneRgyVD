@@ -78,7 +78,8 @@ app_server <- function(input, output, session) {
    selectedUnit <- mod_unit_converter_server("unit_converter")
 
     # This retrieves the inputs saved in mod_inputs.R
-   inputVals <- mod_inputs_server("inputs_1")
+   inputVals <- mod_inputs_server("inputs_1",
+                                  selectedUnit = selectedUnit)
 
    ### Browser dimensions ----
    # height/width values are stored in inputVals because it's convenient
@@ -91,7 +92,12 @@ app_server <- function(input, output, session) {
 
    })
 
-  # Subset_cons_data ----
+# Data retrievals ----
+#  These next steps take the mod_inputs.R data (unit converted!) and creates objects
+   # that may be further changed (subset_prod_data gets additionnal filtering if selected)
+   # or that may be unchanged (e.g. regener data).
+
+  ## Subset_cons_data ----
    ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
 
    # !!CONS_ELEC removed!! # subset_cons_data <- reactive({
@@ -118,7 +124,7 @@ app_server <- function(input, output, session) {
    # !!CONS_ELEC removed!! #
    # !!CONS_ELEC removed!! # })
 
-   # Subset_prod_data ----
+   ## Subset_prod_data ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
    subset_prod_data <- reactive({
 
@@ -137,14 +143,11 @@ app_server <- function(input, output, session) {
      inputVals$prod_dataset %>%
        dplyr::filter(annee >= inputVals$min_selected_prod,
                      annee <= inputVals$max_selected_prod) %>%
-       dplyr::filter(categorie %in% inputVals$techs_selected) %>%
-        convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
-                      unit_from = "kWh",
-                      unit_to = selectedUnit$unit_to)
+       dplyr::filter(categorie %in% inputVals$techs_selected)
 
    }) # End reactive()
 
-   # Subset regener (x3)----
+   ## Subset regener (x3)----
    # subset_rgr1 : regener by commune, cons, ae, use
 
    subset_rgr_1 <- reactive({
@@ -159,10 +162,7 @@ app_server <- function(input, output, session) {
 
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
-      inputVals$rgr_1 %>%
-         convert_units(colnames = "consommation",
-                       unit_from = "kWh",
-                       unit_to = selectedUnit$unit_to)
+      inputVals$rgr_1
    })
 
    # subset_rgr1 : regener by commune, cons, ae, aff
@@ -179,10 +179,7 @@ app_server <- function(input, output, session) {
 
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
-      inputVals$rgr_2 %>%
-         convert_units(colnames = "consommation",
-                       unit_from = "kWh",
-                       unit_to = selectedUnit$unit_to)
+      inputVals$rgr_2
 
    })
 
@@ -199,11 +196,7 @@ app_server <- function(input, output, session) {
 
       # No filter needed yet for years, only year conversion
       # CONVERSION TEST IN PROGRESS
-      inputVals$rgr_needs %>%
-         convert_units(colnames = contains("besoins"),
-                       unit_from = "kWh",
-                       unit_to = selectedUnit$unit_to)
-
+      inputVals$rgr_needs
    })
 
 
@@ -225,7 +218,7 @@ app_server <- function(input, output, session) {
    })
 
 
-  # Sunburst filter data prod/cons ----
+  ## Sunburst filter data prod/cons ----
 
   subset_sunburst_prod_data <- reactive({
 
@@ -409,9 +402,11 @@ app_server <- function(input, output, session) {
    mod_collapse_stats_box_server("vd_box",
                                  title = "Canton de Vaud",
                                  selectedUnit = selectedUnit,
-                                 prod_elec_value = prod_elec_vd_last_year, # utils_helpers.R
-                                 cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
-                                 cons_rg_value = cons_rg_vd_last_year, # utils_helpers.R
+                                 prod_elec_value = prod_elec_vd_last_year |> # utils_helpers.R
+                                    convert_units(unit_to = selectedUnit$unit_to), # needed here for fixed VD values
+                                 # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
+                                 cons_rg_value = cons_rg_vd_last_year |>
+                                    convert_units(unit_to = selectedUnit$unit_to), # utils_helpers.R
                                  year = last_common_elec_year) # utils_helpers.R
 
   # Dynamic module for rendering the communes collapse box
@@ -423,7 +418,7 @@ app_server <- function(input, output, session) {
                                    title = "Commune(s) sélectionnée(s)",
                                    selectedUnit = selectedUnit,
                                    prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
-                                   cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
+                                   # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
                                    cons_rg_value = inputVals$max_year_rg_cons,
                                    year = last_common_elec_year) # utils_helpers.R
    })

@@ -45,8 +45,8 @@ mod_collapse_stats_box_server <- function(id,
             bs4Dash::descriptionBlock(
               marginBottom = TRUE,
               number = year,
-              # header: we paste the value in kwh and pass it to convert_units(), and we format it
-              header = paste(format(prod_elec_value %>% convert_units(unit_to = selectedUnit$unit_to), big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
+              header = paste(format(prod_elec_value,
+                                    big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
               text = tags$p("Production", icon("bolt", class = "iconColor")),
               rightBorder = TRUE
             )# End descriptionBlock 1/3
@@ -82,9 +82,9 @@ mod_collapse_stats_box_server <- function(id,
         column(
           width = 12, # before: 6 !!CONS_ELEC removed!!
           bs4Dash::descriptionBlock(
-            number = 2021, # !! change when available
+            number = regener_current_year, # !! utils_helpers.R
             # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
-            header = paste(format(cons_rg_value %>% convert_units(unit_to = selectedUnit$unit_to),
+            header = paste(format(cons_rg_value,
                                   big.mark = "'", digits = 1, scientific = FALSE),
                            selectedUnit$unit_to),
             text = tags$p("Consommation", icon("fire", class = "iconColor")),

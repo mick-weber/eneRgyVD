@@ -21,12 +21,14 @@ mod_regener_cons_charts_ui <- function(id){
                       column(width = 10,
                       # Disclaimer for regener cons data (in a column for better display)
                       tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
- se répartit pour satisfaire les besoins en chaleur du bâtiment selon l'usage ou l'affectation principale des bâtiments.",
- strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
+ se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
+ strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
  "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
- tags$p("Ces données reflètent un état des connaissances à mi-2022. Une mise à disposition historisée de ces données est en cours d'élaboration et sera disponible à moyen terme."),
+ tags$p(paste0( # regener_current_year -> utils_helpers.R
+   "Ces données reflètent la situation en ", regener_current_year, ". Une mise à disposition historisée de ces données est en cours d'élaboration et sera disponible à moyen terme."
+   )),
                       ),# End column
                       # radioGroupButtons() for tab ----
 

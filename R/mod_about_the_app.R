@@ -95,16 +95,17 @@ mod_about_the_app_ui <- function(id){
                 tabPanel("Chaleur bâtiments",
                          br(),
                          tags$ul(
-                           tags$li(h5(strong("Chaleur des bâtiments : exploitation du registre des énergies vaudois (RegEner)")),
+                           tags$li(h5(strong("Chaleur des bâtiments : exploitation du registre énergétique des bâtiments vaudois (RegEner)")),
                                    tags$p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
                                      des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
                                      (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
                                      registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
                                      de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment
                                      ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques.
-                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner.",
+                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte de
+                                     davantage de données de consommation. L'élaboration d'une méthode de correction climatique est également en cours.",
                                      "Les", strong("besoins optimisés"), "traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
-                                     après 2001 étaient assaini énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
+                                     après 2001 étaient assainis énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
                                      br(),
                                      "Davantage de détails peuvent être fournis sur demande à", tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
                                      "Un document de synthèse méthodologique est prévu prochainement afin de présenter la méthode appliquée."))

@@ -33,35 +33,9 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-# this is removed to simplify the rmd. it was in YAML below 'code_download: TRUE'
-# header-includes: \usepackage{booktabs} \usepackage{longtable} \usepackage{array} \usepackage{multirow}
-#   \usepackage[table]{xcolor} \usepackage{wrapfig} \usepackage{float} \floatplacement{figure}{H}
-
 # Basic knitr behavior
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
 
-# if(!require(pacman)) {
-#   install.packages("pacman")
-# }
-# Basics
-# pacman::p_load(knitr, tidyverse, writexl, readxl, bookdown,
-#                scales, janitor, extrafont, rstudioapi, glue,
-#                viridis, gt, lubridate)
-
-# Set working directory to source file location
-# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))       
-
-# extrafonts
-# loadfonts(quiet = T)
-
-# scientific notation disabled
-# options(scipen= 999)
-
-
-# Source the app file that contains plotting functions.
-#  Not sure this will work without locating it in temp 
-
- 
 ```
 
 ```{css basic-theme, echo = FALSE}
@@ -88,39 +62,40 @@ color:midnightblue;
 ```
 
 Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/).
-Cette fonctionnalité n'est pas encore entièrement développée et le sera dans les prochains mois.
-Merci de votre compréhension.
+
+Le contenu de ce rapport sera adapté progressivement en fonction des données disponibles ainsi que des fonctionnalités souhaitées par les utilisateurs.
 
 # Rapport énergétique pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`
 
-## Consommation d'électricité
+<!-- ## Consommation d'électricité -->
 
-### Tableau
+<!-- ### Tableau -->
 
-```{r}
-params$cons_data %>%
-  eneRgyVD::create_cons_table_dt(unit = params$unit)
-```
+<!-- ```{r} -->
+<!-- params$cons_data %>% -->
+<!--   eneRgyVD::create_cons_table_dt(unit = params$unit) -->
+<!-- ``` -->
 
-### Graphique
+<!-- ### Graphique -->
 
-```{r}
+<!-- ```{r} -->
 
-params$cons_data %>%
-    eneRgyVD::create_bar_plotly(unit = params$unit,
-                                n_communes = length(params$communes),
-                                web_width = params$web_width,
-                                web_height = params$web_height,
-                                var_year = "annee",
-                                var_commune = "commune",
-                                var_rank_2 = "secteur",
-                                var_values = "consommation",
-                                color_palette = eneRgyVD::return_palette_cons_elec(),
-                                dodge = F,
-                                free_y = F,
-                                legend_title = "Secteurs")
+<!-- params$cons_data %>% -->
+<!--     eneRgyVD::create_bar_plotly(unit = params$unit, -->
+<!--                                 n_communes = length(params$communes), -->
+<!--                                 web_width = params$web_width, -->
+<!--                                 web_height = params$web_height, -->
+<!--                                 var_year = "annee", -->
+<!--                                 var_commune = "commune", -->
+<!--                                 var_rank_2 = "secteur", -->
+<!--                                 var_values = "consommation", -->
+<!--                                 color_palette = eneRgyVD::return_palette_cons_elec(), -->
+<!--                                 dodge = F, -->
+<!--                                 free_y = F, -->
+<!--                                 legend_title = "Secteurs") -->
 
-```
+<!-- ``` -->
+
 
 ## Production d'électricité
 

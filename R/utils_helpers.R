@@ -40,12 +40,11 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 # Generic utils ----
 
 ## User notifications  ----
-# These are served to bs4DropdownMenu (mostly last updates)
-
+# These are served to bs4DropdownMenu in app_ui.R
 
 notif_msg <- tidyr::tribble(~icon, ~status, ~text,
-                    "cloud-arrow-up", "info", "03.23: Ajout données consommation th. bâtiments",
-                     "cloud-arrow-up", "info", "03.23: Ajout données production électricité",
+                    "cloud-arrow-up", "info", "03.23: Ajout données consommation th. bâtiments 2022",
+                     "cloud-arrow-up", "info", "03.23: Ajout données production électricité 2015-2022",
                      "star", "info", "03.23: Mise en ligne du profil"
 )
 
@@ -216,7 +215,7 @@ colors_rg_type <- regener_colors_type$color %>%setNames(nm = regener_colors_type
 ## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
-main_color_active <- "#204919" #  lighter : "#26C026"
+main_color_active <- "black"
 
 ## Custom {fresh} theme passed to bs4Dash in app_ui.R
 # Example from https://dreamrs.github.io/fresh/

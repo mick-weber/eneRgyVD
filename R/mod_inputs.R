@@ -162,7 +162,8 @@ mod_inputs_server <- function(id){
 
     observe({
       # store the commune cons dataset already filtered
-      inputVals$cons_dataset <- subset_elec_cons()
+
+      # !!CONS_ELEC removed!! #inputVals$cons_dataset <- subset_elec_cons()
 
       # store the commune prod dataset already filtered
       inputVals$prod_dataset <- subset_elec_prod()

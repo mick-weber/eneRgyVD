@@ -245,6 +245,7 @@ app_server <- function(input, output, session) {
 
   })
 
+
    # Leaflet select map ----
 
    #   Unfortunately this couldn't be modularized because for some reason the communication between
@@ -318,11 +319,8 @@ app_server <- function(input, output, session) {
          lat2= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("ymax"))
    })
 
-
-
   # END PROXY LEAFLET WORK
   # END MAP SELECTOR
-
 
 
    # Output modules ----

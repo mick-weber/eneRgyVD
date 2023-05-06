@@ -69,9 +69,8 @@ mod_download_rmd_server <- function(id,
       # [u]nordered [l]ist of [l]ist [i]tems
       tags$ul(
         tags$li("Les données & graphiques relatifs à la production d'électricité."),
-        tags$li("Les données & graphiques relatifs à la consommation d'électricité."),
         tags$li("Les données & graphiques relatifs à la consommation théorique des bâtiments."),
-        tags$li("Des chiffres-clés (en développement...)")
+        tags$li("D'autres informations seront progressivement ajoutées ...")
       ),# End ul
       br(),
       p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
@@ -110,7 +109,7 @@ mod_download_rmd_server <- function(id,
                        web_width = inputVals$web_width,
                        web_height = inputVals$web_height,
                        prod_data = inputVals$prod_dataset,
-                       cons_data = inputVals$cons_dataset,
+# !! CONS_ELEC removed !! # cons_data = inputVals$cons_dataset,
                        regener_data_0 = inputVals$rgr_needs,
                        regener_data_1 = inputVals$rgr_1,
                        regener_data_2 = inputVals$rgr_2,
@@ -179,7 +178,7 @@ mod_download_rmd_server <- function(id,
     download_all_sheets <- reactive({
       # List all pertinent inputVals$<datasets> from mod_inputs.R
       list(
-        cons_elec = inputVals$cons_dataset,
+        # !! CONS_ELEC removed !! # cons_elec = inputVals$cons_dataset,
         prod_elec = inputVals$prod_dataset,
         regener_besoins = inputVals$rgr_needs,
         regener_cons_1 = inputVals$rgr_1,

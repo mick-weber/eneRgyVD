@@ -71,11 +71,6 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
                          weight = 2,
                          # group is then used in leafem::addHomeButton()
                          group = "Vue cantonale") %>%
-    # Ajout de labels pour les districts : résultat pas convainquant
-    # addLabelOnlyMarkers(data = sf_districts_labels, ~lng, ~lat,  label =~NOM_MIN,
-    #                     labelOptions = labelOptions(noHide = T, direction = 'top',
-    #                                                 textOnly = T, textsize = "20px",
-    #                                                 style = list("color" = "grey"))) %>%
     # Couche des lacs
     leaflet::addPolygons(data = sf_lacs,
                          fillColor = "lightblue",
@@ -116,12 +111,8 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
                            bringToFront = FALSE)) %>%
     # This will be switched on/off through the code below using click events
     leaflet::hideGroup(group = sf_communes$NOM_MIN)   %>%
-    #  !! DOESNT WORKAdapt original view by capping the max bounds
-    # leaflet::setMaxBounds(lng1 = 6.047974, lat1 = 46.126556, lng2 = 7.135620, lat2 = 46.949325) %>%
     # Set the background to white
     leaflet.extras::setMapWidgetStyle(list(background= "white")) %>%
-    # Add reset button to zoom back to original view
-    #leaflet.extras::addResetMapButton() %>%
     # fitbounds with coordinates. ! tweak along with zoomSnap/zoomDelta
     leaflet::setView(lng = 6.617, lat = 46.63, zoom = 7.8) %>% # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
     # Set max limits to avoid panning away from the map
@@ -129,7 +120,6 @@ create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
 
 }
 
-# create_select_leaflet(sf_districts, sf_lacs, sf_communes)
 
 #' create_bar_plotly
 #'
@@ -366,7 +356,7 @@ create_prod_table_dt <- function(data, unit){
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
                                  server = FALSE,   ## use server-side processing
-                                 dom = 'Bfrtip',
+                                 dom = 'frtip', # no buttons needed
                             # Buttons not needed anymore since mod_download_data.R is spot on
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
@@ -422,7 +412,7 @@ create_cons_table_dt <- function(data, unit){
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
                                  server = FALSE,   ## use server-side processing
-                                 dom = 'Bfrtip',
+                                 dom = 'frtip', # no buttons needed
                                  # Buttons not needed anymore since mod_download_data.R is spot on
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
@@ -472,7 +462,7 @@ create_rg_needs_table_dt <- function(data, unit){
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
                                  server = FALSE,   ## use server-side processing
-                                 dom = 'Bfrtip',
+                                 dom = 'frtip', # no buttons needed
                                  # Buttons not needed anymore since mod_download_data.R is spot on
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
@@ -510,7 +500,7 @@ create_doc_table_dt <- function(data, doc_prefix){
       pageLength = 20,
       scrollY = FALSE,
       autoWidth = TRUE,
-      language = DT_fr_language # from utils_helpers.R
+      language = DT_fr_language # utils_helpers.R
     ))
 
 }
@@ -544,7 +534,7 @@ create_rg_misc_table_dt <- function(data){
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
                                  server = FALSE,   ## use server-side processing
-                                 dom = 'Bfrtip',
+                                 dom = 'frtip', # no buttons needed
                                  # Buttons not needed anymore since mod_download_data.R is spot on
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
@@ -814,7 +804,7 @@ create_regener_table_dt <- function(data, unit){
                                  scrollY = TRUE,   ## enable scrolling on Y axis
                                  autoWidth = TRUE, ## use smart column width handling
                                  server = FALSE,   ## use server-side processing
-                                 dom = 'Bfrtip',
+                                 dom = 'frtip', # no buttons needed
                                  # Buttons not needed anymore since mod_download_data.R is spot on
                                  # buttons = list(
                                  #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),

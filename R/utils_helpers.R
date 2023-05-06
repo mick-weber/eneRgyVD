@@ -39,6 +39,17 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Generic utils ----
 
+## User notifications  ----
+# These are served to bs4DropdownMenu (mostly last updates)
+
+
+notif_msg <- tidyr::tribble(~icon, ~status, ~text,
+                    "cloud-arrow-up", "info", "03.23: Ajout données consommation th. bâtiments",
+                     "cloud-arrow-up", "info", "03.23: Ajout données production électricité",
+                     "star", "info", "03.23: Mise en ligne du profil"
+)
+
+
 ## Sidebar width ----
 
 sidebar_width <- 300 # px ; used in custom.css & plotting fns with inputVals$web_width/height

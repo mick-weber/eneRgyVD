@@ -45,12 +45,18 @@ app_ui <- function(request) {
                                  bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                                               icon = icon("calendar", lib = "glyphicon"),
                                                                               headerText = "Dernières mises à jour",
-                                                                              bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
-                                                                                                        status = "info",
-                                                                                                        text = "03.23: Ajout données production + chaleur"),
-                                                                              bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
-                                                                                                        status = "info",
-                                                                                                        text = "03.23: Mise en ligne du profil")
+
+                                                       purrr::pmap(notif_msg, .f = ~ bs4Dash::notificationItem(icon = shiny::icon(glue::glue("{..1}")),
+                                                                                                               status = glue::glue("{..2}"),
+                                                                                                               text = glue::glue("{..3}"))
+                                                                   )# End pmap
+
+                                                                              # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                              #                           status = "info",
+                                                                              #                           text = "03.23: Ajout données production + chaleur"),
+                                                                              # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                                              #                           status = "info",
+                                                                              #                           text = "03.23: Mise en ligne du profil")
                                ),# End dropdownMenu 'updates'
           bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
                                                      icon = icon("envelope", lib = "font-awesome"),

@@ -15,8 +15,7 @@ mod_regener_misc_charts_ui <- function(id){
     mod_download_data_ui(ns("table_download")),
 
     # DT table
-    DT::dataTableOutput(ns("table_1")) %>%
-      shinycssloaders::withSpinner(color= main_color)
+    DT::dataTableOutput(ns("table_1"))
 
   )
 }
@@ -32,6 +31,8 @@ mod_regener_misc_charts_server <- function(id,
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+
+
     # Renders the DT table ----
     output$table_1 <- DT::renderDataTable({
 
@@ -39,24 +40,18 @@ mod_regener_misc_charts_server <- function(id,
 
     })# End DT table
 
+    # Download data : rename cols before export (also don)
+      download_data <- reactive({
+        subsetData() |>
+          rename_misc_colnames() # fct_helpers.R, used in create_rg_misc_table_dt too
+      })
 
-    # Download data ----
-    download_data <- reactive({
 
-
-      subsetData() %>% # We let the data in a long format
-        # Add the currently selected unit in the colnames (conversion is already done)
-        # add energy units in brackets for energy/power related columns
-        rename_fr_colnames() %>%  # fct_helpers.R
-        add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R, not needed actually
-
-    })
-
-    # module download data
+    # Download module
     mod_download_data_server("table_download",
                              data = download_data,
                              dl_prefix = dl_prefix,
-                             doc_vars = doc_vars) # dl preffix for file name, passed into app_server.R
+                             doc_vars = doc_vars) # dl prefix for file name, passed into app_server.R
 
 
 

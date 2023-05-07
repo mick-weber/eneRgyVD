@@ -100,8 +100,8 @@ mod_elec_charts_ui <- function(id){
                              # breathing
                              br(),
                              # DT table
-                             DT::dataTableOutput(ns("table_1")) %>%
-                               shinycssloaders::withSpinner(color= main_color)
+                             DT::dataTableOutput(ns("table_1"))
+
                       )# End column
       )# End tabPanel 'Table'
     )# End tabsetPanel
@@ -200,7 +200,8 @@ mod_elec_charts_server <- function(id,
 
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
       plotly::plotlyOutput(ns("chart_1")) %>%
-        shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
+        shinycssloaders::withSpinner(type = 6,
+                                     color= main_color) # color defined in utils_helpers.R
       )
 
     })# End renderUI
@@ -219,11 +220,10 @@ mod_elec_charts_server <- function(id,
     download_data <- reactive({
 
 
+      # Make colnames nicelly formatted and add the current unit
       subsetData() %>%
-        # Add the currently selected unit in the colnames (conversion is already done)
-        # add energy units in brackets for energy/power related columns
-        add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
-        rename_fr_colnames() # fct_helpers.R
+        rename_fr_colnames()  %>%  # fct_helpers.R
+        add_colname_units(unit = selectedUnit$unit_to)  # fct_helpers.R
 
         })
 

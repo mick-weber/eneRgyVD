@@ -47,7 +47,8 @@ mod_regener_cons_charts_ui <- function(id){
 
                       # ggalluvial plot
                       shiny::plotOutput(ns("chart_alluvial"), height = "auto") %>%
-                        shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
+                        shinycssloaders::withSpinner(type = 6,
+                                                     color= main_color) # color defined in utils_helpers.R
 
 
       ),# End tabPanel 'Graphique'
@@ -72,8 +73,7 @@ mod_regener_cons_charts_ui <- function(id){
                              # breathing
                              br(),
                              # DT table
-                             DT::dataTableOutput(ns("table_1")) %>%
-                              shinycssloaders::withSpinner(color= main_color)
+                             DT::dataTableOutput(ns("table_1"))
                       )# End column
       )# End tabPanel 'Table'
     )# End tabsetPanel
@@ -186,10 +186,10 @@ mod_regener_cons_charts_server <- function(id,
 
         subset_rgr_1() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          add_colname_units(unit = selectedUnit$unit_to) %>%  # fct_helpers.R
-          rename_fr_colnames() # fct_helpers.R
-      }
-      else if(input$tab_table_type == "bar"){
+          rename_fr_colnames() %>% # fct_helpers.R
+          add_colname_units(unit = selectedUnit$unit_to)  # fct_helpers.R
+
+          } else if(input$tab_table_type == "bar"){
 
         subset_rgr_2() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)

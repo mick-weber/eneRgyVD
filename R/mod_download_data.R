@@ -13,7 +13,8 @@ mod_download_data_ui <- function(id){
     h5("Télécharger les données"),
 
     fluidRow(
-    uiOutput(ns("download_ui_csv")), HTML("&nbsp;"), # ws
+    uiOutput(ns("download_ui_csv")),
+    HTML("&nbsp;"), # ws
     uiOutput(ns("download_ui_excel"))
     )# End fluidRow
     )# End tagList
@@ -28,7 +29,6 @@ mod_download_data_server <- function(id,
                                      doc_vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-
 
     # Render uiOutput buttons
 

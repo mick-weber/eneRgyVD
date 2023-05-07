@@ -27,7 +27,7 @@ app_ui <- function(request) {
 
       ## leftUi ----
                                leftUi = tags$li(style = "padding-left:100px;",
-                                                h4(strong("Statistiques énergétiques des communes vaudoises (développement)")),
+                                                h4(strong("Profil énergétique des communes vaudoises (développement)")),
                                                 class = "dropdown"),
       ## rightUi ----
                                rightUi =
@@ -138,7 +138,8 @@ app_ui <- function(request) {
                      h4(strong("Sélectionnez des communes sur la carte ou dans la zone latérale")),
                      # Leaflet select map
                       leaflet::leafletOutput("map") %>% # height defined in custom.css #map
-                        shinycssloaders::withSpinner(color=main_color), # defined in utiles_helpers.R
+                        shinycssloaders::withSpinner(type = 6,
+                                                     color = main_color), # defined in utiles_helpers.R
 
 
 
@@ -239,10 +240,6 @@ app_ui <- function(request) {
                                   class = "infoButton")), # no label
             # breathing
             br(),
-
-            h4("Travaux en cours..."),
-
-            shiny::icon("heart-pulse"),
 
             # Module for producing regener plots
             mod_regener_misc_charts_ui("regener_misc")

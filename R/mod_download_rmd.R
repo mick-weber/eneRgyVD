@@ -121,18 +121,16 @@ mod_download_rmd_server <- function(id,
 
         # Distraction notifications...
 
-        id <- notify("Importation des paramètres...")
+        id <- notify("Identification des communes...")
         on.exit(removeNotification(id), add = TRUE)
+        Sys.sleep(1)
+        notify("Mise en place de la salle de réunion...", id = id)
         Sys.sleep(1.5)
-        notify("Arborescence des commutativités...", id = id)
+        notify("Rédaction du rapport...", id = id)
         Sys.sleep(1.5)
-        notify("Conquête du Liechtenstein...", id = id)
-        Sys.sleep(1.5)
-        notify("Orthogonalisation de matrices...", id = id)
-        Sys.sleep(1.5)
-        notify("Mise en orbite d'un lapin adulte...", id = id)
+        notify("Elevage de moutons basques...", id = id)
         Sys.sleep(2)
-        notify("Élevage de moutons basques...", id = id)
+        notify("Finalisation du rapport...", id = id)
 
 
         # Calling rmd render with params & paths
@@ -145,6 +143,7 @@ mod_download_rmd_server <- function(id,
         )
       }
     )
+
 
     # 2/2 : Download all ----
 
@@ -173,17 +172,36 @@ mod_download_rmd_server <- function(id,
 
     # XLSX handler
 
-    # We add documentation for XLSX since it's easy (CSV would require two separate files which must be in a ZIP...)
-
     download_all_sheets <- reactive({
       # List all pertinent inputVals$<datasets> from mod_inputs.R
       list(
-        # !! CONS_ELEC removed !! # cons_elec = inputVals$cons_dataset,
-        prod_elec = inputVals$prod_dataset,
-        regener_besoins = inputVals$rgr_needs,
-        regener_cons_1 = inputVals$rgr_1,
-        regener_cons_2 = inputVals$rgr_2,
-        regener_autres = inputVals$rgr_misc
+        # !! CONS_ELEC removed !! # cons_elec = inputVals$cons_dataset |>
+        # rename_fr_colnames() |>
+        # add_colname_units(unit = selectedUnit$unit_to),
+
+        # Prod elec renamed+units
+        prod_elec = inputVals$prod_dataset |>
+          rename_fr_colnames() |>
+          add_colname_units(unit = selectedUnit$unit_to),
+
+        # Regener renamed+units
+        regener_besoins = inputVals$rgr_needs |>
+          rename_fr_colnames() |>
+          add_colname_units(unit = selectedUnit$unit_to),
+
+        # Regener renamed+units
+        regener_cons_1 = inputVals$rgr_1 |>
+          rename_fr_colnames() |>
+          add_colname_units(unit = selectedUnit$unit_to),
+
+        # Regener renamed+units
+        regener_cons_2 = inputVals$rgr_2 |>
+          rename_fr_colnames() |>
+          add_colname_units(unit = selectedUnit$unit_to),
+
+        # Regener misc renamed
+        regener_autres = inputVals$rgr_misc |>
+          rename_misc_colnames()
       )
       })
 

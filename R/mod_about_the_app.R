@@ -18,14 +18,14 @@ mod_about_the_app_ui <- function(id){
                                          column(width = 8,
                                                 # breathing
                                                 br(),
-                                                h4(strong("Pourquoi eneRgyVD ?")),
-                                                tags$p("Le but de cette application est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
+                                                h4(strong("Pourquoi cette application ?")),
+                                                tags$p("Le but de ce profil énergétique est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter simplement."),
            # breathing
            br(),
            h4(strong("Contact")),
-           tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'Unité Données et Indicateurs via ",
+           tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'unité données et indicateurs via ",
                   tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
                   ", qui est l'unité transversale de la",
                   tags$a (href = link_diren, "direction de l'énergie de l'Etat de Vaud (DGE-DIREN)",

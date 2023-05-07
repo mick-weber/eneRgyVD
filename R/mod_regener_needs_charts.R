@@ -112,8 +112,7 @@ mod_regener_needs_charts_ui <- function(id){
                              # Download module
                              mod_download_data_ui(ns("table_download")),
                              # DT table
-                             DT::dataTableOutput(ns("table_1")) %>%
-                               shinycssloaders::withSpinner(color= main_color)
+                             DT::dataTableOutput(ns("table_1"))
                       )# End column
       )# End tabPanel 'Table'
     )# End tabsetPanel
@@ -231,7 +230,8 @@ mod_regener_needs_charts_server <- function(id,
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
                plotly::plotlyOutput(ns("chart_1")) %>%
-                 shinycssloaders::withSpinner(color= main_color) # color defined in utils_helpers.R
+                 shinycssloaders::withSpinner(type = 6,
+                                              color= main_color) # color defined in utils_helpers.R
       )#End div
 
     })# End renderUI

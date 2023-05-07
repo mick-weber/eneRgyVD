@@ -525,7 +525,7 @@ create_rg_misc_table_dt <- function(data){
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
     dplyr::relocate(commune, etat) %>%
-    rename_fr_colnames() %>% # fct_helpers.R
+    rename_misc_colnames() |>
     # add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
@@ -829,11 +829,34 @@ create_regener_table_dt <- function(data, unit){
 rename_fr_colnames <- function(data){
 
   data %>%
+    # Standard renaming
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) %>%
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
                 pattern = "_", replacement = " ") %>%
     rename_with(.cols = everything(), .fn = stringr::str_replace_all,
                 replace_fr_accents) # utils_helpers.R
+
+
+}
+
+
+#' rename_misc_columns
+#'
+#' @return
+#' @export
+
+rename_misc_colnames <- function(data){
+
+  data |>
+    dplyr::rename(
+      "Commune" = commune,
+      "État estimé" = etat,
+      "Surface de référence énergétique" = SRE,
+      "Bâtiments chauffés" = N_EGID,
+      "Bâtiments neufs (2001+)" = N_NEW_POST_2000,
+      "Bâtiments rénovés récemment" = N_RENOV_POST_2000,
+      "Bâtiments sans rénovation récente" = N_NO_RENOV,
+      "Bâtiments sans année de construction" = N_NO_GBAUJ)
 
 }
 

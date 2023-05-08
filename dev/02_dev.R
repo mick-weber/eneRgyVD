@@ -35,6 +35,7 @@ usethis::use_package("bs4Dash")
 usethis::use_package("shinydashboardPlus")
 usethis::use_package("fresh")    # for bs4Dash custom theme
 
+# ? usethis::use_package("shinyjs") # for toggle state of DL buttons
 usethis::use_package("shinycssloaders")
 usethis::use_package("shinyalert")
 usethis::use_package("shinybrowser")

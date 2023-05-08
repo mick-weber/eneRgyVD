@@ -24,6 +24,7 @@ mod_regener_misc_charts_ui <- function(id){
 #'
 #' @noRd
 mod_regener_misc_charts_server <- function(id,
+                                           inputVals,
                                            subsetData,
                                            selectedUnit, # quite irrelevant but might be useful later
                                            dl_prefix,
@@ -49,6 +50,7 @@ mod_regener_misc_charts_server <- function(id,
 
     # Download module
     mod_download_data_server("table_download",
+                             inputVals = inputVals,
                              data = download_data,
                              dl_prefix = dl_prefix,
                              doc_vars = doc_vars) # dl prefix for file name, passed into app_server.R

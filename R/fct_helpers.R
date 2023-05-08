@@ -5,13 +5,15 @@
 
 info_dev_message <- function(){
 
-  shinyalert::shinyalert(title = "Bienvenue sur stat-energie-vd !",
-                         text = paste0("Cette application est en cours de développement.",
+  shinyalert::shinyalert(title = "Bienvenue sur le profil énergétique des communes vaudoises !",
+                         text = paste0("Cette application est mise à disposition par la ",
+                         tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
+                                       " afin de diffuser des données énergétiques à l'échelle des communes vaudoises.",
                                        tags$br(),
-                                       "Pour des raisons liées au développement, les données communales ont été temporairement
-                                       remplacées par des valeurs aléatoires, celles-ci ne reflètent donc pas la réalité.
-                                       Plus d'informations sur cette application en cliquant sur 'À propos`
-                                       dans la barre latérale. Ce lien url est temporaire et sera remplacé prochainement lorsque l'application sera déployée."),
+                                       "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",
+                                       tags$a(href = link_pter, target = "_blank", # utils_helpers.R
+                                              "planifications énergétiques territoriales.")
+                                       ),
                          html = TRUE,
                          size = "m",
                          closeOnEsc = TRUE,
@@ -27,24 +29,6 @@ info_dev_message <- function(){
 }
 
 
-dl_requires_data_message <-  function(){
-
-  shinyalert::shinyalert(title = "Duh.",
-                         text = "DUH DUH DUH",
-                         html = TRUE,
-                         size = "xs",
-                         closeOnEsc = TRUE,
-                         closeOnClickOutside = TRUE,
-                         type = "warning",
-                         showConfirmButton = TRUE,
-                         showCancelButton = FALSE,
-                         confirmButtonText = "OK",
-                         timer = 0,
-                         animation = "pop"
-  )
-
-}
-
 #' create_select_leaflet
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
@@ -53,7 +37,9 @@ dl_requires_data_message <-  function(){
 #'
 #' @noRd
 
-create_select_leaflet <- function(sf_districts, sf_lacs, sf_communes){
+create_select_leaflet <- function(sf_districts,
+                                  sf_lacs,
+                                  sf_communes){
 
   leaflet::leaflet(options = leafletOptions(
     zoomControl = TRUE,

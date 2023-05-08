@@ -170,7 +170,7 @@ mod_download_rmd_server <- function(id,
     })
 
 
-    # XLSX handler
+    # XLSX handler to download all objects.
 
     download_all_sheets <- reactive({
       # List all pertinent inputVals$<datasets> from mod_inputs.R

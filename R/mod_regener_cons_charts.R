@@ -202,9 +202,10 @@ mod_regener_cons_charts_server <- function(id,
 
     # Module to download DT table data
     mod_download_data_server("table_download",
+                             inputVals = inputVals,
                              data = download_data, # see if() above
                              dl_prefix = "regener_",
-                             doc_vars = regener_doc) # dl preffix for file name, passed into app_server.R
+                             doc_vars = regener_doc) # dl prefix for file name, passed into app_server.R
 
 
   })

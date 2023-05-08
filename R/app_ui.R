@@ -148,7 +148,7 @@ app_ui <- function(request) {
               # Next to leaflet map
               column(width = 4,
                      # Module for collapsible VD box
-                     mod_collapse_stats_box_ui("vd_box"),
+                     uiOutput("vd_box"),
 
                      # Dynamic module for collapsible communes box (condition in renderUI)
                      uiOutput("communes_box")

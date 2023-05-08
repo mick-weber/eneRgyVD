@@ -130,7 +130,7 @@ app_server <- function(input, output, session) {
 
      # explicitely require communes to be selected
      validate(
-       need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+       need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
      )
      # waiting on these to get initialized (renderUIs)
      req(inputVals$min_selected_prod,
@@ -154,7 +154,7 @@ app_server <- function(input, output, session) {
 
       # explicitely require communes to be selected
       validate(
-         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
 
       # waiting on these to get initialized (renderUIs)
@@ -171,7 +171,7 @@ app_server <- function(input, output, session) {
 
       # explicitely require communes to be selected
       validate(
-         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
 
       # waiting on these to get initialized (renderUIs)
@@ -188,7 +188,7 @@ app_server <- function(input, output, session) {
 
       # explicitely require communes to be selected
       validate(
-         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
 
       # waiting on these to get initialized (renderUIs)
@@ -207,7 +207,7 @@ app_server <- function(input, output, session) {
 
       # explicitely require communes to be selected
       validate(
-         need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
 
       # waiting on these to get initialized (renderUIs)
@@ -256,7 +256,7 @@ app_server <- function(input, output, session) {
 
    })
 
-   # END RENDER LEAFLET ; START PROXYLEAFLET WORK
+   # END RENDER LEAFLET BASE; START PROXYLEAFLET WORK
 
 
    # Define leaflet proxy to draw the base map once only and build on its proxy
@@ -268,8 +268,10 @@ app_server <- function(input, output, session) {
    # Handles the highlight/removal of a polygon on CLICK EVENTS
    observeEvent(input$map_shape_click, {
      if(input$map_shape_click$group == "regions"){
+
        selected$groups <- c(selected$groups, input$map_shape_click$id)
        proxy %>% leaflet::showGroup(group = input$map_shape_click$id)
+
      } else {
        selected$groups <- setdiff(selected$groups, input$map_shape_click$group)
        proxy %>% leaflet::hideGroup(group = input$map_shape_click$group)
@@ -280,12 +282,34 @@ app_server <- function(input, output, session) {
 
      updateSelectizeInput(session = session,
                           inputId = "inputs_1-selected_communes",
-                          choices = communes_names,
+                          choices = choices_canton_communes,
                           selected = selected$groups)
    })
 
-   # Handles the highlight/removal of a polygon on SELECT INPUT EVENTS
+   # Handles the highlight/removal of a polygon and borders from inputVals$selectedCommunes
+
+      ## VD border highlighting (Canton selected only) ----
    observeEvent(inputVals$selectedCommunes, {
+
+      if("Canton de Vaud" %in% inputVals$selectedCommunes){
+
+         proxy |>
+            # Contour for Canton VD, orange + light orange fill
+            leaflet::addPolylines(data = sf_canton, # utils_helpers.R ; static
+                                  layerId = "highlight_canton", # layer id to remove if unselected
+                                  color = "#FFB90F",
+                                  fill = T, fillColor = "#FFE3A0",
+                                  # Disable clikable events otherwise it will crash (!)
+                                  options = leaflet::pathOptions(interactive = FALSE)
+                                  )
+      }else {
+         # If Canton de Vaud is not in the selection, we remove the canton highlight Polyline
+         proxy |>
+            leaflet::removeShape(layerId = "highlight_canton")
+
+      }
+
+      ## Polygons highlighting (Communes selected only) ----
      removed_via_selectInput <- setdiff(selected$groups, inputVals$selectedCommunes)
      added_via_selectInput <- setdiff(inputVals$selectedCommunes, selected$groups)
 
@@ -298,7 +322,7 @@ app_server <- function(input, output, session) {
        selected$groups <- inputVals$selectedCommunes
        proxy %>% leaflet::showGroup(group = added_via_selectInput)
      }
-   }, ignoreNULL = FALSE)
+   }, ignoreNULL = FALSE) # Don't trigger when input is NULL
 
    # NEW FEATURE : change fitBounds based on input$district through inputVals$selectedDistrict
 
@@ -391,6 +415,7 @@ app_server <- function(input, output, session) {
 
    ### mod regener_misc ----
    mod_regener_misc_charts_server("regener_misc",
+                                  inputVals = inputVals,
                                   subsetData = subset_rgr_misc,
                                   selectedUnit = selectedUnit,
                                   dl_prefix = "regener_autres_",
@@ -398,27 +423,45 @@ app_server <- function(input, output, session) {
 
 
    ## tabMap: boxes for statistics ----
-   # Module for rendering the vd collapse box
+   ### VD Box ----
+   # Must be dynamically rendered because it depends on selectedUnit (reactive)
+
+
+   output$vd_box <- renderUI({
+
+   req(selectedUnit$unit_to)
+
    mod_collapse_stats_box_server("vd_box",
                                  title = "Canton de Vaud",
                                  selectedUnit = selectedUnit,
-                                 prod_elec_value = prod_elec_vd_last_year |> # utils_helpers.R
-                                    convert_units(unit_to = selectedUnit$unit_to), # needed here for fixed VD values
+                                 prod_elec_value = prod_elec_vd_last_year |>
+                                    convert_units(unit_to = selectedUnit$unit_to), # utils_helpers.R
+
                                  # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
+
                                  cons_rg_value = cons_rg_vd_last_year |>
                                     convert_units(unit_to = selectedUnit$unit_to), # utils_helpers.R
+
                                  year = last_common_elec_year) # utils_helpers.R
 
-  # Dynamic module for rendering the communes collapse box
+   })
+
+
+
+  ### Communes box ----
+  # Must be dynamically rendered because it depends on selectedUnit (reactive)
    output$communes_box <- renderUI({
 
-     req(inputVals$selectedCommunes)
+     req(inputVals$selectedCommunes, selectedUnit$unit_to)
 
      mod_collapse_stats_box_server("communes_box",
                                    title = "Commune(s) sélectionnée(s)",
                                    selectedUnit = selectedUnit,
+
                                    prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
+
                                    # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
+
                                    cons_rg_value = inputVals$max_year_rg_cons,
                                    year = last_common_elec_year) # utils_helpers.R
    })

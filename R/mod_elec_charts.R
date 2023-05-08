@@ -229,6 +229,7 @@ mod_elec_charts_server <- function(id,
 
     # Module to download DT table data
     mod_download_data_server("table_download",
+                             inputVals = inputVals,
                              data = download_data,
                              dl_prefix = dl_prefix,
                              doc_vars = doc_vars) # dl preffix for file name, passed into app_server.R

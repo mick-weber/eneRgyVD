@@ -3,9 +3,11 @@
 # Loading .rda objects ----
 ## sf data ----
 
+load("./data/sf_canton.rda")
 load("./data/sf_communes.rda")
 load("./data/sf_districts.rda")
 load("./data/sf_lacs.rda")
+
 
 ## electricity_production data ----
 
@@ -39,6 +41,11 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Generic utils ----
 
+## Phrase for required communes ----
+# To avoid multiple repetitions troughout the app we store it once here
+
+req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat."
+
 ## User notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R
 
@@ -65,12 +72,13 @@ height_facet_under_limit <- 400
 height_facet_above_limit <- 700
 
 
-## E-mail address and links ----
+## Links and mail ----
 # Used for mod_about_the_app.R and/or contact notificationMenu in ui.R
 
 mail_address <- "stat.energie@vd.ch"
 link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
+link_pter <- "https://www.vd.ch/themes/etat-droit-finances/communes/energie-environnement-agriculture/energie/planification-energetique-territoriale"
 
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library
@@ -256,13 +264,20 @@ eneRgy_theme <- fresh::create_theme(
 ## Generic objects (across all tabs) ----
 
 ### Available communes ----
-# With more datasets (i.e. elec consumption), checking that the names are OK
-# throughout all datasets will be a crucial issue.
-
+# Used exclusively for selectizeInput in mod_inputs.R and its update counterpart in app_server.R
+# The map is thus the reference for the commune names !
 communes_names <- sf_communes %>%
   dplyr::distinct(NOM_MIN) %>%
   dplyr::arrange(NOM_MIN) %>%
-  dplyr::rename(Commune = NOM_MIN)
+  dplyr::pull(NOM_MIN)
+
+### Choices selectizeInput ----
+# Since we want to add the canton de Vaud as an input choice, we make a list for selectizeInput()
+
+choices_canton_communes <- list(
+  Canton = list("Canton de Vaud"),
+  Communes = communes_names
+)
 
 ### Available districts ----
 # For the zooming feature. We add one row for the cantonal view
@@ -284,6 +299,7 @@ categories_diren <- elec_prod_communes %>%
   dplyr::pull()
 
 ## Objects specific to the tabCons  ----
+
 # to be populated
 
 ## Objects specific to the tabRegener  ----
@@ -305,11 +321,12 @@ last_common_elec_year <- max(elec_prod_communes$annee) # When prod elec alone
   # !!CONS_ELEC removed!! # dplyr::pull(annee)
 
 
-### Fixed statistics for boxes ----
+### Cantonal statbox values ----
 
 #### VD electricity production for last common year
 
 prod_elec_vd_last_year <- elec_prod_communes %>%
+  dplyr::filter(commune == "Canton de Vaud") %>%
   dplyr::filter(annee == last_common_elec_year) %>%
   dplyr::summarise(production = sum(production, na.rm = TRUE)) %>%
   dplyr::pull()
@@ -320,6 +337,7 @@ cons_elec_vd_last_year <- NULL   # so we keep most code unchanged in mod_collaps
 
 # !!CONS_ELEC removed!! #  cons_elec_vd_last_year <- elec_cons_communes %>%
 # !!CONS_ELEC removed!! #   dplyr::filter(annee == last_common_elec_year) %>%
+# !!CONS_ELEC removed!! #   dplyr::filter(commune == "Canton de Vaud") %>%
 # !!CONS_ELEC removed!! #   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
 # !!CONS_ELEC removed!! #   dplyr::pull()
 
@@ -327,9 +345,9 @@ cons_elec_vd_last_year <- NULL   # so we keep most code unchanged in mod_collaps
 
 cons_rg_vd_last_year <- regener_cons_ae_aff %>%
   # dplyr::filter(annee == last_common_elec_year) %>% when year is here
+  dplyr::filter(commune == "Canton de Vaud") %>%
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
   dplyr::pull()
-
 
 ### Map-specific ----
 # We retrieve the coordinates

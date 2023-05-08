@@ -25,27 +25,37 @@ mod_download_data_ui <- function(id){
 #' @noRd
 mod_download_data_server <- function(id,
                                      data,
+                                     inputVals,
                                      dl_prefix,
                                      doc_vars){
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Render uiOutput buttons
-
+    # Render uiOutput buttons ----
+    ## CSV button ----
     output$download_ui_csv <- shiny::renderUI({
+
+      # if no commune selected ; don't display
+      req(shiny::isTruthy(inputVals$selectedCommunes))
 
       shiny::downloadButton(outputId = ns("download_csv"),
                           label = "CSV", class = "dlButton")
       })
 
-
+    ## Excel button ----
     output$download_ui_excel <- shiny::renderUI({
+
+      # if no commune selected ; don't display
+      req(shiny::isTruthy(inputVals$selectedCommunes))
 
       shiny::downloadButton(outputId = ns("download_excel"),
                           label = "XLSX", class = "dlButton" ) # class defined in custom.css
     })
 
-    # CSV handler
+
+
+    # Download handlers ----
+    ## CSV handler ----
     output$download_csv <- downloadHandler(
 
       filename = paste0(dl_prefix, Sys.Date(), ".csv"),
@@ -53,7 +63,7 @@ mod_download_data_server <- function(id,
         readr::write_excel_csv2(data(), file = file) # https://www.rdocumentation.org/packages/readr/versions/1.3.0/topics/write_delim
       }
     )
-    # XLSX handler
+    ## XLSX handler ----
 
     # We add documentation for XLSX since it's easy (CSV would require two separate files which must be in a ZIP...)
 

@@ -107,7 +107,8 @@ mod_about_the_app_ui <- function(id){
                                      "Les", strong("besoins optimisés"), "traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
                                      après 2001 étaient assainis énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
                                      br(),
-                                     "Davantage de détails peuvent être fournis sur demande à", tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
+                                     "Davantage de détails peuvent être fournis sur demande à",
+                                     tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
                                      "Un document de synthèse méthodologique est prévu prochainement afin de présenter la méthode appliquée."))
                          ),# End tags$ul 2/3
                          br(),

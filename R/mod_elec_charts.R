@@ -160,8 +160,10 @@ mod_elec_charts_server <- function(id,
 
         # PLOTLY BAR PLOT
         output$chart_1 <- plotly::renderPlotly({
-
+            invalidateLater(5000)
           # fct is defined in fct_helpers.R
+
+          isolate(
           create_bar_plotly(data = subsetData(),
                             n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
@@ -176,6 +178,8 @@ mod_elec_charts_server <- function(id,
                             web_width = inputVals$web_width, # px width of browser when app starts
                             web_height = inputVals$web_height # px height of browser when app starts
                             )
+
+          )
         })# End renderPlotly
       }# End if
       else if(input$tab_plot_type == "sunburst"){

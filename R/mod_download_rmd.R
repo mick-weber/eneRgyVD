@@ -125,12 +125,14 @@ mod_download_rmd_server <- function(id,
         on.exit(removeNotification(id), add = TRUE)
         Sys.sleep(1)
         notify("Mise en place de la salle de réunion...", id = id)
-        Sys.sleep(1.5)
+        Sys.sleep(2)
         notify("Rédaction du rapport...", id = id)
         Sys.sleep(1.5)
         notify("Elevage de moutons basques...", id = id)
         Sys.sleep(2)
         notify("Finalisation du rapport...", id = id)
+        Sys.sleep(1.5)
+        notify("Désactivation du track change...", id = id)
 
 
         # Calling rmd render with params & paths

@@ -178,6 +178,7 @@ mod_inputs_server <- function(id,
 
     })
 
+
     # [inputVals 2/3] Other inputs not influenced by selectInputs() else than commune
 
     observe({
@@ -213,6 +214,7 @@ mod_inputs_server <- function(id,
     })# End observe
 
 
+
     ### Statbox subsets, communes only (!) ----
     # --> we exclude Cantonal row which value is separated inside a dedicated statbox
     observe({
@@ -237,6 +239,7 @@ mod_inputs_server <- function(id,
       # !!CONS_ELEC removed!! #   dplyr::pull(consommation)
 
       # Statbox value for current selection's aggregated buildings thermal consumption
+
       inputVals$max_year_rg_cons <- subset_rgr_1() %>%
         # dplyr::filter(annee == max(annee)) %>%  When added !!
         dplyr::filter(!commune == "Canton de Vaud") %>%

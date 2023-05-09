@@ -161,7 +161,7 @@ create_bar_plotly <- function(data,
     ggplot2::theme(legend.position = "top",
                    # change the labels of facet wrap. main_color defined in utils_helpers.R
                    strip.background = element_rect(
-                     color="black", fill=main_color, size=1, linetype="solid"
+                     color="black", fill=main_color, linewidth = 1, linetype="solid"
                    ),
                    strip.text = element_text(
                      size =10, color = "white"),
@@ -836,7 +836,7 @@ rename_misc_colnames <- function(data){
   data |>
     dplyr::rename(
       "Commune" = commune,
-      "État estimé" = etat,
+      "Etat" = etat,
       "Surface de référence énergétique" = SRE,
       "Bâtiments chauffés" = N_EGID,
       "Bâtiments neufs (2001+)" = N_NEW_POST_2000,

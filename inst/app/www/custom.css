@@ -9,6 +9,10 @@
   font-family:Arial,Monospace,Verdana;
 }
 
+.disableLink{
+  pointer-events:none;
+}
+
 .titleClassDIREN{
   font-size:20px;
   text-align:center;

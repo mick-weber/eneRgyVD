@@ -42,14 +42,18 @@ app_ui <- function(request) {
         tags$li(
           class = "dropdown",
 
-                                 bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                 bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL, href = NULL,
                                                                               icon = icon("calendar", lib = "glyphicon"),
                                                                               headerText = "Dernières mises à jour",
+
+                                                       tags$div(class = "disableLink", # wrap in a div to pass the disableLink class (css)
 
                                                        purrr::pmap(notif_msg, .f = ~ bs4Dash::notificationItem(icon = shiny::icon(glue::glue("{..1}")),
                                                                                                                status = glue::glue("{..2}"),
                                                                                                                text = glue::glue("{..3}"))
-                                                                   )# End pmap
+
+                                                       )# End pmap
+                                                                   )# End div
 
                                                                               # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
                                                                               #                           status = "info",

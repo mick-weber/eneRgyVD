@@ -145,7 +145,6 @@ mod_elec_charts_server <- function(id,
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
-
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Render plot selectively based on radioButton above
@@ -159,11 +158,11 @@ mod_elec_charts_server <- function(id,
         # WIP with selectedUnit$unit_to
 
         # PLOTLY BAR PLOT
-        output$chart_1 <- plotly::renderPlotly({
-            invalidateLater(5000)
-          # fct is defined in fct_helpers.R
 
-          isolate(
+        output$chart_1 <- plotly::renderPlotly({
+
+
+            # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData(),
                             n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
@@ -179,8 +178,9 @@ mod_elec_charts_server <- function(id,
                             web_height = inputVals$web_height # px height of browser when app starts
                             )
 
-          )
         })# End renderPlotly
+
+
       }# End if
       else if(input$tab_plot_type == "sunburst"){
 
@@ -202,7 +202,9 @@ mod_elec_charts_server <- function(id,
 
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
 
-      tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
+      tags$div(class = ifelse(input$tab_plot_type == "sunburst",
+                              yes = "sunburstClass",
+                              no = "barClass"),
       plotly::plotlyOutput(ns("chart_1")) %>%
         shinycssloaders::withSpinner(type = 6,
                                      color= main_color) # color defined in utils_helpers.R

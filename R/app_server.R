@@ -14,8 +14,9 @@ app_server <- function(input, output, session) {
    # Bookmarking feature ----
 
    # List of authorized inputs for bookmarking
-   bookmarkingWhitelist <- c("inputs_1-selected_communes",  # which communes are selected
-                             "unit_converter-selected_unit" # which unit is selected
+   bookmarkingWhitelist <- c(
+      "inputs_1-selected_communes",  # which communes are selected
+      "unit_converter-selected_unit" # which unit is selected
    )
 
    # Trigger bookmarking only if communes OR units are modified

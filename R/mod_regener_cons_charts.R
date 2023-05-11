@@ -103,7 +103,9 @@ mod_regener_cons_charts_server <- function(id,
       if(input$tab_plot_type == "flow"){
 
         # Alluvial plot 1 : conso -> usage
+
       output$chart_alluvial <- shiny::renderPlot({
+
 
         subset_rgr_1() %>%
           lump_alluvial_factors(var_commune = "commune",
@@ -116,7 +118,6 @@ mod_regener_cons_charts_server <- function(id,
                                 label_from = "Consommation",
                                 var_to = "usage",
                                 label_to = "Usage")
-
 
 
 
@@ -147,6 +148,7 @@ mod_regener_cons_charts_server <- function(id,
         }, height = ifelse(test = is.null(inputVals$selectedCommunes),
                            yes = 400, # if no commune selected, default width = 400
                            no = ceiling(length(inputVals$selectedCommunes)/2)*400))
+
       }# End elseif
 
       })# End observe

@@ -178,8 +178,9 @@ colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$secteur)
 regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
                               as.character(icon("tree")), "Bois", "#CC9E62",
                               as.character(icon("industry")), "CAD", "#A58DE6",
-                              as.character(icon("bolt")), "Electricité (direct)", "#FF870F",
-                              as.character(icon("bolt-lightning")), "Electricité (PAC)", "#FFEF0F",
+                              as.character(icon("bolt")), "Electricité (direct)", "#FFEF0F",
+                              as.character(icon("bolt-lightning")), "Electricité (PAC)", "#FF870F",
+                              as.character(icon("temperature-half")), "Chaleur ambiante (PAC)", "#FF870F", # 2023-05-10
                               as.character(icon("fire-flame-simple")), "Gaz", "#477fc1", #gaznat
                               as.character(icon("fire-flame-simple")), "Mazout", "#5d5f63",
                               as.character(icon("sun")), "Solaire thermique", "#FFB90F"

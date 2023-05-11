@@ -98,7 +98,6 @@ mod_inputs_server <- function(id,
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh",
                       unit_to = selectedUnit$unit_to)
-
     })
 
 
@@ -300,7 +299,7 @@ mod_inputs_server <- function(id,
         # For NON-SELECTABLE technologies : a title with a unordered list (see custom.css classes)
 
           tags$p(class = "sidebar_na_title",
-                 "Non disponibles :"),
+                 "Non représentées :"),
           tags$ul(class = "sidebar_na_list",
                   setdiff(categories_diren, inputVals$techs_avail) %>% # unavailable techs
                   purrr::map(tags$li) # map into list items of ul()

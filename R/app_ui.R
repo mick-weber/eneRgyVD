@@ -135,7 +135,7 @@ app_ui <- function(request) {
             fluidRow(
               column(width = 8,
                      # Title for select map
-                     h4(strong("Sélectionnez des communes sur la carte ou dans la zone latérale")),
+                     h5(strong("Sélectionnez des communes sur la carte ou dans la zone latérale puis naviguez dans les onglets")),
                      # Leaflet select map
                       leaflet::leafletOutput("map") %>% # height defined in custom.css #map
                         shinycssloaders::withSpinner(type = 6,
@@ -294,7 +294,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "eneRgyVD"
+      app_title = "Profil énergie VD"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

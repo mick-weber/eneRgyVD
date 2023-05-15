@@ -60,8 +60,14 @@ mod_download_data_server <- function(id,
 
       filename = paste0(dl_prefix, Sys.Date(), ".csv"),
       content = function(file){
+
+       # future::future({ # WIP - future (async programming)
+
         readr::write_excel_csv2(data(), file = file) # https://www.rdocumentation.org/packages/readr/versions/1.3.0/topics/write_delim
-      }
+
+        # }) #End future
+
+        }
     )
     ## XLSX handler ----
 
@@ -75,7 +81,13 @@ mod_download_data_server <- function(id,
     output$download_excel <- downloadHandler(
       filename = paste0(dl_prefix, Sys.Date(), ".xlsx"),
       content = function(file){
+
+        # future::future({ # WIP - future (async programming)
+
         writexl::write_xlsx(download_sheets(), path = file)
+
+        # })# End future
+
         }
       )
 

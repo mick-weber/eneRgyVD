@@ -1,4 +1,0 @@
-bs4Dash::notificationItem() does not work as expected ; providing a href link only returns to the app and not to the link.
-
-This is solved in the dev branch of bs4Dash : https://github.com/RinteRface/bs4Dash/issues?q=is%3Aissue+is%3Aopen++item
-Next CRAN release should work well.

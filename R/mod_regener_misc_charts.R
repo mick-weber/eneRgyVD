@@ -57,7 +57,6 @@ mod_regener_misc_charts_server <- function(id,
 
 
 
-
   })
 }
 

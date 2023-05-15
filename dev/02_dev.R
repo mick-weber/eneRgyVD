@@ -45,6 +45,9 @@ usethis::use_package("sf")
 usethis::use_package("htmltools")
 usethis::use_package("bookdown") # for rmd rendering
 
+usethis::use_package("promises") # asnyc report download
+usethis::use_package("future")   # asnyc report download
+
 
 ## Add modules ----
 ## Create a module infrastructure in R/

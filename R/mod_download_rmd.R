@@ -98,7 +98,6 @@ mod_download_rmd_server <- function(id,
       )
     })
 
-
     # Download handler
 
     output$report <- downloadHandler(
@@ -107,15 +106,15 @@ mod_download_rmd_server <- function(id,
 
         # Define params to pass into rmarkdown::render() below
         params <- list(communes = inputVals$selectedCommunes,
+                       web_width = 2100, # wouldnt work with promise : inputVals$web_width,
+                       web_height = 800, # wouldnt work with promise : inputVals$web_height,
                        unit = selectedUnit$unit_to,
                        prod_data = inputVals$prod_dataset,
 # !! CONS_ELEC removed !! # cons_data = inputVals$cons_dataset,
                        regener_data_0 = inputVals$rgr_needs,
                        regener_data_1 = inputVals$rgr_1,
                        regener_data_2 = inputVals$rgr_2,
-                       regener_data_3 = inputVals$rgr_misc,
-                        web_width = inputVals$web_width,
-                        web_height = inputVals$web_height,)
+                       regener_data_3 = inputVals$rgr_misc)
 
         ## Render (future) report ----
 

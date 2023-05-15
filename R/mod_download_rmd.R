@@ -121,20 +121,41 @@ mod_download_rmd_server <- function(id,
         # Async feature to download the report
 
 
-        #promises::future_promise({
+      #   promises::future_promise({
+      #
+      #     # Notify the user
+      #     # showNotification("Préparation du rapport...",
+      #     #                  id = id, duration = NULL, closeButton = FALSE)
+      #     # # Remove once finished
+      #     # on.exit(removeNotification(id), add = TRUE)
+      #
+      #   rmarkdown::render(report_path, # utils_helpers.R
+      #                     output_file = file,
+      #                     params = params,
+      #                     envir = new.env(parent = globalenv())
+      #     )
+      # })
 
-          # Notify the user
-          # showNotification("Préparation du rapport...",
-          #                  id = id, duration = NULL, closeButton = FALSE)
-          # # Remove once finished
-          # on.exit(removeNotification(id), add = TRUE)
 
-        rmarkdown::render(report_path, # utils_helpers.R
-                          output_file = file,
-                          params = params,
-                          envir = new.env(parent = globalenv())
-          )
-        #})
+        # test wip
+
+        render_async <- function(file_path,
+                                 output_file,
+                                 params){
+          promises::future_promise({
+            rmarkdown::render(file_path,
+                   output_file = output_file,
+                   params = params,
+                   envir = new.env(parent = globalenv()))
+
+          })
+        }
+
+        # render report
+        render_async(file_path = report_path,
+                     params = params,
+                     output_file = file)
+
       }
     )# End downloadHandler
 

@@ -106,8 +106,8 @@ mod_download_rmd_server <- function(id,
 
         # Define params to pass into rmarkdown::render() below
         params <- list(communes = inputVals$selectedCommunes,
-                       web_width = 2100, # wouldnt work with promise : inputVals$web_width,
-                       web_height = 800, # wouldnt work with promise : inputVals$web_height,
+                       web_width =  inputVals$web_width,
+                       web_height = inputVals$web_height,
                        unit = selectedUnit$unit_to,
                        prod_data = inputVals$prod_dataset,
 # !! CONS_ELEC removed !! # cons_data = inputVals$cons_dataset,
@@ -119,7 +119,9 @@ mod_download_rmd_server <- function(id,
         ## Render (future) report ----
 
         # Async feature to download the report
-        promises::future_promise({
+
+
+        #promises::future_promise({
 
           # Notify the user
           # showNotification("Préparation du rapport...",
@@ -132,7 +134,7 @@ mod_download_rmd_server <- function(id,
                           params = params,
                           envir = new.env(parent = globalenv())
           )
-        })
+        #})
       }
     )# End downloadHandler
 

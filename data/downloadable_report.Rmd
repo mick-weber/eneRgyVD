@@ -17,14 +17,13 @@ fontsize: 11pt
 
 #bibliography: references.bib
 
-#paramètres pour l'export Shiny
+#paramètres pour l'export Shiny (cons_data removed temporarily)
 params:
   communes: NULL
   web_height: NULL
   web_width: NULL
   unit: NULL
   prod_data: NULL
-  # cons_data: NULL
   regener_data_0: NULL
   regener_data_1: NULL
   regener_data_2: NULL

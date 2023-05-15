@@ -1,6 +1,8 @@
 #' download_rmd UI Function
 #'
-#' @description A shiny Module.
+#' @description This modules places the UI for the tabReport section
+#'  One button to download the report, one to download all the data at once,
+#'  and some textOutput to display which communes are currently selected.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -22,7 +24,7 @@ mod_download_rmd_ui <- function(id){
     # Breathing
     br(),
 
-    # 2/2 Download all ----
+    # 2/2 Download all data----
 
     h4(strong("Télécharger toutes les données")),
     br(),
@@ -37,8 +39,11 @@ mod_download_rmd_ui <- function(id){
 }
 
 #' download_rmd Server Functions
+#' @description Server logic to generate the report and download all the available data
+#' for the currently selected communes.
 #'
 #' @noRd
+
 mod_download_rmd_server <- function(id,
                                     inputVals,
                                     selectedUnit){
@@ -97,13 +102,10 @@ mod_download_rmd_server <- function(id,
     # Download handler
 
     output$report <- downloadHandler(
-      filename = paste0("eneRgyVD_rapport_",Sys.Date(),".html"),
+      filename = paste0("ProfilEnergie_rapport_",Sys.Date(),".html"),
       content = function(file) {
 
-        # tempReport <- file.path(tempdir(), "downloadable_report.Rmd")
-        # file.copy("./inst/extdata/downloadable_report.Rmd", tempReport, overwrite = TRUE)
-
-
+        # Define params to pass into rmarkdown::render() below
         params <- list(communes = inputVals$selectedCommunes,
                        unit = selectedUnit$unit_to,
                        web_width = inputVals$web_width,
@@ -115,39 +117,33 @@ mod_download_rmd_server <- function(id,
                        regener_data_2 = inputVals$rgr_2,
                        regener_data_3 = inputVals$rgr_misc)
 
-        notify <- function(msg, id = NULL) {
-          showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
-        }
+        # Notify .fun ---- (might instead be in utils_helpers.R)
 
-        # Distraction notifications...
+         notify <- function(msg, id = NULL) {
+           showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
+         }
 
-        id <- notify("Identification des communes...")
-        on.exit(removeNotification(id), add = TRUE)
-        Sys.sleep(1)
-        notify("Mise en place de la salle de réunion...", id = id)
-        Sys.sleep(2)
-        notify("Rédaction du rapport...", id = id)
-        Sys.sleep(1.5)
-        notify("Elevage de moutons basques...", id = id)
-        Sys.sleep(2)
-        notify("Finalisation du rapport...", id = id)
-        Sys.sleep(1.5)
-        notify("Désactivation du track change...", id = id)
+         # Distraction notifications...
+         id <- notify("Préparation du rapport...")
+         on.exit(removeNotification(id), add = TRUE)
 
 
-        # Calling rmd render with params & paths
+        ## Render report ----
 
-        rmarkdown::render(report_path, # utils_helpers.R !
+        # Async feature to download the report
+        promises::future_promise({
+
+        rmarkdown::render(report_path, # utils_helpers.R
                           output_file = file,
                           params = params,
                           envir = new.env(parent = globalenv())
-
-        )
+          )
+        })
       }
-    )
+    )# End downloadHandler
 
 
-    # 2/2 : Download all ----
+    # 2/2 : Download all data----
 
 
     output$download_all_sentence <- shiny::renderPrint({
@@ -173,6 +169,7 @@ mod_download_rmd_server <- function(id,
 
 
     # XLSX handler to download all objects.
+    # ! We rename colnames here too ! Check if still required !
 
     download_all_sheets <- reactive({
       # List all pertinent inputVals$<datasets> from mod_inputs.R

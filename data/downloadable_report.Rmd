@@ -65,7 +65,9 @@ Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://s
 
 Le contenu de ce rapport sera adapté progressivement en fonction des données disponibles ainsi que des fonctionnalités souhaitées par les utilisateurs.
 
-# Rapport énergétique pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`
+# Rapport énergétique
+
+Ce rapport a été généré pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`.
 
 <!-- ## Consommation d'électricité -->
 

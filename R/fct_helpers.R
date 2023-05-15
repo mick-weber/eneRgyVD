@@ -131,7 +131,8 @@ create_bar_plotly <- function(data,
                               free_y = FALSE,
                               legend_title,
                               web_width,
-                              web_height){
+                              web_height
+                              ){
 
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...

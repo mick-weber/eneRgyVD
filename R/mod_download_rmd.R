@@ -142,7 +142,7 @@ mod_download_rmd_server <- function(id,
         render_async <- function(file_path,
                                  output_file,
                                  params){
-          promises::future_promise(seed = NULL,
+          promises::future_promise(seed = NULL, # to remove warnings
                                    {
             rmarkdown::render(file_path,
                    output_file = output_file,

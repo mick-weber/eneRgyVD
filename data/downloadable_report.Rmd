@@ -35,6 +35,7 @@ params:
 # Basic knitr behavior
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
 
+
 ```
 
 ```{css basic-theme, echo = FALSE}
@@ -73,7 +74,7 @@ Ce rapport a été généré pour `r knitr::combine_words(words = params$commune
 <!-- ### Tableau -->
 
 <!-- ```{r} -->
-<!-- params$cons_data %>% -->
+<!-- params$cons_data |> -->
 <!--   eneRgyVD::create_cons_table_dt(unit = params$unit) -->
 <!-- ``` -->
 
@@ -81,7 +82,7 @@ Ce rapport a été généré pour `r knitr::combine_words(words = params$commune
 
 <!-- ```{r} -->
 
-<!-- params$cons_data %>% -->
+<!-- params$cons_data |> -->
 <!--     eneRgyVD::create_bar_plotly(unit = params$unit, -->
 <!--                                 n_communes = length(params$communes), -->
 <!--                                 web_width = params$web_width, -->
@@ -104,7 +105,7 @@ Ce rapport a été généré pour `r knitr::combine_words(words = params$commune
 
 ```{r}
 
-params$prod_data %>% 
+params$prod_data |> 
     eneRgyVD::create_prod_table_dt(unit = params$unit)
 
 ```
@@ -113,7 +114,7 @@ params$prod_data %>%
 
 ```{r}
 
-params$prod_data %>%
+params$prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
                                 web_width = params$web_width,
@@ -137,7 +138,7 @@ Par usage :
 
 ```{r}
 
-params$regener_data_1 %>%
+params$regener_data_1 |>
   eneRgyVD::create_regener_table_dt(unit = params$unit)
 
 ```
@@ -147,7 +148,7 @@ Par affectation :
 
 ```{r}
 
-params$regener_data_2 %>%
+params$regener_data_2 |>
   eneRgyVD::create_regener_table_dt(unit = params$unit)
 
 ```
@@ -165,11 +166,11 @@ height_facet_plots = ceiling(length(params$communes)/2)*400*0.01
 
 ```{r fig.height= height_facet_plots, fig.width = 12}
 
-params$regener_data_1 %>%
+params$regener_data_1 |>
   eneRgyVD::lump_alluvial_factors(var_commune = "commune",
                                 var_flow = "consommation",
                                 var_from = "ae",
-                                var_to = "usage") %>%
+                                var_to = "usage") |>
   eneRgyVD::create_alluvial_chart(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",

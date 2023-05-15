@@ -68,34 +68,7 @@ Le contenu de ce rapport sera adapté progressivement en fonction des données d
 
 Ce rapport a été généré pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`.
 
-<!-- ## Consommation d'électricité -->
 
-<!-- ### Tableau -->
-
-<!-- ```{r} -->
-<!-- params$cons_data |> -->
-<!--   eneRgyVD::create_cons_table_dt(unit = params$unit) -->
-<!-- ``` -->
-
-<!-- ### Graphique -->
-
-<!-- ```{r} -->
-
-<!-- params$cons_data |> -->
-<!--     eneRgyVD::create_bar_plotly(unit = params$unit, -->
-<!--                                 n_communes = length(params$communes), -->
-<!--                                 web_width = params$web_width, -->
-<!--                                 web_height = params$web_height, -->
-<!--                                 var_year = "annee", -->
-<!--                                 var_commune = "commune", -->
-<!--                                 var_rank_2 = "secteur", -->
-<!--                                 var_values = "consommation", -->
-<!--                                 color_palette = eneRgyVD::return_palette_cons_elec(), -->
-<!--                                 dodge = F, -->
-<!--                                 free_y = F, -->
-<!--                                 legend_title = "Secteurs") -->
-
-<!-- ``` -->
 
 
 ## Production d'électricité
@@ -112,20 +85,6 @@ params$prod_data |>
 ### Graphique
 
 ```{r}
-
-# params$prod_data |>
-#     eneRgyVD::create_bar_plotly(unit = params$unit,
-#                                 n_communes = length(params$communes),
-#                                 web_width = params$web_width,
-#                                 web_height = params$web_height,
-#                                 var_year = "annee",
-#                                 var_commune = "commune",
-#                                 var_rank_2 = "categorie",
-#                                 var_values = "production",
-#                                 color_palette = eneRgyVD::return_palette_prod_elec(),
-#                                 dodge = F,
-#                                 free_y = F,
-#                                 legend_title = "Technologies")
 
 ```
 

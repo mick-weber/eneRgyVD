@@ -117,21 +117,16 @@ mod_download_rmd_server <- function(id,
                        regener_data_2 = inputVals$rgr_2,
                        regener_data_3 = inputVals$rgr_misc)
 
-        # Notify .fun ---- (might instead be in utils_helpers.R)
-
-         notify <- function(msg, id = NULL) {
-           showNotification(msg, id = id, duration = NULL, closeButton = FALSE)
-         }
-
-         # Distraction notifications...
-         id <- notify("Préparation du rapport...")
-         on.exit(removeNotification(id), add = TRUE)
-
-
-        ## Render report ----
+        ## Render (future) report ----
 
         # Async feature to download the report
         promises::future_promise({
+
+          # Notify the user
+          # showNotification("Préparation du rapport...",
+          #                  id = id, duration = NULL, closeButton = FALSE)
+          # # Remove once finished
+          # on.exit(removeNotification(id), add = TRUE)
 
         rmarkdown::render(report_path, # utils_helpers.R
                           output_file = file,

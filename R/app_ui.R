@@ -205,7 +205,8 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                                        width =8,
-                                                      methodological_warning # text in utils_helpers.R
+                                      paste0(generic_method_warning, # text in utils_helpers.R
+                                             specific_prod_elec_warning)
                                   ),
                      ), #End fluidRow
 
@@ -231,7 +232,8 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                   width =8,
-                                  methodological_warning # text in utils_helpers.R
+                                  paste0(generic_method_warning, # text in utils_helpers.R
+                                         specific_rgr_warning)
                                   ),
             ),
 
@@ -257,7 +259,8 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                   width =8,
-                                  methodological_warning # text in utils_helpers.R
+                                  paste0(generic_method_warning, # text in utils_helpers.R
+                                         specific_rgr_warning)
                                   ),
             ),
 
@@ -281,7 +284,8 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                   width =8,
-                                  methodological_warning # text in utils_helpers.R
+                                  paste0(generic_method_warning, # text in utils_helpers.R
+                                         specific_rgr_warning)
                                   ),
             ),
 

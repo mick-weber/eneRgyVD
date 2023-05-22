@@ -48,8 +48,14 @@ req_communes_phrase <- "Sélectionner au moins une commune pour générer un ré
 ## Sentence methodological changes ----
 # Used in ui.r to avoid repetition
 
-methodological_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
+generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
                                                        Les grands principes de chaque méthode ainsi que les principales modifications sont documentées."
+
+specific_prod_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de nous contacter afin que nous puissions améliorer les résultats."
+
+specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'information qui figure dans les registres cantonal et fédéral des bâtiments, en particulier pour les agents énergétiques.
+La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
+
 
 ## User notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R

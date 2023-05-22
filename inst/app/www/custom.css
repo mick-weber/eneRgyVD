@@ -13,6 +13,19 @@
   pointer-events:none;
 }
 
+/* Remove vertical padding (0rem) for 'Consulter la méthodologie' boxes on each tab */
+/*    horizontal padding as default (1.25rem) */
+#shiny-tab-tabProd > div.row > div > div > div.card-header,
+#shiny-tab-tabRegenerCons > div.row > div > div > div.card-header,
+#shiny-tab-tabRegenerNeeds > div.row > div > div > div.card-header,
+#shiny-tab-tabRegenerMisc > div.row > div > div > div.card-header{
+
+  padding:0rem 1.25rem;
+
+}
+
+
+
 .titleClassDIREN{
   font-size:20px;
   text-align:center;

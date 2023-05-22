@@ -839,7 +839,7 @@ rename_misc_colnames <- function(data){
       "Commune" = commune,
       "Etat" = etat,
 
-     "Surface de référence énergétique" = SRE,
+     "Surface de référence énergétique (m2)" = SRE,
      "Bâtiments chauffés" = N_EGID,
      "Bâtiments neufs (2001+)" = N_NEW_POST_2000,
      "Bâtiments rénovés récemment" = N_RENOV_POST_2000,

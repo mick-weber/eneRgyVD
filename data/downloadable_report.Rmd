@@ -69,8 +69,6 @@ Le contenu de ce rapport sera adapté progressivement en fonction des données d
 Ce rapport a été généré pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`.
 
 
-
-
 ## Production d'électricité
 
 ### Tableau
@@ -85,6 +83,20 @@ params$prod_data |>
 ### Graphique
 
 ```{r}
+# Temp removal : Yields error for params$web_width and params$web_height once rendered in stat-energie-vd.ch
+params$prod_data |>
+    eneRgyVD::create_bar_plotly(unit = params$unit,
+                                n_communes = length(params$communes),
+                                web_width = 1900,
+                                web_height = 1000,
+                                var_year = "annee",
+                                var_commune = "commune",
+                                var_rank_2 = "categorie",
+                                var_values = "production",
+                                color_palette = eneRgyVD::return_palette_prod_elec(),
+                                dodge = F,
+                                free_y = F,
+                                legend_title = "Technologies")
 
 ```
 

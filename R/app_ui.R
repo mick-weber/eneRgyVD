@@ -27,7 +27,7 @@ app_ui <- function(request) {
 
       ## leftUi ----
                                leftUi = tags$li(style = "padding-left:100px;",
-                                                h4(strong("Profil énergétique des communes vaudoises (développement)")),
+                                                h4(strong("Profil énergétique des communes vaudoises")),
                                                 class = "dropdown"),
       ## rightUi ----
                                rightUi =
@@ -99,17 +99,24 @@ app_ui <- function(request) {
 
                              br(), # between title and menuItems
 
-                             ## menuItems & subItems ----
+                             ## menuItems ----
 
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("earth-americas")),
+
+                             br(), # Space to isolate data tabs
+
                              # !!CONS_ELEC removed!! # bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
                                     bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
                                                       bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
                                                       bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
                                                       bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
+                             br(), # Space to isolate data tabs
+
                                     bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
-                                    bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info"))
+                                    bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info")),
+                                    bs4Dash::menuItem("Guide utilisateur", tabName = "tabScribe", icon = icon("question-circle"))
+
         ),# End sidebarMenu
 
         ## Widgets module ----
@@ -177,7 +184,7 @@ app_ui <- function(request) {
           # !!CONS_ELEC removed!! #   tabName = "tabCons",
           # !!CONS_ELEC removed!! #   fluidRow(h4(strong("Consommation d'électricité par commune")),
           # !!CONS_ELEC removed!! #            HTML('&nbsp;'), HTML('&nbsp;'),
-          # !!CONS_ELEC removed!! #            actionButton("cons_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+          # !!CONS_ELEC removed!! #            actionButton("cons_data_help", label = "Consulter la méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
           # !!CONS_ELEC removed!! #   # breathing
           # !!CONS_ELEC removed!! #   br(),
           # !!CONS_ELEC removed!! #   # to about_the_app module (test)
@@ -192,7 +199,16 @@ app_ui <- function(request) {
             tabName = "tabProd",
             fluidRow(h4(strong("Production d'électricité par commune")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("prod_data_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"), class = "infoButton")), # no label
+                     HTML('&nbsp;'),HTML('&nbsp;'),
+                     bs4Dash::box(title = actionButton("prod_data_help", # custom.css padding header
+                                                       label = "Consulter la méthodologie",
+                                                       icon = icon("info-sign", lib = "glyphicon"),
+                                                       class = "infoButton"),
+                                                       width =8,
+                                                      methodological_warning # text in utils_helpers.R
+                                  ),
+                     ), #End fluidRow
+
             # breathing
             br(),
 
@@ -206,10 +222,19 @@ app_ui <- function(request) {
 
           bs4Dash::tabItem(
             tabName = "tabRegenerNeeds",
+
             fluidRow(h4(strong("Besoins théoriques des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_needs_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
-                                  class = "infoButton")), # no label
+                     HTML('&nbsp;'),HTML('&nbsp;'),
+                     bs4Dash::box(title = actionButton("rg_needs_help", # custom.css padding header
+                                                       label = "Consulter la méthodologie",
+                                                       icon = icon("info-sign", lib = "glyphicon"),
+                                                       class = "infoButton"),
+                                  width =8,
+                                  methodological_warning # text in utils_helpers.R
+                                  ),
+            ),
+
             # breathing
             br(),
 
@@ -223,10 +248,19 @@ app_ui <- function(request) {
           ### Cons subitem ----
           bs4Dash::tabItem(
             tabName = "tabRegenerCons",
+
             fluidRow(h4(strong("Consommation théorique des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_cons_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
-                                  class = "infoButton")), # no label
+                     HTML('&nbsp;'),HTML('&nbsp;'),
+                     bs4Dash::box(title = actionButton("rg_cons_help", # custom.css padding header
+                                                       label = "Consulter la méthodologie",
+                                                       icon = icon("info-sign", lib = "glyphicon"),
+                                                       class = "infoButton"),
+                                  width =8,
+                                  methodological_warning # text in utils_helpers.R
+                                  ),
+            ),
+
             # breathing
             br(),
 
@@ -238,10 +272,19 @@ app_ui <- function(request) {
           ### Misc subitem----
           bs4Dash::tabItem(
             tabName = "tabRegenerMisc",
+
             fluidRow(h4(strong("Autres informations des bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
-                     actionButton("rg_misc_help", label = "Méthodologie", icon = icon("info-sign", lib = "glyphicon"),
-                                  class = "infoButton")), # no label
+                     HTML('&nbsp;'),HTML('&nbsp;'),
+                     bs4Dash::box(title = actionButton("rg_misc_help", # custom.css padding header
+                                                       label = "Consulter la méthodologie",
+                                                       icon = icon("info-sign", lib = "glyphicon"),
+                                                       class = "infoButton"),
+                                  width =8,
+                                  methodological_warning # text in utils_helpers.R
+                                  ),
+            ),
+
             # breathing
             br(),
 
@@ -273,7 +316,19 @@ app_ui <- function(request) {
 
             mod_about_the_app_ui("about")
 
+          ),# End tabItem
+
+          ## tabScribe ----
+          bs4Dash::tabItem(
+            tabName = "tabScribe",
+            # h4(strong("")) # No title --> inside the Scribe
+
+            br(),
+            # Simple iframe embed (no module needed here)
+            tags$iframe(src= "https://scribehow.com/embed/Guide_utilisateur_du_profil_energetique__4-AtAEyRRDeuVKoe9UA1XA?as=scrollable", #&skipIntro=true
+                        width = "80%", height = "800")
           )# End tabItem
+
         )# End tabItems
       )# End dashboardBody
     )# End dashboardPage

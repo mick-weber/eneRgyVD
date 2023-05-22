@@ -40,10 +40,16 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Generic utils ----
 
-## Phrase for required communes ----
+## Sentence for required communes ----
 # To avoid multiple repetitions troughout the app we store it once here
 
 req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat."
+
+## Sentence methodological changes ----
+# Used in ui.r to avoid repetition
+
+methodological_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
+                                                       Les grands principes de chaque méthode ainsi que les principales modifications sont documentées."
 
 ## User notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R

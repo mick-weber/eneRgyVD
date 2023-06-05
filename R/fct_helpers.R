@@ -1,4 +1,6 @@
-#' info_dev_message
+# Info fn ----
+
+#' info_dev_message()
 #' shinyalert popup which informs that this is a development version. Called in app_server.R
 #' @importFrom shinyalert shinyalert
 #' @return A shinyalert object when opening the app
@@ -28,8 +30,9 @@ info_dev_message <- function(){
 
 }
 
+# Graph fns ----
 
-#' create_select_leaflet
+#' create_select_leaflet()
 #'
 #' @description Creates the non-reactive part of the home leaflet map to select municipalities and interact with selectInputs.
 #' @import leaflet
@@ -107,7 +110,7 @@ create_select_leaflet <- function(sf_districts,
 }
 
 
-#' create_bar_plotly
+#' create_bar_plotly()
 #'
 #'@description Creates a plotly object from a facetted ggplot bar plot for use in renderPlotly
 #'
@@ -196,7 +199,7 @@ create_bar_plotly <- function(data,
            locale = "fr")
 }
 
-#' create_sunburst_plotly
+#' create_sunburst_plotly()
 #'
 #' @description Creates a sunburst, inspired from https://stackoverflow.com/questions/57395424/how-to-format-data-for-plotly-sunburst-diagram
 #'
@@ -303,7 +306,143 @@ create_sunburst_plotly <- function(data_sunburst,
 } # end function
 
 
-#' create_table_dt
+#' create_alluvial_chart()
+#' creates a ggplot2 alluvial plot using ggalluvial library and uses labels and variable
+#' names as arguments for a flexible data input
+#'
+#' @param data the dataset used to create the ggalluvial plot
+#' @param var_from the variable for the left stratum
+#' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
+#' @param var_to the variable for the right stratum
+#' creates a ggplot2 alluvial chart using the ggalluvial library and heat building
+#' consumption data from an aggregated RegEner dataset
+#' @return a ggplot2 object for regener alluvial visualisations
+#' @export
+
+create_alluvial_chart <- function(data,
+                                  var_commune,
+                                  var_flow,
+                                  var_from,
+                                  label_from,
+                                  var_to,
+                                  label_to){
+
+  # Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
+  # Very tough subject, no idea why this ' := ' or {{ }} are required
+
+
+  # data plotting
+  data %>%
+    ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]],
+                                 axis2 = .data[[var_to]],
+                                 y = .data[[var_flow]],
+                                 label = .data[[var_flow]]))+
+    ggalluvial::geom_alluvium(ggplot2::aes(fill = .data[[var_from]]),
+                              width = 3/8, reverse = FALSE) +
+    ggalluvial::geom_stratum(alpha = .25, width = 3/8, reverse = FALSE) +
+    ggplot2::geom_label(stat = ggalluvial::StatStratum,
+                        alpha = .65, size = 4.5,
+                        ggplot2::aes(label = paste0(after_stat(stratum),
+                                                    " ",
+                                                    scales::percent(after_stat(prop), accuracy = 0.1))),
+                        reverse = FALSE) +
+    ggplot2::scale_x_continuous(breaks = 1:2, labels = c(label_from, label_to)) +
+    ggplot2::scale_fill_manual(values =  return_palette_regener())+ # fcts_helpers.R
+    ggplot2::facet_wrap(facets = var_commune,
+                        scales = "free",
+                        ncol = 2)+
+    ggplot2::theme_void()+
+    ggplot2::theme(legend.position = "none",
+                   strip.text = element_text(size =16),
+                   axis.text.x = element_text(size = 14)) %>%
+    suppressWarnings() # avoid annoying warning due to 'Autres' <fct> in both strata
+
+}
+
+
+#' lump_alluvial_factors()
+#' takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
+#' according to two {forcats} functions which arguments should be modified in the code
+#'
+#' @param data the dataset used to create the ggalluvial plot
+#' @param var_from the variable for the left stratum
+#' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
+#' @param var_to the variable for the right stratum
+#'
+#' @return a ggplot object
+#' @export
+
+lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to){
+
+  # lumping factors both left and right of alluvia to 4 max (for readability)
+  # fct_lump_prop won't lump a factor ALONE, there needs to be 2 factors to meet the prop criteria
+
+  data %>%
+    dplyr::group_by(.data[[var_commune]]) %>% # !! must group_by commune
+    dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
+                                                      n = 3,
+                                                      w = .data[[var_flow]],
+                                                      other_level = "Autres sources")) %>%
+    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
+                                                       prop = 0.1, # 10% min to appear individually
+                                                       w = .data[[var_flow]],
+                                                       other_level = "Autres"))
+
+}
+
+
+#' return_dynamic_size()
+#' Returns a px value used for dynamic facet plots based on web display size and number of facets.
+#' A facet row is typically well displayed at around 1/6 of the screen's height
+#' @param which either 'width' or 'height'
+#' @param web_size px size of either width or height, typically obtained with {shinybrowser}
+#'
+#' @return a numeric value corresponding to px
+#' @export
+
+return_dynamic_size <- function(which, web_size, n_facets){
+
+  if(which == "height"){
+
+    # This returns the correct number of facetted rows
+    # Note : valid only when there are 2 facets per row
+    n_facet_rows <- (n_facets+ (n_facets %% 2))/2
+
+    # Empirically found web-relative height per facetted row
+    px_per_row <- web_size/6
+
+    # Empirically found absolute legend height
+    legend_height <- 250 # px
+
+    # Plot height acc. to number of rows and legend height
+
+    plot_height <- legend_height + n_facet_rows * px_per_row # px/row
+
+    return(plot_height)
+
+
+  }else if(which == "width"){
+    # For width, we return 75% of useful space if one facet, 90% if more than 1
+
+    plot_width <- ifelse(
+      # test :
+      test = n_facets == 1,
+      # Yes (1 facet) : web width - sidebar (300) * 75%
+      yes = (web_size-300)*0.75,
+      # No (More than 1 facet) : web width - sidebar (300) * 95%
+      no = (web_size-300)*0.95)
+
+    return(plot_width)
+
+  }else{
+    stop("'which' arg can only be of type 'height' or 'width'.")
+  }
+
+}
+
+# Table fns ----
+
+#' create_table_dt()
 #'
 #' @param data Specific electricity production, DGE-DIREN data to transform to datatable
 #' Must follow Pronovo's outputs and utils_helpers.R format
@@ -364,7 +503,7 @@ create_prod_table_dt <- function(data,
 }
 
 
-#' create_cons_table_dt
+#' create_cons_table_dt()
 #'
 #' @param data Specific electricity consumption, DGE-DIREN data to transform to datatable
 #' Must follow specific data format which can be found in /data
@@ -424,7 +563,7 @@ create_cons_table_dt <- function(data,
     ) # End DT
 }
 
-#' create_rg_needs_table_dt
+#' create_rg_needs_table_dt()
 #' @param data Specific regener needs dataset to transform to datatable
 #' Must follow specific data format which can be found in /data
 #' @param unit Unit currently selected inside the app
@@ -481,34 +620,68 @@ create_rg_needs_table_dt <- function(data,
 
 }
 
-#' create_doc_table_dt
-#' Creates minimalistic documentation table with download feature
-#' @param data the dataset containing variables and descriptions
-#'
-#' @return A DT object
 
-create_doc_table_dt <- function(data, doc_prefix){
+#' create_regener_table_dt()
+#' creates a DT table with custom formatting and html icons
+#' @param data Specific regener consumption table, DGE-DIREN data to transform to datatable
+#' @param unit Unit currently selected inside the app
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
+#'
+#' @return a datatable object for regener datasets
+#' @export
+
+create_regener_table_dt <- function(data,
+                                    unit,
+                                    DT_dom = 'frtip'
+){
 
   data %>%
-    DT::datatable(rownames = FALSE, # no index col
-                  extensions = "Buttons",
-                  options = list(
-      dom = "Bfti", # Button ; filter; table ; information summary
-      buttons = list(
-        list(extend = 'csv', filename = paste0(doc_prefix, Sys.Date())),
-        list(extend = 'excel', filename = paste0(doc_prefix, Sys.Date()))),
-      columnDefs = list(list(targets = 0, className = 'dt-center')), # or "_all"
-      paging = TRUE,
-      pageLength = 20,
-      scrollY = FALSE,
-      autoWidth = TRUE,
-      language = DT_fr_language # utils_helpers.R
-    ))
+    # Set pct_commune to % display (output for dl is in numeric)
+    dplyr::mutate(pct_commune = scales::percent(
+      pct_commune, accuracy = 0.01)) %>%
+    dplyr::mutate(
+      # change year to factor
+      # Annee = as.factor(Annee), # if needed later
+      # format numeric cols
+      dplyr::across(consommation, ~format(.x,
+                                          big.mark = "'",
+                                          digits = 3,
+                                          drop0trailing = TRUE,
+                                          scientific = FALSE))) %>%
+
+    # add icons HTML tags from utils_helpers.R
+    dplyr::left_join(regener_icons, by = "ae") %>%
+    dplyr::relocate(pct_commune, .after = "consommation") %>%
+    dplyr::relocate(icon, .before = "ae") %>%
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
+    #turn to DT
+    rename_fr_colnames() %>% # fct_helpers.R
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("rgr_table_vd_", Sys.Date()))
+                                 ),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R !
+                  ),
+                  #extensions = 'Buttons',
+                  selection = 'single', ## enable selection of a single row
+                  #filter = 'bottom',              ## include column filters at the bottom
+                  rownames = FALSE               ## don't show row numbers/names
+    ) # End DT
 
 }
 
 
-#' create_rg_misc_table_dt
+#' create_rg_misc_table_dt()
 #' Creates datatable for regener_misc dataset
 #' @param data the dataset containing variables and descriptions
 #' @param unit Unit currently selected inside the app
@@ -520,7 +693,7 @@ create_doc_table_dt <- function(data, doc_prefix){
 create_rg_misc_table_dt <- function(data,
                                     # unit arg not needed for misc data
                                     DT_dom = 'frtip'
-                                    ){
+){
 
   data %>%
     # Basic clean up for table output
@@ -560,6 +733,33 @@ create_rg_misc_table_dt <- function(data,
 
 }
 
+#' create_doc_table_dt
+#' Creates minimalistic documentation table with download feature
+#' @param data the dataset containing variables and descriptions
+#'
+#' @return A DT object
+
+create_doc_table_dt <- function(data, doc_prefix){
+
+  data %>%
+    DT::datatable(rownames = FALSE, # no index col
+                  extensions = "Buttons",
+                  options = list(
+      dom = "Bfti", # Button ; filter; table ; information summary
+      buttons = list(
+        list(extend = 'csv', filename = paste0(doc_prefix, Sys.Date())),
+        list(extend = 'excel', filename = paste0(doc_prefix, Sys.Date()))),
+      columnDefs = list(list(targets = 0, className = 'dt-center')), # or "_all"
+      paging = TRUE,
+      pageLength = 20,
+      scrollY = FALSE,
+      autoWidth = TRUE,
+      language = DT_fr_language # utils_helpers.R
+    ))
+
+}
+
+# Palette fns ----
 
 #' return_palette_prod_elec
 #' Returns the color palette for categories in the electricity production dataset
@@ -585,7 +785,7 @@ return_palette_cons_elec <- function(){
 
 
 
-#' return_palette_regener()
+#' return_palette_regener
 #' returns the color palette for energy sources in the regener dataset
 #' @return a vector with categorical data and hex color strings
 #' @export
@@ -602,6 +802,7 @@ return_palette_regener <- function(){
 
 }
 
+# Unit fns ----
 
 #' convert_units()
 #' Converts units either from dataframe (in target columns) or directly from a numeric value
@@ -639,8 +840,7 @@ convert_units <- function(data,
 
 }
 
-
-#' add_colnames_units
+#' add_colnames_units()
 #' returns unit extension in target columns according to the currently selected unit
 #' of the app for power and energy related colnames. Should be called before making
 #' nicely formatted columns with rename_fr_colnames()
@@ -658,7 +858,7 @@ add_colname_units <- function(data, unit){
 
   # Step 1 : rename vars if contains energy related keywords and add the power unit in brackets
   if(any(stringr::str_detect(string = colnames(data),
-                    pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
+                             pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
 
     data <- data |>
       # For all energy-related units
@@ -672,9 +872,9 @@ add_colname_units <- function(data, unit){
   # Step 2 : rename vars if contains power related keywords and add the power unit in brackets
   # This step works if related after Step 1
   if(any(stringr::str_detect(string = colnames(data),
-                    pattern = stringr::regex(paste0(power_col_keywords,
-                                           collapse = "|"),
-                                    ignore_case = TRUE)))){
+                             pattern = stringr::regex(paste0(power_col_keywords,
+                                                             collapse = "|"),
+                                                      ignore_case = TRUE)))){
 
     data %>%
       # For all power-related units
@@ -692,151 +892,9 @@ add_colname_units <- function(data, unit){
 
 }
 
+# Colnames fns ----
 
-#' create_alluvial_chart()
-#' creates a ggplot2 alluvial plot using ggalluvial library and uses labels and variable
-#' names as arguments for a flexible data input
-#'
-#' @param data the dataset used to create the ggalluvial plot
-#' @param var_from the variable for the left stratum
-#' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
-#' @param var_to the variable for the right stratum
-#' creates a ggplot2 alluvial chart using the ggalluvial library and heat building
-#' consumption data from an aggregated RegEner dataset
-#' @return a ggplot2 object for regener alluvial visualisations
-#' @export
-
-create_alluvial_chart <- function(data,
-                                  var_commune,
-                                  var_flow,
-                                  var_from,
-                                  label_from,
-                                  var_to,
-                                  label_to){
-
-  # Following https://stackoverflow.com/questions/67142718/embracing-operator-inside-mutate-function
-  # Very tough subject, no idea why this ' := ' or {{ }} are required
-
-
-        # data plotting
-    data %>%
-    ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]],
-                                 axis2 = .data[[var_to]],
-                                 y = .data[[var_flow]],
-                                 label = .data[[var_flow]]))+
-    ggalluvial::geom_alluvium(ggplot2::aes(fill = .data[[var_from]]),
-                  width = 3/8, reverse = FALSE) +
-    ggalluvial::geom_stratum(alpha = .25, width = 3/8, reverse = FALSE) +
-    ggplot2::geom_label(stat = ggalluvial::StatStratum,
-                        alpha = .65, size = 4.5,
-                        ggplot2::aes(label = paste0(after_stat(stratum),
-                           " ",
-                           scales::percent(after_stat(prop), accuracy = 0.1))),
-              reverse = FALSE) +
-    ggplot2::scale_x_continuous(breaks = 1:2, labels = c(label_from, label_to)) +
-    ggplot2::scale_fill_manual(values =  return_palette_regener())+ # fcts_helpers.R
-    ggplot2::facet_wrap(facets = var_commune,
-                        scales = "free",
-                        ncol = 2)+
-    ggplot2::theme_void()+
-    ggplot2::theme(legend.position = "none",
-                   strip.text = element_text(size =16),
-                   axis.text.x = element_text(size = 14)) %>%
-      suppressWarnings() # avoid annoying warning due to 'Autres' <fct> in both strata
-
-}
-
-
-#' lump_alluvial_factors()
-#' takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
-#' according to two {forcats} functions which arguments should be modified in the code
-#'
-#' @param data the dataset used to create the ggalluvial plot
-#' @param var_from the variable for the left stratum
-#' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
-#' @param var_to the variable for the right stratum
-#'
-#' @return a ggplot object
-#' @export
-
-lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to){
-
-  # lumping factors both left and right of alluvia to 4 max (for readability)
-  # fct_lump_prop won't lump a factor ALONE, there needs to be 2 factors to meet the prop criteria
-
-  data %>%
-  dplyr::group_by(.data[[var_commune]]) %>% # !! must group_by commune
-    dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
-                                                      n = 3,
-                                                      w = .data[[var_flow]],
-                                                      other_level = "Autres sources")) %>%
-    dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
-                                                       prop = 0.1, # 10% min to appear individually
-                                                       w = .data[[var_flow]],
-                                                       other_level = "Autres"))
-
-}
-
-#' create_regener_table_dt()
-#' creates a DT table with custom formatting and html icons
-#' @param data Specific regener consumption table, DGE-DIREN data to transform to datatable
-#' @param unit Unit currently selected inside the app
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @return a datatable object for regener datasets
-#' @export
-
-create_regener_table_dt <- function(data,
-                                    unit,
-                                    DT_dom = 'frtip'
-                                    ){
-
-  data %>%
-    # Set pct_commune to % display (output for dl is in numeric)
-    dplyr::mutate(pct_commune = scales::percent(
-      pct_commune, accuracy = 0.01)) %>%
-    dplyr::mutate(
-      # change year to factor
-      # Annee = as.factor(Annee), # if needed later
-      # format numeric cols
-      dplyr::across(consommation, ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) %>%
-
-    # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(regener_icons, by = "ae") %>%
-    dplyr::relocate(pct_commune, .after = "consommation") %>%
-    dplyr::relocate(icon, .before = "ae") %>%
-    dplyr::rename(" " = "icon") %>% # empty colname for icons
-    #turn to DT
-    rename_fr_colnames() %>% # fct_helpers.R
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("rgr_table_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  #extensions = 'Buttons',
-                  selection = 'single', ## enable selection of a single row
-                  #filter = 'bottom',              ## include column filters at the bottom
-                  rownames = FALSE               ## don't show row numbers/names
-    ) # End DT
-
-}
-
-#' rename_fr_colnames
+#' rename_fr_colnames()
 #' A generic function that aims at adding correct french accents inside the create_x_table_dt functions
 #' @return a dataframe with modified colnames, title case, accents where needed and space instead of underscore.
 #' @export
@@ -855,7 +913,7 @@ rename_fr_colnames <- function(data){
 }
 
 
-#' rename_misc_columns
+#' rename_misc_columns()
 #' Specific function which renames raw column names from misc regener table into clean ones
 #' @return a renamed dataframe
 #' @export
@@ -876,52 +934,4 @@ rename_misc_colnames <- function(data){
 
 }
 
-#' return_dynamic_size
-#' Returns a px value used for dynamic facet plots based on web display size and number of facets.
-#' A facet row is typically well displayed at around 1/6 of the screen's height
-#' @param which either 'width' or 'height'
-#' @param web_size px size of either width or height, typically obtained with {shinybrowser}
-#'
-#' @return a numeric value corresponding to px
-#' @export
-
-return_dynamic_size <- function(which, web_size, n_facets){
-
-  if(which == "height"){
-
-    # This returns the correct number of facetted rows
-    # Note : valid only when there are 2 facets per row
-    n_facet_rows <- (n_facets+ (n_facets %% 2))/2
-
-    # Empirically found web-relative height per facetted row
-    px_per_row <- web_size/6
-
-    # Empirically found absolute legend height
-    legend_height <- 250 # px
-
-    # Plot height acc. to number of rows and legend height
-
-    plot_height <- legend_height + n_facet_rows * px_per_row # px/row
-
-    return(plot_height)
-
-
-  }else if(which == "width"){
-    # For width, we return 75% of useful space if one facet, 90% if more than 1
-
-    plot_width <- ifelse(
-      # test :
-      test = n_facets == 1,
-      # Yes (1 facet) : web width - sidebar (300) * 75%
-        yes = (web_size-300)*0.75,
-      # No (More than 1 facet) : web width - sidebar (300) * 95%
-        no = (web_size-300)*0.95)
-
-    return(plot_width)
-
-  }else{
-    stop("'which' arg can only be of type 'height' or 'width'.")
-  }
-
-}
 

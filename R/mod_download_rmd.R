@@ -107,8 +107,8 @@ mod_download_rmd_server <- function(id,
 
         # Define params to pass into rmarkdown::render() below
         params <- list(communes = inputVals$selectedCommunes,
-                       web_width =  inputVals$web_width,
-                       web_height = inputVals$web_height,
+                       # web_width =  inputVals$web_width, # NOT NEEDED ANYMORE
+                       # web_height = inputVals$web_height, # NOT NEEDED ANYMORE
                        unit = selectedUnit$unit_to,
                        prod_data = inputVals$prod_dataset,
 # !! CONS_ELEC removed !! # cons_data = inputVals$cons_dataset,

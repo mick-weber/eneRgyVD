@@ -137,14 +137,14 @@ create_bar_plotly <- function(data,
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data %>%
-    ggplot2::ggplot(aes(x = as.factor(.data[[var_year]]),
+    ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
                         y = .data[[var_values]],
                         fill = .data[[var_rank_2]],
                         # Text is reused in ggplotly(tooltip = 'text')
                         text = paste0(.data[[var_rank_2]], "\n",
                                       format(round(.data[[var_values]], digits = 0), big.mark = "'"),
                                       paste("", unit, "en "), .data[[var_year]])))+
-    ggplot2::geom_col(position = if_else(condition = dodge, # arg
+    ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
                                          true = "dodge",
                                          false = "stack"))+
     ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
@@ -154,25 +154,25 @@ create_bar_plotly <- function(data,
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
     ggplot2::labs( x = "", y = unit)+
-    ggplot2::facet_wrap(facets = vars(.data[[var_commune]]),
+    ggplot2::facet_wrap(facets = ggplot2::vars(.data[[var_commune]]),
                         ncol = 2,
                         # if the toggle linked to the free_y argument is TRUE, then free y axis
                         scales = ifelse(free_y, "free_y", "fixed"))+
     ggplot2::theme_bw()+
     ggplot2::theme(legend.position = "top",
                    # change the labels of facet wrap. main_color defined in utils_helpers.R
-                   strip.background = element_rect(
+                   strip.background = ggplot2::element_rect(
                      color="black", fill=main_color, linewidth = 1, linetype="solid"
                    ),
-                   strip.text = element_text(
+                   strip.text = ggplot2::element_text(
                      size =10, color = "white"),
-                   legend.text = element_text(size = 12),
-                   legend.title = element_text(size = 12),
-                   legend.background = element_rect(fill = NA), # transparent
-                   legend.key.size = unit(2, "cm"),
-                   panel.spacing.x = unit(.05, "cm"),
-                   panel.spacing.y = unit(0.5, "cm"),
-                   axis.text.x = element_text(size = 10))
+                   legend.text = ggplot2::element_text(size = 12),
+                   legend.title = ggplot2::element_text(size = 12),
+                   legend.background = ggplot2::element_rect(fill = NA), # transparent
+                   legend.key.size = ggplot2::unit(2, "cm"),
+                   panel.spacing.x = ggplot2::unit(.05, "cm"),
+                   panel.spacing.y = ggplot2::unit(0.5, "cm"),
+                   axis.text.x = ggplot2::element_text(size = 10))
 
   # Access how many facets there are for height management
   n_facets <- n_communes
@@ -192,7 +192,7 @@ create_bar_plotly <- function(data,
       orientation = "h", # puts the legend in the middle instead of default right
       y = 1.25 # elevates the legend so its above the plot, not below
     )) %>%
-    config(modeBarButtons = list(list("toImage")),
+    plotly::config(modeBarButtons = list(list("toImage")),
            locale = "fr")
 }
 
@@ -707,7 +707,7 @@ create_alluvial_chart <- function(data,
     ggalluvial::geom_stratum(alpha = .25, width = 3/8, reverse = FALSE) +
     ggplot2::geom_label(stat = ggalluvial::StatStratum,
                         alpha = .65, size = 4.5,
-              aes(label = paste0(after_stat(stratum),
+                        ggplot2::aes(label = paste0(after_stat(stratum),
                            " ",
                            scales::percent(after_stat(prop), accuracy = 0.1))),
               reverse = FALSE) +

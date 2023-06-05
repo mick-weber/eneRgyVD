@@ -48,7 +48,7 @@ mod_collapse_stats_box_server <- function(id,
               header = paste(format(prod_elec_value,
                                     big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
               text = tags$p("Production", icon("bolt", class = "iconColor")),
-              rightBorder = TRUE
+              rightBorder = FALSE # set to TRUE when !! CONS_ELEC removed !! comes
             )# End descriptionBlock 1/3
           ),# End column
 

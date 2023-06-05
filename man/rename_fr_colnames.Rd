@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{rename_fr_colnames}
 \alias{rename_fr_colnames}
-\title{rename_fr_colnames
+\title{rename_fr_colnames()
 A generic function that aims at adding correct french accents inside the create_x_table_dt functions}
 \usage{
 rename_fr_colnames(data)
@@ -11,6 +11,6 @@ rename_fr_colnames(data)
 a dataframe with modified colnames, title case, accents where needed and space instead of underscore.
 }
 \description{
-rename_fr_colnames
+rename_fr_colnames()
 A generic function that aims at adding correct french accents inside the create_x_table_dt functions
 }

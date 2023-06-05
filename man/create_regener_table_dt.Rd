@@ -5,7 +5,14 @@
 \title{create_regener_table_dt()
 creates a DT table with custom formatting and html icons}
 \usage{
-create_regener_table_dt(data, unit)
+create_regener_table_dt(data, unit, DT_dom = "Bfrtip")
+}
+\arguments{
+\item{data}{Specific regener consumption table, DGE-DIREN data to transform to datatable}
+
+\item{unit}{Unit currently selected inside the app}
+
+\item{DT_dom}{datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip}
 }
 \value{
 a datatable object for regener datasets

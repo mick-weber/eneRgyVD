@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{return_palette_regener}
 \alias{return_palette_regener}
-\title{return_palette_regener()
+\title{return_palette_regener
 returns the color palette for energy sources in the regener dataset}
 \usage{
 return_palette_regener()
@@ -11,6 +11,6 @@ return_palette_regener()
 a vector with categorical data and hex color strings
 }
 \description{
-return_palette_regener()
+return_palette_regener
 returns the color palette for energy sources in the regener dataset
 }

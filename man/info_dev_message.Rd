@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{info_dev_message}
 \alias{info_dev_message}
-\title{info_dev_message
+\title{info_dev_message()
 shinyalert popup which informs that this is a development version. Called in app_server.R}
 \usage{
 info_dev_message()
@@ -11,6 +11,6 @@ info_dev_message()
 A shinyalert object when opening the app
 }
 \description{
-info_dev_message
+info_dev_message()
 shinyalert popup which informs that this is a development version. Called in app_server.R
 }

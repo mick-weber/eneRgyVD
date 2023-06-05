@@ -2,10 +2,15 @@
 % Please edit documentation in R/fct_helpers.R
 \name{rename_misc_colnames}
 \alias{rename_misc_colnames}
-\title{rename_misc_columns}
+\title{rename_misc_columns()
+Specific function which renames raw column names from misc regener table into clean ones}
 \usage{
 rename_misc_colnames(data)
 }
+\value{
+a renamed dataframe
+}
 \description{
-rename_misc_columns
+rename_misc_columns()
+Specific function which renames raw column names from misc regener table into clean ones
 }

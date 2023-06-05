@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_sunburst_plotly}
 \alias{create_sunburst_plotly}
-\title{create_sunburst_plotly}
+\title{create_sunburst_plotly()}
 \usage{
 create_sunburst_plotly(
   data_sunburst,

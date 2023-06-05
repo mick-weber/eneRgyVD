@@ -2,16 +2,22 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_rg_misc_table_dt}
 \alias{create_rg_misc_table_dt}
-\title{create_rg_misc_table_dt}
+\title{create_rg_misc_table_dt()
+Creates datatable for regener_misc dataset}
 \usage{
-create_rg_misc_table_dt(data)
+create_rg_misc_table_dt(data, DT_dom = "Bfrtip")
 }
 \arguments{
 \item{data}{the dataset containing variables and descriptions}
+
+\item{DT_dom}{datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip}
+
+\item{unit}{Unit currently selected inside the app}
 }
 \value{
 a DT object
 }
 \description{
-create_rg_misc_table_dt
+create_rg_misc_table_dt()
+Creates datatable for regener_misc dataset
 }

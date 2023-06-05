@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_bar_plotly}
 \alias{create_bar_plotly}
-\title{create_bar_plotly}
+\title{create_bar_plotly()}
 \usage{
 create_bar_plotly(
   data,
@@ -16,8 +16,8 @@ create_bar_plotly(
   dodge = FALSE,
   free_y = FALSE,
   legend_title,
-  web_width,
-  web_height
+  web_width = 1500,
+  web_height = 800
 )
 }
 \arguments{

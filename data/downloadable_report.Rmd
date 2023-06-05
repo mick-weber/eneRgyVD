@@ -23,7 +23,6 @@ params:
   web_width: NULL
   web_height: NULL
   unit: NULL
-  DT_dom: "Bfrtip"
   prod_data: NULL
   regener_data_0: NULL
   regener_data_1: NULL
@@ -78,8 +77,7 @@ Ce rapport a été généré pour `r knitr::combine_words(words = params$commune
 
 params$prod_data |> 
     eneRgyVD::create_prod_table_dt(unit = params$unit,
-                                   DT_dom = params$DT_dom # Show buttons
-                                  )
+                                   DT_dom = "Bfrtip")
 
 ```
 
@@ -112,9 +110,8 @@ Par usage :
 ```{r}
 
 params$regener_data_1 |>
-  eneRgyVD::create_regener_table_dt(unit = params$unit,
-                                    DT_dom = params$DT_dom  # Show buttons
-                                    )
+  eneRgyVD::create_regener_table_dt(unit = params$unit
+                                   DT_dom = "Bfrtip")
 
 ```
 
@@ -124,9 +121,8 @@ Par affectation :
 ```{r}
 
 params$regener_data_2 |>
-  eneRgyVD::create_regener_table_dt(unit = params$unit,
-                                    DT_dom = params$DT_dom # Show buttons
-                                    )
+  eneRgyVD::create_regener_table_dt(unit = params$unit
+                                   DT_dom = "Bfrtip")
 
 ```
 

@@ -2,17 +2,21 @@
 % Please edit documentation in R/fct_helpers.R
 \name{create_prod_table_dt}
 \alias{create_prod_table_dt}
-\title{create_table_dt}
+\title{create_table_dt()}
 \usage{
-create_prod_table_dt(data, unit)
+create_prod_table_dt(data, unit, DT_dom = "Bfrtip")
 }
 \arguments{
-\item{data}{Specific electricity production, DGE-DIREN data to transform to datatable.
-Must follow Pronovo's outputs and utils_helpers.R format.}
+\item{data}{Specific electricity production, DGE-DIREN data to transform to datatable
+Must follow Pronovo's outputs and utils_helpers.R format}
+
+\item{unit}{Unit currently selected inside the app}
+
+\item{DT_dom}{datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip}
 }
 \value{
 A DT table with export functionalities
 }
 \description{
-create_table_dt
+create_table_dt()
 }

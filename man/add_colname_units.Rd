@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{add_colname_units}
 \alias{add_colname_units}
-\title{add_colnames_units
+\title{add_colnames_units()
 returns unit extension in target columns according to the currently selected unit
 of the app for power and energy related colnames. Should be called before making
 nicely formatted columns with rename_fr_colnames()}
@@ -18,7 +18,7 @@ add_colname_units(data, unit)
 dataframe with renamed columns
 }
 \description{
-add_colnames_units
+add_colnames_units()
 returns unit extension in target columns according to the currently selected unit
 of the app for power and energy related colnames. Should be called before making
 nicely formatted columns with rename_fr_colnames()

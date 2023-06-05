@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_helpers.R
 \name{return_dynamic_size}
 \alias{return_dynamic_size}
-\title{return_dynamic_size
+\title{return_dynamic_size()
 Returns a px value used for dynamic facet plots based on web display size and number of facets.
 A facet row is typically well displayed at around 1/6 of the screen's height}
 \usage{
@@ -17,7 +17,7 @@ return_dynamic_size(which, web_size, n_facets)
 a numeric value corresponding to px
 }
 \description{
-return_dynamic_size
+return_dynamic_size()
 Returns a px value used for dynamic facet plots based on web display size and number of facets.
 A facet row is typically well displayed at around 1/6 of the screen's height
 }

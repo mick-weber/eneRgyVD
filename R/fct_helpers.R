@@ -459,6 +459,8 @@ create_prod_table_dt <- function(data,
                                  DT_dom = 'Bfrtip' # we set default with Buttons
                                  ){
 
+  DT_dom_arg <- DT_dom # workaround since deeply nested args are seen as `unused`.
+
   data %>%
     # Basic clean up for table output
     dplyr::mutate(
@@ -488,7 +490,7 @@ create_prod_table_dt <- function(data,
                                  scrollY = TRUE,   # enable scrolling on Y axis
                                  autoWidth = TRUE, # use smart column width handling
                                  server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
+                                 dom = DT_dom_arg, # dynamic according to needs
                                  buttons = list(
                                     list(extend = 'copy', text = "Copier"),
                                     list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))

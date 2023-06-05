@@ -92,8 +92,8 @@ Print web height : `r params$web_width`
 params$prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
-                                web_width = params$web_width, # manually defined
-                                web_height = params$web_height, # manually defined
+                                # web_width = params$web_width, # manually defined
+                                # web_height = params$web_height, # manually defined
                                 var_year = "annee",
                                 var_commune = "commune",
                                 var_rank_2 = "categorie",

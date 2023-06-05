@@ -35,6 +35,7 @@ params:
 # Basic knitr behavior
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
 library(eneRgyVD)
+library(DT)
 ```
 
 ```{css basic-theme, echo = FALSE}
@@ -79,7 +80,6 @@ params$prod_data |>
     eneRgyVD::create_prod_table_dt(unit = params$unit)
 
 
-create_prod_table_dt
 ```
 
 ### Graphique

@@ -37,7 +37,9 @@ mod_regener_misc_charts_server <- function(id,
     # Renders the DT table ----
     output$table_1 <- DT::renderDataTable({
 
-      create_rg_misc_table_dt(data = subsetData())
+      create_rg_misc_table_dt(data = subsetData(),
+                              DT_dom = "frtip" # remove default button in DT extensions
+                              )
 
     })# End DT table
 

@@ -240,7 +240,9 @@ mod_regener_needs_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
-                        unit = selectedUnit$unit_to)
+                        unit = selectedUnit$unit_to,
+                        DT_dom = "frtip" # remove default button in DT extensions
+                        )
 
     })# End renderDT
 

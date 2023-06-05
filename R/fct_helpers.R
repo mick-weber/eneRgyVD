@@ -456,7 +456,7 @@ return_dynamic_size <- function(which, web_size, n_facets){
 
 create_prod_table_dt <- function(data,
                                  unit,
-                                 DT_dom = 'frtip' # we set default without Buttons
+                                 DT_dom = 'Bfrtip' # we set default with Buttons
                                  ){
 
   data %>%
@@ -516,7 +516,7 @@ create_prod_table_dt <- function(data,
 
 create_cons_table_dt <- function(data,
                                  unit,
-                                 DT_dom = 'frtip' # we set default without Buttons (Bfrtip)
+                                 DT_dom = 'Bfrtip' # we set default with Buttons
                                  ){
 
   data %>%
@@ -574,7 +574,7 @@ create_cons_table_dt <- function(data,
 
 create_rg_needs_table_dt <- function(data,
                                      unit,
-                                     DT_dom = 'frtip' # we set default without Buttons (Bfrtip)
+                                     DT_dom = 'Bfrtip' # we set default with Buttons
                                      ){
 
   data %>%
@@ -632,7 +632,7 @@ create_rg_needs_table_dt <- function(data,
 
 create_regener_table_dt <- function(data,
                                     unit,
-                                    DT_dom = 'frtip'
+                                    DT_dom = 'Bfrtip' # we set default with Buttons
 ){
 
   data %>%
@@ -692,7 +692,7 @@ create_regener_table_dt <- function(data,
 
 create_rg_misc_table_dt <- function(data,
                                     # unit arg not needed for misc data
-                                    DT_dom = 'frtip'
+                                    DT_dom = 'Bfrtip' # we set default with Buttons
 ){
 
   data %>%
@@ -739,7 +739,8 @@ create_rg_misc_table_dt <- function(data,
 #'
 #' @return A DT object
 
-create_doc_table_dt <- function(data, doc_prefix){
+create_doc_table_dt <- function(data,
+                                doc_prefix){
 
   data %>%
     DT::datatable(rownames = FALSE, # no index col

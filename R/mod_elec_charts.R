@@ -216,7 +216,9 @@ mod_elec_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData(),
-                        unit = selectedUnit$unit_to)
+                        unit = selectedUnit$unit_to,
+                        DT_dom = "frtip" # no buttons extension for DT table
+                        )
 
     })# End renderDT
 

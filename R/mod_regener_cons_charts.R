@@ -162,7 +162,9 @@ mod_regener_cons_charts_server <- function(id,
         output$table_1 <- DT::renderDataTable({
 
             create_regener_table_dt(data = subset_rgr_1(),
-                                    unit = selectedUnit$unit_to)
+                                    unit = selectedUnit$unit_to,
+                                    DT_dom = "frtip" # remove default button in DT extensions
+                                    )
 
         })
 
@@ -174,7 +176,9 @@ mod_regener_cons_charts_server <- function(id,
         output$table_1 <- DT::renderDataTable({
 
             create_regener_table_dt(data = subset_rgr_2(),
-                                    unit = selectedUnit$unit_to)
+                                    unit = selectedUnit$unit_to,
+                                    DT_dom = "frtip" # remove default button in DT extensions
+                                    )
         })
       }# End elseif
 

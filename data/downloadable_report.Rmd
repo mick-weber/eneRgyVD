@@ -82,11 +82,6 @@ params$prod_data |>
 
 ### Graphique
 
-Graphique : 
-
-Print web height : `r params$web_height`
-Print web height : `r params$web_width`
-
 ```{r}
 
 params$prod_data |>

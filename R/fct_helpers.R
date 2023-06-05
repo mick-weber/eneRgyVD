@@ -130,8 +130,8 @@ create_bar_plotly <- function(data,
                               dodge = FALSE, # stacked by default
                               free_y = FALSE,
                               legend_title,
-                              web_width,
-                              web_height
+                              web_width = 1900, # set default
+                              web_height = 1000 # set default
                               ){
 
   # First create ggplot graph

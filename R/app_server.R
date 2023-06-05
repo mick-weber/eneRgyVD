@@ -9,7 +9,7 @@ app_server <- function(input, output, session) {
 
    # Dev message ----
 
-    info_dev_message() # defined in fct_helpers.R. Warns that this is a development version
+       info_dev_message() # defined in fct_helpers.R
 
    # Bookmarking feature ----
 

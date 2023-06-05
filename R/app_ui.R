@@ -7,7 +7,9 @@
 
 app_ui <- function(request) {
 
+
   shiny::tagList(
+
     # Leave this function for adding external resources
     golem_add_external_resources(),
 
@@ -205,7 +207,7 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                                        width =8,
-                                      paste0(generic_method_warning, # text in utils_helpers.R
+                                      paste(generic_method_warning, # text in utils_helpers.R
                                              specific_prod_elec_warning)
                                   ),
                      ), #End fluidRow
@@ -232,7 +234,7 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                   width =8,
-                                  paste0(generic_method_warning, # text in utils_helpers.R
+                                  paste(generic_method_warning, # text in utils_helpers.R
                                          specific_rgr_warning)
                                   ),
             ),
@@ -258,8 +260,8 @@ app_ui <- function(request) {
                                                        label = "Consulter la méthodologie",
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
-                                  width =8,
-                                  paste0(generic_method_warning, # text in utils_helpers.R
+                                  width = 8,
+                                  paste(generic_method_warning, # text in utils_helpers.R
                                          specific_rgr_warning)
                                   ),
             ),
@@ -284,7 +286,7 @@ app_ui <- function(request) {
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
                                   width =8,
-                                  paste0(generic_method_warning, # text in utils_helpers.R
+                                  paste(generic_method_warning, # text in utils_helpers.R
                                          specific_rgr_warning)
                                   ),
             ),

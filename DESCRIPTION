@@ -14,12 +14,10 @@ Imports:
     DT,
     forcats,
     fresh,
-    future,
     ggalluvial,
     ggplot2,
     glue,
     golem (>= 0.3.2),
-    htmltools,
     knitr,
     leaflet,
     leaflet.extras,
@@ -42,8 +40,8 @@ Imports:
     tidyr,
     writexl
 Suggests: 
-    spelling (>= 2.2),
-    testthat (>= 3.0.0)
+    shinytest2,
+    spelling (>= 2.2)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

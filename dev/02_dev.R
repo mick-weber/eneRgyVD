@@ -15,8 +15,11 @@
 
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing
+
 attachment::att_amend_desc()
+
 usethis::use_pipe()
+usethis::use_package("shiny")
 usethis::use_package("dplyr")
 usethis::use_package("purrr")
 usethis::use_package("glue")

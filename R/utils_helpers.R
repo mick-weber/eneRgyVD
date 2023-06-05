@@ -49,7 +49,7 @@ req_communes_phrase <- "Sélectionner au moins une commune pour générer un ré
 # Used in ui.r to avoid repetition
 
 generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
-                                                       Les grands principes de chaque méthode ainsi que les principales modifications sont documentées."
+                                                       Les grands principes de chaque méthode ainsi que les principales modifications sont documentés dans l'onglet 'À propos'."
 
 specific_prod_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de nous contacter afin que nous puissions améliorer les résultats."
 
@@ -61,9 +61,9 @@ La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient
 # These are served to bs4DropdownMenu in app_ui.R
 
 notif_msg <- tidyr::tribble(~icon, ~status, ~text,
-                    "cloud-arrow-up", "info", "03.23: Ajout données consommation th. bâtiments 2022",
-                     "cloud-arrow-up", "info", "03.23: Ajout données production électricité 2015-2022",
-                     "star", "info", "03.23: Mise en ligne du profil"
+                    "cloud-arrow-up", "info", "06.23: Ajout données consommation th. bâtiments 2022",
+                     "cloud-arrow-up", "info", "06.23: Ajout données production électricité 2015-2022",
+                     "star", "info", "06.23: Mise en ligne du profil"
 )
 
 

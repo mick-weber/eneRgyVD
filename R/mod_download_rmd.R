@@ -107,7 +107,7 @@ mod_download_rmd_server <- function(id,
 
         # Define params to pass into rmarkdown::render() below
         params <- list(communes = inputVals$selectedCommunes,
-                       web_width =  1900, # manually set
+                       web_width = 1900, # manually set
                        web_height = 1000, # manually set
                        unit = selectedUnit$unit_to,
                        prod_data = inputVals$prod_dataset,
@@ -211,15 +211,6 @@ mod_download_rmd_server <- function(id,
         writexl::write_xlsx(download_all_sheets(), path = file)
       }
     )
-
-
-
-
-
-
-
-
-
 
   })
 }

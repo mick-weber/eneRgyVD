@@ -141,7 +141,7 @@ app_ui <- function(request) {
       # Body ----
       bs4Dash::dashboardBody(
 
-        ## tabMap ----
+        ## tabMap incl.StatBoxes ----
         bs4Dash::tabItems(
           bs4Dash::tabItem(
             tabName = "tabMap",
@@ -160,6 +160,9 @@ app_ui <- function(request) {
 
               # Next to leaflet map
               column(width = 4,
+
+                     br(), # to align boxes below with leafletOutput
+
                      # Module for collapsible VD box
                      uiOutput("vd_box"),
 

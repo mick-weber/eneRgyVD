@@ -146,8 +146,10 @@ mod_about_the_app_ui <- function(id){
                                   tags$p("Cette application est programmée avec le language",
                                          tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),
                                          "qui permet la création d'applications web interactives. L'architecture de l'application est construite
-            à l'aide de la",
-            tags$a(href = "https://github.com/ThinkR-open/golem", "librairie golem (ThinkR)", target = "_blank"),
+            à l'aide des librairies ",
+            tags$a(href = "https://github.com/ThinkR-open/golem", "golem (ThinkR)", target = "_blank"),
+            "et",
+            tags$a(href = "https://github.com/RinteRface/bs4Dash", "bs4Dash (RinteRface)", target = "_blank"),
             "et le contenu des visualisations par de multiples librairies issues notamment du",
             tags$a(href = "https://www.tidyverse.org/", "tidyverse.", target = "_blank"),
             "De plus amples demandes d'informations peuvent être adressées directement à l'e-mail de contact",

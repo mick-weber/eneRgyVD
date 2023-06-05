@@ -38,7 +38,6 @@ usethis::use_package("bs4Dash")
 usethis::use_package("shinydashboardPlus")
 usethis::use_package("fresh")    # for bs4Dash custom theme
 
-# ? usethis::use_package("shinyjs") # for toggle state of DL buttons
 usethis::use_package("shinycssloaders")
 usethis::use_package("shinyalert")
 usethis::use_package("shinybrowser")
@@ -49,7 +48,7 @@ usethis::use_package("htmltools")
 usethis::use_package("bookdown") # for rmd rendering
 
 usethis::use_package("promises") # asnyc report download
-usethis::use_package("future")   # asnyc report download
+usethis::use_package("future")   # asnyc report download ## RUN THIS ##
 
 
 ## Add modules ----

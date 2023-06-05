@@ -828,8 +828,8 @@ rename_fr_colnames <- function(data){
 
 
 #' rename_misc_columns
-#'
-#' @return
+#' Specific function which renames raw column names from misc regener table into clean ones
+#' @return a renamed dataframe
 #' @export
 
 rename_misc_colnames <- function(data){

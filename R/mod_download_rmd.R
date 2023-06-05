@@ -9,6 +9,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @import promises
 
 mod_download_rmd_ui <- function(id){
   ns <- NS(id)

@@ -75,8 +75,59 @@ Ce rapport a été généré pour `r knitr::combine_words(words = params$commune
 
 ```{r}
 
+# params$prod_data |> 
+#     eneRgyVD::create_prod_table_dt(unit = params$unit)
+
+
+test_prod <- function(data, unit, DT_dom = "Bfrtip" # we set default with Buttons
+                                 ){
+
+  data %>%
+    # Basic clean up for table output
+    dplyr::mutate(
+      # change year to factor %>%
+      annee = as.factor(annee),
+      # format numeric cols
+      across(where(is.numeric), ~format(.x,
+                                        big.mark = "'",
+                                        digits = 3,
+                                        drop0trailing = TRUE,
+                                        scientific = FALSE))) %>%
+    dplyr::select(-c(numero_de_la_commune)) %>%
+    dplyr::relocate(commune, annee, categorie,
+                    production, injection, autoconsommation,
+                    puissance_electrique_installee) %>%
+    # add icons HTML tags from utils_helpers.R
+    dplyr::left_join(prod_icons, by = "categorie") %>%
+    dplyr::relocate(icon, .before = categorie) %>%
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
+    rename_fr_colnames() %>%  # fct_helpers.R
+    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    #turn to DT
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                    list(extend = 'copy', text = "Copier"),
+                                    list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                                    ),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                  language = DT_fr_language # from utils_helpers.R !
+    ),
+    selection = 'single', # enable selection of a single row
+    rownames = FALSE      # don't show row numbers/names
+    ) # End DT
+}
+
 params$prod_data |> 
-    eneRgyVD::create_prod_table_dt(unit = params$unit)
+  test_prod(unit = params$unit)
+
 
 ```
 

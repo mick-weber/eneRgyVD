@@ -466,7 +466,7 @@ create_prod_table_dt <- function(data,
       annee = as.factor(annee),
       # format numeric cols
       across(where(is.numeric), ~format(.x,
-                                        big.mark = "XYZ",
+                                        big.mark = "'",
                                         digits = 3,
                                         drop0trailing = TRUE,
                                         scientific = FALSE))) %>%

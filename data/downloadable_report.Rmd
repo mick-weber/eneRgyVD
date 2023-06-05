@@ -78,6 +78,8 @@ Ce rapport a été généré pour `r knitr::combine_words(words = params$commune
 params$prod_data |>
     eneRgyVD::create_prod_table_dt(unit = params$unit)
 
+create_prod_table_dt
+
 ```
 
 ### Graphique

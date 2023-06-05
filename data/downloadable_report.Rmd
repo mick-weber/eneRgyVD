@@ -35,7 +35,6 @@ params:
 # Basic knitr behavior
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
 library(eneRgyVD)
-library(DT)
 ```
 
 ```{css basic-theme, echo = FALSE}

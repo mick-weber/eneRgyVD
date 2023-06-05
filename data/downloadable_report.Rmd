@@ -20,6 +20,8 @@ fontsize: 11pt
 #paramètres pour l'export Shiny (cons_data removed temporarily)
 params:
   communes: NULL
+  web_width: NULL
+  web_height: NULL
   unit: NULL
   prod_data: NULL
   regener_data_0: NULL
@@ -87,8 +89,8 @@ Graphique :
 params$prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
-                                web_width = 1900, # manually defined
-                                web_height = 1000, # manually defined
+                                web_width = params$web_width, # manually defined
+                                web_height = params$web_height, # manually defined
                                 var_year = "annee",
                                 var_commune = "commune",
                                 var_rank_2 = "categorie",

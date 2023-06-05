@@ -130,8 +130,8 @@ create_bar_plotly <- function(data,
                               dodge = FALSE, # stacked by default
                               free_y = FALSE,
                               legend_title,
-                              web_width = 1900, # set default
-                              web_height = 1000 # set default
+                              web_width = 1500, # set default
+                              web_height = 800 # set default
                               ){
 
   # First create ggplot graph
@@ -305,15 +305,20 @@ create_sunburst_plotly <- function(data_sunburst,
 
 #' create_table_dt
 #'
-#' @param data Specific electricity production, DGE-DIREN data to transform to datatable.
-#' Must follow Pronovo's outputs and utils_helpers.R format.
+#' @param data Specific electricity production, DGE-DIREN data to transform to datatable
+#' Must follow Pronovo's outputs and utils_helpers.R format
+#' @param unit Unit currently selected inside the app
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
 #'
 #' @import dplyr
 #' @importFrom stringr str_replace_all str_to_title
 #' @return A DT table with export functionalities
 #' @export
 
-create_prod_table_dt <- function(data, unit){
+create_prod_table_dt <- function(data,
+                                 unit,
+                                 DT_dom = 'frtip' # we set default without Buttons
+                                 ){
 
   data %>%
     # Basic clean up for table output
@@ -338,38 +343,42 @@ create_prod_table_dt <- function(data, unit){
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
-                  options = list(paging = TRUE,    ## paginate the output
-                                 pageLength = 15,  ## number of rows to output for each page
-                                 scrollY = TRUE,   ## enable scrolling on Y axis
-                                 autoWidth = TRUE, ## use smart column width handling
-                                 server = FALSE,   ## use server-side processing
-                                 dom = 'frtip', # no buttons needed
-                            # Buttons not needed anymore since mod_download_data.R is spot on
-                                 # buttons = list(
-                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
-                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                  extensions = 'Buttons',
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                    list(extend = 'copy', text = "Copier"),
+                                    list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                                    ),
                                  columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                   language = DT_fr_language # from utils_helpers.R !
     ),
-    #extensions = 'Buttons',
-    selection = 'single', ## enable selection of a single row
-    #filter = 'bottom',              ## include column filters at the bottom
-    rownames = FALSE               ## don't show row numbers/names
+    selection = 'single', # enable selection of a single row
+    rownames = FALSE      # don't show row numbers/names
     ) # End DT
 }
 
 
 #' create_cons_table_dt
 #'
-#' @param data Specific electricity consumption, DGE-DIREN data to transform to datatable.
+#' @param data Specific electricity consumption, DGE-DIREN data to transform to datatable
 #' Must follow specific data format which can be found in /data
+#' @param unit Unit currently selected inside the app
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
 #'
 #' @import dplyr
 #' @return A DT table with export functionalities
 #' @export
 
-create_cons_table_dt <- function(data, unit){
+create_cons_table_dt <- function(data,
+                                 unit,
+                                 DT_dom = 'frtip' # we set default without Buttons (Bfrtip)
+                                 ){
 
   data %>%
     # Basic clean up for table output
@@ -394,20 +403,20 @@ create_cons_table_dt <- function(data, unit){
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
-      options = list(paging = TRUE,    ## paginate the output
-                                 pageLength = 15,  ## number of rows to output for each page
-                                 scrollY = TRUE,   ## enable scrolling on Y axis
-                                 autoWidth = TRUE, ## use smart column width handling
-                                 server = FALSE,   ## use server-side processing
-                                 dom = 'frtip', # no buttons needed
-                                 # Buttons not needed anymore since mod_download_data.R is spot on
-                                 # buttons = list(
-                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
-                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R
-    ),
+      options = list(paging = TRUE,    # paginate the output
+                     pageLength = 15,  # number of rows to output for each page
+                     scrollY = TRUE,   # enable scrolling on Y axis
+                     autoWidth = TRUE, # use smart column width handling
+                     server = FALSE,   # use server-side processing
+                     dom = DT_dom, # dynamic according to needs
+                     buttons = list(
+                       list(extend = 'copy', text = "Copier"),
+                       list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                     ),
+                     columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                     # https://rstudio.github.io/DT/004-i18n.html   for languages
+                     language = DT_fr_language # from utils_helpers.R !
+      ),
     #extensions = 'Buttons',
     selection = 'single', ## enable selection of a single row
     #filter = 'bottom',              ## include column filters at the bottom
@@ -416,12 +425,18 @@ create_cons_table_dt <- function(data, unit){
 }
 
 #' create_rg_needs_table_dt
-#' @param data Specific regener needs dataset to transform to datatable.
+#' @param data Specific regener needs dataset to transform to datatable
 #' Must follow specific data format which can be found in /data
+#' @param unit Unit currently selected inside the app
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
+#'
 #' @return a DT table with export functionnalities
 #' @export
 
-create_rg_needs_table_dt <- function(data, unit){
+create_rg_needs_table_dt <- function(data,
+                                     unit,
+                                     DT_dom = 'frtip' # we set default without Buttons (Bfrtip)
+                                     ){
 
   data %>%
     # Basic clean up for table output
@@ -444,19 +459,19 @@ create_rg_needs_table_dt <- function(data, unit){
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
-                  options = list(paging = TRUE,    ## paginate the output
-                                 pageLength = 15,  ## number of rows to output for each page
-                                 scrollY = TRUE,   ## enable scrolling on Y axis
-                                 autoWidth = TRUE, ## use smart column width handling
-                                 server = FALSE,   ## use server-side processing
-                                 dom = 'frtip', # no buttons needed
-                                 # Buttons not needed anymore since mod_download_data.R is spot on
-                                 # buttons = list(
-                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
-                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("rgr_needs_vd_", Sys.Date()))
+                                 ),
                                  columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R
+                                 language = DT_fr_language # from utils_helpers.R !
                   ),
                   #extensions = 'Buttons',
                   selection = 'single', ## enable selection of a single row
@@ -494,11 +509,18 @@ create_doc_table_dt <- function(data, doc_prefix){
 
 
 #' create_rg_misc_table_dt
+#' Creates datatable for regener_misc dataset
 #' @param data the dataset containing variables and descriptions
+#' @param unit Unit currently selected inside the app
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
+#'
 #' @return a DT object
 #' @export
 
-create_rg_misc_table_dt <- function(data){
+create_rg_misc_table_dt <- function(data,
+                                    # unit arg not needed for misc data
+                                    DT_dom = 'frtip'
+                                    ){
 
   data %>%
     # Basic clean up for table output
@@ -516,19 +538,19 @@ create_rg_misc_table_dt <- function(data){
     # add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
-                  options = list(paging = TRUE,    ## paginate the output
-                                 pageLength = 15,  ## number of rows to output for each page
-                                 scrollY = TRUE,   ## enable scrolling on Y axis
-                                 autoWidth = TRUE, ## use smart column width handling
-                                 server = FALSE,   ## use server-side processing
-                                 dom = 'frtip', # no buttons needed
-                                 # Buttons not needed anymore since mod_download_data.R is spot on
-                                 # buttons = list(
-                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
-                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("rgr_misc_vd_", Sys.Date()))
+                                 ),
                                  columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R
+                                 language = DT_fr_language # from utils_helpers.R !
                   ),
                   #extensions = 'Buttons',
                   selection = 'single', ## enable selection of a single row
@@ -757,11 +779,17 @@ lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to)
 
 #' create_regener_table_dt()
 #' creates a DT table with custom formatting and html icons
+#' @param data Specific regener consumption table, DGE-DIREN data to transform to datatable
+#' @param unit Unit currently selected inside the app
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
 #'
 #' @return a datatable object for regener datasets
 #' @export
 
-create_regener_table_dt <- function(data, unit){
+create_regener_table_dt <- function(data,
+                                    unit,
+                                    DT_dom = 'frtip'
+                                    ){
 
   data %>%
     # Set pct_commune to % display (output for dl is in numeric)
@@ -786,19 +814,19 @@ create_regener_table_dt <- function(data, unit){
     rename_fr_colnames() %>% # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     DT::datatable(escape = F, # rendering the icons instead of text
-                  options = list(paging = TRUE,    ## paginate the output
-                                 pageLength = 15,  ## number of rows to output for each page
-                                 scrollY = TRUE,   ## enable scrolling on Y axis
-                                 autoWidth = TRUE, ## use smart column width handling
-                                 server = FALSE,   ## use server-side processing
-                                 dom = 'frtip', # no buttons needed
-                                 # Buttons not needed anymore since mod_download_data.R is spot on
-                                 # buttons = list(
-                                 #   list(extend = 'csv', filename = paste0("prod_elec_vd_", Sys.Date())),
-                                 #   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))),
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("rgr_table_vd_", Sys.Date()))
+                                 ),
                                  columnDefs = list(list(targets = "_all", className = 'dt-center')),
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R
+                                 language = DT_fr_language # from utils_helpers.R !
                   ),
                   #extensions = 'Buttons',
                   selection = 'single', ## enable selection of a single row

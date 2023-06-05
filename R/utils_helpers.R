@@ -91,6 +91,7 @@ link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-d
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
 link_pter <- "https://www.vd.ch/themes/etat-droit-finances/communes/energie-environnement-agriculture/energie/planification-energetique-territoriale"
 
+
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library
 

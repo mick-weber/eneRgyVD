@@ -23,6 +23,7 @@ params:
   web_width: NULL
   web_height: NULL
   unit: NULL
+  DT_dom: NULL
   prod_data: NULL
   regener_data_0: NULL
   regener_data_1: NULL
@@ -87,6 +88,7 @@ params$prod_data |>
 params$prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
+                                DT_dom = params$DT_dom,
                                 # web_width = params$web_width, # manually defined
                                 # web_height = params$web_height, # manually defined
                                 var_year = "annee",

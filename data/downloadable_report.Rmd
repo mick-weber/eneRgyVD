@@ -82,8 +82,10 @@ params$prod_data |>
 
 ### Graphique
 
+Graphique : 
+
 ```{r}
-# Temp removal : Yields error for params$web_width and params$web_height once rendered in stat-energie-vd.ch
+
 params$prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),

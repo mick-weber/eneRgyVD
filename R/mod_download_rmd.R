@@ -189,12 +189,12 @@ mod_download_rmd_server <- function(id,
           add_colname_units(unit = selectedUnit$unit_to),
 
         # Regener renamed+units
-        regener_cons_1 = inputVals$rgr_1 |>
+        regener_cons_use = inputVals$rgr_1 |>
           rename_fr_colnames() |>
           add_colname_units(unit = selectedUnit$unit_to),
 
         # Regener renamed+units
-        regener_cons_2 = inputVals$rgr_2 |>
+        regener_cons_aff = inputVals$rgr_2 |>
           rename_fr_colnames() |>
           add_colname_units(unit = selectedUnit$unit_to),
 

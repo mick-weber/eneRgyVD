@@ -456,7 +456,7 @@ return_dynamic_size <- function(which, web_size, n_facets){
 
 create_prod_table_dt <- function(data,
                                  unit,
-                                 DT_dom = "Bt" # we set default with Buttons
+                                 DT_dom = "Bfrtip" # we set default with Buttons
                                  ){
 
   data %>%

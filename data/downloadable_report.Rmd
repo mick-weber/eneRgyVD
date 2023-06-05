@@ -85,22 +85,23 @@ params$prod_data |>
 Graphique : 
 
 Print web height : `r params$web_height`
+Print web height : `r params$web_width`
 
 ```{r}
 
-# params$prod_data |>
-#     eneRgyVD::create_bar_plotly(unit = params$unit,
-#                                 n_communes = length(params$communes),
-#                                 web_width = params$web_width, # manually defined
-#                                 web_height = params$web_height, # manually defined
-#                                 var_year = "annee",
-#                                 var_commune = "commune",
-#                                 var_rank_2 = "categorie",
-#                                 var_values = "production",
-#                                 color_palette = eneRgyVD::return_palette_prod_elec(),
-#                                 dodge = F,
-#                                 free_y = F,
-#                                 legend_title = "Technologies")
+params$prod_data |>
+    eneRgyVD::create_bar_plotly(unit = params$unit,
+                                n_communes = length(params$communes),
+                                web_width = params$web_width, # manually defined
+                                web_height = params$web_height, # manually defined
+                                var_year = "annee",
+                                var_commune = "commune",
+                                var_rank_2 = "categorie",
+                                var_values = "production",
+                                color_palette = eneRgyVD::return_palette_prod_elec(),
+                                dodge = F,
+                                free_y = F,
+                                legend_title = "Technologies")
 
 ```
 

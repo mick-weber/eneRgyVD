@@ -83,6 +83,7 @@ mod_download_rmd_server <- function(id,
         <br>
         La génération du rapport peut prendre quelques secondes...",
         style = "color:grey;"),
+
       )# End tagList
 
     })# End renderPrint

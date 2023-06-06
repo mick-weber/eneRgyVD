@@ -171,16 +171,14 @@ params$regener_data_1 |>
 
 ```
 
-### Divers
+## Divers
 
 D'autres informations relatives aux bâtiments sont également disponibles :
 
 ```{r}
 # Generate table for misc regener data  
 params$regener_data_3 |> 
-  eneRgyVD::create_rg_misc_table_dt(unit = params$unit, 
-                          DT_dom = "Bfrtip"
-                          )
+  eneRgyVD::create_rg_misc_table_dt(DT_dom = "Bfrtip") # Don't use params$unit
 ```
 
 # Contact

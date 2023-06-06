@@ -1,5 +1,5 @@
 ---
-title: "eneRgyVD: profil énergétique"
+title: "Profil énergétique des communes vaudoises"
 subtitle: "Direction générale de l'environnement - Direction de l'énergie (DGE-DIREN)"
 author: "Unité Données Indicateurs"
 date: "`r Sys.Date()`"
@@ -15,8 +15,6 @@ output:
     code_download: TRUE
 fontsize: 11pt
 
-#bibliography: references.bib
-
 #paramètres pour l'export Shiny (cons_data removed temporarily)
 params:
   communes: NULL
@@ -28,16 +26,22 @@ params:
   regener_data_1: NULL
   regener_data_2: NULL
   regener_data_3: NULL
-  
 ---
 
 ```{r setup, include=FALSE}
 # Basic knitr behavior
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = 'Note:')
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      comment = 'Note:')
+
+# Needs to be installed in the 'run_as' user library specified in /etc/shiny-server/shiny-server.conf
 library(eneRgyVD)
+
+
 ```
 
-```{css basic-theme, echo = FALSE}
+```{css basic-theme, echo=FALSE}
 .main-container {
     margin-left: 30px;
 }
@@ -60,32 +64,31 @@ color:midnightblue;
 }
 ```
 
-Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/).
+Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` le `r paste0(format(Sys.Date(), "%d %b %Y")," à ", format(Sys.time(), "%H:%M"))`.
 
 Le contenu de ce rapport sera adapté progressivement en fonction des données disponibles ainsi que des fonctionnalités souhaitées par les utilisateurs.
 
-# Rapport énergétique
+# Production d'électricité
 
-Ce rapport a été généré pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)`.
+L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables. Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles, nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application. Plus d'informations sur [PRONOVO AG](https://pronovo.ch/fr/).
 
+La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021.
 
-## Production d'électricité
-
-### Tableau
+## Tableau
 
 ```{r}
-
+# Generate the table for electricity production and add copy/download buttons
 params$prod_data |>
-    eneRgyVD::create_prod_table_dt(unit = params$unit)
-
-create_prod_table_dt
+    eneRgyVD::create_prod_table_dt(unit = params$unit,
+                                   DT_dom = "Bfrtip"
+                                   )
 
 ```
 
-### Graphique
+## Graphique
 
 ```{r}
-
+# Generate the barplot for electricity production
 params$prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
@@ -102,42 +105,58 @@ params$prod_data |>
 
 ```
 
-## Chaleur des bâtiments
+# Chaleur des bâtiments
 
-### Tableaux
+En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de **RegEner**. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques. Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte de davantage de données de consommation. L'élaboration d'une méthode de correction climatique est également en cours.
 
-Par usage : 
+Les besoins optimisés traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement après 2001 étaient assainis énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique. Davantage de détails peuvent être fournis sur demande à [stat.energie\@vd.ch](mailto:stat.energie@vd.ch). Un document de synthèse méthodologique est prévu prochainement afin de présenter la méthode appliquée.
+
+## Besoins
+
+### Tableau
 
 ```{r}
-
-params$regener_data_1 |>
-  eneRgyVD::create_regener_table_dt(unit = params$unit)
+# Generate the table for regener needs and add copy/download buttons
+params$regener_data_0 |>
+  eneRgyVD::create_rg_needs_table_dt(unit = params$unit,
+                                    DT_dom = "Bfrtip"
+                                    )
 
 ```
 
+## Consommation
+
+### Tableaux
+
+Par usage :
+
+```{r}
+# Generate the table for regener consumption by use and add copy/download buttons
+params$regener_data_1 |>
+  eneRgyVD::create_regener_table_dt(unit = params$unit,
+                                    DT_dom = "Bfrtip"
+                                    )
+
+```
 
 Par affectation :
 
 ```{r}
-
+# Generate the table for regener consumption by aff and add copy/download buttons
 params$regener_data_2 |>
   eneRgyVD::create_regener_table_dt(unit = params$unit)
 
 ```
 
-
 ### Graphiques
 
 ```{r}
-# Use # of communes so that some plot chunk's height can be sized accordingly
-# # 400 being default px for 1 row, 0.0104 is the approx conversion from px to inch
+# Compute facet height to pass inside the following chunk
 height_facet_plots = ceiling(length(params$communes)/2)*400*0.01
 ```
 
-
-
 ```{r fig.height= height_facet_plots, fig.width = 12}
-
+# Generate facetted alluvial plot using regener consumption by usage dataset
 params$regener_data_1 |>
   eneRgyVD::lump_alluvial_factors(var_commune = "commune",
                                 var_flow = "consommation",
@@ -152,19 +171,20 @@ params$regener_data_1 |>
 
 ```
 
+### Divers
 
+D'autres informations relatives aux bâtiments sont également disponibles :
+
+```{r}
+# Generate table for misc regener data  
+params$regener_data_3 |> 
+  eneRgyVD::create_rg_misc_table_dt(unit = params$unit, 
+                          DT_dom = "Bfrtip"
+                          )
+```
 
 # Contact
 
 Pour tout problème, suggestion d'amélioration ou remarque, n'hésitez pas à prendre contact avec le service en charge de ce projet :
 
-DGE-DIREN, [stat.energie@vd.ch](mailto:stat.energie@vd.ch)
-
-
-
-
-
-
-
-
-
+DGE-DIREN, [stat.energie\@vd.ch](mailto:stat.energie@vd.ch)

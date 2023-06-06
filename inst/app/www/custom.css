@@ -1,5 +1,10 @@
 /* style.css */
 
+/* Used to disable link interaction with the 'notification' dropdownMenu from app_ui.R */
+.disableLink{
+  pointer-events:none;
+}
+
 
 /* bs4DashBrand title custom */
 .titleClassDGE{
@@ -9,23 +14,7 @@
   font-family:Arial,Monospace,Verdana;
 }
 
-.disableLink{
-  pointer-events:none;
-}
-
-/* Remove vertical padding (0rem) for 'Consulter la méthodologie' boxes on each tab */
-/*    horizontal padding as default (1.25rem) */
-#shiny-tab-tabProd > div.row > div > div > div.card-header,
-#shiny-tab-tabRegenerCons > div.row > div > div > div.card-header,
-#shiny-tab-tabRegenerNeeds > div.row > div > div > div.card-header,
-#shiny-tab-tabRegenerMisc > div.row > div > div > div.card-header{
-
-  padding:0rem 1.25rem;
-
-}
-
-
-
+/* Title elements */
 .titleClassDIREN{
   font-size:20px;
   text-align:center;
@@ -34,6 +23,19 @@
   border-bottom:1px solid slategrey;
   padding-bottom:5px;
 }
+
+
+/* Reduce vertical padding (0.5rem) for 'Consulter la méthodologie' boxes on each tab */
+/*    horizontal padding as default (1.25rem) */
+#shiny-tab-tabProd > div.row > div > div > div.card-header,
+#shiny-tab-tabRegenerCons > div.row > div > div > div.card-header,
+#shiny-tab-tabRegenerNeeds > div.row > div > div > div.card-header,
+#shiny-tab-tabRegenerMisc > div.row > div > div > div.card-header{
+
+  padding:0.25rem 1.25rem;
+
+}
+
 
 /* bs4Dash bs4DropdownMenu's width for notifications to display correctly */
 .dropdown-menu-lg{

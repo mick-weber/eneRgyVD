@@ -209,9 +209,10 @@ app_ui <- function(request) {
                                                        label = "Consulter la méthodologie",
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
-                                                       width =8,
-                                      paste(generic_method_warning, # text in utils_helpers.R
-                                             specific_prod_elec_warning)
+                                  collapsed = TRUE,
+                                  width = 6,
+                                  paste(generic_method_warning, # text in utils_helpers.R
+                                        specific_prod_elec_warning)
                                   ),
                      ), #End fluidRow
 
@@ -236,10 +237,11 @@ app_ui <- function(request) {
                                                        label = "Consulter la méthodologie",
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
-                                  width =8,
+                                  collapsed = TRUE,
+                                  width = 6,
                                   paste(generic_method_warning, # text in utils_helpers.R
-                                         specific_rgr_warning)
-                                  ),
+                                        specific_rgr_warning)
+                     ),
             ),
 
             # breathing
@@ -263,7 +265,8 @@ app_ui <- function(request) {
                                                        label = "Consulter la méthodologie",
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
-                                  width = 8,
+                                  collapsed = TRUE,
+                                  width = 6,
                                   paste(generic_method_warning, # text in utils_helpers.R
                                          specific_rgr_warning)
                                   ),
@@ -288,7 +291,8 @@ app_ui <- function(request) {
                                                        label = "Consulter la méthodologie",
                                                        icon = icon("info-sign", lib = "glyphicon"),
                                                        class = "infoButton"),
-                                  width =8,
+                                  collapsed = TRUE,
+                                  width = 6,
                                   paste(generic_method_warning, # text in utils_helpers.R
                                          specific_rgr_warning)
                                   ),

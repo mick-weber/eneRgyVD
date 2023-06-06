@@ -236,7 +236,7 @@ mod_regener_needs_charts_server <- function(id,
 
     })# End renderUI
 
-    # Renders the DT table ----
+    # Renders DT table ----
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
@@ -249,11 +249,11 @@ mod_regener_needs_charts_server <- function(id,
     # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
     download_data <- reactive({
 
-
-      subsetData() %>% # We let the data in a long format
+      # We send data in wide format too (Besoins actuels/optimaux)
+      subsetData_wide() %>%
         # Add the currently selected unit in the colnames (conversion is already done)
-        # add energy units in brackets for energy/power related columns
         rename_fr_colnames() %>%  # fct_helpers.R
+        # Add energy units in brackets for energy/power related columns
         add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
 
     })

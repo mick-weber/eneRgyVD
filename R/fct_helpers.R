@@ -542,6 +542,7 @@ create_cons_table_dt <- function(data,
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
       options = list(paging = TRUE,    # paginate the output
                      pageLength = 15,  # number of rows to output for each page
                      scrollY = TRUE,   # enable scrolling on Y axis
@@ -556,9 +557,7 @@ create_cons_table_dt <- function(data,
                      # https://rstudio.github.io/DT/004-i18n.html   for languages
                      language = DT_fr_language # from utils_helpers.R !
       ),
-    #extensions = 'Buttons',
     selection = 'single', ## enable selection of a single row
-    #filter = 'bottom',              ## include column filters at the bottom
     rownames = FALSE               ## don't show row numbers/names
     ) # End DT
 }
@@ -578,6 +577,8 @@ create_rg_needs_table_dt <- function(data,
                                      ){
 
   data %>%
+    # Pivot longer to have current + optimal needs split !
+    tidyr::pivot_wider(names_from = statut, values_from = besoins) |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year (etat for rg dataset) to factor
@@ -598,6 +599,7 @@ create_rg_needs_table_dt <- function(data,
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
                                  pageLength = 15,  # number of rows to output for each page
                                  scrollY = TRUE,   # enable scrolling on Y axis
@@ -612,9 +614,7 @@ create_rg_needs_table_dt <- function(data,
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                  language = DT_fr_language # from utils_helpers.R !
                   ),
-                  #extensions = 'Buttons',
                   selection = 'single', ## enable selection of a single row
-                  #filter = 'bottom',              ## include column filters at the bottom
                   rownames = FALSE               ## don't show row numbers/names
     )# End DT
 
@@ -658,6 +658,7 @@ create_regener_table_dt <- function(data,
     rename_fr_colnames() %>% # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
                                  pageLength = 15,  # number of rows to output for each page
                                  scrollY = TRUE,   # enable scrolling on Y axis
@@ -672,9 +673,7 @@ create_regener_table_dt <- function(data,
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                  language = DT_fr_language # from utils_helpers.R !
                   ),
-                  #extensions = 'Buttons',
                   selection = 'single', ## enable selection of a single row
-                  #filter = 'bottom',              ## include column filters at the bottom
                   rownames = FALSE               ## don't show row numbers/names
     ) # End DT
 
@@ -711,6 +710,7 @@ create_rg_misc_table_dt <- function(data,
     # add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
                                  pageLength = 15,  # number of rows to output for each page
                                  scrollY = TRUE,   # enable scrolling on Y axis
@@ -725,9 +725,8 @@ create_rg_misc_table_dt <- function(data,
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
                                  language = DT_fr_language # from utils_helpers.R !
                   ),
-                  #extensions = 'Buttons',
+
                   selection = 'single', ## enable selection of a single row
-                  #filter = 'bottom',              ## include column filters at the bottom
                   rownames = FALSE               ## don't show row numbers/names
     )# End DT
 

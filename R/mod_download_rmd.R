@@ -79,9 +79,9 @@ mod_download_rmd_server <- function(id,
         tags$li("D'autres informations seront progressivement ajoutées ...")
       ),# End ul
       br(),
-      p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.
-        <br>
-        La génération du rapport peut prendre quelques secondes...",
+      p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
+        br(),
+        "La génération du rapport peut prendre quelques secondes...",
         style = "color:grey;"),
 
       )# End tagList

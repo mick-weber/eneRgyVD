@@ -79,7 +79,9 @@ mod_download_rmd_server <- function(id,
         tags$li("D'autres informations seront progressivement ajoutées ...")
       ),# End ul
       br(),
-      p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.",
+      p("Ce type de rapport peut être ouvert avec n'importe quel navigateur web, même hors-ligne.
+        <br>
+        La génération du rapport peut prendre quelques secondes...",
         style = "color:grey;"),
       )# End tagList
 
@@ -129,12 +131,12 @@ mod_download_rmd_server <- function(id,
             rmarkdown::render(file_path,
                    output_file = output_file,
                    params = params,
-                   envir = new.env(parent = globalenv()))
+                   envir = new.env(parent = globalenv())) # we create a new env to avoid knit conflicts
 
           })
         }
 
-        # render report
+        # Render report asynchronously
         render_async(file_path = report_path,
                      params = params,
                      output_file = file)

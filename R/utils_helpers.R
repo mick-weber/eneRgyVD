@@ -139,15 +139,15 @@ power_col_keywords <- c("Puissance")
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
 prod_colors <- dplyr::tribble(~icon, ~categorie, ~color,
-                             as.character(icon("droplet")),  "Hydroélectricité","#6495ED",
-                             as.character(icon("sun")),  "Solaire", "#FFB90F",
-                             as.character(icon("apple")),  "Déchets méthanisables","#BFDB86",
-                             as.character(icon("leaf")),  "Biomasse agricole", "#48A649",
-                             as.character(icon("tree")),  "Bois-énergie", "#CC9E62",
-                             as.character(icon("industry")), "STEP", "#A58DE6",
-                             as.character(icon("fire")), "Déchets incinérables","#E67A78",
-                             as.character(icon("oil-can")), "Thermique fossile", "#747D82",
-                             as.character(icon("wind")), "Eolien", "#2596BE")
+                             as.character(shiny::icon("droplet")),  "Hydroélectricité","#6495ED",
+                             as.character(shiny::icon("sun")),  "Solaire", "#FFB90F",
+                             as.character(shiny::icon("apple")),  "Déchets méthanisables","#BFDB86",
+                             as.character(shiny::icon("leaf")),  "Biomasse agricole", "#48A649",
+                             as.character(shiny::icon("tree")),  "Bois-énergie", "#CC9E62",
+                             as.character(shiny::icon("industry")), "STEP", "#A58DE6",
+                             as.character(shiny::icon("fire")), "Déchets incinérables","#E67A78",
+                             as.character(shiny::icon("oil-can")), "Thermique fossile", "#747D82",
+                             as.character(shiny::icon("wind")), "Eolien", "#2596BE")
 
 
 # Used for table icons
@@ -165,10 +165,10 @@ colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie)
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
 cons_colors <- dplyr::tribble(~icon, ~secteur, ~color,
-                             as.character(icon("industry")), "Industrie/Services","#6495ED",
-                             as.character(icon("house")), "Ménages", "#FFB90F",
-                             as.character(icon("car")),  "Transports", "#BFDB86",
-                             as.character(icon("question")),  "Inconnu", "#BFDB86")
+                             as.character(shiny::icon("industry")), "Industrie/Services","#6495ED",
+                             as.character(shiny::icon("house")), "Ménages", "#FFB90F",
+                             as.character(shiny::icon("car")),  "Transports", "#BFDB86",
+                             as.character(shiny::icon("question")),  "Inconnu", "#BFDB86")
 # Used for table icons
 # Adding the color style in the html tag for the icon
 cons_icons <- cons_colors %>%
@@ -188,14 +188,14 @@ colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$secteur)
 # Base tribble for AE, color and icon
 
 regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
-                              as.character(icon("tree")), "Bois", "#CC9E62",
-                              as.character(icon("industry")), "CAD", "#A58DE6",
-                              as.character(icon("bolt")), "Electricité (direct)", "#FFEF0F",
-                              as.character(icon("bolt-lightning")), "Electricité (PAC)", "#FF870F",
-                              as.character(icon("temperature-half")), "Chaleur ambiante (PAC)", "#FF870F", # 2023-05-10
-                              as.character(icon("fire-flame-simple")), "Gaz", "#477fc1", #gaznat
-                              as.character(icon("fire-flame-simple")), "Mazout", "#5d5f63",
-                              as.character(icon("sun")), "Solaire thermique", "#FFB90F"
+                              as.character(shiny::icon("tree")), "Bois", "#CC9E62",
+                              as.character(shiny::icon("industry")), "CAD", "#A58DE6",
+                              as.character(shiny::icon("bolt")), "Electricité (direct)", "#FFEF0F",
+                              as.character(shiny::icon("bolt-lightning")), "Electricité (PAC)", "#FF870F",
+                              as.character(shiny::icon("temperature-half")), "Chaleur ambiante (PAC)", "#FF870F", # 2023-05-10
+                              as.character(shiny::icon("fire-flame-simple")), "Gaz", "#477fc1", #gaznat
+                              as.character(shiny::icon("fire-flame-simple")), "Mazout", "#5d5f63",
+                              as.character(shiny::icon("sun")), "Solaire thermique", "#FFB90F"
                               )
 
 # Used for table icons
@@ -215,8 +215,8 @@ colors_ae <- regener_colors$color %>% setNames(nm = regener_colors$ae)
 # Base tribble for AE, color and icon
 
 regener_colors_type <- dplyr::tribble(~icon, ~type, ~color,
-                                      as.character(icon("fire")), "Chauffage", "#DC143C",
-                                      as.character(icon("droplet")), "ECS", "#6495ED"
+                                      as.character(shiny::icon("fire")), "Chauffage", "#DC143C",
+                                      as.character(shiny::icon("droplet")), "ECS", "#6495ED"
 )
 
 # Used for table icons

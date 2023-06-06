@@ -576,9 +576,9 @@ create_rg_needs_table_dt <- function(data,
                                      DT_dom = "Bfrtip" # we set default with Buttons
                                      ){
 
+  print(data)
+
   data %>%
-    # Pivot longer to have current + optimal needs split !
-    tidyr::pivot_wider(names_from = statut, values_from = besoins) |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year (etat for rg dataset) to factor

@@ -46,9 +46,10 @@ create_select_leaflet <- function(sf_districts,
 
   leaflet::leaflet(options = leafletOptions(
     zoomControl = TRUE,
-    zoomSnap = .1, # improve zoom increments
-    zoomDelta = 1,
-    minZoom = 7.9, # lock the back zoom range
+    zoomSnap = 0.25, # small scroll zoom
+    zoomDelta = 1, # bigger button zoom
+    minZoom = 9.2, # lock the back zoom range
+    maxZoom = 12, # limit zoom max
     attributionControl = F # remove leaflet url
     )) %>%
     # Couche de base des districts si un district est sélectionné
@@ -103,9 +104,14 @@ create_select_leaflet <- function(sf_districts,
     # Set the background to white
     leaflet.extras::setMapWidgetStyle(list(background= "white")) %>%
     # fitbounds with coordinates. ! tweak along with zoomSnap/zoomDelta
-    leaflet::setView(lng = 6.617, lat = 46.63, zoom = 7.8) %>% # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
+    leaflet::setView(lng = 6.617,
+                     lat = 46.63,
+                     zoom = 9.3) %>% # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
     # Set max limits to avoid panning away from the map
-    leaflet::setMaxBounds(lng1 = 5.4, lat1 = 45.98, lng2 = 7.7, lat2 = 47.4)
+    leaflet::setMaxBounds(lng1 = 5.7,
+                          lat1 = 45.9,
+                          lng2 = 7.8,
+                          lat2 = 47.4)
 
 }
 

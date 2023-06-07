@@ -137,6 +137,10 @@ mod_download_rmd_server <- function(id,
           })
         }
 
+        # Add notification (custom.css for styling)
+        showNotification(paste0("Génération du rapport..."),
+                         type = "message")
+
         # Render report asynchronously
         render_async(file_path = report_path,
                      params = params,

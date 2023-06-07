@@ -1,5 +1,7 @@
 /* style.css */
 
+
+
 /* Used to disable link interaction with the 'notification' dropdownMenu from app_ui.R */
 .disableLink{
   pointer-events:none;
@@ -197,9 +199,15 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
 
 /* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
 .shiny-notification {
-  position:fixed;
-  top: calc(60%);
-  left: calc(50%);
+  font-size:20px;
+  top: 0;
+  bottom: unset;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 400px;
 }
 
 /* Class mandatory for the prettyRadioButtons in the header (mod_unit_converter.R)*/

@@ -582,8 +582,6 @@ create_rg_needs_table_dt <- function(data,
                                      DT_dom = "Bfrtip" # we set default with Buttons
                                      ){
 
-  print(data)
-
   data %>%
     # Basic clean up for table output
     dplyr::mutate(

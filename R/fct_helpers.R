@@ -1,13 +1,13 @@
 # Info fn ----
 
 #' info_dev_message()
-#' shinyalert popup which informs that this is a development version. Called in app_server.R
+#' shinyalert popup message from the dev to explain what is the app made for
 #' @importFrom shinyalert shinyalert
 #' @return A shinyalert object when opening the app
 
 info_dev_message <- function(){
 
-  shinyalert::shinyalert(title = "Bienvenue sur le profil énergétique des communes vaudoises !",
+  shinyalert::shinyalert(title = "Bienvenue sur le profil énergétique des communes !",
                          text = paste0("Cette application est mise à disposition par la ",
                          tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
                                        " afin de diffuser des données énergétiques à l'échelle des communes vaudoises.",

@@ -433,7 +433,7 @@ app_server <- function(input, output, session) {
    req(selectedUnit$unit_to)
 
    mod_collapse_stats_box_server("vd_box",
-                                 title = "Canton de Vaud",
+                                 title = "Synthèse : Canton de Vaud",
                                  selectedUnit = selectedUnit,
                                  prod_elec_value = prod_elec_vd_last_year |>
                                     convert_units(unit_to = selectedUnit$unit_to), # utils_helpers.R
@@ -456,7 +456,7 @@ app_server <- function(input, output, session) {
      req(inputVals$selectedCommunes, selectedUnit$unit_to)
 
      mod_collapse_stats_box_server("communes_box",
-                                   title = "Commune(s) sélectionnée(s)",
+                                   title = "Synthèse : Commune(s) sélectionnée(s)",
                                    selectedUnit = selectedUnit,
 
                                    prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R

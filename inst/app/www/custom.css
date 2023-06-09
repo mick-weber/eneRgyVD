@@ -1,12 +1,15 @@
 /* style.css */
 
+/* info_dev_message() custom class*/
+.sweet-alert > p{
+  font-size:1.3rem !important;
+}
 
 
 /* Used to disable link interaction with the 'notification' dropdownMenu from app_ui.R */
 .disableLink{
   pointer-events:none;
 }
-
 
 /* bs4DashBrand title custom */
 .titleClassDGE{
@@ -24,6 +27,17 @@
   font-family:Arial,Monospace,Verdana;
   border-bottom:1px solid slategrey;
   padding-bottom:5px;
+}
+
+/* Color of DGE/DIREN titles, somehow can't access it directly in .titleClass > a */
+#sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDIREN > a,
+#sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDGE > a{
+  color:white;
+}
+
+/* Colors widget text in the sidebar (differs from the dash' body) */
+#sidebarItemExpanded{
+  color:#bec5cb;
 }
 
 
@@ -44,17 +58,6 @@
   max-width:fit-content!important;
   max-height:fit-content!important;
   padding:0;
-}
-
-/* Color of DGE/DIREN titles, somehow can't access it directly in .titleClass > a */
-#sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDIREN > a,
-#sidebarItemExpanded > div.os-padding > div > div > nav > ul > div.titleClassDGE > a{
-  color:white;
-}
-
-/* Colors widget text in the sidebar (differs from the dash' body) */
-#sidebarItemExpanded > div.os-padding > div > div{
-  color: #bec5cb;
 }
 
 /* Custom class for sliderInputs (go green for labs and slider) */
@@ -197,17 +200,13 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
 }
 
 
-/* targets the notifications of shiny::showNotification() (rendering the rmd report for instance)*/
+/* Affects all shiny notifs, e.g. for report rendering */
 .shiny-notification {
-  font-size:20px;
-  top: 0;
-  bottom: unset;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  max-width: 400px;
+  position:fixed;
+  top: calc(60%);
+  left: calc(40%);
+  width:300px;
+  text-align:center;
 }
 
 /* Class mandatory for the prettyRadioButtons in the header (mod_unit_converter.R)*/

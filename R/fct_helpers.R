@@ -378,7 +378,11 @@ create_alluvial_chart <- function(data,
 #' @return a ggplot object
 #' @export
 
-lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to){
+lump_alluvial_factors <- function(data,
+                                  var_commune,
+                                  var_from,
+                                  var_flow,
+                                  var_to){
 
   # lumping factors both left and right of alluvia to 4 max (for readability)
   # fct_lump_prop won't lump a factor ALONE, there needs to be 2 factors to meet the prop criteria
@@ -406,7 +410,9 @@ lump_alluvial_factors <- function(data, var_commune, var_from, var_flow, var_to)
 #' @return a numeric value corresponding to px
 #' @export
 
-return_dynamic_size <- function(which, web_size, n_facets){
+return_dynamic_size <- function(which,
+                                web_size,
+                                n_facets){
 
   if(which == "height"){
 
@@ -652,7 +658,6 @@ create_regener_table_dt <- function(data,
                                           digits = 3,
                                           drop0trailing = TRUE,
                                           scientific = FALSE))) %>%
-
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons, by = "ae") %>%
     dplyr::relocate(pct_commune, .after = "consommation") %>%

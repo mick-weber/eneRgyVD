@@ -103,17 +103,24 @@ app_ui <- function(request) {
 
                              ## menuItems ----
 
+
+                             ### Sélection subMenu ----
+                             h6("Sélection", style = "color:white;"), #menuItem header
+
                                     bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("earth-americas")),
 
-                             br(), # Space to isolate data tabs
+                             ### Données subMenu ----
+                            h6("Données", style = "color:white;"), #menuItem header
 
-                             # !!CONS_ELEC removed!! # bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
+          # !!CONS_ELEC removed!! # bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
                                     bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
                                     bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
                                                       bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
                                                       bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
                                                       bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
-                             br(), # Space to isolate data tabs
+
+                              ### Divers subMenu ----
+                            h6("Divers", style = "color:white;"), #menuItem header
 
                                     bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
                                     bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info")),

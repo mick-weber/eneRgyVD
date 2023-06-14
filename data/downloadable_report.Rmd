@@ -70,7 +70,7 @@ Le contenu de ce rapport sera adapté progressivement en fonction des données d
 
 # Production d'électricité
 
-L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables. Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles, nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application. Plus d'informations sur [PRONOVO AG](https://pronovo.ch/fr/).
+L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables. Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles, nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application. Plus d'informations sur [Pronovo AG](https://pronovo.ch/fr/).
 
 La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021.
 

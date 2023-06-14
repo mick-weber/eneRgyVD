@@ -1,12 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. -->
 
-# eneRgyVD
+# eneRgyVD (Profil énergétique)
 
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 The aim of this `{shiny}` application (packaged under `{eneRgyVD}`) is
@@ -21,7 +21,7 @@ Vaud](https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeun
 The data will be updated regularly when new data is available or when
 the methodology has been improved.
 
-New datasets will be updated when available.
+New datasets will be uploaded when available.
 
 Any broken or suboptimal feature can be directly reported at
 <stat-energie@vd.ch>.
@@ -46,3 +46,6 @@ After installing, you can call `library(eneRgyVD)` and then simply run
 performance-related reasons, the raw datafiles are not provided on
 GitHub. However, all the `.rda` files are available in the `data/`
 subfolder.
+
+For technical reasons, downloading an energy report from a local
+instance of the application will not work.

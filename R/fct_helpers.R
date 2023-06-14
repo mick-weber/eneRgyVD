@@ -144,8 +144,8 @@ create_bar_plotly <- function(data,
                               dodge = FALSE, # stacked by default
                               free_y = FALSE,
                               legend_title,
-                              web_width = 1500, # set default
-                              web_height = 800 # set default
+                              web_width = 1500, # set default when shinybrowser not used
+                              web_height = 800 # set default when shinybrowser not used
                               ){
 
   # First create ggplot graph
@@ -167,7 +167,7 @@ create_bar_plotly <- function(data,
                                 )+
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
-    ggplot2::labs( x = "", y = unit)+
+    ggplot2::labs(x = "", y = unit)+
     ggplot2::facet_wrap(facets = ggplot2::vars(.data[[var_commune]]),
                         ncol = 2,
                         # if the toggle linked to the free_y argument is TRUE, then free y axis
@@ -192,22 +192,23 @@ create_bar_plotly <- function(data,
   n_facets <- n_communes
 
   # Turn to plotly object and deal with plotting sizes
-  ggplot %>% plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
+  ggplot %>%
+    plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
 
-                              height = return_dynamic_size(which = 'height',
-                                                           web_size = web_height,
-                                                           n_facets = n_facets),
-                              width = return_dynamic_size(which = 'width',
-                                                           web_size = web_width,
-                                                           n_facets = n_facets)
-                              ) %>%
+                     height = return_dynamic_size(which = 'height',
+                                                  web_size = web_height,
+                                                  n_facets = n_facets),
+                     width = return_dynamic_size(which = 'width',
+                                                 web_size = web_width,
+                                                 n_facets = n_facets)
+  ) %>%
     plotly::layout(
       legend = list(
-      orientation = "h", # puts the legend in the middle instead of default right
-      y = 1.25 # elevates the legend so its above the plot, not below
-    )) %>%
+        orientation = "h", # puts the legend in the middle instead of default right
+        y = 1.35 # elevates the legend so its above the plot, not below
+      )) %>%
     plotly::config(modeBarButtons = list(list("toImage")),
-           locale = "fr")
+                   locale = "fr")
 }
 
 #' create_sunburst_plotly()

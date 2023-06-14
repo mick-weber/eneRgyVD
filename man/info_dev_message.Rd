@@ -3,7 +3,7 @@
 \name{info_dev_message}
 \alias{info_dev_message}
 \title{info_dev_message()
-shinyalert popup which informs that this is a development version. Called in app_server.R}
+shinyalert popup message from the dev to explain what is the app made for}
 \usage{
 info_dev_message()
 }
@@ -12,5 +12,5 @@ A shinyalert object when opening the app
 }
 \description{
 info_dev_message()
-shinyalert popup which informs that this is a development version. Called in app_server.R
+shinyalert popup message from the dev to explain what is the app made for
 }

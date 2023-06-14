@@ -21,7 +21,7 @@ mod_about_the_app_ui <- function(id){
                                                 h4(strong("Pourquoi cette application ?")),
                                                 tags$p("Le but de ce profil énergétique est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
-           Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter simplement."),
+           Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement"),
            # breathing
            br(),
            h4(strong("Contact")),
@@ -53,12 +53,12 @@ mod_about_the_app_ui <- function(id){
                 tabPanel("Production d'électricité",
                 br(),
                 tags$ul(
-                  tags$li(h5(strong("Production d'électricité : PRONOVO")),
-                          p("L'immense majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
+                  tags$li(h5(strong("Production d'électricité : Pronovo")),
+                          p("La grande majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
                 pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables.
                 Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles,
-                nettoyage des communes, ajout de l'autoconsommation PV, etc.) permet de créer une base de données pour chaque commune qui alimente cette application.",
-                tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur PRONOVO AG", target = "_blank")),# open in new tab
+                nettoyage des communes, estimation de l'autoconsommation photovoltaïque, etc.) permet de créer une table de données pour chaque commune vaudoise.",
+                tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur Pronovo AG", target = "_blank")),# open in new tab
                 p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."))
                                                                 ),# End tags$ul 1/3
                 br(),
@@ -102,14 +102,23 @@ mod_about_the_app_ui <- function(id){
                                      registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
                                      de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment
                                      ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques.
-                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte de
-                                     davantage de données de consommation. L'élaboration d'une méthode de correction climatique est également en cours.",
+                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte importante
+                                     de données de consommation et à l'ajout d'une correction climatique sur les besoins de chauffage.",
+                                     tags$br(),
                                      "Les", strong("besoins optimisés"), "traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
                                      après 2001 étaient assainis énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
-                                     br(),
+
+                                     tags$br(), tags$br(),
+
                                      "Davantage de détails peuvent être fournis sur demande à",
                                      tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
-                                     "Un document de synthèse méthodologique est prévu prochainement afin de présenter la méthode appliquée."))
+                                     "Un document de synthèse méthodologique est prévu prochainement afin de présenter plus en détail la méthode appliquée.",
+                                     tags$br(),
+                                     "Les communes étant responsables de ce qui figure dans le registre cantonal des bâtiments (et par extension dans le registre fédéral des bâtiments),
+                                     la qualité des données relatives aux agents énergétique est donc directement liée à l'état de mise à jour de ces données par la commune.
+                                     La DGE-DIREN se tient à disposition des communes qui souhaiteraient améliorer ces données par la mise à jour des agents énergétiques dans ces registres."
+
+                                     ))
                          ),# End tags$ul 2/3
                          br(),
 

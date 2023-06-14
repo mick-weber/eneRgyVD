@@ -1,9 +1,9 @@
 /* style.css */
 
 /* info_dev_message() custom class*/
-.sweet-alert > p{
-  font-size:1.3rem !important;
-}
+/*.sweet-alert > p{
+/*  font-size:1rem !important;
+/*}
 
 
 /* Used to disable link interaction with the 'notification' dropdownMenu from app_ui.R */

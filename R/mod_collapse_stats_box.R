@@ -26,7 +26,7 @@ mod_collapse_stats_box_server <- function(id,
                                           cons_elec_value,
                                           cons_rg_value,
                                           year){
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
 
 

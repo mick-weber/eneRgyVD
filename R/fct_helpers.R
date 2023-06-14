@@ -666,7 +666,9 @@ create_regener_table_dt <- function(data,
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons, by = "ae") %>%
     # relocate call
-    dplyr::relocate(commune, etat, icon, ae, usage, consommation, pct_commune) %>%
+    dplyr::relocate(commune, etat, icon, ae,
+                    tidyselect::any_of(c("usage", "affectation")),
+                    consommation, pct_commune) %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
     rename_fr_colnames() %>% # fct_helpers.R

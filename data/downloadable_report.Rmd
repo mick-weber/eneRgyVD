@@ -82,7 +82,6 @@ params$prod_data |>
     eneRgyVD::create_prod_table_dt(unit = params$unit,
                                    DT_dom = "Bfrtip"
                                    )
-
 ```
 
 ## Graphique

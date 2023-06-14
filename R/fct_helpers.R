@@ -9,12 +9,17 @@ info_dev_message <- function(){
 
   shinyalert::shinyalert(title = "Bienvenue sur le profil énergétique des communes !",
                          text = paste0("Cette application est mise à disposition par la ",
-                         tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
+                                       tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
                                        " afin de diffuser des données énergétiques à l'échelle des communes vaudoises.",
                                        tags$br(),
                                        "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",
                                        tags$a(href = link_pter, target = "_blank", # utils_helpers.R
-                                              "planifications énergétiques territoriales.")
+                                              "planifications énergétiques territoriales."),
+                                       tags$br(), tags$br(),
+                                       "Si vous rencontrez des difficultés d'affichage, il est probable qu'une mise à jour de votre navigateur web
+                                       puisse résoudre ces problèmes (Menu > Aide > A propos).",
+                                       tags$br(), tags$br(),
+                                       "En cas de problème persistant, merci de prendre contact avec nous."
                                        ),
                          html = TRUE,
                          size = "m",
@@ -51,7 +56,7 @@ create_select_leaflet <- function(sf_districts,
     minZoom = 9.2, # lock the back zoom range
     maxZoom = 12, # limit zoom max
     attributionControl = F # remove leaflet url
-    )) %>%
+    )) |>
     # Couche de base des districts si un district est sélectionné
     leaflet::addPolygons(data = sf_districts,
                          fillColor = NULL,
@@ -60,14 +65,14 @@ create_select_leaflet <- function(sf_districts,
                          label = ~NOM_MAJ,
                          weight = 2,
                          # group is then used in leafem::addHomeButton()
-                         group = "Vue cantonale") %>%
+                         group = "Vue cantonale") |>
     # Couche des lacs
     leaflet::addPolygons(data = sf_lacs,
                          fillColor = "lightblue",
                          color = "grey",
                          weight = 1,
                          # Si clickable : l'app crash car lac =/= commune !
-                         options = pathOptions(clickable = FALSE)) %>%
+                         options = leaflet::pathOptions(clickable = FALSE)) |>
     # Première couche des communes (en blanc, état non-sélectionné)
     leaflet::addPolygons(data = sf_communes,
                          fillColor = "white",
@@ -82,7 +87,7 @@ create_select_leaflet <- function(sf_districts,
                            fillColor = NULL,
                            fillOpacity = NULL,
                            color = "#FFB90F",
-                           bringToFront = FALSE)) %>%
+                           bringToFront = FALSE)) |>
     # Seconde couche des communes (en rouge, état sélectionné)
     leaflet::addPolygons(data = sf_communes,
                          fillColor = "#FFB90F",
@@ -100,13 +105,13 @@ create_select_leaflet <- function(sf_districts,
                            color = "#CFCFCF",
                            bringToFront = FALSE)) %>%
     # This will be switched on/off through the code below using click events
-    leaflet::hideGroup(group = sf_communes$NOM_MIN)   %>%
+    leaflet::hideGroup(group = sf_communes$NOM_MIN)   |>
     # Set the background to white
-    leaflet.extras::setMapWidgetStyle(list(background= "white")) %>%
+    leaflet.extras::setMapWidgetStyle(list(background= "white")) |>
     # fitbounds with coordinates. ! tweak along with zoomSnap/zoomDelta
     leaflet::setView(lng = 6.617,
                      lat = 46.63,
-                     zoom = 9.3) %>% # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
+                     zoom = 9.3) |> # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
     # Set max limits to avoid panning away from the map
     leaflet::setMaxBounds(lng1 = 5.7,
                           lat1 = 45.9,
@@ -599,11 +604,10 @@ create_rg_needs_table_dt <- function(data,
                                                digits = 3,
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
-    # relocate
-    dplyr::relocate(commune, etat, type) %>%
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons_type, by = "type") %>%
-    dplyr::relocate(icon, .before = type) %>% #
+    # relocate call
+    dplyr::relocate(commune, etat, icon, type) %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     rename_fr_colnames() %>% # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R
@@ -660,8 +664,8 @@ create_regener_table_dt <- function(data,
                                           scientific = FALSE))) %>%
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons, by = "ae") %>%
-    dplyr::relocate(pct_commune, .after = "consommation") %>%
-    dplyr::relocate(icon, .before = "ae") %>%
+    # relocate call
+    dplyr::relocate(commune, etat, icon, ae, usage, consommation, pct_commune) %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     #turn to DT
     rename_fr_colnames() %>% # fct_helpers.R

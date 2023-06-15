@@ -51,9 +51,9 @@ create_select_leaflet <- function(sf_districts,
 
   leaflet::leaflet(options = leafletOptions(
     zoomControl = TRUE,
-    zoomSnap = 0.25, # small scroll zoom
+    zoomSnap = 0.1, # small scroll zoom
     zoomDelta = 1, # bigger button zoom
-    minZoom = 9.2, # lock the back zoom range
+    minZoom = 9.7, # lock the back zoom range
     maxZoom = 12, # limit zoom max
     attributionControl = F # remove leaflet url
     )) |>

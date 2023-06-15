@@ -345,8 +345,10 @@ app_ui <- function(request) {
 
             br(),
             # Simple iframe embed (no module needed here)
-            tags$iframe(src= "https://scribehow.com/embed/Guide_utilisateur_du_profil_energetique__4-AtAEyRRDeuVKoe9UA1XA?as=scrollable", #&skipIntro=true
-                        width = "80%", height = "800")
+            tags$iframe(src="https://scribehow.com/embed/Guide_utilisateur_du_profil_energetique__EgMdqpUuS52wylthvDs2Xg?as=scrollable", #&skipIntro=true
+                        width = "100%", height = "800",
+                        frameborder='no' # no unnecessary padding
+                        )
           )# End tabItem
 
         )# End tabItems

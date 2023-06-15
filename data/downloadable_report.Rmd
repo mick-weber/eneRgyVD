@@ -64,7 +64,7 @@ color:midnightblue;
 }
 ```
 
-Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) pour `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` le `r paste0(format(Sys.Date(), "%d %b %Y")," à ", format(Sys.time(), "%H:%M"))`.
+Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) pour le(s) territoire(s) suivant(s) : `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` le `r paste0(format(Sys.Date(), "%d %b %Y")," à ", format(Sys.time(), "%H:%M"))`.
 
 Le contenu de ce rapport sera adapté progressivement en fonction des données disponibles ainsi que des fonctionnalités souhaitées par les utilisateurs.
 

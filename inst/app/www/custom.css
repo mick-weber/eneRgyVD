@@ -11,6 +11,16 @@
   pointer-events:none;
 }
 
+/* Adapt app title dynamically to viewport width (empirical rule) */
+.adaptiveTitle{
+  font-size:calc(15px + 0.5vw);
+}
+
+/* Adapt buttons font dynamically to viewport width (empirical rule) */
+.adaptiveButtons{
+  font-size:calc(8px + 0.5vw);
+}
+
 /* bs4DashBrand title custom */
 .titleClassDGE{
   font-size:12px;
@@ -76,7 +86,8 @@
 
 /* Remove minor ticks of sliderInput class */
 .customSliderInput .irs-grid-pol.small{
-  height: 0px;}
+  height: 0px;
+}
 
 .customSliderInput .irs--shiny .irs-grid-pol{
   background-color:#bec5cb;
@@ -216,15 +227,14 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
   font-size:1rem;
 }
 
-/*Class for sunburst, add padding to center */
-.sunburstClass{
-  padding-left:250px;
+/*Class for sunburst, add padding to center ONLY for tablets and bigger medias */
+@media (min-width:801px){
+  .sunburstClass{
+    padding-left:200px;
+  }
 }
 
-/* Empty for now : class for bar plot */
-.barClass{
-
-}
+/* Empty for now : .barClass{} */
 
 
 /* test materialSwitch https://github.com/dreamRs/shinyWidgets/blob/master/inst/assets/material-switch/material-switch.css*/

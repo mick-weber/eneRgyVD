@@ -38,7 +38,6 @@ knitr::opts_chunk$set(echo = TRUE,
 # Needs to be installed in the 'run_as' user library specified in /etc/shiny-server/shiny-server.conf
 library(eneRgyVD)
 
-
 ```
 
 ```{css basic-theme, echo=FALSE}
@@ -64,9 +63,13 @@ color:midnightblue;
 }
 ```
 
-Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) pour le(s) territoire(s) suivant(s) : `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` le `r paste0(format(Sys.Date(), "%d %b %Y")," à ", format(Sys.time(), "%H:%M"))`.
+Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) le `r paste0(format(Sys.Date(), "%d/%m/%Y")," à ", format(Sys.time(), "%H:%M"))` pour le(s) territoire(s) suivant(s) :
+
+## `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` {-}
 
 Le contenu de ce rapport sera adapté progressivement en fonction des données disponibles ainsi que des fonctionnalités souhaitées par les utilisateurs.
+
+**Attention** : cette application contient des données résultant de méthodologies complexes vouées à améliorations. Pour cette raison, des valeurs peuvent changer de manière rétroactive. Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour. 
 
 # Production d'électricité
 

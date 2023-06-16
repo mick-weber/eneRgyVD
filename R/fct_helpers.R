@@ -19,7 +19,11 @@ info_dev_message <- function(){
                                        "Si vous rencontrez des difficultés d'affichage, il est probable qu'une mise à jour de votre navigateur web
                                        puisse résoudre ces problèmes (Menu > Aide > A propos).",
                                        tags$br(), tags$br(),
-                                       "En cas de problème persistant, merci de prendre contact avec nous."
+                                       "En cas de problème persistant, merci de prendre contact.",
+                                       tags$br(), tags$br(),
+                                       "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
+                                       Pour cette raison, des valeurs peuvent changer de manière rétroactive.
+                                       Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour."
                                        ),
                          html = TRUE,
                          size = "m",
@@ -450,7 +454,15 @@ return_dynamic_size <- function(which,
       # No (More than 1 facet) : web width - sidebar (300) * 95%
       no = (web_size-300)*0.95)
 
-    return(plot_width)
+    # That's an empirical minimal value for 'watchable' display
+    #  For some reason on mobile, updating the app messes up with the shinybrowser width record
+    #  So this ensures that a minimum width is set
+    plot_width_ceiling <- 800
+
+
+    return(
+      max(plot_width_ceiling, plot_width)
+           )
 
   }else{
     stop("'which' arg can only be of type 'height' or 'width'.")

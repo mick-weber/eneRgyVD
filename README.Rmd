@@ -24,12 +24,13 @@ The aim of this `{shiny}` application (packaged under `{eneRgyVD}`) is to provid
 
 The app is built and maintained by the *data and indicators unit* at [Direction de l'énergie du Canton de Vaud](https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/diren-energie).
 
-The data will be updated regularly when new data is available or when the methodology has been improved.
+The data will be updated regularly when available or when the methodology has been improved. New datasets will be uploaded when available at the communal level. 
 
-New datasets will be uploaded when available. 
+Any broken or dysfunctioning feature can be directly reported at [stat-energie@vd.ch](mailto:stat-energie@vd.ch). 
 
-Any broken or suboptimal feature can be directly reported at [stat-energie@vd.ch](mailto:stat-energie@vd.ch). 
+## Licence
 
+The project is under GNU General Public Licence [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).  
 
 ## Production version
 

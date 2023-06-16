@@ -25,57 +25,67 @@ app_ui <- function(request) {
       bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
                                sidebarIcon = icon("arrows-left-right-to-line"),
 
-      # Title                   # Title is custom made inside sidebar directly
+                               # Title                   # Title is custom made inside sidebar directly
 
-      ## leftUi ----
-                               leftUi = tags$li(style = "padding-left:100px;",
-                                                h4(strong("Profil énergétique des communes vaudoises")),
-                                                class = "dropdown"),
-      ## rightUi ----
+                               ## leftUi ----
+
+                               leftUi = tags$li(
+                                 style = NULL,
+                                 h4(strong("Profil énergétique des communes vaudoises"),
+                                    class = "adaptiveTitle"),
+                                 class = "dropdown"# required
+                               ),
+
+                               ## rightUi ----
+
                                rightUi =
-        ### unit converter ----
-                               shiny::tagList(
 
+                                 ### unit converter ----
+
+                               shiny::tagList(
                                  mod_unit_converter_ui("unit_converter"),
 
+                                 ### notifs & contact ----
 
-        ### notifs & contact ----
+                                 tags$li(
+                                   class = "dropdown", # required
 
-        tags$li(
-          class = "dropdown",
+                                   #### notifs dropdownmenu
+                                   bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL, href = NULL,
+                                                         icon = icon("calendar", lib = "glyphicon"),
+                                                         headerText = "Dernières mises à jour",
 
-                                 bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL, href = NULL,
-                                                                              icon = icon("calendar", lib = "glyphicon"),
-                                                                              headerText = "Dernières mises à jour",
+                                                         tags$div(class = "disableLink", # wrap in a div to pass the disableLink class (css)
 
-                                                       tags$div(class = "disableLink", # wrap in a div to pass the disableLink class (css)
+                                                                  purrr::pmap(notif_msg, .f = ~ bs4Dash::notificationItem(icon = shiny::icon(glue::glue("{..1}")),
+                                                                                                                          status = glue::glue("{..2}"),
+                                                                                                                          text = glue::glue("{..3}"))
 
-                                                       purrr::pmap(notif_msg, .f = ~ bs4Dash::notificationItem(icon = shiny::icon(glue::glue("{..1}")),
-                                                                                                               status = glue::glue("{..2}"),
-                                                                                                               text = glue::glue("{..3}"))
+                                                                  )# End pmap
+                                                         )# End div
 
-                                                       )# End pmap
-                                                                   )# End div
+                                                         # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                         #                           status = "info",
+                                                         #                           text = "03.23: Ajout données production + chaleur"),
+                                                         # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
+                                                         #                           status = "info",
+                                                         #                           text = "03.23: Mise en ligne du profil")
+                                   ),# End dropdownMenu notifs
 
-                                                                              # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
-                                                                              #                           status = "info",
-                                                                              #                           text = "03.23: Ajout données production + chaleur"),
-                                                                              # bs4Dash::notificationItem(icon = icon("upload", lib = "glyphicon"),
-                                                                              #                           status = "info",
-                                                                              #                           text = "03.23: Mise en ligne du profil")
-                               ),# End dropdownMenu 'updates'
-          bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
-                                                     icon = icon("envelope", lib = "font-awesome"),
-                                                     headerText = "Retours et suggestions",
-                                                     bs4Dash::notificationItem(text = "Nous contacter par e-mail",
-                                                                               href = paste0("mailto:", mail_address), # defined in utils_helpers.R
-                                                                               icon = icon("envelope", lib = "font-awesome"), status = "info")
-                               )# End dropdownMenu 'contact'
-        )# End tags$li
+                                   #### contact dropdownmenu
+
+                                   bs4Dash::dropdownMenu(type = "notifications", badgeStatus = NULL,
+                                                         icon = icon("envelope", lib = "font-awesome"),
+                                                         headerText = "Retours et suggestions",
+                                                         bs4Dash::notificationItem(text = "Nous contacter par e-mail",
+                                                                                   href = paste0("mailto:", mail_address), # defined in utils_helpers.R
+                                                                                   icon = icon("envelope", lib = "font-awesome"), status = "info")
+                                    )# End dropdownMenu 'contact'
+                                 )# End tags$li
                                )# End tagList (rightUi)
 
 
-                               ),# End dashboardHeader
+      ),# End dashboardHeader
 
       # Sidebar ----
       bs4Dash::dashboardSidebar(
@@ -91,13 +101,13 @@ app_ui <- function(request) {
                                         href = link_dge,
                                         target = "_blank",
                                         "Direction générale de l'environnement"
-                                        )),
+                                      )),
                              tags$div(class = "titleClassDIREN",
                                       tags$a(href = link_diren,
                                              target = "_blank",
                                              "Direction de l'énergie",
-                                             )
-                                      ),# End tags$div for title
+                                      )
+                             ),# End tags$div for title
 
                              br(), # between title and menuItems
 
@@ -107,40 +117,40 @@ app_ui <- function(request) {
                              ### Sélection subMenu ----
                              h6("Sélection", style = "color:white;"), #menuItem header
 
-                                    bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("earth-americas")),
+                             bs4Dash::menuItem("Carte des communes", tabName = "tabMap", icon = icon("earth-americas")),
 
                              ### Données subMenu ----
-                            h6("Données", style = "color:white;"), #menuItem header
+                             h6("Données", style = "color:white;"), #menuItem header
 
-          # !!CONS_ELEC removed!! # bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
-                                    bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
-                                    bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
-                                                      bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
-                                                      bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
-                                                      bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
+                             # !!CONS_ELEC removed!! # bs4Dash::menuItem("Consommation", tabName = "tabCons", icon = icon("bolt")),
+                             bs4Dash::menuItem("Production", tabName = "tabProd", icon = icon("bolt")),
+                             bs4Dash::menuItem("Chaleur bâtiments", tabName = "tabRegener", icon = icon("fire"),
+                                               bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
+                                               bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
+                                               bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
 
-                              ### Divers subMenu ----
-                            h6("Divers", style = "color:white;"), #menuItem header
+                             ### Divers subMenu ----
+                             h6("Divers", style = "color:white;"), #menuItem header
 
-                                    bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
-                                    bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info")),
-                                    bs4Dash::menuItem("Guide utilisateur", tabName = "tabScribe", icon = icon("question-circle"))
+                             bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
+                             bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info")),
+                             bs4Dash::menuItem("Guide utilisateur", tabName = "tabScribe", icon = icon("question-circle"))
 
         ),# End sidebarMenu
 
         ## Widgets module ----
         # Renders the sidebar inputs dynamically according to which tab is selected
-       mod_inputs_ui("inputs_1"),
+        mod_inputs_ui("inputs_1"),
 
-       # Sidebar footer ()
-       tags$footer(
-       tags$a(
-         "@DGE-DIREN 2023",
-         target = "_blank", # new tab
-         href = link_diren
-       ), # css below should be in custom.css
-       style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: darkgrey;text-align: right;background-color: transparent;"
-       )
+        # Sidebar footer ()
+        tags$footer(
+          tags$a(
+            "@DGE-DIREN 2023",
+            target = "_blank", # new tab
+            href = link_diren
+          ), # css below should be in custom.css
+          style = "font-size:0.85rem;position: fixed;height:20px;bottom: 0;left: 250px;width:calc(100% - 250px);color: darkgrey;text-align: right;background-color: transparent;"
+        )
 
 
       ),# End dashboardSidebar
@@ -157,9 +167,9 @@ app_ui <- function(request) {
                      # Title for select map
                      h5(strong("Sélectionnez des communes sur la carte ou dans la zone latérale puis naviguez dans les onglets")),
                      # Leaflet select map
-                      leaflet::leafletOutput("map") %>% # height defined in custom.css #map
-                        shinycssloaders::withSpinner(type = 6,
-                                                     color = main_color), # defined in utiles_helpers.R
+                     leaflet::leafletOutput("map") %>% # height defined in custom.css #map
+                       shinycssloaders::withSpinner(type = 6,
+                                                    color = main_color), # defined in utiles_helpers.R
 
 
 
@@ -185,10 +195,10 @@ app_ui <- function(request) {
               column(width = 12,
                      # Later : add Module to call more statistics ?
 
-                    # ...
+                     # ...
 
-            )
-          )# End fluidRow
+              )
+            )# End fluidRow
           ),# End tabItem
 
           ## tabCons ----
@@ -220,8 +230,8 @@ app_ui <- function(request) {
                                   width = 6,
                                   paste(generic_method_warning, # text in utils_helpers.R
                                         specific_prod_elec_warning)
-                                  ),
-                     ), #End fluidRow
+                     ),
+            ), #End fluidRow
 
             # breathing
             br(),
@@ -275,8 +285,8 @@ app_ui <- function(request) {
                                   collapsed = TRUE,
                                   width = 6,
                                   paste(generic_method_warning, # text in utils_helpers.R
-                                         specific_rgr_warning)
-                                  ),
+                                        specific_rgr_warning)
+                     ),
             ),
 
             # breathing
@@ -301,8 +311,8 @@ app_ui <- function(request) {
                                   collapsed = TRUE,
                                   width = 6,
                                   paste(generic_method_warning, # text in utils_helpers.R
-                                         specific_rgr_warning)
-                                  ),
+                                        specific_rgr_warning)
+                     ),
             ),
 
             # breathing
@@ -348,7 +358,7 @@ app_ui <- function(request) {
             tags$iframe(src="https://scribehow.com/embed/Guide_utilisateur_du_profil_energetique__EgMdqpUuS52wylthvDs2Xg?as=scrollable", #&skipIntro=true
                         width = "100%", height = "800",
                         frameborder='no' # no unnecessary padding
-                        )
+            )
           )# End tabItem
 
         )# End tabItems

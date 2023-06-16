@@ -22,7 +22,7 @@ app_ui <- function(request) {
       # Custom theme
       freshTheme = eneRgy_theme, # utils_helpers.R
       # Header ----
-      bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
+      bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",skin = "light",
                                sidebarIcon = icon("arrows-left-right-to-line"),
 
                                # Title                   # Title is custom made inside sidebar directly

@@ -50,6 +50,13 @@
   color:#bec5cb;
 }
 
+/* Nice separation between last MenuItem and the widget in mod_inputs_ui (app_ui.R) */
+.separateMenu{
+    border-bottom: solid 2px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
 
 /* Reduce vertical padding (0.5rem) for 'Consulter la méthodologie' boxes on each tab */
 /*    horizontal padding as default (1.25rem) */

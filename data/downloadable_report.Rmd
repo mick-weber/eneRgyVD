@@ -1,8 +1,7 @@
 ---
 title: "Profil énergétique des communes vaudoises"
 subtitle: "Direction générale de l'environnement - Direction de l'énergie (DGE-DIREN)"
-author: "Unité Données Indicateurs"
-date: "`r Sys.Date()`"
+author: "Unité données et indicateurs"
 always_allow_html: yes
 output:
   html_document:
@@ -53,17 +52,17 @@ library(eneRgyVD)
 }
 
 h2,h3,h4,h5,h6{
-  font-size: 13pt;
+  font-size: 14pt;
   color:midnightblue;
 }
 
 h1{
-font-size:14pt;
+font-size:16pt;
 color:midnightblue;
 }
 ```
 
-Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) le `r paste0(format(Sys.Date(), "%d/%m/%Y")," à ", format(Sys.time(), "%H:%M"))` pour le(s) territoire(s) suivant(s) :
+Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) le `r format(Sys.Date(), "%d/%m/%Y")` pour le(s) territoire(s) suivant(s) :
 
 ## `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` {-}
 

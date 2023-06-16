@@ -134,8 +134,10 @@ app_ui <- function(request) {
 
                              bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
                              bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info")),
-                             bs4Dash::menuItem("Guide utilisateur", tabName = "tabScribe", icon = icon("question-circle"))
-
+                             tags$div(
+                               class = "separateMenu",
+                               bs4Dash::menuItem("Guide utilisateur", tabName = "tabScribe", icon = icon("question-circle"))
+                             )
         ),# End sidebarMenu
 
         ## Widgets module ----

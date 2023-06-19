@@ -16,11 +16,6 @@ info_dev_message <- function(){
                                        tags$a(href = link_pter, target = "_blank", # utils_helpers.R
                                               "planifications énergétiques territoriales."),
                                        tags$br(), tags$br(),
-                                       "Si vous rencontrez des difficultés d'affichage, il est probable qu'une mise à jour de votre navigateur web
-                                       puisse résoudre ces problèmes (Menu > Aide > A propos).",
-                                       tags$br(), tags$br(),
-                                       "En cas de problème persistant, merci de prendre contact.",
-                                       tags$br(), tags$br(),
                                        "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
                                        Pour cette raison, des valeurs peuvent changer de manière rétroactive.
                                        Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour."
@@ -56,8 +51,8 @@ create_select_leaflet <- function(sf_districts,
   leaflet::leaflet(options = leafletOptions(
     zoomControl = TRUE,
     zoomSnap = 0.1, # small scroll zoom
-    zoomDelta = 1, # bigger button zoom
-    minZoom = 9.7, # lock the back zoom range
+    zoomDelta = 0.2, # bigger button zoom
+    minZoom = 9, # lock the back zoom range
     maxZoom = 12, # limit zoom max
     attributionControl = F # remove leaflet url
     )) |>
@@ -113,9 +108,9 @@ create_select_leaflet <- function(sf_districts,
     # Set the background to white
     leaflet.extras::setMapWidgetStyle(list(background= "white")) |>
     # fitbounds with coordinates. ! tweak along with zoomSnap/zoomDelta
-    leaflet::setView(lng = 6.617,
-                     lat = 46.63,
-                     zoom = 9.3) |> # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
+    # leaflet::setView(lng = 6.617,
+    #                  lat = 46.63,
+    #                  zoom = 9.3) |> # or fitBounds(lng1 = 6.50, lat1 = 46.18, lng2 = 6.54, lat2 = 47.15
     # Set max limits to avoid panning away from the map
     leaflet::setMaxBounds(lng1 = 5.7,
                           lat1 = 45.9,

@@ -1,9 +1,9 @@
 /* style.css */
 
 /* info_dev_message() custom class*/
-/*.sweet-alert > p{
-/*  font-size:1rem !important;
-/*}
+.sweet-alert > p{
+  font-size: max(1vw, 12px) !important;
+}
 
 
 /* Used to disable link interaction with the 'notification' dropdownMenu from app_ui.R */
@@ -138,8 +138,9 @@ body {
 }
 
 /*leaflet map border*/
-
+/*Change map height to full height (100vh) minus header height (50px)+padding(15px)+title(20px)*/
 #map{
+  height: calc(100vh - 150px) !important;
   border-style:solid;
   border-width:1px;
   border-color:#e8e8e8;
@@ -147,12 +148,7 @@ body {
 
 /*Change the shinyalert (sweet-alert) popup text display style*/
 body > div.sweet-alert.alert-size-s.showSweetAlert.visible > p{
-  text-align: center;}
-
-
-/*Change map height to full height (100vh) minus header height (50px)+padding(15px)+title(20px)*/
-#map {
-    height: calc(100vh - 150px) !important;
+  text-align: center;
 }
 
 /*Remove padding of column holding the stats boxes in tabMap*/
@@ -221,9 +217,9 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
 /* Affects all shiny notifs, e.g. for report rendering */
 .shiny-notification {
   position:fixed;
-  top: calc(60%);
+  top: calc(50%);
   left: calc(40%);
-  width:300px;
+  width:20vw;
   text-align:center;
 }
 
@@ -234,12 +230,11 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
   font-size:1rem;
 }
 
-/*Class for sunburst, add padding to center ONLY for tablets and bigger medias */
-@media (min-width:801px){
-  .sunburstClass{
-    padding-left:200px;
-  }
+/*Class for sunburst */
+.sunburstClass{
+  padding-left: 20vh;
 }
+
 
 /* Empty for now : .barClass{} */
 

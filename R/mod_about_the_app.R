@@ -27,7 +27,7 @@ mod_about_the_app_ui <- function(id){
            h4(strong("Contact")),
            tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'unité données et indicateurs via ",
                   tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
-                  ", qui est l'unité transversale de la",
+                  " qui est l'unité transversale de la",
                   tags$a (href = link_diren, "direction de l'énergie de l'Etat de Vaud (DGE-DIREN)",
                           target = "_blank"),
                   "chargée des données énergétiques.")

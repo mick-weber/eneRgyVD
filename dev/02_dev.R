@@ -50,6 +50,8 @@ usethis::use_package("bookdown") # for rmd rendering
 usethis::use_package("promises") # asnyc report download
 usethis::use_package("future")   # asnyc report download ## RUN THIS ##
 
+usethis::use_package("shinylogs") # record session logs for user tracking
+
 
 ## Add modules ----
 ## Create a module infrastructure in R/

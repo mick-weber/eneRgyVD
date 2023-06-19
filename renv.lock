@@ -123,6 +123,23 @@
       ],
       "Hash": "e749cae40fa9ef469b6050959517453c"
     },
+    "RcppCCTZ": {
+      "Package": "RcppCCTZ",
+      "Version": "0.2.12",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "Rcpp"
+      ],
+      "Hash": "c856433d58f138d8ade2303ad846405a"
+    },
+    "RcppDate": {
+      "Package": "RcppDate",
+      "Version": "0.0.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "08cc427d6fe7a63e604cfa11aad31006"
+    },
     "V8": {
       "Package": "V8",
       "Version": "4.2.2",
@@ -831,11 +848,12 @@
         "shinybrowser",
         "shinycssloaders",
         "shinydashboardPlus",
+        "shinylogs",
         "stringr",
         "tidyr",
         "writexl"
       ],
-      "Hash": "8c49dd52e44970a2adc5d94333d5eb79"
+      "Hash": "a303e04bd73cd5cbf92604ad3294eaa1"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -1668,6 +1686,21 @@
         "methods"
       ],
       "Hash": "6dfe8bf774944bd5595785e3229d8771"
+    },
+    "nanotime": {
+      "Package": "nanotime",
+      "Version": "0.3.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "Rcpp",
+        "RcppCCTZ",
+        "RcppDate",
+        "bit64",
+        "methods",
+        "zoo"
+      ],
+      "Hash": "5d1561633d8c6f086e58741a2e04f281"
     },
     "nlme": {
       "Package": "nlme",
@@ -2557,6 +2590,23 @@
       ],
       "Hash": "5045276dcad7ad9b785d593b1a710681"
     },
+    "shinylogs": {
+      "Package": "shinylogs",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "anytime",
+        "bit64",
+        "data.table",
+        "digest",
+        "htmltools",
+        "jsonlite",
+        "nanotime",
+        "shiny"
+      ],
+      "Hash": "a2425d913d852b5401628405d3767965"
+    },
     "shinytest2": {
       "Package": "shinytest2",
       "Version": "0.2.1",
@@ -3144,6 +3194,21 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "c42bfcec3fa6a0cce17ce1f8bc684f88"
+    },
+    "zoo": {
+      "Package": "zoo",
+      "Version": "1.8-12",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "grDevices",
+        "graphics",
+        "lattice",
+        "stats",
+        "utils"
+      ],
+      "Hash": "5c715954112b45499fb1dadc6ee6ee3e"
     }
   }
 }

@@ -36,6 +36,7 @@ Imports:
     shinybrowser,
     shinycssloaders,
     shinydashboardPlus,
+    shinylogs,
     shinyWidgets,
     stringr,
     tidyr,

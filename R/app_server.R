@@ -7,6 +7,14 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
+   # Record logs ----
+   ## We record session and errors (no inputs/outputs)
+
+   shinylogs::track_usage(
+      what = c("session","errors"),
+      storage_mode = shinylogs::store_json(path = "logs/") # store in the /logs subfolder
+   )
+
    # Dev message ----
 
        info_dev_message() # defined in fct_helpers.R

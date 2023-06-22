@@ -234,6 +234,7 @@ app_ui <- function(request) {
                                         specific_prod_elec_warning)
                      ),
             ), #End fluidRow
+            h5("Important: les données d'une catégorie pour laquelle la commune recense moins de trois installations sont retirées."),
 
             # breathing
             br(),

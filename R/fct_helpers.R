@@ -490,13 +490,14 @@ create_prod_table_dt <- function(data,
       # change year to factor %>%
       annee = as.factor(annee),
       # format numeric cols
+      #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
+      #  to keep NAs alive with an if_else statement (only needed for this fn)
       across(where(is.numeric), ~ if_else(condition = !is.na(.x),
                                           true = format(.x,
                                                         big.mark = "'",
                                                         digits = 3,
                                                         drop0trailing = TRUE,
                                                         scientific = FALSE),
-
                                           false = NA_character_ )
              )) %>%
     dplyr::select(-c(numero_de_la_commune)) %>%
@@ -517,16 +518,18 @@ create_prod_table_dt <- function(data,
                                  scrollY = TRUE,   # enable scrolling on Y axis
                                  autoWidth = TRUE, # use smart column width handling
                                  server = FALSE,   # use server-side processing
-                                 dom = "Bfrtip",
+                                 dom = DT_dom,
                                  buttons = list(
                                    list(extend = 'copy', text = "Copier"),
                                    list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
                                  ),
                                  columnDefs = list(list(
                                    targets = "_all",
+                                   className = 'dt-center',
+                                   # NA to custom string : see https://github.com/rstudio/DT/issues/322
                                    render = DT::JS(
                                      "function(data, type, row, meta) {",
-                                     "return data === null ? 'Confidentiel' : data;",
+                                     "return data === null ? '(Confidentiel)' : data;",
                                      "}")
                                  )),
 
@@ -677,7 +680,7 @@ create_regener_table_dt <- function(data,
       # change year to factor
       # Annee = as.factor(Annee), # if needed later
       # format numeric cols
-      dplyr::across(consommation, ~format(.x,
+      dplyr::across(where(is.numeric), ~format(.x,
                                           big.mark = "'",
                                           digits = 3,
                                           drop0trailing = TRUE,
@@ -891,7 +894,7 @@ add_colname_units <- function(data, unit){
   # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way
   #  I found to work. Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
 
-  # Step 1 : rename vars if contains energy related keywords and add the power unit in brackets
+  # Step 1 : rename nrg vars if contains energy related keywords and add the power unit in brackets
   if(any(stringr::str_detect(string = colnames(data),
                              pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
 
@@ -904,7 +907,7 @@ add_colname_units <- function(data, unit){
   }else data
 
 
-  # Step 2 : rename vars if contains power related keywords and add the power unit in brackets
+  # Step 2 : rename power vars if contains power related keywords and add the power unit in brackets
   # This step works if related after Step 1
   if(any(stringr::str_detect(string = colnames(data),
                              pattern = stringr::regex(paste0(power_col_keywords,
@@ -922,6 +925,18 @@ add_colname_units <- function(data, unit){
                                    no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
                                  ), "]") # closing bracket for unit
       )
+
+  }else data
+
+  # Step 3 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
+  if(any(stringr::str_detect(string = colnames(data),
+                             pattern = stringr::regex(paste0(co2_keywords, collapse = "|"), ignore_case = TRUE)))){
+
+    data <- data |>
+      # For all energy-related units
+      dplyr::rename_with(.cols = contains(co2_keywords, # utils_helpers.R
+                                          ignore.case = TRUE),
+                         ~paste0(.x, " [", "tCO2", "]"))
 
   }else data
 

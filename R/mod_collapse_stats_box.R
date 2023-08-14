@@ -47,7 +47,10 @@ mod_collapse_stats_box_server <- function(id,
               number = year,
               header = paste(format(prod_elec_value,
                                     big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
-              text = tags$p("Production", icon("bolt", class = "iconColor")),
+              text = tags$p(class = "statboxText",
+                            "Production électricité",
+                            icon("bolt", class = "iconColor")),
+
               rightBorder = FALSE # set to TRUE when !! CONS_ELEC removed !! comes
             )# End descriptionBlock 1/3
           ),# End column
@@ -60,7 +63,9 @@ mod_collapse_stats_box_server <- function(id,
           # !!CONS_ELEC removed!! #     header = paste(format(cons_elec_value%>% convert_units(unit_to = selectedUnit$unit_to),
           # !!CONS_ELEC removed!! #                           big.mark = "'", digits = 1, scientific = FALSE),
           # !!CONS_ELEC removed!! #                    selectedUnit$unit_to),
-          # !!CONS_ELEC removed!! #     text = tags$p("Consommation", icon("bolt", class = "iconColor")),
+          # !!CONS_ELEC removed!! #     text = tags$p(
+          # !!CONS_ELEC removed!! # class = "statboxText",
+          # !!CONS_ELEC removed!! # "Consommation", icon("bolt", class = "iconColor")),
           # !!CONS_ELEC removed!! #     rightBorder = FALSE
           # !!CONS_ELEC removed!! #   )# End descriptionBlock 2/3
           # !!CONS_ELEC removed!! # )# End column
@@ -74,7 +79,8 @@ mod_collapse_stats_box_server <- function(id,
         # !!CONS_ELEC removed!! #       number = year,
         # !!CONS_ELEC removed!! #       # header: no need for unit conversion since it's percents
         # !!CONS_ELEC removed!! #       header = scales::label_percent(accuracy = .1)(prod_elec_value/cons_elec_value),
-        # !!CONS_ELEC removed!! #       text = tags$p("Part production", icon("bolt", class = "iconColor")),
+        # !!CONS_ELEC removed!! #       text = tags$p(class = "statboxText",
+        # !!CONS_ELEC removed!! # "Part production", icon("bolt", class = "iconColor")),
         # !!CONS_ELEC removed!! #       rightBorder = TRUE
         # !!CONS_ELEC removed!! #     )# End descriptionBlock 3/3
         # !!CONS_ELEC removed!! #   ),# End column
@@ -87,7 +93,10 @@ mod_collapse_stats_box_server <- function(id,
             header = paste(format(cons_rg_value,
                                   big.mark = "'", digits = 1, scientific = FALSE),
                            selectedUnit$unit_to),
-            text = tags$p("Consommation", icon("fire", class = "iconColor")),
+            text = tags$p(class = "statboxText",
+                          "Consommation chaleur bâtiments",
+                          icon("fire", class = "iconColor")
+                          ),
             rightBorder = FALSE
           )# End descriptionBlock
         )# End column

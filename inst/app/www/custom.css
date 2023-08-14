@@ -251,6 +251,11 @@ div.dt-buttons > button.dt-button.buttons-excel.buttons-html5{
   color:lightgrey;
 }
 
+/* paragraph class for titles in statboxes */
+.statboxText{
+  text-transform:none !important;
+}
+
 /*Size of error messages when selected communes are required */
 .htmlwidgets-error,
 .shiny-output-error-validation{

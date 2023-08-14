@@ -361,14 +361,14 @@
     },
     "bslib": {
       "Package": "bslib",
-      "Version": "0.4.2.9000",
+      "Version": "0.5.0.9000",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "bslib",
       "RemoteUsername": "rstudio",
       "RemoteRef": "HEAD",
-      "RemoteSha": "cb941bb78288ddf944d954dc3e1801b29fbb988d",
+      "RemoteSha": "f1efd836b45973f9ce75dab8e278933ae1275723",
       "Requirements": [
         "R",
         "base64enc",
@@ -382,7 +382,7 @@
         "rlang",
         "sass"
       ],
-      "Hash": "c03bea8b5d69f72a491d4d20b8601c1f"
+      "Hash": "ed97e503ec5312055d6ee0d230163564"
     },
     "cachem": {
       "Package": "cachem",
@@ -894,7 +894,7 @@
     },
     "fontawesome": {
       "Package": "fontawesome",
-      "Version": "0.5.0",
+      "Version": "0.5.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -902,7 +902,7 @@
         "htmltools",
         "rlang"
       ],
-      "Hash": "e80750aec5717dedc019ad7ee40e4a7c"
+      "Hash": "1e22b8cabbad1eae951a75e9f8b52378"
     },
     "forcats": {
       "Package": "forcats",
@@ -1333,7 +1333,7 @@
     },
     "httr": {
       "Package": "httr",
-      "Version": "1.4.5",
+      "Version": "1.4.6",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1344,7 +1344,7 @@
         "mime",
         "openssl"
       ],
-      "Hash": "f6844033201269bec3ca0097bc6c97b3"
+      "Hash": "7e5e3cbd2a7bc07880c94e22348fb661"
     },
     "httr2": {
       "Package": "httr2",
@@ -3197,7 +3197,7 @@
     },
     "zoo": {
       "Package": "zoo",
-      "Version": "1.8-12",
+      "Version": "1.8-11",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -3208,7 +3208,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "5c715954112b45499fb1dadc6ee6ee3e"
+      "Hash": "874a5b77fe0cfacf2a3450069ae70926"
     }
   }
 }

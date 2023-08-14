@@ -23,6 +23,7 @@ Imports:
     leaflet,
     leaflet.extras,
     magrittr,
+    openxlsx,
     plotly,
     promises,
     purrr,

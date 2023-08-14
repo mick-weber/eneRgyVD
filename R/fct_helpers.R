@@ -490,11 +490,15 @@ create_prod_table_dt <- function(data,
       # change year to factor %>%
       annee = as.factor(annee),
       # format numeric cols
-      across(where(is.numeric), ~format(.x,
-                                        big.mark = "'",
-                                        digits = 3,
-                                        drop0trailing = TRUE,
-                                        scientific = FALSE))) %>%
+      across(where(is.numeric), ~ if_else(condition = !is.na(.x),
+                                          true = format(.x,
+                                                        big.mark = "'",
+                                                        digits = 3,
+                                                        drop0trailing = TRUE,
+                                                        scientific = FALSE),
+
+                                          false = NA_character_ )
+             )) %>%
     dplyr::select(-c(numero_de_la_commune)) %>%
     dplyr::relocate(commune, annee, categorie,
                     production, injection, autoconsommation,
@@ -513,17 +517,25 @@ create_prod_table_dt <- function(data,
                                  scrollY = TRUE,   # enable scrolling on Y axis
                                  autoWidth = TRUE, # use smart column width handling
                                  server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
+                                 dom = "Bfrtip",
                                  buttons = list(
-                                    list(extend = 'copy', text = "Copier"),
-                                    list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
-                                    ),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                                 ),
+                                 columnDefs = list(list(
+                                   targets = "_all",
+                                   render = DT::JS(
+                                     "function(data, type, row, meta) {",
+                                     "return data === null ? 'Confidentiel' : data;",
+                                     "}")
+                                 )),
+
+
                                  # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                  language = DT_fr_language # from utils_helpers.R !
-    ),
-    selection = 'single', # enable selection of a single row
-    rownames = FALSE      # don't show row numbers/names
+                                 language = DT_fr_language # from utils_helpers.R !
+                  ),
+                  selection = 'single', # enable selection of a single row
+                  rownames = FALSE      # don't show row numbers/names
     ) # End DT
 }
 

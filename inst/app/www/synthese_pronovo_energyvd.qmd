@@ -37,6 +37,11 @@ library(knitr)
 
 
 ```{css basic-theme}
+
+body{
+text-align:justify;
+}
+
 h1.title{
 font-size:24pt;
 }

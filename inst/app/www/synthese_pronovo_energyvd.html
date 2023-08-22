@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Unité données et indicateurs">
+
+<title>Vue d’ensemble du traitement des données Pronovo AG</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="synthese_pronovo_energyvd_files/libs/clipboard/clipboard.min.js"></script>
+<script src="synthese_pronovo_energyvd_files/libs/quarto-html/quarto.js"></script>
+<script src="synthese_pronovo_energyvd_files/libs/quarto-html/popper.min.js"></script>
+<script src="synthese_pronovo_energyvd_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="synthese_pronovo_energyvd_files/libs/quarto-html/anchor.min.js"></script>
+<link href="synthese_pronovo_energyvd_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="synthese_pronovo_energyvd_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="synthese_pronovo_energyvd_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="synthese_pronovo_energyvd_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="synthese_pronovo_energyvd_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<script src="synthese_pronovo_energyvd_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="synthese_pronovo_energyvd_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="1">
+    <h2 id="toc-title">Contenu</h2>
+   
+  <ul>
+  <li><a href="#contexte" id="toc-contexte" class="nav-link active" data-scroll-target="#contexte"><span class="header-section-number">1</span> Contexte</a></li>
+  <li><a href="#accessibilité" id="toc-accessibilité" class="nav-link" data-scroll-target="#accessibilité"><span class="header-section-number">2</span> Accessibilité</a></li>
+  <li><a href="#traitement" id="toc-traitement" class="nav-link" data-scroll-target="#traitement"><span class="header-section-number">3</span> Traitement</a>
+  <ul class="collapse">
+  <li><a href="#préparation" id="toc-préparation" class="nav-link" data-scroll-target="#préparation"><span class="header-section-number">3.1</span> Préparation</a>
+  <ul class="collapse">
+  <li><a href="#jointure-par-année" id="toc-jointure-par-année" class="nav-link" data-scroll-target="#jointure-par-année"><span class="header-section-number">3.1.1</span> Jointure par année</a></li>
+  <li><a href="#harmonisation-des-fichiers" id="toc-harmonisation-des-fichiers" class="nav-link" data-scroll-target="#harmonisation-des-fichiers"><span class="header-section-number">3.1.2</span> Harmonisation des fichiers</a></li>
+  <li><a href="#nettoyage" id="toc-nettoyage" class="nav-link" data-scroll-target="#nettoyage"><span class="header-section-number">3.1.3</span> Nettoyage</a></li>
+  <li><a href="#agrégation-par-installation" id="toc-agrégation-par-installation" class="nav-link" data-scroll-target="#agrégation-par-installation"><span class="header-section-number">3.1.4</span> Agrégation par installation</a></li>
+  </ul></li>
+  <li><a href="#complétion" id="toc-complétion" class="nav-link" data-scroll-target="#complétion"><span class="header-section-number">3.2</span> Complétion</a>
+  <ul class="collapse">
+  <li><a href="#récupération" id="toc-récupération" class="nav-link" data-scroll-target="#récupération"><span class="header-section-number">3.2.1</span> Récupération</a></li>
+  <li><a href="#recodage-des-catégories-de-technologies" id="toc-recodage-des-catégories-de-technologies" class="nav-link" data-scroll-target="#recodage-des-catégories-de-technologies"><span class="header-section-number">3.2.2</span> Recodage des catégories de technologies</a></li>
+  <li><a href="#suppression-dinstallations" id="toc-suppression-dinstallations" class="nav-link" data-scroll-target="#suppression-dinstallations"><span class="header-section-number">3.2.3</span> Suppression d’installations</a></li>
+  <li><a href="#nettoyage-des-communes" id="toc-nettoyage-des-communes" class="nav-link" data-scroll-target="#nettoyage-des-communes"><span class="header-section-number">3.2.4</span> Nettoyage des communes</a></li>
+  </ul></li>
+  <li><a href="#quantification" id="toc-quantification" class="nav-link" data-scroll-target="#quantification"><span class="header-section-number">3.3</span> Quantification</a>
+  <ul class="collapse">
+  <li><a href="#facteurs" id="toc-facteurs" class="nav-link" data-scroll-target="#facteurs"><span class="header-section-number">3.3.1</span> Facteurs</a></li>
+  <li><a href="#production-non-certifiée" id="toc-production-non-certifiée" class="nav-link" data-scroll-target="#production-non-certifiée"><span class="header-section-number">3.3.2</span> Production non certifiée</a></li>
+  <li><a href="#production-certifiée" id="toc-production-certifiée" class="nav-link" data-scroll-target="#production-certifiée"><span class="header-section-number">3.3.3</span> Production certifiée</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Vue d’ensemble du traitement des données Pronovo AG</h1>
+<p class="subtitle lead">Direction de l’énergie (DGE-DIREN)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Rédaction</div>
+    <div class="quarto-title-meta-contents">
+             <p>Unité données et indicateurs </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">22 août 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<style type="text/css">
+h1.title{
+font-size:24pt;
+}
+
+h1{
+font-size:16pt;
+color:midnightblue;
+}
+
+h2,h3,h4{
+  font-size: 14pt;
+  color:midnightblue;
+}
+
+.sidebar>nav[role=doc-toc]>ul{
+font-size:0.9rem
+}
+</style>
+</div>
+<section id="contexte" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Contexte</h1>
+<p>Afin de suivre sa politique énergétique cantonale, le Canton de Vaud estime depuis 2015 la production d’électricité qui a lieu sur son territoire. Cette estimation est rendue possible grâce aux données transmises par Pronovo AG qui est l’organisme fédéral agréé de certification des garanties d’origine.</p>
+<p>C’est la Direction de l’énergie (DGE-DIREN) qui est en charge de l’acquisition de ces données ainsi que de leur traitement. On peut distinguer deux périodes qui reflètent deux approches de traitement bien distinctes :</p>
+<ul>
+<li><p><strong>2015-2019</strong> : Exploitation des fichiers Excel tels quels, avec une simple somme de l’injection par type de technologie recensé par Pronovo. L’autoconsommation de la plupart des installations solaires n’est pas estimée. Les installations non certifiées ne sont pas comprises.</p></li>
+<li><p><strong>2020+</strong> : Exploitation des fichiers Excel avec un script de traitement (langage R) qui permet de nettoyer la base de donnée et d’en exploiter un maximum d’information utile, et notamment d’estimer l’autoconsommation photovoltaïque ainsi que d’estimer la production des installations non certifiées à l’aide de leur puissance. Ce traitement s’applique <strong>rétroactivement</strong> aux données 2015-2019.</p></li>
+</ul>
+<p>Chaque année, deux fichiers sont transmis sur demande de la DGE-DIREN par Pronovo :</p>
+<ol type="1">
+<li><p>Un fichier qui contient <strong>les injections dans le réseau des installations certifiées</strong> par le système de garanties d’origine (GO)</p></li>
+<li><p>Un fichier qui contient <strong>toutes les installations connues</strong> de production d’électricité sur le territoire, à l’exception des installations photovoltaïques &lt;2kW. Ce fichier contient davantage de détail sur les installations que le fichier d’injection (date de mise en service, adresse, etc.)</p></li>
+</ol>
+<p>Pour les installations certifiées (existant donc dans le fichier des injections), la quantité d’électricité injectée est connue pour les installations d’une puissance égale ou inférieure à 30kVa. Pour les installations d’une puissance supérieure à 30kVa, l’injection mais également l’autoconsommation est renseignée (transmise depuis 2019 seulement).</p>
+<p>Pour les installations non certifiées qui sont normalement toutes solaires, aucune information de production (ni injection ni autoconsommation) n’est disponible et il conviendra d’estimer la production de ces installations sur la base de la catégorie d’installation.</p>
+</section>
+<section id="accessibilité" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Accessibilité</h1>
+<p>Les données sous leur forme désagrégée, par installation, sont confidentielles et ne sont pas diffusées.</p>
+<p>Les données agrégées par commune, technologie et année sont transmises sur le profil énergétique des communes vaudoises depuis 2023 et remontent jusqu’à 2015.</p>
+<p><strong>Attention</strong> : Les données d’une catégorie pour laquelle la commune recense moins de trois installations sont retirées de l’application. Le total cantonal n’est pas affecté. Les communes qui souhaitent accéder à ces données pour leur planification énergétique sont invitées à en faire la demande écrite à la DGE-DIREN.</p>
+</section>
+<section id="traitement" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Traitement</h1>
+<p>Un résumé des principales étapes de ce script de traitement est proposé ci-dessous.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="synthese_pronovo_diagramme.svg" class="img-fluid"></p>
+</div>
+</div>
+<section id="préparation" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="préparation"><span class="header-section-number">3.1</span> Préparation</h2>
+<p>Les données des différentes années doivent d’abord être préparées de sorte à ce qu’elles puissent être combinées.</p>
+<section id="jointure-par-année" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="jointure-par-année"><span class="header-section-number">3.1.1</span> Jointure par année</h3>
+<p>Afin de pouvoir récupérer l’injection des installations certifiées (fichier 1) et de la joindre dans le fichier des installations (fichier 2), il est nécessaire de trouver une variable qui permette de rassembler les deux fichiers.</p>
+<p>Cette clé de jointure est le numéro de l’installation (<code>Numéro de GO</code> ,<code>Laufnummer</code>, ou <code>Numéro RPC</code>, <code>EVS-NR.</code>, selon l’installation). Ces variables doivent au préalable être nettoyées car selon les années il y a parfois des zéros à retirer (p.ex. <code>00231231</code> contre <code>231231</code> pour la même installation d’une extraction différente).</p>
+</section>
+<section id="harmonisation-des-fichiers" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="harmonisation-des-fichiers"><span class="header-section-number">3.1.2</span> Harmonisation des fichiers</h3>
+<p>Selon les années, les fichiers diffèrent tant dans leur structure (nombre et nom des variables) que dans le codage des variables.</p>
+<p>Pour le nom des variables et de certains codes de variables, Pronovo traduit historiquement ces informations en français. Le problème est que cette traduction n’est pas consistante dans le temps, et chaque année des noms de variables légèrement différentes sont identifiés.</p>
+<p>Il est donc nécessaire de renommer toutes les variables utiles au traitement afin de pouvoir passer à l’étape suivante qui est d’assembler les fichiers de toutes les années en un seul fichier sur lequel tous les traitements s’appliqueront.</p>
+</section>
+<section id="nettoyage" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="nettoyage"><span class="header-section-number">3.1.3</span> Nettoyage</h3>
+<p>Plusieurs variables doivent être minutieusement nettoyées pour garantir que les traitements ultérieurs seront efficaces. Il s’agit par exemple de :</p>
+<ul>
+<li><p>Remplacer les puissances électriques de 0kW par des valeurs manquantes <code>NA</code></p></li>
+<li><p>Convertir et nettoyer les dates (p.ex. une date Excel <code>44722</code> en <code>2022-06-10</code>)</p></li>
+<li><p>Nettoyer les formats numériques qui possèdent des caractères</p></li>
+<li><p>etc.</p></li>
+</ul>
+</section>
+<section id="agrégation-par-installation" class="level3" data-number="3.1.4">
+<h3 data-number="3.1.4" class="anchored" data-anchor-id="agrégation-par-installation"><span class="header-section-number">3.1.4</span> Agrégation par installation</h3>
+<p>Chaque installation peut figurer jusqu’à 12 fois par année dans le fichier des injections ce qui corredpond à une information d’une injection par mois. Il est donc nécessaire d’agréger ces différentes lignes par installation (on utilisera le numéro de l’installation comme base pour l’agrégation) afin de n’avoir qu’une information d’injection par année et par installation.</p>
+</section>
+</section>
+<section id="complétion" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="complétion"><span class="header-section-number">3.2</span> Complétion</h2>
+<p>Une fois préparées, on complète au mieux les informations des installations de toutes les années avec notamment des informations récemment transmises (date de mise en service, etc.). Les informations de catégorie d’installation sont également attribuées, de même que les communes.</p>
+<section id="récupération" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="récupération"><span class="header-section-number">3.2.1</span> Récupération</h3>
+<p>Certaines variables ne sont transmises qu’à partir d’une certaine année. C’est le cas par exemple de la date de mise en service des installations.</p>
+<p>Ainsi, pour une installation dont on a l’information récente de date de mise en service qui n’était pas disponible les années précédentes, il est nécessaire de rapatrier cette information également dans les lignes de l’installation pour ces années précédentes. Par exemple :</p>
+<ul>
+<li><p><strong>2018</strong> : l’extraction ne renseigne pas la date de mise en service pour l’installation <code>xy</code></p></li>
+<li><p><strong>2019</strong> : l’extraction renseigne une date de mise en service <code>2016-12-01</code> pour l’installation <code>xy</code></p></li>
+</ul>
+<p>Avec cette récupération de l’information, on attribue donc la date <code>2016-12-01</code> pour les lignes de l’installation <strong>2016</strong>, <strong>2017</strong> et <strong>2018</strong>.</p>
+<p>Cette procédure est également appliquée pour d’autres variables, car parfois l’information est manquante dans certaines extractions et présente dans d’autres.</p>
+</section>
+<section id="recodage-des-catégories-de-technologies" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="recodage-des-catégories-de-technologies"><span class="header-section-number">3.2.2</span> Recodage des catégories de technologies</h3>
+<p>Les codes utilisés par Pronovo sont les suivants : <strong>Biogaz, Forestry and agricultural by-products and waste, Hydro power, Industrial by-products &amp; commercial waste (non-fossil proportion), Moteur à combustion avec combustible gazeux, Photovoltaic, Sewage gas, Turbine à vapeur à condensation avec incinération des déchets industriels, Turbine à vapeur à contrepression avec combustion de pétrole, et Turbines à gaz</strong></p>
+<p>Tandis que les codes historiquement utilisés par la DIREN sont les suivants : <strong>Biomasse agricole, Bois-énergie, Déchets incinérables, Déchets méthanisables, Hydroélectricité, Solaire, STEP, et Thermique fossile</strong>.</p>
+<p>Il faut donc également recoder les installations Pronovo vers les catégories DGE-DIREN. Pour les catégories <strong>Solaire, Hydroélectricité, STEP et Déchets incinérables</strong> l’opération est simple, mais certaines installations recensées par Pronovo comme <strong>Biogaz</strong> se retrouvent par exemple en <strong>Biomasse agricole</strong> ou en <strong>Déchets méthanisables</strong>.</p>
+<p>Cette recatégorisation nécessite l’intervention des experts métiers DGE-DIREN pour catégoriser les installations en fonction de leur connaissance du terrain. Pas plus d’une poignée d’installation doit être recatégorisée manuellement chaque année, le reste peut être fait de manière automatisée.</p>
+</section>
+<section id="suppression-dinstallations" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="suppression-dinstallations"><span class="header-section-number">3.2.3</span> Suppression d’installations</h3>
+<p>Un nombre important d’installations non certifiées figurent dans les extractions Pronovo (dans le fichier des installations). Certaines de ces installations sont en service et il faut donc les garder, mais d’autres ne le sont pas encore : elles ont été saisies administrativement mais n’existent pas encore. Il faut donc les retirer. On utilise la documentation de la mise en service effective de l’installation pour ce tri.</p>
+<p>On retire également les quelques installations non certifiées et sans puissance électrique renseignée car l’estimation de production, d’injection et d’autoconsommation ne sera pas possible.</p>
+</section>
+<section id="nettoyage-des-communes" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="nettoyage-des-communes"><span class="header-section-number">3.2.4</span> Nettoyage des communes</h3>
+<p>Les informations relatives à l’adresse sont très souvent mal saisies. Il en va de même pour les informations de la localité de l’installation, qui sont souvent écrites avec des erreurs.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Exemple d'écriture de localités</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Localité</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Crans pres Celigny</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crans Pres Celigny</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crans Prés Celigny</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crans Prés Céligny</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crans-Pré-Céligny</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crans-Pres-Celigny</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crans-Près-Celigny</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crans-près-Celigny</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crans-Pres-Céligny</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crans-prés-Céligny</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crans-près-Céligny</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Crans-Près-Céligny</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crans-près-céligny</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Afin de pouvoir bénéficier de statistiques communales, une correction manuelle des localités mal orthographiées est faite afin de les convertir en noms de communes correctement orthographiées. Ce travail est fait pour environ 700 localités mal orthographiées, et chaque année une bonne dizaine de nouvelles entrées doivent être corrigées en plus.</p>
+<p>Cette étape permet ainsi d’associer une commune à l’ensemble des milliers d’installations recensées.</p>
+</section>
+</section>
+<section id="quantification" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="quantification"><span class="header-section-number">3.3</span> Quantification</h2>
+<p>La suite logique de la méthode, une fois l’installation affectée à une commune et identifiée comme étant en service, est de procéder à l’estimation de la production annuelle et plus spécifiquement de l’injection ainsi que de l’autoconsommation.</p>
+<p>Cette quantification se fait en plusieurs étapes étant donné qu’il existe plusieurs profils d’installations, dont principalement :</p>
+<ul>
+<li><p>Les installations sujettes à la RPC qui injectent l’entier de leur production ;</p></li>
+<li><p>Les installations d’une puissance égale ou supérieure à 30kVa dont on connaît l’injection et l’autoconsommation (certifiées d’office) ;</p></li>
+<li><p>Les installations certifiées de puissance inférieure à 30kVa dont on connaît l’injection annuelle mais pas l’autoconsommation ;</p></li>
+<li><p>Les installations non certifiées dont on ne connaît que la puissance ;</p></li>
+</ul>
+<p>Il est ainsi nécessaire d’adapter la méthode de quantification à chaque type d’installation afin d’améliorer au maximum la fiabilité de l’estimation.</p>
+<section id="facteurs" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="facteurs"><span class="header-section-number">3.3.1</span> Facteurs</h3>
+<p>Grâce à l’interprétation des statuts des installations fournie par Pronovo, il est possible d’identifier les installations qui sont au <a href="https://www.bfe.admin.ch/bfe/fr/home/mesures-d-encouragement/energies-renouvelables/retribution-de-injection.html/">régime RPC</a>. Etant donné que ces installations bénéficient d’un tarif de reprise très avantageux, on peut considère que l’énergie injectée sur le réseau correspond à l’énergie produite de l’installation.</p>
+<p>Pour le calcul des facteurs, afin d’avoir un échantillon constitué uniquement d’installations ayant produit sur toute une année civile, on retire les informations d’installations renseignant la même année d’une mise en service.</p>
+<p>Par exemple : une installation mise en service en mars 2019 sera, pour l’année 2019, supprimée du périmètre de calcul.</p>
+<section id="facteurs-production" class="level4" data-number="3.3.1.1">
+<h4 data-number="3.3.1.1" class="anchored" data-anchor-id="facteurs-production"><span class="header-section-number">3.3.1.1</span> Facteurs production</h4>
+<p>En se basant donc sur l’information de plus de 900 installations sur la période 2015-2021 (soit plus de 6’000 informations d’injection sous RPC), un facteur de production <strong>médian</strong> est calculé à 1’069 kWh/kW.</p>
+<p>L’ordre de grandeur est facilement vérifiable avec les hypothèses ci-dessous :</p>
+<p><span class="math display">\[ 0.188kWc/m^2 * 1200 kWh/m^2 * 0.19 = 1'212 kWh/kWc\]</span></p>
+<ul>
+<li><p>Une puissance installée moyenne par mètre carré de 188 Wc/m^2 (<a href="https://www.suisseenergie.ch/tools/calculateur-solaire/">Calculateur solaire SuisseEnergie</a>) ;</p></li>
+<li><p>Un <a href="https://www.vd.ch/themes/environnement/energie/energies-renouvelables-bois-hydraulique-geothermie-profonde-energies-eolienne-et-solaire/energie-solaire">ensoleillement annuel moyen vaudois de 1’200 kWh/m^2</a></p></li>
+<li><p>Un rendement moyen de 19% (choix par défault pour le <a href="https://www.suisseenergie.ch/tools/calculateur-solaire/">calculateur solaire SuisseEnergie</a>)</p></li>
+</ul>
+<p>En supposant que toutes les installations ne sont pas idéalement placées (et ne bénéficient donc pas de l’entier de l’ensoleillement) et que le rendement est relativement optimiste (celui-ci diminue légèrement au fil du temps), la valeur de 1’069 kWh/kWc semble être une bonne estimation.</p>
+<p>À titre d’exemple, un rendement légèrement inférieur de 17% donne le résultant suivant :</p>
+<p><span class="math display">\[ 0.188kWc/m^2 * 1200 kWh/m^2 * 0.17 = 1'086 kWh/kWc\]</span></p>
+</section>
+<section id="facteurs-injection" class="level4" data-number="3.3.1.2">
+<h4 data-number="3.3.1.2" class="anchored" data-anchor-id="facteurs-injection"><span class="header-section-number">3.3.1.2</span> Facteurs injection</h4>
+<p>Le facteur d’injection est calculé sur la base des installations de puissance inférieure à 30kVa dont on connaît uniquement l’injection :</p>
+<ul>
+<li>On calcule la production estimée avec le facteur de production précédemment calculé et la puissance installée, puis on calcule le facteur d’injection en divisant l’injection effective par la production estimée. Ce facteur est annualisé car le taux d’autoconsommation évolue selon les années. C’est le facteur médian qui est choisi de sorte à avoir 50% des installations au-dessus de cette valeur et 50% en-dessous, ce qui limite l’influence des quelques extrêmes qui autoconsommeraient par exemple l’entier de leur production nette.</li>
+</ul>
+<p>Pour ces installations, on obtient une moyenne des médianes de 68.56% pour les années 2020 à 2022.</p>
+</section>
+<section id="facteurs-autoconsommation" class="level4" data-number="3.3.1.3">
+<h4 data-number="3.3.1.3" class="anchored" data-anchor-id="facteurs-autoconsommation"><span class="header-section-number">3.3.1.3</span> Facteurs autoconsommation</h4>
+<p>Le facteur d’autoconsommation est obtenu simplement en soustrayant le facteur d’injection médian pour chaque année.</p>
+<p>La moyenne des années 2020 à 2022 donne un facteur d’autoconsommation de 31.44%.</p>
+</section>
+</section>
+<section id="production-non-certifiée" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="production-non-certifiée"><span class="header-section-number">3.3.2</span> Production non certifiée</h3>
+<p>Pour les installations dont on ne connaît que la puissance électrique installée, on applique le facteur de production à la puissance électrique installée.</p>
+<p><span class="math display">\[ Prod_{non-certifiée} = kWc * F_{production}\]</span></p>
+<p>Pour les installations dont l’année de mise en service est égale à l’année renseignée, on soustrait à l’estimation de production le prorata des mois où l’installation n’était pas en service. La production annuelle est alors pondérée par le nombre de mois où l’installation est mise en service. Cette pondération est faite en fonction de la production solaire estimée de chaque mois (février est moins ensoleillé que juillet) à l’aide d’une estimation de l’EPFL utilisée dans son modèle Energyscope.</p>
+<p>À l’intérieur des mois (une installation mise en service le premier ou dernier jour du mois produira différemment), on simplifie avec l’hypothèse que toutes les installations sont mise en service <strong>en moyenne</strong> au milieu de chaque mois.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Résultats des correctifs mensuels pour les installations non certifiées mises en service l'année de l'estimation (val_cumsum).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">mois</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">index</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">valeurs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">val_cumsum_uncor</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">val_cumsum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.039</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.9805</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">February</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">0.961</td>
+<td style="text-align: right;">0.9265</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">March</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.088</td>
+<td style="text-align: right;">0.892</td>
+<td style="text-align: right;">0.8480</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">April</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.113</td>
+<td style="text-align: right;">0.804</td>
+<td style="text-align: right;">0.7475</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">May</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.115</td>
+<td style="text-align: right;">0.691</td>
+<td style="text-align: right;">0.6335</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">June</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">0.576</td>
+<td style="text-align: right;">0.5180</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">July</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.121</td>
+<td style="text-align: right;">0.460</td>
+<td style="text-align: right;">0.3995</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">August</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.115</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.2815</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">September</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.094</td>
+<td style="text-align: right;">0.224</td>
+<td style="text-align: right;">0.1770</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">October</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">0.130</td>
+<td style="text-align: right;">0.0975</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">November</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">0.0460</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">December</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">0.0135</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>La table ci-dessus montre par exemple que pour une installation mise en service en février, on considérera 92.65% de sa production annuelle (durant toute une année civile) ce qui correspond à une production annuelle complète (100%) moins la production de janvier (3.9%) et moins la moitié du mois de février (6.9%/2 = 3.45%).</p>
+<section id="injection-non-certifiée" class="level4" data-number="3.3.2.1">
+<h4 data-number="3.3.2.1" class="anchored" data-anchor-id="injection-non-certifiée"><span class="header-section-number">3.3.2.1</span> Injection non certifiée</h4>
+<p>Le facteur d’injection est appliqué à la production non certifiée précédemment calculée.</p>
+</section>
+<section id="autoconsommation-non-certifiée" class="level4" data-number="3.3.2.2">
+<h4 data-number="3.3.2.2" class="anchored" data-anchor-id="autoconsommation-non-certifiée"><span class="header-section-number">3.3.2.2</span> Autoconsommation non certifiée</h4>
+<p>Le facteur d’autoconsommation est appliqué à la production non certifiée précédemment calculée.</p>
+</section>
+</section>
+<section id="production-certifiée" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="production-certifiée"><span class="header-section-number">3.3.3</span> Production certifiée</h3>
+<p>Deux cas de figure :</p>
+<ul>
+<li><p>Installations de puissance égale ou supérieure à 30kVa : l’information est directement disponible car autant l’injection que l’autoconsommation sont reportées par Pronovo AG.</p></li>
+<li><p>Installations certifiées de puissance inférieure à 30kVa : application du facteur de production <strong>dans la mesure où</strong> l’injection ne dépasse pas celle-ci. Le cas échéant, la production est égale à l’injection.</p></li>
+</ul>
+<section id="injection-certifiée" class="level4" data-number="3.3.3.1">
+<h4 data-number="3.3.3.1" class="anchored" data-anchor-id="injection-certifiée"><span class="header-section-number">3.3.3.1</span> Injection certifiée</h4>
+<p>L’injection des installations certifiées est directement disponible.</p>
+</section>
+<section id="autoconsommation-certifiée" class="level4" data-number="3.3.3.2">
+<h4 data-number="3.3.3.2" class="anchored" data-anchor-id="autoconsommation-certifiée"><span class="header-section-number">3.3.3.2</span> Autoconsommation certifiée</h4>
+<p>Deux cas de figure :</p>
+<ul>
+<li><p>Installations de puissance égale ou supérieure à 30kVa : l’information est directement disponible car autant l’injection que l’autoconsommation sont reportées par Pronovo AG.</p></li>
+<li><p>Installations certifiées de puissance inférieure à 30kVa : soustraction de la part issue du facteur d’injection à l’estimation de production. Si l’injection est égale à la production alors l’autoconsommation est nulle.</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

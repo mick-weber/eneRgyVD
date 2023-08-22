@@ -67,6 +67,7 @@ mod_about_the_app_ui <- function(id){
                 DT::dataTableOutput(ns("elec_prod_doc")),
                 br()
 
+
                                                        ),# End nested tabPanel 1/3
 
                 ### Cons elec ----
@@ -204,6 +205,7 @@ mod_about_the_app_server <- function(id){
         create_doc_table_dt(doc_prefix = "doc_elec_prod_") # fct_helpers.R
 
     })
+
 
     # Table for electricity consumption documentation
 

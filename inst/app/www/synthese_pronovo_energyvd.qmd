@@ -1,0 +1,314 @@
+---
+title: "Vue d'ensemble du traitement des données Pronovo AG"
+subtitle: "Direction de l'énergie (DGE-DIREN)"
+author: "Unité données et indicateurs"
+lang: fr
+language:
+  title-block-author-single: "Rédaction"
+date: "`r Sys.Date()`"
+execute:
+  echo: false
+format:
+  html:
+    theme: cerulean
+    toc: true
+    toc-expand: 1
+    toc-depth: 3
+    toc-title: "Contenu"
+    toc-location: left
+    number-sections: true
+    anchor-sections: true
+    fontsize: 14pt
+    page-layout: full
+---
+
+```{r setup}
+#| warning: false
+
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+```
+
+
+
+```{css basic-theme}
+h1.title{
+font-size:24pt;
+}
+
+h1{
+font-size:16pt;
+color:midnightblue;
+}
+
+h2,h3,h4{
+  font-size: 14pt;
+  color:midnightblue;
+}
+
+.sidebar>nav[role=doc-toc]>ul{
+font-size:0.9rem
+}
+```
+
+
+# Contexte
+
+Afin de suivre sa politique énergétique cantonale, le Canton de Vaud estime depuis 2015 la production d'électricité qui a lieu sur son territoire. 
+Cette estimation est rendue possible grâce aux données transmises par Pronovo AG qui est l'organisme fédéral agréé de certification des garanties d'origine. 
+
+C'est la Direction de l'énergie (DGE-DIREN) qui est en charge de l'acquisition de ces données ainsi que de leur traitement. On peut distinguer deux périodes qui reflètent deux approches de traitement bien distinctes : 
+
+* **2015-2019** : Exploitation des fichiers Excel tels quels, avec une simple somme de l'injection par type de technologie recensé par Pronovo. L'autoconsommation de la plupart des installations solaires n'est pas estimée. Les installations non certifiées ne sont pas comprises. 
+
+* **2020+** : Exploitation des fichiers Excel avec un script de traitement (langage R) qui permet de nettoyer la base de donnée et d'en exploiter un maximum d'information utile, et notamment d'estimer l'autoconsommation photovoltaïque ainsi que d'estimer la production des installations non certifiées à l'aide de leur puissance. Ce traitement s'applique **rétroactivement** aux données 2015-2019.
+
+Chaque année, deux fichiers sont transmis sur demande de la DGE-DIREN par Pronovo : 
+
+1) Un fichier qui contient **les injections dans le réseau des installations certifiées** par le système de garanties d'origine (GO)
+
+2) Un fichier qui contient **toutes les installations connues** de production d'électricité sur le territoire, à l'exception des installations photovoltaïques <2kW. Ce fichier contient davantage de détail sur les installations que le fichier d'injection (date de mise en service, adresse, etc.)
+
+Pour les installations certifiées (existant donc dans le fichier des injections), la quantité d'électricité injectée est connue pour les installations d'une puissance égale ou inférieure à 30kVa. Pour les installations d'une puissance supérieure à 30kVa, l'injection mais également l'autoconsommation est renseignée (transmise depuis 2019 seulement).
+
+Pour les installations non certifiées qui sont normalement toutes solaires, aucune information de production (ni injection ni autoconsommation) n'est disponible et il conviendra d'estimer la production de ces installations sur la base de la catégorie d'installation. 
+
+# Accessibilité
+
+Les données sous leur forme désagrégée, par installation, sont confidentielles et ne sont pas diffusées.
+
+Les données agrégées par commune, technologie et année sont transmises sur le profil énergétique des communes vaudoises depuis 2023 et remontent jusqu'à 2015.
+
+**Attention** : Les données d'une catégorie pour laquelle la commune recense moins de trois installations sont retirées de l'application. Le total cantonal n'est pas affecté. Les communes qui souhaitent accéder à ces données pour leur planification énergétique sont invitées à en faire la demande écrite à la DGE-DIREN. 
+
+# Traitement
+
+Un résumé des principales étapes de ce script de traitement est proposé ci-dessous. 
+
+```{r}
+knitr::include_graphics("synthese_pronovo_diagramme.svg")
+```
+
+## Préparation
+
+Les données des différentes années doivent d'abord être préparées de sorte à ce qu'elles puissent être combinées.
+
+###  Jointure par année
+
+Afin de pouvoir récupérer l'injection des installations certifiées (fichier 1) et de la joindre dans le fichier des installations (fichier 2), il est nécessaire de trouver une variable qui permette de rassembler les deux fichiers.
+
+Cette clé de jointure est le numéro de l'installation (`Numéro de GO` ,`Laufnummer`, ou `Numéro RPC`, `EVS-NR.`, selon l'installation). Ces variables doivent au préalable être nettoyées car selon les années il y a parfois des zéros à retirer (p.ex. `00231231` contre `231231` pour la même installation d'une extraction différente).
+
+### Harmonisation des fichiers
+
+Selon les années, les fichiers diffèrent tant dans leur structure (nombre et nom des variables) que dans le codage des variables.
+
+Pour le nom des variables et de certains codes de variables, Pronovo traduit historiquement ces informations en français. Le problème est que cette traduction n'est pas consistante dans le temps, et chaque année des noms de variables légèrement différentes sont identifiés. 
+
+Il est donc nécessaire de renommer toutes les variables utiles au traitement afin de pouvoir passer à l'étape suivante qui est d'assembler les fichiers de toutes les années en un seul fichier sur lequel tous les traitements s'appliqueront.
+
+### Nettoyage  
+
+Plusieurs variables doivent être minutieusement nettoyées pour garantir que les traitements ultérieurs seront efficaces. Il s'agit par exemple de : 
+
+* Remplacer les puissances électriques de 0kW par des valeurs manquantes `NA`
+
+* Convertir et nettoyer les dates (p.ex. une date Excel `44722` en `2022-06-10`)
+
+* Nettoyer les formats numériques qui possèdent des caractères 
+
+* etc.
+
+### Agrégation par installation
+
+Chaque installation peut figurer jusqu'à 12 fois par année dans le fichier des injections ce qui corredpond à une information d'une injection par mois. Il est donc nécessaire d'agréger ces différentes lignes par installation (on utilisera le numéro de l'installation comme base pour l'agrégation) afin de n'avoir qu'une information d'injection par année et par installation.
+
+## Complétion
+
+Une fois préparées, on complète au mieux les informations des installations de toutes les années avec notamment des informations récemment transmises (date de mise en service, etc.). Les informations de catégorie d'installation sont également attribuées, de même que les communes. 
+
+### Récupération
+
+Certaines variables ne sont transmises qu'à partir d'une certaine année. C'est le cas par exemple de la date de mise en service des installations. 
+
+Ainsi, pour une installation dont on a l'information récente de date de mise en service qui n'était pas disponible les années précédentes, il est nécessaire de rapatrier cette information également dans les lignes de l'installation pour ces années précédentes. Par exemple : 
+
+* **2018** : l'extraction ne renseigne pas la date de mise en service pour l'installation `xy`
+
+* **2019** : l'extraction renseigne une date de mise en service `2016-12-01` pour l'installation `xy`
+
+Avec cette récupération de l'information, on attribue donc la date `2016-12-01` pour les lignes de l'installation **2016**, **2017** et **2018**.
+
+Cette procédure est également appliquée pour d'autres variables, car parfois l'information est manquante dans certaines extractions et présente dans d'autres.
+
+### Recodage des catégories de technologies
+
+```{r}
+# Categories Pronovo
+cat_pronovo <- c("Biogaz", "Forestry and agricultural by-products and waste", 
+"Hydro power", "Industrial by-products & commercial waste (non-fossil proportion)", 
+"Moteur à combustion avec combustible gazeux", "Photovoltaic", 
+"Sewage gas", "Turbine à vapeur à condensation avec incinération des déchets industriels", 
+"Turbine à vapeur à contrepression avec combustion de pétrole", 
+"Turbines à gaz")
+
+# Categories DIREN
+cat_diren <- c("Biomasse agricole", "Bois-énergie", "Déchets incinérables", 
+"Déchets méthanisables", "Hydroélectricité", "Solaire", "STEP", "Thermique fossile")
+
+```
+
+
+Les codes utilisés par Pronovo sont les suivants : **`r knitr::combine_words(cat_pronovo, and = "et ")`**
+
+Tandis que les codes historiquement utilisés par la DIREN sont les suivants : **`r knitr::combine_words(cat_diren, and = "et ")`**. 
+
+Il faut donc également recoder les installations Pronovo vers les catégories DGE-DIREN. Pour les catégories **Solaire, Hydroélectricité, STEP et Déchets incinérables** l'opération est simple, mais certaines installations recensées par Pronovo comme **Biogaz** se retrouvent par exemple en **Biomasse agricole** ou en **Déchets méthanisables**. 
+
+Cette recatégorisation nécessite l'intervention des experts métiers DGE-DIREN pour catégoriser les installations en fonction de leur connaissance du terrain. Pas plus d'une poignée d'installation doit être recatégorisée manuellement chaque année, le reste peut être fait de manière automatisée.
+
+### Suppression d'installations
+
+Un nombre important d'installations non certifiées figurent dans les extractions Pronovo (dans le fichier des installations). Certaines de ces installations sont en service et il faut donc les garder, mais d'autres ne le sont pas encore : elles ont été saisies administrativement mais n'existent pas encore. Il faut donc les retirer. On utilise la documentation de la mise en service effective de l'installation pour ce tri.
+
+On retire également les quelques installations non certifiées et sans puissance électrique renseignée car l'estimation de production, d'injection et d'autoconsommation ne sera pas possible.
+
+### Nettoyage des communes
+
+Les informations relatives à l'adresse sont très souvent mal saisies. Il en va de même pour les informations de la localité de l'installation, qui sont souvent écrites avec des erreurs. 
+
+```{r}
+tibble("Localité" = c("Crans pres Celigny", "Crans Pres Celigny", "Crans Prés Celigny", 
+"Crans Prés Céligny", "Crans-Pré-Céligny", "Crans-Pres-Celigny", 
+"Crans-Près-Celigny", "Crans-près-Celigny", "Crans-Pres-Céligny", 
+"Crans-prés-Céligny", "Crans-près-Céligny", "Crans-Près-Céligny", 
+"Crans-près-céligny"))|> 
+  kableExtra::kable(caption = "Exemple d'écriture de localités",
+                    position = "center") |> 
+  kableExtra::kable_styling()
+```
+
+Afin de pouvoir bénéficier de statistiques communales, une correction manuelle des localités mal orthographiées est faite afin de les convertir en noms de communes correctement orthographiées. Ce travail est fait pour environ 700 localités mal orthographiées, et chaque année une bonne dizaine de nouvelles entrées doivent être corrigées en plus.
+
+Cette étape permet ainsi d'associer une commune à l'ensemble des milliers d'installations recensées. 
+
+## Quantification
+
+La suite logique de la méthode, une fois l'installation affectée à une commune et identifiée comme étant en service, est de procéder à l'estimation de la production annuelle et plus spécifiquement de l'injection ainsi que de l'autoconsommation.
+
+Cette quantification se fait en plusieurs étapes étant donné qu'il existe plusieurs profils d'installations, dont principalement : 
+
+* Les installations sujettes à la RPC qui injectent l'entier de leur production ;
+
+* Les installations d'une puissance égale ou supérieure à 30kVa dont on connaît l'injection et l'autoconsommation (certifiées d'office) ;
+
+* Les installations certifiées de puissance inférieure à 30kVa dont on connaît l'injection annuelle mais pas l'autoconsommation ;
+
+* Les installations non certifiées dont on ne connaît que la puissance ; 
+
+Il est ainsi nécessaire d'adapter la méthode de quantification à chaque type d'installation afin d'améliorer au maximum la fiabilité de l'estimation.
+
+### Facteurs
+
+Grâce à l'interprétation des statuts des installations fournie par Pronovo, il est possible d'identifier les installations qui sont au [régime RPC](https://www.bfe.admin.ch/bfe/fr/home/mesures-d-encouragement/energies-renouvelables/retribution-de-injection.html/). Etant donné que ces installations bénéficient d'un tarif de reprise très avantageux, on peut considère que l'énergie injectée sur le réseau correspond à l'énergie produite de l'installation.
+
+Pour le calcul des facteurs, afin d'avoir un échantillon constitué uniquement d'installations ayant produit sur toute une année civile, on retire les informations d'installations renseignant la même année d'une mise en service.
+
+Par exemple : une installation mise en service en mars 2019 sera, pour l'année 2019, supprimée du périmètre de calcul. 
+
+#### Facteurs production
+
+En se basant donc sur l'information de plus de 900 installations sur la période 2015-2021 (soit plus de 6'000 informations d'injection sous RPC), un facteur de production **médian** est calculé à 1'069 kWh/kW.
+
+L'ordre de grandeur est facilement vérifiable avec les hypothèses ci-dessous :
+
+$$ 0.188kWc/m^2 * 1200 kWh/m^2 * 0.19 = 1'212 kWh/kWc$$
+
+* Une puissance installée moyenne par mètre carré de 188 Wc/m^2 ([Calculateur solaire SuisseEnergie](https://www.suisseenergie.ch/tools/calculateur-solaire/)) ;
+
+* Un [ensoleillement annuel moyen vaudois de 1'200 kWh/m^2](https://www.vd.ch/themes/environnement/energie/energies-renouvelables-bois-hydraulique-geothermie-profonde-energies-eolienne-et-solaire/energie-solaire)
+
+* Un rendement moyen de 19% (choix par défault pour le [calculateur solaire SuisseEnergie](https://www.suisseenergie.ch/tools/calculateur-solaire/))
+
+
+En supposant que toutes les installations ne sont pas idéalement placées (et ne bénéficient donc pas de l'entier de l'ensoleillement) et que le rendement est relativement optimiste (celui-ci diminue légèrement au fil du temps), la valeur de 1'069 kWh/kWc semble être une bonne estimation.
+
+À titre d'exemple, un rendement légèrement inférieur de 17% donne le résultant suivant :
+
+$$ 0.188kWc/m^2 * 1200 kWh/m^2 * 0.17 = 1'086 kWh/kWc$$
+
+#### Facteurs injection
+
+Le facteur d'injection est calculé sur la base des installations de puissance inférieure à 30kVa dont on connaît uniquement l'injection : 
+
+* On calcule la production estimée avec le facteur de production précédemment calculé et la puissance installée, puis on calcule le facteur d'injection en divisant l'injection effective par la production estimée. Ce facteur est annualisé car le taux d'autoconsommation évolue selon les années. C'est le facteur médian qui est choisi de sorte à avoir 50% des installations au-dessus de cette valeur et 50% en-dessous, ce qui limite l'influence des quelques extrêmes qui autoconsommeraient par exemple l'entier de leur production nette.
+
+Pour ces installations, on obtient une moyenne des médianes de 68.56% pour les années 2020 à 2022.
+
+
+#### Facteurs autoconsommation
+
+Le facteur d'autoconsommation est obtenu simplement en soustrayant le facteur d'injection médian pour chaque année.
+
+La moyenne des années 2020 à 2022 donne un facteur d'autoconsommation de 31.44%.
+
+### Production non certifiée
+
+Pour les installations dont on ne connaît que la puissance électrique installée, on applique le facteur de production à la puissance électrique installée.
+
+$$ Prod_{non-certifiée} = kWc * F_{production}$$
+
+Pour les installations dont l'année de mise en service est égale à l'année renseignée, on soustrait à l'estimation de production le prorata des mois où l'installation n'était pas en service. La production annuelle est alors pondérée par le nombre de mois où l'installation est mise en service. Cette pondération est faite en fonction de la production solaire estimée de chaque mois (février est moins ensoleillé que juillet) à l'aide d'une estimation de l'EPFL utilisée dans son modèle Energyscope.
+
+À l'intérieur des mois (une installation mise en service le premier ou dernier jour du mois produira différemment), on simplifie avec l'hypothèse que toutes les installations sont mise en service **en moyenne** au milieu de chaque mois. 
+
+```{r}
+# copy/pasted from dput(prod_mens) run inside Pronovo_meta.Rmd + kable styling
+structure(list(mois = c("January", "February", "March", "April", 
+"May", "June", "July", "August", "September", "October", "November", 
+"December"), index = 1:12, valeurs = c(0.039, 0.069, 0.088, 0.113, 
+0.115, 0.116, 0.121, 0.115, 0.094, 0.065, 0.038, 0.027), val_cumsum_uncor = c(1, 
+0.961, 0.892, 0.804, 0.691, 0.576, 0.46, 0.339, 0.224, 0.13, 
+0.065, 0.027), val_cumsum = c(0.9805, 0.9265, 0.848, 0.7475, 
+0.6335, 0.518, 0.3995, 0.2815, 0.177, 0.0975, 0.046, 0.0135)), class = "data.frame", row.names = c(NA, 
+-12L)) |> kable(caption = "Résultats des correctifs mensuels pour les installations non certifiées mises en service l'année de l'estimation (val_cumsum).") |> 
+  kableExtra::kable_styling()
+```
+
+La table ci-dessus montre par exemple que pour une installation mise en service en février, on considérera 92.65% de sa production annuelle (durant toute une année civile) ce qui correspond à une production annuelle complète (100%) moins la production de janvier (3.9%) et moins la moitié du mois de février (6.9%/2 = 3.45%).
+
+
+#### Injection non certifiée
+
+Le facteur d'injection est appliqué à la production non certifiée précédemment calculée.
+
+#### Autoconsommation non certifiée
+
+Le facteur d'autoconsommation est appliqué à la production non certifiée précédemment calculée.
+
+### Production certifiée
+
+Deux cas de figure : 
+
+* Installations de puissance égale ou supérieure à 30kVa : l'information est directement disponible car autant l'injection que l'autoconsommation sont reportées par Pronovo AG. 
+
+* Installations certifiées de puissance inférieure à 30kVa : application du facteur de production **dans la mesure où** l'injection ne dépasse pas celle-ci. Le cas échéant, la production est égale à l'injection. 
+
+#### Injection certifiée
+
+L'injection des installations certifiées est directement disponible. 
+
+#### Autoconsommation certifiée
+
+Deux cas de figure : 
+
+* Installations de puissance égale ou supérieure à 30kVa : l'information est directement disponible car autant l'injection que l'autoconsommation sont reportées par Pronovo AG. 
+
+* Installations certifiées de puissance inférieure à 30kVa : soustraction de la part issue du facteur d'injection à l'estimation de production. Si l'injection est égale à la production alors l'autoconsommation est nulle. 
+
+
+

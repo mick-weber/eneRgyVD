@@ -10,6 +10,7 @@ execute:
   echo: false
 format:
   html:
+    embed-resources: true
     theme: cerulean
     toc: true
     toc-expand: 1

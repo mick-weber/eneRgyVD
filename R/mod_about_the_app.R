@@ -40,7 +40,8 @@ mod_about_the_app_ui <- function(id){
                                   br(),
                                   h4(strong("Sources des données")),
                                   tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
-                                    Néanmoins, l'exactitude de ces informations ne peut être garantie. En cas d'incohérence, n'hésitez pas à prendre contact afin d'en clarifier les causes probables."),
+                                    Néanmoins, l'exactitude de ces informations ne peut être garantie. En cas d'incohérence, n'hésitez pas à prendre contact afin d'en clarifier les causes probables.
+                                    Lorsque disponibles, des documentations plus détaillées sont annexées en-dessous de chaque onglet."),
                                   br(),
                                   tags$p("Les sources de données suivantes sont utilisées : "),
 
@@ -51,81 +52,100 @@ mod_about_the_app_ui <- function(id){
 
                 ### Prod élec ----
                 tabPanel("Production d'électricité",
+                # create div to apply class
+                tags$div(class = "addRetrait",
                 br(),
-                tags$ul(
-                  tags$li(h5(strong("Production d'électricité : Pronovo")),
-                          p("La grande majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
+                # Overview method
+                h4(strong("Synthèse de la méthode")),
+
+                p("La grande majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
                 pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables.
                 Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles,
                 nettoyage des communes, estimation de l'autoconsommation photovoltaïque, etc.) permet de créer une table de données pour chaque commune vaudoise.",
+                br(),
                 tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur Pronovo AG", target = "_blank")),# open in new tab
-                p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."))
-                                                                ),# End tags$ul 1/3
+                p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."),
+                DT::dataTableOutput(ns("elec_prod_doc")),
                 br(),
 
-                # Documentation table for electricity production
-                DT::dataTableOutput(ns("elec_prod_doc")),
-                br()
-
+                # Detailed method
+                h4(strong("Méthode détaillée")),
+                br(),
+                # Add download link
+                tags$a(href= "www/synthese_pronovo_energyvd.html",
+                       target="blank", "Télécharger la documentation",
+                       download = "profil-energie_doc_pronovo.html"),
+                br(),
+                tags$iframe(src = "www/synthese_pronovo_energyvd.html",
+                                                height = "800px", width = "100%")
+                )# End tags$div
 
                                                        ),# End nested tabPanel 1/3
 
                 ### Cons elec ----
                 # !!CONS_ELEC removed!! # tabPanel("Consommation d'électricité",
+                # !!CONS_ELEC removed!! # tags$div(class = "addRetrait",
                 # !!CONS_ELEC removed!! #          br(),
-                # !!CONS_ELEC removed!! #          tags$ul(
-                # !!CONS_ELEC removed!! #            tags$li(h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
-                # !!CONS_ELEC removed!! #                    p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
+                # !!CONS_ELEC removed!! # h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
+                # !!CONS_ELEC removed!! #           tags$p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
                 # !!CONS_ELEC removed!! # point de mesure du territoire vaudois a pu être récoltée, le type de client associé à chaque point de mesure a été catégorisé en secteurs,
-                # !!CONS_ELEC removed!! # et ce sont ces données agrégées par commune qui alimentent cette application."),
-                # !!CONS_ELEC removed!! # p("La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
+                # !!CONS_ELEC removed!! # et ce sont ces données agrégées par commune qui alimentent cette application.",
+                # !!CONS_ELEC removed!! # "La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
                 # !!CONS_ELEC removed!! # compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
                 # !!CONS_ELEC removed!! # les données peuvent prendre quelques mois à être disponibles dans l'application.",
                 # !!CONS_ELEC removed!! # tags$strong("Les répartitions sectorielles sont encore hautement incertaines, la méthode diffère notamment selon chaque gestionnaire de réseau.
-                # !!CONS_ELEC removed!! #             Une meilleure catégorisation et davantage d'harmonisation sont souhaitées à terme mais c'est un long processus.")))
-                # !!CONS_ELEC removed!! #          ),# End tags$ul 2/3
+                # !!CONS_ELEC removed!! #             Une meilleure catégorisation et davantage d'harmonisation sont souhaitées à terme mais c'est un long processus.")
+                # !!CONS_ELEC removed!! # ),# End tags$p()
                 # !!CONS_ELEC removed!! # br(),
                 # !!CONS_ELEC removed!! #
                 # !!CONS_ELEC removed!! # # Documentation table for electricity production
                 # !!CONS_ELEC removed!! # DT::dataTableOutput(ns("elec_cons_doc")),
                 # !!CONS_ELEC removed!! # br()
-                # !!CONS_ELEC removed!! #
+                # !!CONS_ELEC removed!! # )# End tags$div
                 # !!CONS_ELEC removed!! # ),# End nested tabPanel 2/3
 
                 ### Regener ----
                 tabPanel("Chaleur bâtiments",
+                         # create div to apply class
+                         tags$div(class = "addRetrait",
                          br(),
-                         tags$ul(
-                           tags$li(h5(strong("Chaleur des bâtiments : exploitation du registre énergétique des bâtiments vaudois (RegEner)")),
-                                   tags$p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
-                                     des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
-                                     (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
-                                     registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
-                                     de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment
-                                     ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques.
-                                     Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte importante
-                                     de données de consommation et à l'ajout d'une correction climatique sur les besoins de chauffage.",
-                                     tags$br(),
-                                     "Les", strong("besoins optimisés"), "traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
+                         h3(strong("Synthèse de la méthode")),
+                         h5("Chaleur des bâtiments : exploitation du registre énergétique des bâtiments vaudois (RegEner)"),
+                         tags$p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
+                                 des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
+                                 (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
+                                 registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
+                                 de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment
+                                 ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques.
+                                 Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte importante
+                                 de données de consommation et à l'ajout d'une correction climatique sur les besoins de chauffage.",
+                          br(),
+                          "Les", strong("besoins optimisés"),"traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
                                      après 2001 étaient assainis énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
-
-                                     tags$br(), tags$br(),
-
-                                     "Davantage de détails peuvent être fournis sur demande à",
-                                     tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
-                                     "Un document de synthèse méthodologique est prévu prochainement afin de présenter plus en détail la méthode appliquée.",
-                                     tags$br(),
-                                     "Les communes étant responsables de ce qui figure dans le registre cantonal des bâtiments (et par extension dans le registre fédéral des bâtiments),
+                                tags$br(), tags$br(),
+                                "Davantage de détails peuvent être fournis sur demande à",
+                                tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
+                                "Un document de synthèse méthodologique est prévu prochainement afin de présenter plus en détail la méthode appliquée.",
+                                tags$br(),
+                                "Les communes étant responsables de ce qui figure dans le registre cantonal des bâtiments (et par extension dans le registre fédéral des bâtiments),
                                      la qualité des données relatives aux agents énergétique est donc directement liée à l'état de mise à jour de ces données par la commune.
                                      La DGE-DIREN se tient à disposition des communes qui souhaiteraient améliorer ces données par la mise à jour des agents énergétiques dans ces registres."
-
-                                     ))
-                         ),# End tags$ul 2/3
+                          ),# End tags$p()
                          br(),
 
                          # Documentation table for electricity production
                          DT::dataTableOutput(ns("regener_doc")),
-                         br()
+                         br(),
+
+                         h3(strong("Méthode détaillée à venir...")) #,
+                         # br(),
+                         # # Add download link when doc available
+                         # tags$a(href= "www/synthese_regener_energyvd.html",
+                         #        target="blank", "Télécharger la documentation",
+                         #        download = "profil-energie_doc_regener_v[???].html"),
+                         # br(),
+
+                         )# End tags$div
 
                 )# End nested tabPanel 3/3
                                   )# End nested tabsetPanel within 'Données'
@@ -198,6 +218,7 @@ mod_about_the_app_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    # Prod élec ----
     # Table for electricity production documentation
     output$elec_prod_doc <- DT::renderDataTable({
 
@@ -206,6 +227,8 @@ mod_about_the_app_server <- function(id){
 
     })
 
+
+    # Cons élec ----
 
     # Table for electricity consumption documentation
 
@@ -217,6 +240,8 @@ mod_about_the_app_server <- function(id){
     # !!CONS_ELEC removed!! # })
 
 
+    # Regener ----
+
     output$regener_doc <- DT::renderDataTable({
       regener_doc %>%
         create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
@@ -224,6 +249,7 @@ mod_about_the_app_server <- function(id){
 
 
 
+    # Glossaire ----
     output$glossary_table <- DT::renderDataTable({
       glossary %>%
         create_doc_table_dt(doc_prefix = "glossaire_")

@@ -144,7 +144,8 @@ create_bar_plotly <- function(data,
                               free_y = FALSE,
                               legend_title,
                               web_width = 1500, # set default when shinybrowser not used
-                              web_height = 800 # set default when shinybrowser not used
+                              web_height = 800, # set default when shinybrowser not used
+                              ... # free
                               ){
 
   # First create ggplot graph

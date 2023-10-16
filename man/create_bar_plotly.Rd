@@ -17,7 +17,8 @@ create_bar_plotly(
   free_y = FALSE,
   legend_title,
   web_width = 1500,
-  web_height = 800
+  web_height = 800,
+  ...
 )
 }
 \arguments{

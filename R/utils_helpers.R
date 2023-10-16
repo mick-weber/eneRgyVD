@@ -8,7 +8,6 @@ load("./data/sf_communes.rda")
 load("./data/sf_districts.rda")
 load("./data/sf_lacs.rda")
 
-
 ## electricity_production data ----
 
 load("./data/elec_prod_communes.rda")
@@ -27,7 +26,12 @@ load("./data/regener_needs.rda")
 load("./data/regener_misc.rda")
 load("./data/regener_doc.rda")
 
+## regener_communes data ----
+
+load("./data/subsidies_yearly_state.rda")
+
 ## glossary ----
+
 load("./data/glossary.rda")
 
 # Store .Rmd in temp dir ----
@@ -136,6 +140,7 @@ power_col_keywords <- c("Puissance")
 co2_keywords <- c("CO2")
 
 
+# Colors and icons ----
 
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
@@ -153,6 +158,7 @@ prod_colors <- dplyr::tribble(~icon, ~categorie, ~color,
 
 # Used for table icons
 # Adding the color style in the html tag for the icon
+
 prod_icons <- prod_colors %>%
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
@@ -161,10 +167,13 @@ prod_icons <- prod_colors %>%
   dplyr::ungroup()
 
 # Palette for plots: named vector with level + associated color
-colors_categories <- prod_colors$color %>% setNames(nm = prod_colors$categorie)
+
+colors_categories <- prod_colors$color %>%
+  setNames(nm = prod_colors$categorie)
 
 ## Cons colors and icons (cons) ----
 # Base tribble with sector, icon and color
+
 cons_colors <- dplyr::tribble(~icon, ~secteur, ~color,
                              as.character(shiny::icon("industry")), "Industrie/Services","#6495ED",
                              as.character(shiny::icon("house")), "Ménages", "#FFB90F",
@@ -172,6 +181,7 @@ cons_colors <- dplyr::tribble(~icon, ~secteur, ~color,
                              as.character(shiny::icon("question")),  "Inconnu", "#BFDB86")
 # Used for table icons
 # Adding the color style in the html tag for the icon
+
 cons_icons <- cons_colors %>%
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
@@ -179,13 +189,13 @@ cons_icons <- cons_colors %>%
   dplyr::select(-color) %>%
   dplyr::ungroup()
 
-
 # Palette for plots: named vector with level + associated color
 # Be careful if sectors change name ! (SDN wrote them inconsistently here...)
-colors_sectors <- cons_colors$color %>% setNames(nm = cons_colors$secteur)
 
+colors_sectors <- cons_colors$color %>%
+  setNames(nm = cons_colors$secteur)
 
-## Regener AE icons (rg) ----
+## Regener AE colors and icons (rg) ----
 # Base tribble for AE, color and icon
 
 regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
@@ -201,6 +211,7 @@ regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
 
 # Used for table icons
 # Adding the color style in the html tag for the icon
+
 regener_icons <- regener_colors %>%
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
@@ -209,9 +220,11 @@ regener_icons <- regener_colors %>%
   dplyr::ungroup()
 
 # Used for plots: named vector with level + associated color
-colors_ae <- regener_colors$color %>% setNames(nm = regener_colors$ae)
 
-## Regener type icons (rg) ----
+colors_ae <- regener_colors$color %>%
+  setNames(nm = regener_colors$ae)
+
+## Regener type colors and icons  (rg) ----
 
 # Base tribble for AE, color and icon
 
@@ -222,6 +235,7 @@ regener_colors_type <- dplyr::tribble(~icon, ~type, ~color,
 
 # Used for table icons
 # Adding the color style in the html tag for the icon
+
 regener_icons_type <- regener_colors_type %>%
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
@@ -230,7 +244,36 @@ regener_icons_type <- regener_colors_type %>%
   dplyr::ungroup()
 
 # Used for plots: named vector with level + associated color
-colors_rg_type <- regener_colors_type$color %>%setNames(nm = regener_colors_type$type)
+
+colors_rg_type <- regener_colors_type$color %>%
+  setNames(nm = regener_colors_type$type)
+
+## Subsidies colors and icons (subs) ----
+
+# if needed : subsidies_yearly_state |> distinct(subv_type)
+
+subsidies_colors_type <- dplyr::tribble(~icon, ~type, ~color,
+                                         as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
+                                         as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
+                                         as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#95a695",
+                                         as.character(shiny::icon("house-fire")), "Isolation complète + chauffage renouvelable", "#48A649",
+                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#477fc1",
+
+)
+
+# Used for table icons
+
+subsidies_icons_type <- subsidies_colors_type |>
+  dplyr::rowwise() %>%
+  dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
+  dplyr::select(-color) %>%
+  dplyr::ungroup()
+
+# Used for plots: named vector with level + associated color
+
+colors_subsidies_type <- subsidies_colors_type$color %>%
+  setNames(nm = subsidies_colors_type$type)
 
 # Theme ----
 

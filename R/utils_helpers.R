@@ -26,7 +26,7 @@ load("./data/regener_needs.rda")
 load("./data/regener_misc.rda")
 load("./data/regener_doc.rda")
 
-## regener_communes data ----
+## subsidies data ----
 
 load("./data/subsidies_yearly_state.rda")
 
@@ -121,7 +121,22 @@ units_table <- dplyr::tribble(
   "TJ", 1/3.6*1e6
 )
 
-## Column keywords ----
+## Column replacement ----
+
+cols_renaming_vector <- c(
+  # regener_misc
+  "Commune" = "commune",  # applies to `subsidies` too
+  "Etat" = "etat",        # applies to `subsidies` too
+  "Surface de référence énergétique (m2)" = "SRE",  # applies to `subsidies` too
+  "Bâtiments chauffés" = "N_EGID",
+  "Bâtiments neufs (2001+)" = "N_NEW_POST_2000",
+  "Bâtiments rénovés récemment" = "N_RENOV_POST_2000",
+  "Bâtiments sans rénovation récente" = "N_NO_RENOV",
+  "Bâtiments sans année de construction" = "N_NO_GBAUJ",
+  # subsidies
+  "Type de subvention" = "subv_type"
+)
+
 
 ## List of non-ASCII words that should replace internal colnames
 # Note that colnames are already in a 'sentence' format (i.e. Ae and not ae)
@@ -132,7 +147,8 @@ replace_fr_accents <- c("electricite" = "électricité",
                         "installee" = "installée",
                         "Annee" = "Année",
                         "Ae" = "Agent énergétique",
-                        "optimises" = "optimisés")
+                        "optimises" = "optimisés",
+                        "Detail" = "Détail")
 
 ## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
@@ -252,7 +268,7 @@ colors_rg_type <- regener_colors_type$color %>%
 
 # if needed : subsidies_yearly_state |> distinct(subv_type)
 
-subsidies_colors_type <- dplyr::tribble(~icon, ~type, ~color,
+subsidies_colors_type <- dplyr::tribble(~icon, ~subv_type, ~color,
                                          as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
                                          as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
                                          as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#95a695",
@@ -273,7 +289,7 @@ subsidies_icons_type <- subsidies_colors_type |>
 # Used for plots: named vector with level + associated color
 
 colors_subsidies_type <- subsidies_colors_type$color %>%
-  setNames(nm = subsidies_colors_type$type)
+  setNames(nm = subsidies_colors_type$subv_type)
 
 # Theme ----
 

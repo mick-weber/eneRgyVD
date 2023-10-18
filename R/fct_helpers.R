@@ -798,6 +798,71 @@ create_doc_table_dt <- function(data,
 
 }
 
+
+
+
+
+#' create_subsidies_table_dt()
+#' Creates datatable for subsidies_yearly_state dataset
+#' @param data the subsidies_yearly_state dataset
+#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
+#'
+#' @return a DT object
+#' @export
+
+create_subsidies_table_dt <- function(data,
+                                      DT_dom = "Bfrtip" # we set default with Buttons
+){
+
+  data %>%
+    # Basic clean up for table output
+    dplyr::mutate(etat = as.factor(etat)) |>
+    dplyr::mutate(
+      # format numeric cols
+      #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
+      #  to keep NAs alive with an if_else statement (only needed for this fn)
+      across(where(is.numeric), ~ if_else(condition = !is.na(.x),
+                                          true = format(.x,
+                                                        big.mark = "'",
+                                                        digits = 3,
+                                                        drop0trailing = TRUE,
+                                                        scientific = FALSE),
+                                          false = NA_character_ )
+      )) %>%
+    # add icons HTML tags from utils_helpers.R
+    dplyr::left_join(subsidies_colors_type, by = "subv_type") %>%
+    dplyr::relocate(icon, .before = subv_type) %>%
+    dplyr::rename(" " = "icon") %>% # empty colname for icons
+    rename_fr_colnames() %>%  # fct_helpers.R
+    #turn to DT
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom,
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                                 ),
+                                 columnDefs = list(list(
+                                   targets = "_all",
+                                   className = 'dt-center'
+                                 )),
+
+
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R !
+                  ),
+                  selection = 'single', # enable selection of a single row
+                  rownames = FALSE      # don't show row numbers/names
+    ) # End DT
+}
+
+
+
 # Palette fns ----
 
 #' return_palette_prod_elec
@@ -874,9 +939,6 @@ convert_units <- function(data,
     data/conversion_factor
 
   }
-
-  # Check if this is correct form or if I need to assign the new dataframe (and return() it)
-
 }
 
 #' add_colnames_units()
@@ -957,32 +1019,23 @@ rename_fr_colnames <- function(data){
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) %>%
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
                 pattern = "_", replacement = " ") %>%
-    rename_with(.cols = everything(), .fn = stringr::str_replace_all,
-                replace_fr_accents) # utils_helpers.R
+    rename_with(.cols = everything(),
+                .fn = stringr::str_replace_all, replace_fr_accents) # utils_helpers.R
 
 
 }
 
 
 #' rename_misc_columns()
-#' Specific function which renames raw column names from misc regener table into clean ones
+#' Specific function to rename specific columns that can't be fixed with `rename_fr_colnames()`
+#' It relies on a named vector of specific columns to rename adequately.
 #' @return a renamed dataframe
 #' @export
 
 rename_misc_colnames <- function(data){
 
   data |>
-    dplyr::rename(
-      "Commune" = commune,
-      "Etat" = etat,
-
-     "Surface de référence énergétique (m2)" = SRE,
-     "Bâtiments chauffés" = N_EGID,
-     "Bâtiments neufs (2001+)" = N_NEW_POST_2000,
-     "Bâtiments rénovés récemment" = N_RENOV_POST_2000,
-     "Bâtiments sans rénovation récente" = N_NO_RENOV,
-     "Bâtiments sans année de construction" = N_NO_GBAUJ)
+    dplyr::rename(any_of(cols_renaming_vector))
 
 }
-
 

@@ -33,14 +33,14 @@
 #' IWF's platform used to process the subsidies. Data is acquired
 #' through a authentified API by DGE-DIREN, and data is pre-processed locally
 #' before making it available to the application.
-#' @name subsidies_yearly_state
+#' @name subsidies
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.leprogrammebatiments.ch/fr>
 #' @examples
-#' subsidies_yearly_state
+#' subsidies
 
-"subsidies_yearly_state"
+"subsidies"
 
 
 

@@ -142,7 +142,7 @@ mod_inputs_server <- function(id,
       req(input$selected_communes)
 
       regener_needs %>%
-        filter(commune %in% input$selected_communes) %>%
+        dplyr::filter(commune %in% input$selected_communes) %>%
         convert_units(colnames = contains("besoins"),
                       unit_from = "kWh",
                       unit_to = selectedUnit$unit_to)
@@ -157,12 +157,23 @@ mod_inputs_server <- function(id,
       req(input$selected_communes)
 
       regener_misc %>%
-        filter(commune %in% input$selected_communes)
+        dplyr::filter(commune %in% input$selected_communes)
 
     })
 
 
-    ## Storing all useful values in inputVals ----
+    # tabSubsidies inputs ----
+
+    subset_subsidies <- reactive({
+      req(input$selected_communes)
+
+      subsidies |>
+        dplyr::filter(commune %in% input$selected_communes)
+    })
+
+
+
+    ## Storing in inputVals ----
     # [inputVals 0/3] Initializing the inputVals item
 
     inputVals <- reactiveValues()
@@ -195,6 +206,10 @@ mod_inputs_server <- function(id,
 
       inputVals$rgr_needs <- subset_rgr_needs()
       inputVals$rgr_misc <- subset_rgr_misc()
+
+      # store subsidies dataset already filtered
+
+      inputVals$subsidies <- subset_subsidies()
 
       # store min & max !available! years from consumption data to feed sliderInput()
 

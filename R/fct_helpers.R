@@ -204,6 +204,8 @@ create_bar_plotly <- function(data,
   ) %>%
     plotly::layout(
       legend = list(
+        # font = list(size = 15),
+        traceorder = "reversed",
         orientation = "h", # puts the legend in the middle instead of default right
         y = 1.35 # elevates the legend so its above the plot, not below
       )) %>%
@@ -803,8 +805,8 @@ create_doc_table_dt <- function(data,
 
 
 #' create_subsidies_table_dt()
-#' Creates datatable for subsidies_yearly_state dataset
-#' @param data the subsidies_yearly_state dataset
+#' Creates datatable for subsidies dataset
+#' @param data the subsidies dataset
 #' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
 #'
 #' @return a DT object
@@ -821,7 +823,7 @@ create_subsidies_table_dt <- function(data,
       # format numeric cols
       #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
       #  to keep NAs alive with an if_else statement (only needed for this fn)
-      across(where(is.numeric), ~ if_else(condition = !is.na(.x),
+      across(where(is.numeric), ~ dplyr::if_else(condition = !is.na(.x),
                                           true = format(.x,
                                                         big.mark = "'",
                                                         digits = 3,
@@ -830,10 +832,11 @@ create_subsidies_table_dt <- function(data,
                                           false = NA_character_ )
       )) %>%
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(subsidies_colors_type, by = "subv_type") %>%
+    dplyr::left_join(subsidies_icons_type, by = "subv_type") %>%
     dplyr::relocate(icon, .before = subv_type) %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
-    rename_fr_colnames() %>%  # fct_helpers.R
+    rename_misc_colnames() |> # fct_helpers.R
+    rename_fr_colnames() |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -1035,7 +1038,7 @@ rename_fr_colnames <- function(data){
 rename_misc_colnames <- function(data){
 
   data |>
-    dplyr::rename(any_of(cols_renaming_vector))
+    dplyr::rename(dplyr::any_of(cols_renaming_vector)) # utils_helpers.R
 
 }
 

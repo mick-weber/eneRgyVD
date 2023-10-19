@@ -60,9 +60,10 @@ app_server <- function(input, output, session) {
    subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
                   "cons_data_help", "Consommation d'électricité",
                   "prod_data_help", "Production d'électricité",
-                  "rg_needs_help", "Chaleur bâtiments",
-                  "rg_cons_help", "Chaleur bâtiments",
-                  "rg_misc_help", "Chaleur bâtiments")
+                  "rg_needs_help",  "Chaleur bâtiments",
+                  "rg_cons_help",   "Chaleur bâtiments",
+                  "rg_misc_help",   "Chaleur bâtiments",
+                  "subsidies_help", "Subventions bâtiments")
 
    # Code below is to generate updatebs4TabItems redirections
    # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
@@ -137,7 +138,7 @@ app_server <- function(input, output, session) {
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
    subset_prod_data <- reactive({
 
-     # explicitely require communes to be selected
+     # explicitly require communes to be selected
      validate(
        need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
      )
@@ -161,7 +162,7 @@ app_server <- function(input, output, session) {
 
    subset_rgr_1 <- reactive({
 
-      # explicitely require communes to be selected
+      # explicitly require communes to be selected
       validate(
          need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
@@ -178,7 +179,7 @@ app_server <- function(input, output, session) {
 
    subset_rgr_2 <- reactive({
 
-      # explicitely require communes to be selected
+      # explicitly require communes to be selected
       validate(
          need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
@@ -195,7 +196,7 @@ app_server <- function(input, output, session) {
       # subset_rgr_needs : regener by commune, needs, use
    subset_rgr_needs <- reactive({
 
-      # explicitely require communes to be selected
+      # explicitly require communes to be selected
       validate(
          need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
@@ -214,7 +215,7 @@ app_server <- function(input, output, session) {
       # code below here, but this code is for consistency with other data imports
    subset_rgr_misc <- reactive({
 
-      # explicitely require communes to be selected
+      # explicitly require communes to be selected
       validate(
          need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
       )
@@ -227,8 +228,22 @@ app_server <- function(input, output, session) {
    })
 
 
+  ## Subset subsidies data ----
+
+   subset_subsidies <- reactive({
+
+      # explicitly require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
+      )
+
+      inputVals$subsidies
+   })
+
+
   ## Sunburst filter data prod/cons ----
 
+   # PROD
   subset_sunburst_prod_data <- reactive({
 
     req(subset_prod_data())
@@ -238,6 +253,7 @@ app_server <- function(input, output, session) {
 
   })
 
+   # CONS
   subset_sunburst_cons_data <- reactive({
 
     req(subset_cons_data())
@@ -351,7 +367,7 @@ app_server <- function(input, output, session) {
 
    # Output modules ----
 
-   ## tabCons: call the chart server logic ----
+   ## tabCons: chart server logic ----
    # !!CONS_ELEC removed!! # mod_elec_charts_server("consumption_charts",
    # !!CONS_ELEC removed!! #                        inputVals = inputVals,
    # !!CONS_ELEC removed!! #                        subsetData = subset_cons_data,
@@ -373,7 +389,7 @@ app_server <- function(input, output, session) {
    # !!CONS_ELEC removed!! #                        # documentation file from utils_helpers.R
    # !!CONS_ELEC removed!! #                        doc_vars = elec_cons_doc)
 
-   ## tabProd: call the chart server logic ----
+   ## tabProd: chart server logic ----
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
                           subsetData = subset_prod_data,
@@ -396,7 +412,7 @@ app_server <- function(input, output, session) {
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
 
-   ## tabRegener: call the chart server logic ----
+   ## tabRegener: chart server logic ----
    ### mod regener_cons ----
 
    mod_regener_cons_charts_server("regener_cons",
@@ -429,6 +445,16 @@ app_server <- function(input, output, session) {
                                   selectedUnit = selectedUnit,
                                   dl_prefix = "regener_autres_",
                                   doc_vars = regener_doc)
+
+
+   ## tabSubsidies: chart server logic ----
+   mod_subsidies_charts_server("subsidies_PB",
+                               subsetData = subset_subsidies,
+                               inputVals = inputVals,
+                               dl_prefix = "subventions_",
+                               doc_vars = NULL # for now
+                               )
+
 
 
    ## tabMap: boxes for statistics ----

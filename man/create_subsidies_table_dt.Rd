@@ -3,12 +3,12 @@
 \name{create_subsidies_table_dt}
 \alias{create_subsidies_table_dt}
 \title{create_subsidies_table_dt()
-Creates datatable for subsidies_yearly_state dataset}
+Creates datatable for subsidies dataset}
 \usage{
 create_subsidies_table_dt(data, DT_dom = "Bfrtip")
 }
 \arguments{
-\item{data}{the subsidies_yearly_state dataset}
+\item{data}{the subsidies dataset}
 
 \item{DT_dom}{datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip}
 }
@@ -17,5 +17,5 @@ a DT object
 }
 \description{
 create_subsidies_table_dt()
-Creates datatable for subsidies_yearly_state dataset
+Creates datatable for subsidies dataset
 }

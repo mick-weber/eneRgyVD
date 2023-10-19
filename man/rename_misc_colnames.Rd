@@ -3,7 +3,8 @@
 \name{rename_misc_colnames}
 \alias{rename_misc_colnames}
 \title{rename_misc_columns()
-Specific function which renames raw column names from misc regener table into clean ones}
+Specific function to rename specific columns that can't be fixed with `rename_fr_colnames()`
+It relies on a named vector of specific columns to rename adequately.}
 \usage{
 rename_misc_colnames(data)
 }
@@ -12,5 +13,6 @@ a renamed dataframe
 }
 \description{
 rename_misc_columns()
-Specific function which renames raw column names from misc regener table into clean ones
+Specific function to rename specific columns that can't be fixed with `rename_fr_colnames()`
+It relies on a named vector of specific columns to rename adequately.
 }

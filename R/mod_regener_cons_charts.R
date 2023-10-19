@@ -11,7 +11,6 @@ mod_regener_cons_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-
     # TABSETS for better readability of plot / table
     bs4Dash::tabsetPanel(
       id = "tabset_rg_cons",
@@ -77,11 +76,7 @@ mod_regener_cons_charts_ui <- function(id){
                       )# End column
       )# End tabPanel 'Table'
     )# End tabsetPanel
-
-
-
-
-  )
+  )# End tagList
 }
 
 #' regener_charts Server Functions

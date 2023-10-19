@@ -80,7 +80,7 @@ mod_about_the_app_ui <- function(id){
                                                 height = "800px", width = "100%")
                 )# End tags$div
 
-                                                       ),# End nested tabPanel 1/3
+                                                       ),# End nested tabPanel 1/4
 
                 ### Cons elec ----
                 # !!CONS_ELEC removed!! # tabPanel("Consommation d'électricité",
@@ -102,14 +102,14 @@ mod_about_the_app_ui <- function(id){
                 # !!CONS_ELEC removed!! # DT::dataTableOutput(ns("elec_cons_doc")),
                 # !!CONS_ELEC removed!! # br()
                 # !!CONS_ELEC removed!! # )# End tags$div
-                # !!CONS_ELEC removed!! # ),# End nested tabPanel 2/3
+                # !!CONS_ELEC removed!! # ),# End nested tabPanel 2/4
 
                 ### Regener ----
                 tabPanel("Chaleur bâtiments",
                          # create div to apply class
                          tags$div(class = "addRetrait",
                          br(),
-                         h3(strong("Synthèse de la méthode")),
+                         h4(strong("Synthèse de la méthode")),
                          h5("Chaleur des bâtiments : exploitation du registre énergétique des bâtiments vaudois (RegEner)"),
                          tags$p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
                                  des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
@@ -147,7 +147,20 @@ mod_about_the_app_ui <- function(id){
 
                          )# End tags$div
 
-                )# End nested tabPanel 3/3
+                ),# End nested tabPanel 3/4
+
+
+                tabPanel("Subventions bâtiments",
+                         # create div to apply class
+                         tags$div(class = "addRetrait",
+                                  br(),
+                                  h4(strong("Synthèse de la méthode")),
+                                  h5("Subventions bâtiments : exploitation des données du Programme Bâtiments vaudois"),
+                                  br(),
+                                  tags$p("Documentation à venir...")
+
+                         )# End tags$div
+                )# End tabPanel 4/4
                                   )# End nested tabsetPanel within 'Données'
                            )# End column
            ),# End tabPanel 'Données'

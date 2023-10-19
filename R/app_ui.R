@@ -57,7 +57,8 @@ app_ui <- function(request) {
 
                                                          tags$div(class = "disableLink", # wrap in a div to pass the disableLink class (css)
 
-                                                                  purrr::pmap(notif_msg, .f = ~ bs4Dash::notificationItem(icon = shiny::icon(glue::glue("{..1}")),
+                                                                  purrr::pmap(notif_msg, # utils_helpers.R
+                                                                              .f = ~ bs4Dash::notificationItem(icon = shiny::icon(glue::glue("{..1}")),
                                                                                                                           status = glue::glue("{..2}"),
                                                                                                                           text = glue::glue("{..3}"))
 
@@ -128,6 +129,8 @@ app_ui <- function(request) {
                                                bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
                                                bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
                                                bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
+                             # SUBSIDIES ADDED
+                             bs4Dash::menuItem("Subventions bâtiments", tabName = "tabSubsidies", icon = icon("file-pen")),
 
                              ### Divers subMenu ----
                              h6("Divers", style = "color:white;"), #menuItem header
@@ -327,6 +330,35 @@ app_ui <- function(request) {
 
           ),# End tabItem
 
+          ## tabSubsidies ----
+
+          bs4Dash::tabItem(
+            tabName = "tabSubsidies",
+
+            fluidRow(h4(strong("Subventions octroyées dans le cadre du Programme Bâtiments")),
+                     HTML('&nbsp;'), HTML('&nbsp;'),
+                     HTML('&nbsp;'),HTML('&nbsp;'),
+
+
+                     bs4Dash::box(title = actionButton("subsidies_help", # custom.css padding header
+                                                       label = "Consulter la méthodologie",
+                                                       icon = icon("info-sign", lib = "glyphicon"),
+                                                       class = "infoButton"),
+                                  collapsed = TRUE,
+                                  width = 6,
+                                  paste(generic_method_warning # text in utils_helpers.R
+                                        # add other text if needed later
+                                        )
+                     ),
+            ),
+
+            # breathing
+            br(),
+
+            # Module for producing regener plots
+            mod_subsidies_charts_ui("subsidies_PB")
+
+          ),# End tabItem
 
           ## tabReport ----
           bs4Dash::tabItem(

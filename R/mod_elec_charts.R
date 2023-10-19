@@ -19,55 +19,55 @@ mod_elec_charts_ui <- function(id){
 
                       fluidRow( # to display the plot buttons + materialswitches
 
-                      # radioGroupButtons() for tab ----
-                      shinyWidgets::radioGroupButtons(
-                        inputId = ns("tab_plot_type"),
-                        label = "Sélection du type de graphique",
-                        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
-                                    `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-                        justified = TRUE,
-                        width = "25%"),
+                        # radioGroupButtons() for tab ----
+                        shinyWidgets::radioGroupButtons(
+                          inputId = ns("tab_plot_type"),
+                          label = "Sélection du type de graphique",
+                          choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
+                                      `<i class='fa fa-pie-chart'></i>` = "sunburst"),
+                          justified = TRUE,
+                          width = "25%"),
 
 
 
-                      # materialSwitch 1/2 for bar plot
-                      shiny::conditionalPanel(
-                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                        condition = "output.commune && input.tab_plot_type == 'bar'",
-                        ns = ns,
+                        # materialSwitch 1/2 for bar plot
+                        shiny::conditionalPanel(
+                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                          condition = "output.commune && input.tab_plot_type == 'bar'",
+                          ns = ns,
 
-                        tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
-                                 tags$div(
-                          shinyWidgets::materialSwitch(
-                            inputId = ns("stacked_status"),
-                            value = FALSE,
-                            status = "success",
-                            label = strong("Barres empilées"), inline = TRUE),
-                          tags$span(strong("adjacentes"))
-                        ))# End 2x tags$div()
+                          tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
+                                   tags$div(
+                                     shinyWidgets::materialSwitch(
+                                       inputId = ns("stacked_status"),
+                                       value = FALSE,
+                                       status = "success",
+                                       label = strong("Barres empilées"), inline = TRUE),
+                                     tags$span(strong("adjacentes"))
+                                   ))# End 2x tags$div()
                         ),# End conditionalPanel 1/2
 
-                      # Spaces between the two toggles
-                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
-                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                        # Spaces between the two toggles
+                        HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                        HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
 
-                      # materialSwitch 2/2 for bar plot
-                      shiny::conditionalPanel(
-                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                        condition = "output.toggle && input.tab_plot_type == 'bar'",
-                        ns = ns,
+                        # materialSwitch 2/2 for bar plot
+                        shiny::conditionalPanel(
+                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                          condition = "output.toggle && input.tab_plot_type == 'bar'",
+                          ns = ns,
 
-                        tags$div(
-                          style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
-                          shinyWidgets::materialSwitch(
-                            inputId = ns("toggle_status"),
-                            value = FALSE,
-                            label = strong("Axe vertical commun"),
-                            status = "success",
-                            inline = TRUE),
-                          tags$span(strong("indépendant"))
-                        )# End tags$div
-                      )# End 2nd conditionalPanel
+                          tags$div(
+                            style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
+                            shinyWidgets::materialSwitch(
+                              inputId = ns("toggle_status"),
+                              value = FALSE,
+                              label = strong("Axe vertical commun"),
+                              status = "success",
+                              inline = TRUE),
+                            tags$span(strong("indépendant"))
+                          )# End tags$div
+                        )# End 2nd conditionalPanel
 
                       ),# End fluidrow for plot buttons + materialswitches
 
@@ -147,6 +147,8 @@ mod_elec_charts_server <- function(id,
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
+    # Plot logic ----
+
     # Render plot selectively based on radioButton above
     # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
 
@@ -162,7 +164,7 @@ mod_elec_charts_server <- function(id,
         output$chart_1 <- plotly::renderPlotly({
 
 
-            # fct is defined in fct_helpers.R
+          # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData(),
                             n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
@@ -176,7 +178,7 @@ mod_elec_charts_server <- function(id,
                             legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
                             web_width = inputVals$web_width, # px width of browser when app starts
                             web_height = inputVals$web_height # px height of browser when app starts
-                            )
+          )
 
         })# End renderPlotly
 
@@ -205,25 +207,26 @@ mod_elec_charts_server <- function(id,
       tags$div(class = ifelse(input$tab_plot_type == "sunburst",
                               yes = "sunburstClass",
                               no = "barClass"),
-      plotly::plotlyOutput(ns("chart_1")) %>%
-        shinycssloaders::withSpinner(type = 6,
-                                     color= main_color) # color defined in utils_helpers.R
+               plotly::plotlyOutput(ns("chart_1")) %>%
+                 shinycssloaders::withSpinner(type = 6,
+                                              color= main_color) # color defined in utils_helpers.R
       )
 
     })# End renderUI
 
+    # Table logic ----
     # Renders the DT table
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData(),
                         unit = selectedUnit$unit_to,
                         DT_dom = "frtip" # no buttons extension for DT table
-                        )
+      )
 
     })# End renderDT
 
+    # Download logic ----
     # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
-
 
     download_data <- reactive({
 
@@ -233,7 +236,7 @@ mod_elec_charts_server <- function(id,
         rename_fr_colnames()  %>%  # fct_helpers.R
         add_colname_units(unit = selectedUnit$unit_to)  # fct_helpers.R
 
-        })
+    })
 
     # Module to download DT table data
     mod_download_data_server("table_download",

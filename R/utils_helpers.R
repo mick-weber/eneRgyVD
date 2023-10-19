@@ -28,7 +28,7 @@ load("./data/regener_doc.rda")
 
 ## subsidies data ----
 
-load("./data/subsidies_yearly_state.rda")
+load("./data/subsidies.rda")
 
 ## glossary ----
 
@@ -65,6 +65,7 @@ La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient
 # These are served to bs4DropdownMenu in app_ui.R
 
 notif_msg <- tidyr::tribble(~icon, ~status, ~text,
+                    "cloud-arrow-up", "info", "01.24: Ajout données subventions Programme Bâtiments",
                     "cloud-arrow-up", "info", "06.23: Ajout données consommation th. bâtiments 2022",
                      "cloud-arrow-up", "info", "06.23: Ajout données production électricité 2015-2022",
                      "star", "info", "06.23: Mise en ligne du profil"
@@ -273,7 +274,7 @@ subsidies_colors_type <- dplyr::tribble(~icon, ~subv_type, ~color,
                                          as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
                                          as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#95a695",
                                          as.character(shiny::icon("house-fire")), "Isolation complète + chauffage renouvelable", "#48A649",
-                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#477fc1",
+                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#48A649",
 
 )
 

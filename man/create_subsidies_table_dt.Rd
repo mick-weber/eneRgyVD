@@ -3,9 +3,16 @@
 \name{create_subsidies_table_dt}
 \alias{create_subsidies_table_dt}
 \title{create_subsidies_table_dt()
-Creates datatable for subsidies dataset}
+Creates datatable for subsidies dataset. Flexible enough to handle both datasets
+`subsidies_by_building` and `subsidies_by_measure` hence its arguments for variables.}
 \usage{
-create_subsidies_table_dt(data, DT_dom = "Bfrtip")
+create_subsidies_table_dt(
+  data,
+  var_year,
+  var_rank_2,
+  icon_list,
+  DT_dom = "Bfrtip"
+)
 }
 \arguments{
 \item{data}{the subsidies dataset}
@@ -17,5 +24,6 @@ a DT object
 }
 \description{
 create_subsidies_table_dt()
-Creates datatable for subsidies dataset
+Creates datatable for subsidies dataset. Flexible enough to handle both datasets
+`subsidies_by_building` and `subsidies_by_measure` hence its arguments for variables.
 }

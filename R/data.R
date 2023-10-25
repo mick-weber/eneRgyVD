@@ -27,20 +27,38 @@
 
 #' Building subsidies by commune for Canton de Vaud
 #'
-#' The dataset is an agregation and simplification of all subsidies paid by
+#' The dataset is an agregation and simplification of the main subsidies paid by
 #' Etat de Vaud for renovation and changes of heat producers in buildings. The
 #' programm is called "Programme Bâtiments", and the primary data source is
 #' IWF's platform used to process the subsidies. Data is acquired
 #' through a authentified API by DGE-DIREN, and data is pre-processed locally
 #' before making it available to the application.
-#' @name subsidies
+#' @name subsidies_by_building
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.leprogrammebatiments.ch/fr>
 #' @examples
-#' subsidies
+#' subsidies_by_building
 
-"subsidies"
+"subsidies_by_measure"
+
+#' Measure subsidies by commune for Canton de Vaud
+#'
+#' The dataset is a reflect of the main subsidies paid by Etat de Vaud for
+#' renovation and changes of heat producers in buildings. The
+#' programm is called "Programme Bâtiments", and the primary data source is
+#' IWF's platform used to process the subsidies. Data is acquired
+#' through a authentified API by DGE-DIREN, and data is pre-processed locally
+#' before making it available to the application.
+#' @name subsidies_by_measure
+#' @keywords datasets
+#' @format A tibble with various rows and cols which are not detailed yet
+#' @source <https://www.leprogrammebatiments.ch/fr>
+#' @examples
+#' subsidies_by_measure
+
+"subsidies_by_measure"
+
 
 
 

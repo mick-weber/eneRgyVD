@@ -228,16 +228,27 @@ app_server <- function(input, output, session) {
    })
 
 
-  ## Subset subsidies data ----
+  ## Subset subsidies data x2 ----
 
-   subset_subsidies <- reactive({
+   subset_subsidies_building <- reactive({
 
       # explicitly require communes to be selected
       validate(
          need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
       )
 
-      inputVals$subsidies
+      inputVals$subsidies_building
+   })
+
+
+   subset_subsidies_measure <- reactive({
+
+      # explicitly require communes to be selected
+      validate(
+         need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
+      )
+
+      inputVals$subsidies_measure
    })
 
 
@@ -448,19 +459,28 @@ app_server <- function(input, output, session) {
 
 
    ## tabSubsidies: chart server logic ----
-   mod_subsidies_charts_server("subsidies_PB",
-                               subsetData = subset_subsidies,
+
+   ### mod tabSubsidiesBuilding ----
+   mod_subsidies_building_charts_server("subsidies_building",
+                               subsetData = subset_subsidies_building,
                                inputVals = inputVals,
-                               dl_prefix = "subventions_",
+                               dl_prefix = "subventions_bat_",
                                doc_vars = NULL # for now
                                )
+
+   ###  mod tabSubsidiesMeasure ----
+   mod_subsidies_measure_charts_server("subsidies_measure",
+                               subsetData = subset_subsidies_measure,
+                               inputVals = inputVals,
+                               dl_prefix = "subventions_mesure_",
+                               doc_vars = NULL # for now
+   )
 
 
 
    ## tabMap: boxes for statistics ----
    ### VD Box ----
    # Must be dynamically rendered because it depends on selectedUnit (reactive)
-
 
    output$vd_box <- renderUI({
 

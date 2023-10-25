@@ -67,7 +67,7 @@ mod_inputs_server <- function(id,
     # Important note ----
     ## Unit conversion is made here, at the root of inputVals, for each dataset
 
-    # tabCons inputs ----
+    # 1. tabCons inputs ----
 
     # !! CONS_ELEC removed !! # subset_elec_cons <- reactive({
     # !! CONS_ELEC removed !! #
@@ -82,7 +82,7 @@ mod_inputs_server <- function(id,
     # !! CONS_ELEC removed !! # })
 
 
-    # tabProd inputs ----
+    # 2. tabProd inputs ----
 
     ## Reactive subset data  ----
     # This is only used to feed the dynamic UI (year/techs available)
@@ -101,7 +101,7 @@ mod_inputs_server <- function(id,
     })
 
 
-    # tabRegener inputs ----
+    # 3. tabRegener inputs ----
     # Subset aggregated regener data with the currently selected commune(s)
 
     ## 1/4: cons/use ----
@@ -162,23 +162,33 @@ mod_inputs_server <- function(id,
     })
 
 
-    # tabSubsidies inputs ----
+    # 4. tabSubsidies inputs ----
 
-    subset_subsidies <- reactive({
+    # 1/2
+    subset_subsidies_building <- reactive({
       req(input$selected_communes)
 
-      subsidies |>
+      subsidies_by_building |>
+        dplyr::filter(commune %in% input$selected_communes)
+    })
+
+    subset_subsidies_measure <- reactive({
+      req(input$selected_communes)
+
+      subsidies_by_measure |>
         dplyr::filter(commune %in% input$selected_communes)
     })
 
 
 
-    ## Storing in inputVals ----
-    # [inputVals 0/3] Initializing the inputVals item
+    # Storing in inputVals : ----
+
+# [inputVals 1/3] ----
+    # Initializing the inputVals item
 
     inputVals <- reactiveValues()
 
-    # [inputVals 1/3] Communes and district
+    # [inputVals 1/4] Communes and district
     # These are updated separately first for the district zoom feature to be fully operational.
 
     observe({
@@ -189,7 +199,8 @@ mod_inputs_server <- function(id,
     })
 
 
-    # [inputVals 2/3] Other inputs not influenced by selectInputs() else than commune
+# [inputVals 2/3] ----
+    # Other inputs not influenced by selectInputs() else than commune
 
     observe({
       # store the commune cons dataset already filtered
@@ -209,7 +220,8 @@ mod_inputs_server <- function(id,
 
       # store subsidies dataset already filtered
 
-      inputVals$subsidies <- subset_subsidies()
+      inputVals$subsidies_building <- subset_subsidies_building()
+      inputVals$subsidies_measure <- subset_subsidies_measure()
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
@@ -231,6 +243,7 @@ mod_inputs_server <- function(id,
 
     ### Statbox subsets, communes only (!) ----
     # --> we exclude Cantonal row which value is separated inside a dedicated statbox
+
     observe({
 
       req(subset_elec_prod(),
@@ -265,7 +278,7 @@ mod_inputs_server <- function(id,
 
     ## Render dynamic UI for renderUIs ----
 
-    # renderUI for when tabCons is selected
+    ### tabCons dynamic select ----
 
     # !!CONS_ELEC removed!! # output$cons_year <- shiny::renderUI({
     # !!CONS_ELEC removed!! #
@@ -285,7 +298,8 @@ mod_inputs_server <- function(id,
     # !!CONS_ELEC removed!! # })# End renderUi()
 
 
-    # renderUI for when tabProd is selected
+    ### tabProd dynamic select ----
+
     output$prod_year_n_techs <- shiny::renderUI({
 
         req(input$selected_communes)
@@ -323,7 +337,8 @@ mod_inputs_server <- function(id,
     }) # End renderUI
 
 
-    # [inputVals 3/3]
+# [inputVals 3/3] -----
+
     # We eventually complete inputVals with the values from renderUI() above
     observe({
 

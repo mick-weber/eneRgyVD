@@ -805,7 +805,8 @@ create_doc_table_dt <- function(data,
 
 
 #' create_subsidies_table_dt()
-#' Creates datatable for subsidies dataset
+#' Creates datatable for subsidies dataset. Flexible enough to handle both datasets
+#' `subsidies_by_building` and `subsidies_by_measure` hence its arguments for variables.
 #' @param data the subsidies dataset
 #' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
 #'
@@ -813,27 +814,28 @@ create_doc_table_dt <- function(data,
 #' @export
 
 create_subsidies_table_dt <- function(data,
+                                      var_year,
+                                      var_rank_2,
+                                      icon_list,
                                       DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
-  data %>%
+  data |>
+    # Clear undesired vars
+    dplyr::select(-any_of("mesure_simplifiee")) |>
     # Basic clean up for table output
-    dplyr::mutate(etat = as.factor(etat)) |>
+    dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
     dplyr::mutate(
       # format numeric cols
-      #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
-      #  to keep NAs alive with an if_else statement (only needed for this fn)
-      across(where(is.numeric), ~ dplyr::if_else(condition = !is.na(.x),
-                                          true = format(.x,
-                                                        big.mark = "'",
-                                                        digits = 3,
-                                                        drop0trailing = TRUE,
-                                                        scientific = FALSE),
-                                          false = NA_character_ )
-      )) %>%
+      across(where(is.numeric), ~ format(.x,
+                                         big.mark = "'",
+                                         digits = 3,
+                                         drop0trailing = TRUE,
+                                         scientific = FALSE))
+      )%>%
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(subsidies_icons_type, by = "subv_type") %>%
-    dplyr::relocate(icon, .before = subv_type) %>%
+    dplyr::left_join(icon_list, by = var_rank_2) %>%
+    dplyr::relocate(icon, .before = any_of(var_rank_2)) %>%
     dplyr::rename(" " = "icon") %>% # empty colname for icons
     rename_misc_colnames() |> # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R

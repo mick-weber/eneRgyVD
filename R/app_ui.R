@@ -130,13 +130,17 @@ app_ui <- function(request) {
                                                bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
                                                bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
                              # SUBSIDIES ADDED
-                             bs4Dash::menuItem("Subventions bâtiments", tabName = "tabSubsidies", icon = icon("file-pen")),
+                             bs4Dash::menuItem("Subventions", tabName = "tabSubsidies", icon = icon("file-pen"),
+                                               bs4Dash::menuSubItem("Par bâtiments", tabName = "tabSubsidiesBuilding"),
+                                               bs4Dash::menuSubItem("Par mesures", tabName = "tabSubsidiesMeasure")
+                             ),# End menuItem
 
                              ### Divers subMenu ----
                              h6("Divers", style = "color:white;"), #menuItem header
 
                              bs4Dash::menuItem("Rapport", tabName = "tabReport", icon = icon("file-code")),
                              bs4Dash::menuItem("À propos", tabName = "tabInfo", icon = icon("circle-info")),
+                             bs4Dash::menuItem("Nouveautés", tabName = "tabNews", icon = icon("star")),
                              tags$div(
                                class = "separateMenu",
                                bs4Dash::menuItem("Guide utilisateur", tabName = "tabScribe", icon = icon("question-circle"))
@@ -332,10 +336,12 @@ app_ui <- function(request) {
 
           ## tabSubsidies ----
 
-          bs4Dash::tabItem(
-            tabName = "tabSubsidies",
+          ### tabSubsidiesBuildings ----
 
-            fluidRow(h4(strong("Subventions octroyées dans le cadre du Programme Bâtiments")),
+          bs4Dash::tabItem(
+            tabName = "tabSubsidiesBuilding",
+
+            fluidRow(h4(strong("Bâtiments subventionnés dans le cadre du Programme Bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
                      HTML('&nbsp;'),HTML('&nbsp;'),
 
@@ -356,9 +362,39 @@ app_ui <- function(request) {
             br(),
 
             # Module for producing regener plots
-            mod_subsidies_charts_ui("subsidies_PB")
+            mod_subsidies_building_charts_ui("subsidies_building")
 
           ),# End tabItem
+
+          ### tabSubsidiesMeasure ----
+
+          bs4Dash::tabItem(
+            tabName = "tabSubsidiesMeasure",
+
+            fluidRow(h4(strong("Bâtiments subventionnés dans le cadre du Programme Bâtiments")),
+                     HTML('&nbsp;'), HTML('&nbsp;'),
+                     HTML('&nbsp;'),HTML('&nbsp;'),
+
+
+                     bs4Dash::box(title = actionButton("subsidies_help", # custom.css padding header
+                                                       label = "Consulter la méthodologie",
+                                                       icon = icon("info-sign", lib = "glyphicon"),
+                                                       class = "infoButton"),
+                                  collapsed = TRUE,
+                                  width = 6,
+                                  paste(generic_method_warning # text in utils_helpers.R
+                                        # add other text if needed later
+                                  )
+                     ),
+            ),
+
+            # breathing
+            br(),
+
+            # Module for producing regener plots
+            mod_subsidies_measure_charts_ui("subsidies_measure")
+
+          ),
 
           ## tabReport ----
           bs4Dash::tabItem(
@@ -382,6 +418,18 @@ app_ui <- function(request) {
             mod_about_the_app_ui("about")
 
           ),# End tabItem
+
+          ## tabNews----
+          bs4Dash::tabItem(
+          tabName = "tabNews",
+
+          br(),
+
+          # Add NEWS.md used for git as well
+          # Add card() when bslib transition is made
+          shiny::includeMarkdown("NEWS.md")
+
+          ),
 
           ## tabScribe ----
           bs4Dash::tabItem(

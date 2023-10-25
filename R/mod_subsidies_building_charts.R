@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_subsidies_charts_ui <- function(id){
+mod_subsidies_building_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
     # TABSETS for better readability of plot / table
@@ -21,10 +21,12 @@ mod_subsidies_charts_ui <- function(id){
                       br(),
                       column(width = 10,
                              # Disclaimer for regener cons data (in a column for better display)
-                             tags$p("Ces graphiques illustrent le nombre de bâtiments ayant reçu des subventions du Programme Bâtiment vaudois.
-                                    L'état à la fin de chaque année est représenté. Le total des subventions octroyées d'une année ne peut pas être
-                                    inférieur au total de l'année précédente. La SRE correspond à la surface de référence énergétique des bâtiments ayant
-                                    reçu une subvention."),
+                             tags$p("Ces graphiques illustrent le nombre de bâtiments ayant reçu des subventions du Programme Bâtiment vaudois depuis 2017.
+                                    Les données précédant 2017 ne sont pas diffusées et représentent une minorité des subventions versées.
+                                    L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes.
+                                    Le total des subventions octroyées d'une année ne peut donc pas être inférieur au total de l'année précédente.
+                                    La SRE correspond à la surface de référence énergétique des bâtiments ayant reçu une subvention.
+                                    Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD)."),
                       ),# End column
 
                       fluidRow(
@@ -79,11 +81,13 @@ mod_subsidies_charts_ui <- function(id){
                              # breathing
                              br(),
 
+                             tags$p("Les données sont davantage détaillées que pour les graphiques ce qui permet
+                                    de discerner quel type de chauffage est subventionné avec la colonne `Détail chauffage`.
+                                    La colonne `Type de subvention` permet de retrouver les données des graphiques."),
+
                              # Download module
                              mod_download_data_ui(ns("table_download")),
 
-                             # breathing
-                             br(),
                              # DT table
                              DT::dataTableOutput(ns("table_1"))
                       )# End column
@@ -92,10 +96,10 @@ mod_subsidies_charts_ui <- function(id){
   )# End tagList
 }
 
-#' subsidies_charts Server Functions
+#' subsidies_building_charts Server Functions
 #'
 #' @noRd
-mod_subsidies_charts_server <- function(id,
+mod_subsidies_building_charts_server <- function(id,
                                         subsetData, # passed from inputVals, bit redundant but clear
                                         # selectedUnit not needed here !
                                         inputVals,
@@ -116,25 +120,29 @@ mod_subsidies_charts_server <- function(id,
 
     # Plot logic ----
 
+    # Important : aggregate to remove `detail_chauffage` from plots
+    subsetData_agg <- reactive({
+      subsetData() |>
+      dplyr::group_by(commune, etat, subv_type) |>
+      dplyr::summarise(N_EGID = sum(N_EGID),
+                       SRE = sum(SRE))
+    })
+
+    # Plot accordingly to which radioGroupButton (sre/n_egid) is selected
         output$plot_subsidies <- plotly::renderPlotly({
 
           if(input$tab_plot_type == "sre"){
 
-
-          subsetData() |>
-            # Important : aggregate to remove details needed only in tables
-            dplyr::group_by(commune, etat, subv_type) |>
-            dplyr::summarise(N_EGID = sum(N_EGID),
-                             SRE = sum(SRE)) |>
-            # Then plot :
+            # Then plot aggregated data :
+            subsetData_agg() |>
             create_bar_plotly(n_communes = length(inputVals$selectedCommunes),
-                              var_year = "etat",
+                              var_year = "annee",
                               var_commune = "commune",
                               var_values = "SRE",
                               var_rank_2 = "subv_type",
                               unit = "m<sup>2</sup>",
                               legend_title = "",
-                              color_palette = colors_subsidies_type,
+                              color_palette = subsidies_building_colors,
                               dodge = FALSE, # we don't allow user to dodge w/ toggle button
                               free_y = input$toggle_status, # reactive(input$toggle_status)
                               web_width = inputVals$web_width, # px width of browser when app starts
@@ -143,12 +151,8 @@ mod_subsidies_charts_server <- function(id,
 
           }else if(input$tab_plot_type == "n_egid"){
 
-          subsetData() |>
-            # Important : aggregate to remove details needed only in tables
-            dplyr::group_by(commune, etat, subv_type) |>
-            dplyr::summarise(N_EGID = sum(N_EGID),
-                             SRE = sum(SRE)) |>
-            # Then plot :
+            # Then plot aggregated data :
+            subsetData_agg() |>
             create_bar_plotly(n_communes = length(inputVals$selectedCommunes),
                               var_year = "etat",
                               var_commune = "commune",
@@ -156,7 +160,7 @@ mod_subsidies_charts_server <- function(id,
                               var_rank_2 = "subv_type",
                               unit = "Bâtiments",
                               legend_title = "",
-                              color_palette = colors_subsidies_type,
+                              color_palette = subsidies_building_colors,
                               dodge = FALSE, # we don't allow user to dodge w/ toggle button
                               free_y = input$toggle_status, # reactive(input$toggle_status)
                               web_width = inputVals$web_width, # px width of browser when app starts
@@ -172,6 +176,9 @@ mod_subsidies_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       create_subsidies_table_dt(data = subsetData(),
+                                var_year = "etat",
+                                var_rank_2 = "subv_type",
+                                icon_list = subsidies_building_icons,
                                 DT_dom = "frtip" # remove default button in DT extensions
       )
     })

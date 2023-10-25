@@ -28,7 +28,8 @@ load("./data/regener_doc.rda")
 
 ## subsidies data ----
 
-load("./data/subsidies.rda")
+load("./data/subsidies_by_building.rda")
+load("./data/subsidies_by_measure.rda")
 
 ## glossary ----
 
@@ -131,7 +132,8 @@ cols_renaming_vector <- c(
   "Surface de référence énergétique (m2)" = "SRE",  # applies to `subsidies` too
   "Bâtiments chauffés" = "N_EGID",
   "Bâtiments neufs (2001+)" = "N_NEW_POST_2000",
-  "Bâtiments rénovés récemment" = "N_RENOV_POST_2000",
+  "Bâtiments rénovés légèrement (2001+)" = "N_RENOV_L_POST_2000",
+  "Bâtiments rénovés lourdement (2001+)" = "N_RENOV_H_POST_2000",
   "Bâtiments sans rénovation récente" = "N_NO_RENOV",
   "Bâtiments sans année de construction" = "N_NO_GBAUJ",
   # subsidies
@@ -267,20 +269,21 @@ colors_rg_type <- regener_colors_type$color %>%
 
 ## Subsidies colors and icons (subs) ----
 
-# if needed : subsidies_yearly_state |> distinct(subv_type)
+### Subsidies building ----
+# if needed : subsidies_building |> distinct(subv_type)
 
-subsidies_colors_type <- dplyr::tribble(~icon, ~subv_type, ~color,
+subsidies_building_palette <- dplyr::tribble(~icon, ~subv_type, ~color,
                                          as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
                                          as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
-                                         as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#95a695",
+                                         as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#b5dbb6",
                                          as.character(shiny::icon("house-fire")), "Isolation complète + chauffage renouvelable", "#48A649",
-                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#48A649",
+                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#6cb76d"
 
 )
 
 # Used for table icons
 
-subsidies_icons_type <- subsidies_colors_type |>
+subsidies_building_icons <- subsidies_building_palette |>
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
                                             replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
@@ -289,8 +292,40 @@ subsidies_icons_type <- subsidies_colors_type |>
 
 # Used for plots: named vector with level + associated color
 
-colors_subsidies_type <- subsidies_colors_type$color %>%
-  setNames(nm = subsidies_colors_type$subv_type)
+subsidies_building_colors <- subsidies_building_palette$color %>%
+  setNames(nm = subsidies_building_palette$subv_type)
+
+### Subsidies measure ----
+# Slight different approach than others to simplify the work
+
+# We generate a custom palette (available palettes are less than xy colors...)
+# It's flexible enough if new/removed subsidies appear
+# Thanks https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
+
+
+subsidies_measure_palette <- subsidies_by_measure |>
+  dplyr::distinct(mesure) |>
+  dplyr::mutate(icon = dplyr::case_when(
+    mesure %in% c("M01", "M12", "M13", "M14") ~ as.character(shiny::icon("house")),
+    .default = as.character(shiny::icon("fire")))) |>
+  # allow for lumped factor generated in mod_subsidies_measure_charts.R
+  dplyr::mutate(color = "#cccccc") # grey
+
+
+# Used for table icons
+
+subsidies_measure_icons <- subsidies_measure_palette |>
+  dplyr::rowwise() %>%
+  dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
+  dplyr::select(-color) %>%
+  dplyr::ungroup()
+
+# Used for plots: named vector with level + associated color
+
+subsidies_measure_colors <- subsidies_measure_palette$color %>%
+  setNames(nm = subsidies_measure_palette$mesure)
+
 
 # Theme ----
 
@@ -377,8 +412,9 @@ categories_diren <- elec_prod_communes %>%
 # to be populated
 
 ## Objects specific to the tabRegener  ----
+# used for fct_helpers.R -> mod_regener_cons_charts.R + mod_collapse_stats_box.R
 
-regener_current_year <- 2022  # used for create_sunburst_plotly() specific to regener data...
+regener_current_year <- 2022
 
 ## Objects specific to the tabMap  ----
 

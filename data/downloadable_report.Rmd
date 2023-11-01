@@ -192,8 +192,7 @@ params$regener_data_3 |>
 ## Etat des bâtiments
 
 ```{r}
-params$subsidies_building |> 
-  eneRgyVD::create_subsidies_table_dt(data = params$subsidies_building_data,
+eneRgyVD::create_subsidies_table_dt(data = params$subsidies_building_data,
                                 var_year = "etat",
                                 var_rank_2 = "subv_type",
                                 icon_list = subsidies_building_icons,
@@ -204,8 +203,7 @@ params$subsidies_building |>
 ## Mesures octroyées
 
 ```{r}
-params$subsidies_building |> 
-  eneRgyVD::create_subsidies_table_dt(data = params$subsidies_measure_data,
+eneRgyVD::create_subsidies_table_dt(data = params$subsidies_measure_data,
                                 var_year = "annee",
                                 var_rank_2 = "mesure",
                                 icon_list = subsidies_measure_icons,

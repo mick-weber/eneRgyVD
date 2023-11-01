@@ -912,6 +912,31 @@ return_palette_regener <- function(){
 
 }
 
+# Icons fns ----
+
+# This one is required because create_subsidies_table_dt is flexible enough to host
+# two palettes (building+measure) but we need a function to return the palette
+# if we want to be using the rmarkdown feature ! Otherwise not needed.
+
+#' return_icons_subsidies
+#' returns one of two icons palette for subsidies data (either building or measure icons)
+#' @param which either `building` to return the building palette,
+#' or `measure` to return the measure palette
+#' @return a tibble with icon as html and a categorical variable to match icons
+#' @export
+
+return_icons_subsidies <- function(which){
+
+  # According to which palette is asked, we return one of the objects from utils_helpers.R
+  icons_subsidies <- switch(which,
+         "building" = subsidies_building_icons,
+         "measure" = subsidies_measure_colors)
+
+  return(icons_subsidies)
+
+}
+
+
 # Unit fns ----
 
 #' convert_units()

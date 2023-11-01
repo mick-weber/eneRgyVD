@@ -17,6 +17,8 @@ create_subsidies_table_dt(
 \arguments{
 \item{data}{the subsidies dataset}
 
+\item{var_year}{the time variable}
+
 \item{DT_dom}{datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip}
 }
 \value{

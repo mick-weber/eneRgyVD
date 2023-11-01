@@ -930,7 +930,7 @@ return_icons_subsidies <- function(which){
   # According to which palette is asked, we return one of the objects from utils_helpers.R
   icons_subsidies <- switch(which,
          "building" = subsidies_building_icons,
-         "measure" = subsidies_measure_colors)
+         "measure" = subsidies_measure_icons)
 
   return(icons_subsidies)
 

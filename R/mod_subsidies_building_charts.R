@@ -136,7 +136,7 @@ mod_subsidies_building_charts_server <- function(id,
             # Then plot aggregated data :
             subsetData_agg() |>
             create_bar_plotly(n_communes = length(inputVals$selectedCommunes),
-                              var_year = "annee",
+                              var_year = "etat",
                               var_commune = "commune",
                               var_values = "SRE",
                               var_rank_2 = "subv_type",
@@ -216,4 +216,3 @@ mod_subsidies_building_charts_server <- function(id,
 
 ## To be copied in the server
 # mod_subsidies_charts_server("subsidies_charts_1")
-

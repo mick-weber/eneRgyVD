@@ -808,6 +808,7 @@ create_doc_table_dt <- function(data,
 #' Creates datatable for subsidies dataset. Flexible enough to handle both datasets
 #' `subsidies_by_building` and `subsidies_by_measure` hence its arguments for variables.
 #' @param data the subsidies dataset
+#' @param var_year the time variable
 #' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
 #'
 #' @return a DT object

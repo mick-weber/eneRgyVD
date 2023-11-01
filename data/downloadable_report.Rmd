@@ -25,6 +25,8 @@ params:
   regener_data_1: NULL
   regener_data_2: NULL
   regener_data_3: NULL
+  subsidies_building_data: NULL
+  subsidies_measure_data: NULL
 ---
 
 ```{r setup, include=FALSE}
@@ -34,7 +36,8 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
                       comment = 'Note:')
 
-# Needs to be installed in the 'run_as' user library specified in /etc/shiny-server/shiny-server.conf
+# Needs to be installed in the 'run_as' user library specified in /etc/shiny-server/shiny-server.conf : 
+# install_github("mick-weber/eneRgyVD")
 library(eneRgyVD)
 
 ```
@@ -182,6 +185,32 @@ D'autres informations relatives aux bâtiments sont également disponibles :
 # Generate table for misc regener data  
 params$regener_data_3 |> 
   eneRgyVD::create_rg_misc_table_dt(DT_dom = "Bfrtip") # Don't use params$unit
+```
+
+# Subventions
+
+## Etat des bâtiments
+
+```{r}
+params$subsidies_building |> 
+  eneRgyVD::create_subsidies_table_dt(data = params$subsidies_building_data,
+                                var_year = "etat",
+                                var_rank_2 = "subv_type",
+                                icon_list = subsidies_building_icons,
+                                DT_dom = "Bfrtip"
+      )
+```
+
+## Mesures octroyées
+
+```{r}
+params$subsidies_building |> 
+  eneRgyVD::create_subsidies_table_dt(data = params$subsidies_measure_data,
+                                var_year = "annee",
+                                var_rank_2 = "mesure",
+                                icon_list = subsidies_measure_icons,
+                                DT_dom = "Bfrtip" 
+      )
 ```
 
 # Contact

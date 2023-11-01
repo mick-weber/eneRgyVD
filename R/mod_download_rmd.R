@@ -118,7 +118,9 @@ mod_download_rmd_server <- function(id,
                        regener_data_0 = inputVals$rgr_needs,
                        regener_data_1 = inputVals$rgr_1,
                        regener_data_2 = inputVals$rgr_2,
-                       regener_data_3 = inputVals$rgr_misc)
+                       regener_data_3 = inputVals$rgr_misc,
+                       subsidies_building_data = inputVals$subsidies_building,
+                       subsidies_measure_data = inputVals$subsidies_measure)
 
         ## Render (future) report ----
 
@@ -207,7 +209,18 @@ mod_download_rmd_server <- function(id,
 
         # Regener misc renamed
         regener_autres = inputVals$rgr_misc |>
-          rename_misc_colnames()
+          rename_misc_colnames(),
+
+        # Subsidies building
+        subventions_bat = inputVals$subsidies_building |>
+          rename_misc_colnames() |>
+          rename_fr_colnames(),
+
+        # Subsidies measure
+        subventions_mesure = inputVals$subsidies_measure|>
+          rename_misc_colnames() |>
+          rename_fr_colnames()
+
       )
       })
 

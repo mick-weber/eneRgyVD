@@ -122,8 +122,9 @@ mod_subsidies_measure_charts_server <- function(id,
                             var_rank_2 = "mesure_simplifiee",
                             unit = "Subventions",
                             legend_title = "",
-                            color_palette = brewer.pal(n = 4, # 3fcts + lump
-                                                       name = "Set3"),
+                            color_palette = RColorBrewer::brewer.pal(
+                              n = 4, # 3fcts + lump
+                              name = "Pastel1"),
                             dodge = FALSE, # we don't allow user to dodge w/ toggle button
                             free_y = input$toggle_status, # reactive(input$toggle_status)
                             web_width = inputVals$web_width, # px width of browser when app starts

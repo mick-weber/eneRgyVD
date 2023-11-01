@@ -7,7 +7,6 @@
 
 app_ui <- function(request) {
 
-
   shiny::tagList(
 
     # Leave this function for adding external resources
@@ -129,10 +128,10 @@ app_ui <- function(request) {
                                                bs4Dash::menuSubItem("Besoins", tabName = "tabRegenerNeeds"),
                                                bs4Dash::menuSubItem("Consommation", tabName = "tabRegenerCons"),
                                                bs4Dash::menuSubItem("Autres", tabName = "tabRegenerMisc")),
-                             # SUBSIDIES ADDED
+                             # Subsidies ----
                              bs4Dash::menuItem("Subventions", tabName = "tabSubsidies", icon = icon("file-pen"),
-                                               bs4Dash::menuSubItem("Par bâtiments", tabName = "tabSubsidiesBuilding"),
-                                               bs4Dash::menuSubItem("Par mesures", tabName = "tabSubsidiesMeasure")
+                                               bs4Dash::menuSubItem("Vue par bâtiments", tabName = "tabSubsidiesBuilding"),
+                                               bs4Dash::menuSubItem("Vue par mesures", tabName = "tabSubsidiesMeasure")
                              ),# End menuItem
 
                              ### Divers subMenu ----
@@ -371,7 +370,7 @@ app_ui <- function(request) {
           bs4Dash::tabItem(
             tabName = "tabSubsidiesMeasure",
 
-            fluidRow(h4(strong("Bâtiments subventionnés dans le cadre du Programme Bâtiments")),
+            fluidRow(h4(strong("Mesures octroyées dans le cadre du Programme Bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
                      HTML('&nbsp;'),HTML('&nbsp;'),
 

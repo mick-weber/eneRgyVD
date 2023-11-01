@@ -140,7 +140,7 @@ mod_subsidies_measure_charts_server <- function(id,
       create_subsidies_table_dt(data = subsetData(),
                                 var_year = "annee",
                                 var_rank_2 = "mesure",
-                                icon_list = subsidies_measure_icons,
+                                icon_list = return_icons_subsidies(which = "measure"),
                                 DT_dom = "frtip" # remove default button in DT extensions
       )
     })

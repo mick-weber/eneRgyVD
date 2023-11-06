@@ -681,7 +681,7 @@ create_regener_table_dt <- function(data,
       pct_commune, accuracy = 0.01)) %>%
     dplyr::mutate(
       # change year to factor
-      # Annee = as.factor(Annee), # if needed later
+      etat = as.factor(etat), # if needed later
       # format numeric cols
       dplyr::across(where(is.numeric), ~format(.x,
                                           big.mark = "'",

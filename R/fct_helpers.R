@@ -7,7 +7,9 @@
 
 info_dev_message <- function(){
 
-  shinyalert::shinyalert(title = "Bienvenue sur le profil énergétique des communes !",
+  shinyalert::shinyalert(
+    inputId = "welcome-msg",
+    title = "Bienvenue sur le profil énergétique des communes !",
                          text = paste0("Cette application est mise à disposition par la ",
                                        tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
                                        " afin de diffuser des données énergétiques à l'échelle des communes vaudoises.",

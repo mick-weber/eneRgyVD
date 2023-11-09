@@ -1,3 +1,7 @@
+## custom.css ### 
+
+LOT of rework needed since bs5's flex layout is used many things are obsolete
+
 ### app_ui.R ###
 
 All the main structure -----------

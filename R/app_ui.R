@@ -428,20 +428,24 @@ app_ui <- function(request) {
           # Add card() when bslib transition is made
           shiny::includeMarkdown("NEWS.md")
 
-          ),
+          )
 
-          ## tabScribe ----
-          bs4Dash::tabItem(
-            tabName = "tabScribe",
-            # h4(strong("")) # No title --> inside the Scribe
+          # REMOVED SCRIBE DEPENDENCY; BROWSER WARNINGS FOR UPCOMING BLOCKING
+          # https://developer.chrome.com/docs/privacy-sandbox/third-party-cookie-phase-out/?utm_source=devtools
+          #,
 
-            br(),
-            # Simple iframe embed (no module needed here)
-            tags$iframe(src="https://scribehow.com/embed/Guide_utilisateur_du_profil_energetique__EgMdqpUuS52wylthvDs2Xg?as=scrollable", #&skipIntro=true
-                        width = "100%", height = "800",
-                        frameborder='no' # no unnecessary padding
-            )
-          )# End tabItem
+          # ## tabScribe ----
+          # bs4Dash::tabItem(
+          #   tabName = "tabScribe",
+          #   # h4(strong("")) # No title --> inside the Scribe
+          #
+          #   br(),
+          #   # Simple iframe embed (no module needed here)
+          #   tags$iframe(src="https://scribehow.com/embed/Guide_utilisateur_du_profil_energetique__EgMdqpUuS52wylthvDs2Xg?as=scrollable", #&skipIntro=true
+          #               width = "100%", height = "800",
+          #               frameborder='no' # no unnecessary padding
+          #   )
+          # )# End tabItem
 
         )# End tabItems
       )# End dashboardBody

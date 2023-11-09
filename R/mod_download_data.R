@@ -65,9 +65,6 @@ mod_download_data_server <- function(id,
         readr::write_excel_csv2(data(), file = file,
                                 na = "(Confidentiel)"
                                 ) # https://www.rdocumentation.org/packages/readr/versions/1.3.0/topics/write_delim
-
-
-
         }
     )
     ## XLSX handler ----

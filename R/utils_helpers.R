@@ -45,6 +45,11 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Generic utils ----
 
+## Available years for RegEner ----
+
+min_regener_year <- min(regener_cons_ae_use$etat)
+max_regener_year <- max(regener_cons_ae_use$etat)
+
 ## Sentence for required communes ----
 # To avoid multiple repetitions troughout the app we store it once here
 

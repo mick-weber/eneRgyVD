@@ -66,7 +66,6 @@ mod_regener_needs_charts_ui <- function(id){
                           # Both conditions: toggle must be TRUE and the bar plot button must be selected
                           condition = "output.toggle && input.tab_plot_type == 'bar'",
                           ns = ns,
-
                           tags$div(
                             style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
                             shinyWidgets::materialSwitch(
@@ -143,10 +142,11 @@ mod_regener_needs_charts_server <- function(id,
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    # We process subsetData() in a nice, wide format for the table and sunburst
+    # We process subsetData() in a nice, wide format for the TABLE and SUNBURST
     subsetData_wide <- reactive({
 
       subsetData() %>%
+        # this creates vars `Besoins actuels` & `Besoins optimaux` from var `besoins`
         tidyr::pivot_wider(names_from = "statut",
                            values_from = "besoins") # not passed as arguments (could be if needed)
     })
@@ -154,8 +154,23 @@ mod_regener_needs_charts_server <- function(id,
     # We also process subsetData_wide() in a compatible format for create_sunburst_plotly()
     subsetData_sunburst <- reactive({
 
+      req(inputVals$max_selected_regener)
+
       subsetData_wide() %>%  # not passed as arguments (could be if needed)
-        dplyr::rename(besoins = `Besoins actuels`) #
+       dplyr::filter(etat == inputVals$max_selected_regener) |>
+       dplyr::rename(besoins = `Besoins actuels`) # needed to use arg `var_values` for both plotly/sunburst
+
+    })
+
+    # We process subsetData() for create_bar_plotly() below
+    #  we only plot on the latest year selected in the regener_year selector
+
+    subsetData_barplot <- reactive({
+
+      req(inputVals$max_selected_regener)
+
+      subsetData() |>
+        dplyr::filter(etat == inputVals$max_selected_regener)
 
     })
 
@@ -187,12 +202,10 @@ mod_regener_needs_charts_server <- function(id,
         # WIP with selectedUnit$unit_to
 
         # ...PLOTLY BAR PLOT ----
-        output$chart_1 <-
+        output$chart_1 <- plotly::renderPlotly({
 
-            plotly::renderPlotly({
-
-          # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetData(),
+          # fct_helpers.R
+          create_bar_plotly(data = subsetData_barplot(),
                             n_communes = length(inputVals$selectedCommunes),
                             var_year = var_year,
                             var_commune = var_commune,
@@ -214,7 +227,7 @@ mod_regener_needs_charts_server <- function(id,
 
         # ...PLOTLY SUNBURST PLOT ----
         output$chart_1 <- plotly::renderPlotly({
-
+          # fct_helpers.R
           create_sunburst_plotly(data_sunburst = subsetData_sunburst(), # must be adapted later
                                  unit = selectedUnit$unit_to,
                                  var_year = var_year, # var name

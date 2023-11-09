@@ -85,11 +85,35 @@ mod_regener_cons_charts_ui <- function(id){
 mod_regener_cons_charts_server <- function(id,
                                       selectedUnit,
                                       inputVals, # for facet height
-                                      subset_rgr_1, # conso->use
-                                      subset_rgr_2 # conso->aff
+                                      subset_rgr_cons_1, # conso->use
+                                      subset_rgr_cons_2 # conso->aff
                                       ){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # filter for the latest year for the plots (not the table) ----
+
+    # subset_rgr_cons_1 -> subset_rgr_cons_1_last_year
+
+    subset_rgr_cons_1_last_year <- reactive({
+
+      req(inputVals$max_selected_regener)
+
+      subset_rgr_cons_1() |>
+        dplyr::filter(etat == inputVals$max_selected_regener)
+
+    })
+
+    # subset_rgr_cons_2 -> subset_rgr_cons_2_last_year
+
+    subset_rgr_cons_2_last_year <- reactive({
+
+      req(inputVals$max_selected_regener)
+
+      subset_rgr_cons_2() |>
+        dplyr::filter(etat == inputVals$max_selected_regener)
+
+    })
 
     # tabs and renderPlot() ----
 
@@ -102,7 +126,7 @@ mod_regener_cons_charts_server <- function(id,
       output$chart_alluvial <- shiny::renderPlot({
 
 
-        subset_rgr_1() %>%
+        subset_rgr_cons_1_last_year() %>%
           lump_alluvial_factors(var_commune = "commune",
                                 var_flow = "consommation",
                                 var_from = "ae",
@@ -127,7 +151,7 @@ mod_regener_cons_charts_server <- function(id,
         # Alluvial plot 2 : conso -> aff
         output$chart_alluvial <- shiny::renderPlot({
 
-          subset_rgr_2() %>%
+          subset_rgr_cons_2_last_year() %>%
             lump_alluvial_factors(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
@@ -156,7 +180,7 @@ mod_regener_cons_charts_server <- function(id,
         # Alluvial table 1 : conso -> usage
         output$table_1 <- DT::renderDataTable({
 
-            create_regener_table_dt(data = subset_rgr_1(),
+            create_regener_table_dt(data = subset_rgr_cons_1(),
                                     unit = selectedUnit$unit_to,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
@@ -170,7 +194,7 @@ mod_regener_cons_charts_server <- function(id,
         # Alluvial table 2 : conso -> aff
         output$table_1 <- DT::renderDataTable({
 
-            create_regener_table_dt(data = subset_rgr_2(),
+            create_regener_table_dt(data = subset_rgr_cons_2(),
                                     unit = selectedUnit$unit_to,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
@@ -185,14 +209,14 @@ mod_regener_cons_charts_server <- function(id,
 
       if(input$tab_table_type == "flow"){
 
-        subset_rgr_1() %>% # from app_server.R
+        subset_rgr_cons_1() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           rename_fr_colnames() %>% # fct_helpers.R
           add_colname_units(unit = selectedUnit$unit_to)  # fct_helpers.R
 
           } else if(input$tab_table_type == "bar"){
 
-        subset_rgr_2() %>% # from app_server.R
+        subset_rgr_cons_2() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           rename_fr_colnames() %>%  # fct_helpers.R
           add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R

@@ -51,6 +51,14 @@ mod_inputs_ui <- function(id){
 
       shiny::uiOutput(ns("prod_year_n_techs"))
 
+    ), # End conditionalPanel
+
+    # uiOutput() for tabRegener ----
+    # Use js array for all tabs because we can't target the overarching 'tabRegener' it does not work
+    shiny::conditionalPanel(
+      condition="['tabRegenerNeeds', 'tabRegenerCons', 'tabRegenerMisc'].includes(input.sidebarMenu)",
+      shiny::uiOutput(ns("regener_year_selector"))
+
     ) # End conditionalPanel
   ) # End tagList
 } # End UI
@@ -107,7 +115,7 @@ mod_inputs_server <- function(id,
     ## 1/4: cons/use ----
     # regener by commune, consumption, ae, use
     # I may rename these later for more explicit names...
-    subset_rgr_1 <- reactive({
+    subset_rgr_cons_1 <- reactive({
 
       req(input$selected_communes)
 
@@ -122,7 +130,7 @@ mod_inputs_server <- function(id,
     ## 2/4: cons/aff ----
     # regener by commune, consumption, ae, aff
     # I may rename these later for more explicit names...
-    subset_rgr_2 <- reactive({
+    subset_rgr_cons_2 <- reactive({
 
       req(input$selected_communes)
 
@@ -212,8 +220,8 @@ mod_inputs_server <- function(id,
 
       # store the regener commune dataset already filtered
 
-      inputVals$rgr_1 <- subset_rgr_1()
-      inputVals$rgr_2 <- subset_rgr_2()
+      inputVals$rgr_1 <- subset_rgr_cons_1()
+      inputVals$rgr_2 <- subset_rgr_cons_2()
 
       inputVals$rgr_needs <- subset_rgr_needs()
       inputVals$rgr_misc <- subset_rgr_misc()
@@ -237,6 +245,11 @@ mod_inputs_server <- function(id,
         dplyr::distinct(categorie) %>%
         dplyr::pull()
 
+      # store min & max years from regener dataset (this does not need to by commune specific)
+      inputVals$min_regener_year <- min_regener_year # utils_helpers.R
+      inputVals$max_regener_year <- max_regener_year # utils_helpers.R
+
+
     })# End observe
 
 
@@ -248,7 +261,7 @@ mod_inputs_server <- function(id,
 
       req(subset_elec_prod(),
           # !!CONS_ELEC removed!! # subset_elec_cons(),
-          subset_rgr_1())
+          subset_rgr_cons_1())
 
       # Statbox value for current selection's aggregated electricity production
       inputVals$common_year_elec_prod <- subset_elec_prod() %>%
@@ -267,8 +280,8 @@ mod_inputs_server <- function(id,
 
       # Statbox value for current selection's aggregated buildings thermal consumption
 
-      inputVals$max_year_rg_cons <- subset_rgr_1() %>%
-        # dplyr::filter(annee == max(annee)) %>%  When added !!
+      inputVals$max_year_rg_cons <- subset_rgr_cons_1() %>%
+        dplyr::filter(etat == max_regener_year) %>%
         dplyr::filter(!commune == "Canton de Vaud") %>%
         dplyr::summarise(consommation=sum(consommation, na.rm = T)) %>%
         dplyr::pull(consommation)
@@ -294,8 +307,24 @@ mod_inputs_server <- function(id,
     # !!CONS_ELEC removed!! #                        value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
     # !!CONS_ELEC removed!! #                        step = 1L, sep = "", ticks = T)
     # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #     ))# End tagList()
-    # !!CONS_ELEC removed!! # })# End renderUi()
+    # !!CONS_ELEC removed!! #     ))# End tagList
+    # !!CONS_ELEC removed!! # })# End renderUi
+
+    ### tabRegener dynamic select ----
+
+    output$regener_year_selector <- shiny::renderUI({
+
+      req(input$selected_communes)
+
+      tags$div(class = 'customSliderInput', # custom.css -> go green
+
+               shiny::sliderInput(ns("regener_year"), label = "Choix des années",
+                                  min = inputVals$min_regener_year,
+                                  max = inputVals$max_regener_year,
+                                  value = c(inputVals$min_regener_year,inputVals$max_regener_year),
+                                  step = 1L, sep = "", ticks = T))
+
+    })
 
 
     ### tabProd dynamic select ----
@@ -326,7 +355,6 @@ mod_inputs_server <- function(id,
                                          icon = icon("check"),
                                          animation = "jelly"),
         # For NON-SELECTABLE technologies : a title with a unordered list (see custom.css classes)
-
           tags$p(class = "sidebar_na_title",
                  "Non représentées :"),
           tags$ul(class = "sidebar_na_list",
@@ -342,12 +370,19 @@ mod_inputs_server <- function(id,
     # We eventually complete inputVals with the values from renderUI() above
     observe({
 
+                        # Cons elec selected inputs
 # !!CONS_ELEC removed!! # inputVals$min_selected_cons <- input$cons_year[1] # current min year selected for elec consumption
 # !!CONS_ELEC removed!! # inputVals$max_selected_cons <- input$cons_year[2] # current max year selected for elec consumption
 
+      # Prod elec selected inputs
       inputVals$min_selected_prod <- input$prod_year[1] # current min year selected for elec production
       inputVals$max_selected_prod <- input$prod_year[2] # current max year selected for elec production
       inputVals$techs_selected <- input$prod_techs      # current selected technologies for elec production
+
+
+      # RegEner selected inputs
+      inputVals$min_selected_regener <- input$regener_year[1]
+      inputVals$max_selected_regener <- input$regener_year[2]
 
     })
 

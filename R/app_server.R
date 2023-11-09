@@ -160,7 +160,7 @@ app_server <- function(input, output, session) {
    ## Subset regener (x3)----
    # subset_rgr1 : regener by commune, cons, ae, use
 
-   subset_rgr_1 <- reactive({
+   subset_rgr_cons_1 <- reactive({
 
       # explicitly require communes to be selected
       validate(
@@ -171,13 +171,12 @@ app_server <- function(input, output, session) {
       req(selectedUnit$unit_to)
 
       # No filter needed yet for years, only year conversion
-      # CONVERSION TEST IN PROGRESS
       inputVals$rgr_1
    })
 
    # subset_rgr1 : regener by commune, cons, ae, aff
 
-   subset_rgr_2 <- reactive({
+   subset_rgr_cons_2 <- reactive({
 
       # explicitly require communes to be selected
       validate(
@@ -188,7 +187,6 @@ app_server <- function(input, output, session) {
       req(selectedUnit$unit_to)
 
       # No filter needed yet for years, only year conversion
-      # CONVERSION TEST IN PROGRESS
       inputVals$rgr_2
 
    })
@@ -205,8 +203,8 @@ app_server <- function(input, output, session) {
       req(selectedUnit$unit_to)
 
       # No filter needed yet for years, only year conversion
-      # CONVERSION TEST IN PROGRESS
       inputVals$rgr_needs
+
    })
 
 
@@ -228,7 +226,7 @@ app_server <- function(input, output, session) {
    })
 
 
-  ## Subset subsidies data x2 ----
+  ## Subset subsidies data (x2) ----
 
    subset_subsidies_building <- reactive({
 
@@ -265,14 +263,15 @@ app_server <- function(input, output, session) {
   })
 
    # CONS
-  subset_sunburst_cons_data <- reactive({
+# !!CONS_ELEC removed!! #  subset_sunburst_cons_data <- reactive({
+# !!CONS_ELEC removed!! #
+# !!CONS_ELEC removed!! #    req(subset_cons_data())
+# !!CONS_ELEC removed!! #
+# !!CONS_ELEC removed!! #    subset_cons_data() %>%
+# !!CONS_ELEC removed!! #      filter(annee == inputVals$max_selected_cons)
+# !!CONS_ELEC removed!! #
+# !!CONS_ELEC removed!! #  })
 
-    req(subset_cons_data())
-
-    subset_cons_data() %>%
-      filter(annee == inputVals$max_selected_cons)
-
-  })
 
 
    # Leaflet select map ----
@@ -429,8 +428,8 @@ app_server <- function(input, output, session) {
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
                              selectedUnit = selectedUnit,
-                             subset_rgr_1 = subset_rgr_1,
-                             subset_rgr_2 = subset_rgr_2)
+                             subset_rgr_cons_1 = subset_rgr_cons_1,
+                             subset_rgr_cons_2 = subset_rgr_cons_2)
    ### mod regener_needs ----
    mod_regener_needs_charts_server("regener_needs",
                                    inputVals = inputVals,

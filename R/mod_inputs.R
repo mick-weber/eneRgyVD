@@ -345,7 +345,8 @@ mod_inputs_server <- function(id,
 
 
         # For SELECTABLE technologies : these checkboxes are linked to other server parts
-        shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs"), label = "Choix des technologies",
+        shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs"),
+                                          label = "Choix des technologies",
                                          choices = inputVals$techs_avail,
                                          selected = inputVals$techs_avail,
                                          inline = FALSE,

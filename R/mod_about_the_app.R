@@ -73,11 +73,13 @@ mod_about_the_app_ui <- function(id){
                 br(),
                 # Add download link
                 tags$a(href= "www/synthese_pronovo_energyvd.html",
-                       target="blank", "Télécharger la documentation",
+                       target="_blank", "Télécharger la documentation",
                        download = "profil-energie_doc_pronovo.html"),
                 br(),
+
                 tags$iframe(src = "www/synthese_pronovo_energyvd.html",
-                                                height = "800px", width = "100%")
+                            target = "_self",
+                            height = "800px", width = "100%")
                 )# End tags$div
 
                                                        ),# End nested tabPanel 1/4

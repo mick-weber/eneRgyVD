@@ -11,7 +11,9 @@ mod_map_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    leaflet::leafletOutput(ns("map"))
+    leaflet::leafletOutput(ns("map")) |>
+      shinycssloaders::withSpinner(type = 6,
+                                   color = main_color)
 
   )
 }

@@ -177,12 +177,6 @@ app_ui <- function(request) {
                      # Leaflet select map
                      mod_map_ui("map"),
 
-                     # leaflet::leafletOutput("map") %>% # height defined in custom.css #map
-                     #   shinycssloaders::withSpinner(type = 6,
-                     #                                color = main_color), # defined in utiles_helpers.R
-
-
-
               ),# End column
 
               # Next to leaflet map

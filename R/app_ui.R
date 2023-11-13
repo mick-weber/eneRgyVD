@@ -175,9 +175,11 @@ app_ui <- function(request) {
                      # Title for select map
                      h5(strong("Sélectionnez des communes sur la carte ou dans la zone latérale puis naviguez dans les onglets")),
                      # Leaflet select map
-                     leaflet::leafletOutput("map") %>% # height defined in custom.css #map
-                       shinycssloaders::withSpinner(type = 6,
-                                                    color = main_color), # defined in utiles_helpers.R
+                     mod_map_ui("map"),
+
+                     # leaflet::leafletOutput("map") %>% # height defined in custom.css #map
+                     #   shinycssloaders::withSpinner(type = 6,
+                     #                                color = main_color), # defined in utiles_helpers.R
 
 
 

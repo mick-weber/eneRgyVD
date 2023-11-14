@@ -57,14 +57,6 @@ mod_map_server <- function(id, inputVals){
         selected$groups <- setdiff(selected$groups, input$map_shape_click$group)
         proxy %>% leaflet::hideGroup(group = input$map_shape_click$group)
       }
-      # Update selectInput for bilateral communication map/widget
-      # inputId got customized with the NS of the respective input module (inputs_1-)
-      # this allows to update a widget from another module
-
-      # updateSelectizeInput(session = session,
-      #                      inputId = "inputs_1-selected_communes",
-      #                      choices = choices_canton_communes,
-      #                      selected = selected$groups)
     })
 
     # Handles the highlight/removal of a polygon and borders from inputVals$selectedCommunes
@@ -118,7 +110,7 @@ mod_map_server <- function(id, inputVals){
     })
 
     # Return all active selected communes from the map
-    # --> fed into app_server's updateSelectizeInput() generated in mod_inputs.R
+    # --> fed into app_server.R's updateSelectizeInput() generated in mod_inputs.R
 
     return(reactive(selected$groups))
 

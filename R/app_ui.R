@@ -175,7 +175,7 @@ app_ui <- function(request) {
                      # Title for select map
                      h5(strong("Sélectionnez des communes sur la carte ou dans la zone latérale puis naviguez dans les onglets")),
                      # Leaflet select map
-                     mod_map_ui("map"),
+                     mod_map_ui("communes_map"),
 
               ),# End column
 

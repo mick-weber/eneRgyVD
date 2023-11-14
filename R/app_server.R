@@ -278,7 +278,7 @@ app_server <- function(input, output, session) {
    # This returns selected$groups from mod_map_server(),
    # which stores the communes selected in the map & selectizeInput combined
 
-   map_selected_items <- mod_map_server("map", inputVals = inputVals)
+   map_selected_items <- mod_map_server("communes_map", inputVals = inputVals)
 
    observeEvent(map_selected_items(),
                 {

@@ -200,7 +200,7 @@ eneRgyVD::create_subsidies_table_dt(data = params$subsidies_building_data,
       )
 ```
 
-## Mesures octroyées
+## Mesures versées
 
 ```{r}
 eneRgyVD::create_subsidies_table_dt(data = params$subsidies_measure_data,

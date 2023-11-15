@@ -24,7 +24,7 @@ mod_subsidies_building_charts_ui <- function(id){
                              tags$p("Ces graphiques illustrent le nombre de bâtiments ayant reçu des subventions du Programme Bâtiment vaudois depuis 2017.
                                     Les données précédant 2017 ne sont pas diffusées et représentent une minorité des subventions versées.
                                     L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes.
-                                    Le total des subventions octroyées d'une année ne peut donc pas être inférieur au total de l'année précédente.
+                                    Le total des subventions versées d'une année ne peut donc pas être inférieur au total de l'année précédente.
                                     La SRE correspond à la surface de référence énergétique des bâtiments ayant reçu une subvention.
                                     Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD)."),
                       ),# End column

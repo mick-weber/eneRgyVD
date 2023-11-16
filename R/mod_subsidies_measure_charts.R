@@ -21,7 +21,7 @@ mod_subsidies_measure_charts_ui <- function(id){
                       br(),
                       column(width = 10,
                              # Disclaimer for regener cons data (in a column for better display)
-                             tags$p("Ces graphiques illustrent le nombre de subventions octroyées par type et année depuis 2017.
+                             tags$p("Ces graphiques illustrent le nombre de subventions versées par type et année depuis 2017.
                                     Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,
                                     il ne faut pas interpréter une subvention comme un bâtiment subventionné. Une vision agrégée par
                                     bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments"),

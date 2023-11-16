@@ -17,9 +17,10 @@ app_ui <- function(request) {
 
     # Your application UI logic
     bs4Dash::dashboardPage(
-      dark = NULL,
       # Custom theme
       freshTheme = eneRgy_theme, # utils_helpers.R
+      dark = NULL,
+      help = NULL,
       # Header ----
       bs4Dash::dashboardHeader(titleWidth = 300, status = "primary",
                                sidebarIcon = icon("arrows-left-right-to-line"),
@@ -366,7 +367,7 @@ app_ui <- function(request) {
           bs4Dash::tabItem(
             tabName = "tabSubsidiesMeasure",
 
-            fluidRow(h4(strong("Mesures octroyées dans le cadre du Programme Bâtiments")),
+            fluidRow(h4(strong("Mesures versées dans le cadre du Programme Bâtiments")),
                      HTML('&nbsp;'), HTML('&nbsp;'),
                      HTML('&nbsp;'),HTML('&nbsp;'),
 

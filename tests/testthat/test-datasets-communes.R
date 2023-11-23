@@ -1,3 +1,6 @@
+# These tests aim at checking that supplied communes are valid,
+#  and that the sum of all communes equals the `Canton de Vaud` entry.
+
 test_that("Check `commune` variable from datasets are valid choices from input$selected_communes (choices_canton_communes in utils_helpers.R)",
           {
             # Define vector of clean choices (requires unlisting)

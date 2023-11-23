@@ -10,7 +10,7 @@ load("./data/sf_lacs.rda")
 
 ## electricity_production data ----
 
-load("./data/elec_prod_communes.rda")
+load("./data/elec_prod.rda")
 load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
@@ -407,7 +407,7 @@ districts_names <- sf_districts %>%
 
 ### Colors for categorie ----
 
-categories_diren <- elec_prod_communes %>%
+categories_diren <- elec_prod %>%
   dplyr::distinct(categorie) %>%
   dplyr::arrange(categorie) %>%
   dplyr::pull()
@@ -427,11 +427,11 @@ regener_current_year <- 2022
 # We seek for the year that is common to both electricity consumption and production datasets
 # This is to create the statistic boxes (tabMap) and compare similar years.
 
-last_common_elec_year <- max(elec_prod_communes$annee) # When prod elec alone
+last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
 
   # !!CONS_ELEC removed!! # dplyr::intersect(
   # !!CONS_ELEC removed!! # elec_cons_communes %>% dplyr::distinct(annee),
-  # !!CONS_ELEC removed!! # elec_prod_communes %>% dplyr::distinct(annee)) %>%
+  # !!CONS_ELEC removed!! # elec_prod %>% dplyr::distinct(annee)) %>%
   # !!CONS_ELEC removed!! # dplyr::slice_max(annee) %>%
   # !!CONS_ELEC removed!! # dplyr::pull(annee)
 
@@ -440,7 +440,7 @@ last_common_elec_year <- max(elec_prod_communes$annee) # When prod elec alone
 
 #### VD electricity production for last common year
 
-prod_elec_vd_last_year <- elec_prod_communes %>%
+prod_elec_vd_last_year <- elec_prod %>%
   dplyr::filter(commune == "Canton de Vaud") %>%
   dplyr::filter(annee == last_common_elec_year) %>%
   dplyr::summarise(production = sum(production, na.rm = TRUE)) %>%

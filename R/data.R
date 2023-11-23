@@ -70,16 +70,16 @@
 #' results in a fairly complex methodology where DGE-DIREN provides some estimates
 #' for some type of installation which production is not recorded, or for self-consumption.
 #' The data is accompanied with a separate dictionnary dataset `elec_prod_doc`.
-#' @name elec_prod_communes
+#' @name elec_prod
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.pronovo.ch/fr>
 #' @examples
-#' elec_prod_communes.rda
+#' elec_prod.rda
 
-"elec_prod_communes"
+"elec_prod"
 
-#' @rdname elec_prod_communes
+#' @rdname elec_prod
 "elec_prod_doc"
 
 #' RegEner datasets

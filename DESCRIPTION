@@ -44,7 +44,8 @@ Imports:
     writexl
 Suggests: 
     shinytest2,
-    spelling (>= 2.2)
+    spelling (>= 2.2),
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

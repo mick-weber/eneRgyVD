@@ -101,7 +101,7 @@ mod_inputs_server <- function(id,
 
       req(input$selected_communes)
 
-      elec_prod_communes %>%
+      elec_prod %>%
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh",

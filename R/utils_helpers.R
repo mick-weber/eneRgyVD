@@ -307,29 +307,44 @@ subsidies_building_colors <- subsidies_building_palette$color %>%
 # It's flexible enough if new/removed subsidies appear
 # Thanks https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
 
+# Extract number of categories for mesure_simplifiee (supplied to brewer.pal below)
+n_max_mesure_simplifiee <- dplyr::n_distinct(subsidies_by_measure$mesure_simplifiee)
 
-subsidies_measure_palette <- subsidies_by_measure |>
+# This palette is only used for the plot, based on `mesure_simplifiee`
+subsidies_measure_palette_plot <- subsidies_by_measure |>
+  dplyr::distinct(mesure_simplifiee) |>
+  dplyr::mutate(color = RColorBrewer::brewer.pal(
+    n = n_max_mesure_simplifiee,
+    name = "Pastel1"
+  ))
+# Prepare palette for create_bar_plotly()
+subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color %>%
+  setNames(nm = subsidies_measure_palette_plot$mesure_simplifiee)
+
+
+# This palette is only supplying colors for the table. The p
+subsidies_measure_palette_table <- subsidies_by_measure |>
   dplyr::distinct(mesure) |>
   dplyr::mutate(icon = dplyr::case_when(
     mesure %in% c("M01", "M12", "M13", "M14") ~ as.character(shiny::icon("house")),
     .default = as.character(shiny::icon("fire")))) |>
   # allow for lumped factor generated in mod_subsidies_measure_charts.R
-  dplyr::mutate(color = "#cccccc") # grey
+  dplyr::mutate(color = "#cccccc") # grey for all
 
 
 # Used for table icons
 
-subsidies_measure_icons <- subsidies_measure_palette |>
+subsidies_measure_icons <- subsidies_measure_palette_table |>
   dplyr::rowwise() %>%
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
                                             replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
   dplyr::select(-color) %>%
   dplyr::ungroup()
 
-# Used for plots: named vector with level + associated color
+# Unused for plots: we only take the simplified version above
 
-subsidies_measure_colors <- subsidies_measure_palette$color %>%
-  setNames(nm = subsidies_measure_palette$mesure)
+# subsidies_measure_detail_colors <- subsidies_measure_palette_table$color %>%
+#   setNames(nm = subsidies_measure_palette_table$mesure)
 
 
 # Theme ----

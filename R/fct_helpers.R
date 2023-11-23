@@ -144,7 +144,7 @@ create_bar_plotly <- function(data,
                               color_palette, # 'colors_categories',
                               dodge = FALSE, # stacked by default
                               free_y = FALSE,
-                              legend_title,
+                              legend_title = NULL,
                               web_width = 1500, # set default when shinybrowser not used
                               web_height = 800, # set default when shinybrowser not used
                               ... # free

@@ -25,9 +25,7 @@ mod_regener_cons_charts_ui <- function(id){
  "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
- tags$p(paste0( # regener_current_year -> utils_helpers.R
-   "Ces données reflètent la situation en ", regener_current_year, ". Une mise à disposition historisée de ces données est en cours d'élaboration et sera disponible à moyen terme."
-   )),
+ tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale."),
                       ),# End column
                       # radioGroupButtons() for tab ----
 
@@ -42,7 +40,7 @@ mod_regener_cons_charts_ui <- function(id){
                       # # breathing
                       # br(),
 
-                      # Conditional plotly (bar/sunburst) ----
+                      # Alluvial plot ----
 
                       # ggalluvial plot
                       shiny::plotOutput(ns("chart_alluvial"), height = "auto") %>%

@@ -76,7 +76,7 @@ mod_elec_charts_ui <- function(id){
                         condition = "input.tab_plot_type == 'sunburst'",
                         ns = ns,
 
-                        tags$p("L'année affichée correspond à l'année la plus récente de la barre latérale.")
+                        tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale.")
 
                       ),# End conditionalPanel
 

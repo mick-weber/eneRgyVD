@@ -1,11 +1,11 @@
-# Use of shinyWidgets::radioGroupButtons() and prettyCheckboxGroup() not recommended, it yields (harmless?) errors in the browsers :
+# Use of shinyWidgets::radioGroupButtons() and prettyCheckboxGroup() not recommended, it yields (harmless?) errors in the browsers inspects :
 Incorrect use of <label for=FORM_ELEMENT>
 The label's for attribute doesn't match any element id. This might prevent the browser from correctly autofilling the form and accessibility tools from working correctly.
 To fix this issue, make sure the label's for attribute references the correct id of a form field.
 
 
 
-## custom.css ### 
+## custom.css ###
 
 LOT of rework needed since bs5's flex layout is used many things are obsolete
 
@@ -14,14 +14,14 @@ LOT of rework needed since bs5's flex layout is used many things are obsolete
 All the main structure -----------
 
 Generic : use cards from here to wrap module calls ? or use card inside modules ? Think well before doing either
-	  add logo in navbar 
+	  add logo in navbar
 	  add bsicons and replace all icons from this
 
-bs4Dash:: calls -> bslib calls 
+bs4Dash:: calls -> bslib calls
 
-	All the fluidRows + columns() calls --> bslib::layout_column()/bslib::layout_column_wrap() ? 
+	All the fluidRows + columns() calls --> bslib::layout_column()/bslib::layout_column_wrap() ?
 		See https://rstudio.github.io/bslib/articles/column-layout/index.html
-	
+
 	dashboardPage()
 	change theme (no more freshTheme)
 	dashboardHeader() -> shift all menuItems into nav_items from sidebar inside the new bslib navbar_page()
@@ -72,11 +72,10 @@ No change needed likely
 
 ### fct_helpers.R ###
 
-Massive changes in all the plotting functions 
+Massive changes in all the plotting functions
 
 inputVals$web_width/height can be kept for safety but shouldn't be used and should be gradually removed
-ggplotly's width+height args should be dealt with the example in H: disk. 
+ggplotly's width+height args should be dealt with the example in H: disk.
 return_dynamic_size() should not be needed anymore -> use layout_columns(_wrap()?) + breakpoints() instead
 
 
-	

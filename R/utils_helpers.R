@@ -44,11 +44,7 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 # Files others than .Rd are in ./inst/extdata/
 
 # Generic utils ----
-
-## Available years for RegEner ----
-
-min_regener_year <- min(regener_cons_ae_use$etat)
-max_regener_year <- max(regener_cons_ae_use$etat)
+# Tab-specific items at the end (see outline : `Objects specific to...`) !
 
 ## Sentence for required communes ----
 # To avoid multiple repetitions troughout the app we store it once here
@@ -278,6 +274,7 @@ colors_rg_type <- regener_colors_type$color %>%
 # if needed : subsidies_building |> distinct(subv_type)
 
 subsidies_building_palette <- dplyr::tribble(~icon, ~subv_type, ~color,
+                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc"),
                                          as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
                                          as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
                                          as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#b5dbb6",
@@ -434,7 +431,15 @@ categories_diren <- elec_prod %>%
 ## Objects specific to the tabRegener  ----
 # used for fct_helpers.R -> mod_regener_cons_charts.R + mod_collapse_stats_box.R
 
-regener_current_year <- 2022
+min_regener_year <- min(regener_cons_ae_use$etat)
+max_regener_year <- max(regener_cons_ae_use$etat)
+
+regener_current_year <- max_regener_year
+
+## Objects specific to the tabSubsidies  ----
+
+# mesures_pb |> dplyr::select(MESURE, MESURE_TRAD, MESURE_SIMPLIFIEE2)
+
 
 ## Objects specific to the tabMap  ----
 

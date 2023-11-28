@@ -143,7 +143,7 @@ mod_about_the_app_ui <- function(id){
                          # br(),
                          # # Add download link when doc available
                          # tags$a(href= "www/synthese_regener_energyvd.html",
-                         #        target="blank", "Télécharger la documentation",
+                         #        target="_blank", "Télécharger la documentation",
                          #        download = "profil-energie_doc_regener_v[???].html"),
                          # br(),
 
@@ -159,7 +159,22 @@ mod_about_the_app_ui <- function(id){
                                   h4(strong("Synthèse de la méthode")),
                                   h5("Subventions bâtiments : exploitation des données du Programme Bâtiments vaudois"),
                                   br(),
-                                  tags$p("Documentation à venir...")
+                                  tags$p("Ces données sont utilisées afin de fournir deux perspectives : une selon le nombre
+                                         de bâtiments subventionnés, et une sur le nombre de subventions émises. Uniquement les
+                                         subventions de travaux achevés sont présentés, les promesses de subventions ne sont pas intégrées."),
+                                  tags$a(href = "https://www.vd.ch/themes/environnement/energie/subventions-programme-batiments",
+                                         target = "_blank", "Voir ce lien pour le détail des subventions"),
+                                  br(),
+                                  h6(strong("Vue par bâtiments subventionnés")),
+                                  tags$p("Ces données de subventions sont croisées avec les données du registre énergétique des bâtiments (RegEner)
+                                         afin de fournir une vision par bâtiments. Uniquement les mesures directes du Programme Bâtiments
+                                          sont inclues dans ces statistiques. La catégorie 'Autres' regroupe les mesures M09 à M11 et M-16 à M-18
+                                         et n'est pas présentée dans les graphiques pour en simplifier la lecture."),
+                                  br(),
+                                  h6(strong("Vue par subventions octroyées")),
+                                  tags$p("Ces données reflètent l'ensemble des mesures directes du Programme Bâtiments (M01 à M16).")
+
+
 
                          )# End tags$div
                 )# End tabPanel 4/4

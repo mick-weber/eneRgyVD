@@ -274,7 +274,7 @@ colors_rg_type <- regener_colors_type$color %>%
 # if needed : subsidies_building |> distinct(subv_type)
 
 subsidies_building_palette <- dplyr::tribble(~icon, ~subv_type, ~color,
-                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc"),
+                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc",
                                          as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
                                          as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
                                          as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#b5dbb6",

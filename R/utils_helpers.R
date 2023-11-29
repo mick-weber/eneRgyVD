@@ -1,5 +1,5 @@
 # This script loads and stores all 'static' or initial objects fed to the app
-
+library(magrittr)
 # Loading .rda objects ----
 ## sf data ----
 
@@ -274,12 +274,12 @@ colors_rg_type <- regener_colors_type$color %>%
 # if needed : subsidies_building |> distinct(subv_type)
 
 subsidies_building_palette <- dplyr::tribble(~icon, ~subv_type, ~color,
-                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc",
                                          as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
-                                         as.character(shiny::icon("house")), "Isolation complète", "#FF870F",
+                                         as.character(shiny::icon("house")), "Isolation globale", "#FF870F",
                                          as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#b5dbb6",
-                                         as.character(shiny::icon("house-fire")), "Isolation complète + chauffage renouvelable", "#48A649",
-                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#6cb76d"
+                                         as.character(shiny::icon("house-fire")), "Isolation globale + chauffage renouvelable", "#48A649",
+                                         as.character(shiny::icon("fire")), "Chauffage renouvelable", "#6cb76d",
+                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc",
 
 )
 

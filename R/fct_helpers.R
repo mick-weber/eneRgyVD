@@ -185,7 +185,6 @@ create_bar_plotly <- function(data,
                    legend.text = ggplot2::element_text(size = 12),
                    legend.title = ggplot2::element_text(size = 12),
                    legend.background = ggplot2::element_rect(fill = NA), # transparent
-                   legend.key.size = ggplot2::unit(2, "cm"),
                    panel.spacing.x = ggplot2::unit(.05, "cm"),
                    panel.spacing.y = ggplot2::unit(0.5, "cm"),
                    axis.text.x = ggplot2::element_text(size = 10))
@@ -209,7 +208,7 @@ create_bar_plotly <- function(data,
         # font = list(size = 15),
         traceorder = "reversed",
         orientation = "h", # puts the legend in the middle instead of default right
-        y = 1.35 # elevates the legend so its above the plot, not below
+        y = ifelse(n_communes == 1, 1.45, 1.35) # elevates the legend so its above the plot, not below
       )) %>%
     plotly::config(modeBarButtons = list(list("toImage")),
                    locale = "fr")

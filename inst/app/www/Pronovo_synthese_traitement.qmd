@@ -37,11 +37,6 @@ library(knitr)
 
 
 ```{css basic-theme}
-
-body{
-text-align:justify;
-}
-
 h1.title{
 font-size:24pt;
 }
@@ -79,24 +74,16 @@ Chaque année, deux fichiers sont transmis sur demande de la DGE-DIREN par Prono
 
 2) Un fichier qui contient **toutes les installations connues** de production d'électricité sur le territoire, à l'exception des installations photovoltaïques <2kW. Ce fichier contient davantage de détail sur les installations que le fichier d'injection (date de mise en service, adresse, etc.)
 
-Pour les installations certifiées (existant donc dans le fichier des injections), la quantité d'électricité injectée est connue pour les installations d'une puissance égale ou inférieure à 30kVa. Pour les installations d'une puissance supérieure à 30kVa, l'injection mais également l'autoconsommation est renseignée (transmise depuis 2019 seulement).
+Pour les installations certifiées (existant donc dans le fichier des injections), la quantité d'électricité injectée est connue pour les installations d'une puissance égale ou inférieure à 30kVA. Pour les installations d'une puissance supérieure à 30kVA, l'injection mais également l'autoconsommation est renseignée (transmise depuis 2019 seulement).
 
 Pour les installations non certifiées qui sont normalement toutes solaires, aucune information de production (ni injection ni autoconsommation) n'est disponible et il conviendra d'estimer la production de ces installations sur la base de la catégorie d'installation. 
-
-# Accessibilité
-
-Les données sous leur forme désagrégée, par installation, sont confidentielles et ne sont pas diffusées.
-
-Les données agrégées par commune, technologie et année sont transmises sur le profil énergétique des communes vaudoises depuis 2023 et remontent jusqu'à 2015.
-
-**Attention** : Les données d'une catégorie pour laquelle la commune recense moins de trois installations sont retirées de l'application. Le total cantonal n'est pas affecté. Les communes qui souhaitent accéder à ces données pour leur planification énergétique sont invitées à en faire la demande écrite à la DGE-DIREN. 
 
 # Traitement
 
 Un résumé des principales étapes de ce script de traitement est proposé ci-dessous. 
 
 ```{r}
-knitr::include_graphics("synthese_pronovo_diagramme.svg")
+knitr::include_graphics("./diagramme/Diagramme_methodo.drawio.svg")
 ```
 
 ## Préparation
@@ -175,7 +162,7 @@ Tandis que les codes historiquement utilisés par la DIREN sont les suivants : *
 
 Il faut donc également recoder les installations Pronovo vers les catégories DGE-DIREN. Pour les catégories **Solaire, Hydroélectricité, STEP et Déchets incinérables** l'opération est simple, mais certaines installations recensées par Pronovo comme **Biogaz** se retrouvent par exemple en **Biomasse agricole** ou en **Déchets méthanisables**. 
 
-Cette recatégorisation nécessite l'intervention des experts métiers DGE-DIREN pour catégoriser les installations en fonction de leur connaissance du terrain. Pas plus d'une poignée d'installation doit être recatégorisée manuellement chaque année, le reste peut être fait de manière automatisée.
+Cette recatégorisation nécessite l'intervention des experts métiers DGE-DIREN pour catégoriser les installations en fonction de leur connaissance du terrain. Pas plus d'une poignée d'installation doit être recatégorisée manuellement chaque année, le reste peut être fait de manière automatisée avec une table de correspondances.
 
 ### Suppression d'installations
 
@@ -210,9 +197,9 @@ Cette quantification se fait en plusieurs étapes étant donné qu'il existe plu
 
 * Les installations sujettes à la RPC qui injectent l'entier de leur production ;
 
-* Les installations d'une puissance égale ou supérieure à 30kVa dont on connaît l'injection et l'autoconsommation (certifiées d'office) ;
+* Les installations d'une puissance égale ou supérieure à 30kVA dont on connaît l'injection et l'autoconsommation (certifiées d'office) ;
 
-* Les installations certifiées de puissance inférieure à 30kVa dont on connaît l'injection annuelle mais pas l'autoconsommation ;
+* Les installations certifiées de puissance inférieure à 30kVA dont on connaît l'injection annuelle mais pas l'autoconsommation ;
 
 * Les installations non certifiées dont on ne connaît que la puissance ; 
 
@@ -220,7 +207,7 @@ Il est ainsi nécessaire d'adapter la méthode de quantification à chaque type 
 
 ### Facteurs
 
-Grâce à l'interprétation des statuts des installations fournie par Pronovo, il est possible d'identifier les installations qui sont au [régime RPC](https://www.bfe.admin.ch/bfe/fr/home/mesures-d-encouragement/energies-renouvelables/retribution-de-injection.html/). Etant donné que ces installations bénéficient d'un tarif de reprise très avantageux, on peut considère que l'énergie injectée sur le réseau correspond à l'énergie produite de l'installation.
+Grâce à l'interprétation des statuts des installations fournie par Pronovo, il est possible d'identifier les installations qui sont au [régime RPC](https://www.bfe.admin.ch/bfe/fr/home/mesures-d-encouragement/energies-renouvelables/retribution-de-injection.html/). Etant donné que ces installations bénéficient d'un tarif de reprise très avantageux, on considère que l'énergie injectée sur le réseau correspond à l'énergie produite de l'installation. Bien que le nombre de ces installations s'amenuise au fil du temps (le programme n'étant plus proposé), ces installations sont très utiles pour définir des facteurs de production photovoltaïque vaudois.
 
 Pour le calcul des facteurs, afin d'avoir un échantillon constitué uniquement d'installations ayant produit sur toute une année civile, on retire les informations d'installations renseignant la même année d'une mise en service.
 
@@ -238,7 +225,7 @@ $$ 0.188kWc/m^2 * 1200 kWh/m^2 * 0.19 = 1'212 kWh/kWc$$
 
 * Un [ensoleillement annuel moyen vaudois de 1'200 kWh/m^2](https://www.vd.ch/themes/environnement/energie/energies-renouvelables-bois-hydraulique-geothermie-profonde-energies-eolienne-et-solaire/energie-solaire)
 
-* Un rendement moyen de 19% (choix par défault pour le [calculateur solaire SuisseEnergie](https://www.suisseenergie.ch/tools/calculateur-solaire/))
+* Un rendement moyen de 19% (choix par défaut par le [calculateur solaire SuisseEnergie en 2023](https://www.suisseenergie.ch/tools/calculateur-solaire/))
 
 
 En supposant que toutes les installations ne sont pas idéalement placées (et ne bénéficient donc pas de l'entier de l'ensoleillement) et que le rendement est relativement optimiste (celui-ci diminue légèrement au fil du temps), la valeur de 1'069 kWh/kWc semble être une bonne estimation.
@@ -249,16 +236,19 @@ $$ 0.188kWc/m^2 * 1200 kWh/m^2 * 0.17 = 1'086 kWh/kWc$$
 
 #### Facteurs injection
 
-Le facteur d'injection est calculé sur la base des installations de puissance inférieure à 30kVa dont on connaît uniquement l'injection : 
+Le facteur d'injection est calculé sur la base des installations de puissance inférieure à 30kVA dont on connaît uniquement l'injection : 
 
-* On calcule la production estimée avec le facteur de production précédemment calculé et la puissance installée, puis on calcule le facteur d'injection en divisant l'injection effective par la production estimée. Ce facteur est annualisé car le taux d'autoconsommation évolue selon les années. C'est le facteur médian qui est choisi de sorte à avoir 50% des installations au-dessus de cette valeur et 50% en-dessous, ce qui limite l'influence des quelques extrêmes qui autoconsommeraient par exemple l'entier de leur production nette.
+* On calcule la production estimée avec le facteur de production précédemment calculé et la puissance installée, puis on calcule le facteur d'injection en divisant l'injection effective par la production estimée. Ce facteur est annualisé car le taux d'autoconsommation évolue selon les années. C'est le facteur médian annuel qui est choisi de sorte à avoir 50% des installations au-dessus de cette valeur et 50% en-dessous chaque année, ce qui limite l'influence des quelques extrêmes qui autoconsommeraient par exemple l'entier de leur production nette.
 
-Pour ces installations, on obtient une moyenne des médianes de 68.56% pour les années 2020 à 2022.
+Pour ces installations, on obtient une moyenne des médianes annuelles de 68.56% pour les années 2020 à 2022.
 
 
 #### Facteurs autoconsommation
 
 Le facteur d'autoconsommation est obtenu simplement en soustrayant le facteur d'injection médian pour chaque année.
+
+$$F_{autoconsomation} = 1 - F_{injection}$$
+
 
 La moyenne des années 2020 à 2022 donne un facteur d'autoconsommation de 31.44%.
 
@@ -300,9 +290,9 @@ Le facteur d'autoconsommation est appliqué à la production non certifiée pré
 
 Deux cas de figure : 
 
-* Installations de puissance égale ou supérieure à 30kVa : l'information est directement disponible car autant l'injection que l'autoconsommation sont reportées par Pronovo AG. 
+* Installations de puissance égale ou supérieure à 30kVA : l'information est directement disponible car autant l'injection que l'autoconsommation sont reportées par Pronovo AG. 
 
-* Installations certifiées de puissance inférieure à 30kVa : application du facteur de production **dans la mesure où** l'injection ne dépasse pas celle-ci. Le cas échéant, la production est égale à l'injection. 
+* Installations certifiées de puissance inférieure à 30kVA : application du facteur de production **dans la mesure où** l'injection ne dépasse pas la production estimée. Si l'injection dépasse la production estimée, la production est égale à l'injection et on considère aucune autoconsommation. 
 
 #### Injection certifiée
 
@@ -312,9 +302,99 @@ L'injection des installations certifiées est directement disponible.
 
 Deux cas de figure : 
 
-* Installations de puissance égale ou supérieure à 30kVa : l'information est directement disponible car autant l'injection que l'autoconsommation sont reportées par Pronovo AG. 
+* Installations de puissance égale ou supérieure à 30kVA : l'information est directement disponible car autant l'injection que l'autoconsommation sont reportées par Pronovo AG. 
 
-* Installations certifiées de puissance inférieure à 30kVa : soustraction de la part issue du facteur d'injection à l'estimation de production. Si l'injection est égale à la production alors l'autoconsommation est nulle. 
+* Installations certifiées de puissance inférieure à 30kVA : soustraction de la part issue du facteur d'injection à l'estimation de production. Si l'injection est égale à la production alors l'autoconsommation est nulle. 
+
+
+## Exports
+
+Plusieurs exportations sont effectuées automatiquement, selon plusieurs formats : 
+
+* Données désagrégées (par installation)
+
+* Données agrégées par commune (par technologie et année)
+
+* Données agrégées pour le canton (par technologie et année)
+
+* Données des installations hydrauliques pour les contrôles DGE-EAUX
+
+* etc.
+
+# Améliorations proposées à Pronovo AG
+
+Avec désormais plusieurs années d'échanges entre Pronovo AG et la DGE-DIREN, la DGE-DIREN a suffisamment de recul pour mettre en avant quelques aspects qui faciliteraient le traitement des données énergétiques.
+
+La DGE-DIREN a conscience d'avoir développé une méthode d'estimation de la production d'électricité qui n'est pas connue ni harmonisée avec les approches des autres cantons ou de la Confédération. 
+
+Cependant, il semblait important de proposer un pont méthodologique entre les données brutes Pronovo AG et la création d'une statistique sur la production, l'injection et l'autoconsommation d'électricité de manière à ce que celle-ci soit la plus complète possible.
+
+Cette méthode n'est qu'une approximation de la réalité et peut certainement être améliorée de nombreuses façons, en particulier si les spécialistes métiers de la certification étaient impliqués.
+
+À terme, il serait donc idéal que les Cantons ou la Confédération puisse proposer une méthode (inspirée ou non de ce document) afin d'harmoniser les approches et de bénéficier de statistiques comparables pour documenter la transition énergétique.
+
+Ci-après sont détaillés quelques éléments qui permettraient de faciliter grandement le traitement des données Pronovo AG.
+
+## Noms des variables
+
+Malheureusement, nous avons constaté au fil des années que les noms de variables changent. Parfois elles sont traduites (avec des traductions divergentes selon les années). Ces inconsistances rendent plus difficile l'automatisation du traitement effectué par la DGE-DIREN.
+
+Il faudrait donc que ces noms de variables soient fixés, idéalement identiques avec ceux du registre généré par Pronovo AG, quitte à fournir une fois un dictionnaire de traduction (avec description) en tant que fichier séparé. 
+
+## Nombre de variables
+
+Le nombre de variables change également au fil des années. Parfois une variable disparaît pour revenir une année ou deux plus tard. Parfois de nouvelles variables sont introduites sans l'avoir mentionné explicitement. Cette inconsistance pose problème pour le traitement des données, car parfois certaines de ces variables sont utiles au traitement. 
+
+Idéalement, les variables fournies resteraient le plus stable possible afin que le traitement soit facilité. Les nouveautés seraient annoncées explicitement et détaillées.  
+
+## Codage des variables
+
+Ici également le codage des variables change selon les années et les traductions. La casse diffère également. Par exemple, les numéros d'identification des installations (numéro SRI ou numéro de système GO) sont parfois codés avec des 0 **avant** les premiers chiffres identificateurs, parfois non. Typiquement cela implique des étapes supplémentaires de traitement qui pourraient être évitées si les extractions étaient similaires d'une année à l'autre. 
+
+Renseigner les codes tels qu'ils le sont dans le registre de Pronovo AG serait souhaité.
+
+## Validation des localités
+
+Les localités sont saisies sans vérification orthographique. Pour une part non négligeable de localités, plusieurs dizaines d'orthographes différentes sont saisies. Cela implique un travail conséquent de vérification et de traitement pour que chaque localité soit correctement orthographiée pour ensuite être attribuée à une commune administrative. 
+
+En effet, un aspect fondamental du traitement de ces données est de fournir des statistiques communales pour la planification énergétique des communes.
+
+## Validation des adresses
+
+Même constat que pour les localités : les adresses sont saisies avec des erreurs, des inconsistances et sont donc souvent inexploitables. Idéalement la saisie des informations de localisation des installations de production d'électricité serait faite à l'aide d'un formulaire de validation qui prend sa source dans les données officielles des adresses en Suisse.
+
+De plus, lorsque pertinent, le ou les identifiants fédéral du bâtiment devraient être disponible ce qui permettrait de procéder à des appariements avec d'autres tables de données officielles.
+
+## Ajout des numéros EGID
+
+Lorsqu'une installation est rattachée à un bâtiment (en particulier pour le solaire photovoltaïque), il serait intéressant de pouvoir identifier le bâtiment directement au travers de son numéro EGID qui est l'identifiant fédéral des bâtiments utilisé notamment dans le registre fédéral des bâtiments par l'Office fédéral de la statistique. Cela permettrait de faciliter le croisement des tables de données officielles et de permettre l'élaboration de nouvelles statistiques, par exemple sur le nombre de bâtiments équipés de toitures photovoltaïques.
+
+## Vérification des envois
+
+Nous avons constaté en 2022 qu'il manquait parfois des installations d'un fichier à l'autre ce qui a nécessité l'envoi d'une nouvelle extraction. Ces cas sont relativement anecdotiques mais soulignent l'importance d'une méthode qui permette de systématiquement envoyer le même périmètre de données. 
+
+Nous avons également par exemple constaté que toutes les installations de la commune de Chavannes-le-Chêne étaient manquantes depuis le début des envois d'extractions. Un envoi correctif a été effectué mais pas rétroactivement ce qui impacte les statistiques cantonales antérieures. 
+
+## Descriptif général
+
+L'interprétation des variables est le fruit d'échanges multiples entre Pronovo AG, d'une lecture aprofondie du guide de certification Pronovo AG et de l'interprétation issue d'observations lors de l'exploration des données. 
+
+À ce niveau-là, il arrive que Pronovo AG ne réponde pas précisément aux interrogations envoyées. Il serait donc utile de fournir un guide d'interprétation pour toutes les variables essentielles de ce fichier (en particulier les statuts des installations et les variables qui quantifient l'injection ou l'autoconsommation). 
+
+## Transmission automatisée
+
+Le transfert de fichiers Excel sur demande de la DIREN nécessite passablement d'étapes (envoi de la demande, réception, traitement, vérification, envoi de l'extraction, ...). Ces étapes sont chronophages pour Pronovo AG comme pour la DGE-DIREN, et un système d'extraction davantage automatisé serait fortement apprécié. 
+
+
+
+
+
+
+
+
+
+
+
 
 
 

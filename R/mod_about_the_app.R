@@ -168,8 +168,9 @@ mod_about_the_app_ui <- function(id){
                                   h6(strong("Vue par bâtiments subventionnés")),
                                   tags$p("Ces données de subventions sont croisées avec les données du registre énergétique des bâtiments (RegEner)
                                          afin de fournir une vision par bâtiments. Uniquement les mesures directes du Programme Bâtiments
-                                          sont inclues dans ces statistiques. La catégorie 'Autres' regroupe les mesures M09 à M11 et M-16 à M-18
-                                         et n'est pas présentée dans les graphiques pour en simplifier la lecture."),
+                                          sont inclues dans ces statistiques. La catégorie 'Autres' regroupe les mesures M09 à M11 et M-16 à M-18.
+                                         Afin de simplifier la représentation des données, aucune indication n'est faite lorsqu'une mesure de la
+                                         catégorie 'Autres' co-existe avec d'autres mesures, ce qui est peu probable."),
                                   br(),
                                   h6(strong("Vue par subventions octroyées")),
                                   tags$p("Ces données reflètent l'ensemble des mesures directes du Programme Bâtiments (M01 à M16).")

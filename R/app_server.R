@@ -280,13 +280,19 @@ app_server <- function(input, output, session) {
 
    map_selected_items <- mod_map_server("communes_map", inputVals = inputVals)
 
-   observeEvent(map_selected_items(),
+   # We debounce the SelectInput update trigger (map items)
+   # Not doing so can create loops which end up bugging the app (if quick selections are made)
+
+   map_selected_items_d <- map_selected_items %>%
+     shiny::debounce(100) # ms
+
+   observeEvent(map_selected_items_d(),
                 {
                    # map_selected_items <- map_selected_items()
 
                       updateSelectInput(session = session,
                                         inputId = "inputs_1-selected_communes",
-                                        selected = map_selected_items())
+                                        selected = map_selected_items_d())
 
                 })
 

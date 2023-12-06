@@ -1,12 +1,12 @@
-<style type="text/css" rel="stylesheet">
-/* add custom css here if needed */
+<style type="text/css", rel="stylsheet">
+/* add custom css if needed */
 </style>
 
-# Suivi des modifications du profil énergétique
+## Suivi des modifications du profil énergétique
 
-## Mise à jour janvier 2024 (à venir)
+### Mise à jour janvier 2024 (à venir)
 
-### Chaleur des bâtiments 
+#### Chaleur des bâtiments 
 
 * Ajustement de la méthodologie RegEner et ajout de l'année 2023. L'année 2022 
 change rétroactivement avec la nouvelle méthode.
@@ -26,23 +26,23 @@ change rétroactivement avec la nouvelle méthode.
 
 * Onglet `Autres` : ajout de la distinction entre rénovation légère et lourde
 
-### Production d'électricité
+#### Production d'électricité
 
 * Ajustement mineur de la méthodologie impliquant des modifications rétroactives 
 de l'estimation de production d'électricité photovoltaïque, ainsi que des modifications
 négligeables pour les autres catégories
 
-### Consommation d'électricité
+#### Consommation d'électricité
 
 * Ajout de nouvelles données de consommation d'électricité. Les données proviennent
 des GRD et le traitement est assuré par la DGE-DIREN
 
-### Consommation de gaz naturel
+#### Consommation de gaz naturel
 
 * Ajout de nouvelles données de consommation de gaz naturel. Les données proviennent
 des GRD et le traitement est assuré par la DGE-DIREN
 
-### Subventions
+#### Subventions
 
 * Ajout de données de subvention des bâtiments pour l'isolation et le
 remplacement des chauffages (Programme Bâtiments)

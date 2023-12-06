@@ -5,7 +5,6 @@
   font-size: max(1vw, 12px) !important;
 }
 
-
 /* Used to disable link interaction with the 'notification' dropdownMenu from app_ui.R */
 .disableLink{
   pointer-events:none;

@@ -206,7 +206,6 @@ mod_inputs_server <- function(id,
 
     })
 
-
 # [inputVals 2/3] ----
     # Other inputs not influenced by selectInputs() else than commune
 

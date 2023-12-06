@@ -46,6 +46,11 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 # Generic utils ----
 # Tab-specific items at the end (see outline : `Objects specific to...`) !
 
+## Debounce time ----
+# Usef in app_server.R + plotting modules to avoid loop errors and flickering
+
+debounce_plot_time <- 400 # ms
+
 ## Sentence for required communes ----
 # To avoid multiple repetitions troughout the app we store it once here
 

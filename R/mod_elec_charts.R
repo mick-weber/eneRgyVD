@@ -133,14 +133,22 @@ mod_elec_charts_server <- function(id,
 
     ns <- session$ns
 
+
+    # Make debounced alternatives for plotting functions only !
+
+    subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+    selectedUnit_to <- reactive({selectedUnit$unit_to}) |> debounce(debounce_plot_time)
+
+
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
-      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
+      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
 
     # Initialize toggle stacked condition for conditionalPanel in ui
     output$commune <- reactive({
-      length(inputVals$selectedCommunes) > 0 # Returns TRUE if at least one commune is selected, else FALSE
+      length(inputVals_communes_d()) > 0 # Returns TRUE if at least one commune is selected, else FALSE
     })
 
     # We don't suspend output$toggle when hidden (default is TRUE)
@@ -165,11 +173,11 @@ mod_elec_charts_server <- function(id,
 
 
           # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetData(),
-                            n_communes = length(inputVals$selectedCommunes),
+          create_bar_plotly(data = subsetData_d(),
+                            n_communes = length(inputVals_communes_d()),
                             var_year = var_year,
                             var_commune = var_commune,
-                            unit = selectedUnit$unit_to,
+                            unit = selectedUnit_to(),
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
@@ -226,7 +234,7 @@ mod_elec_charts_server <- function(id,
     })# End renderDT
 
     # Download logic ----
-    # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
+    # store the data in a reactive (not sure why we can't pass subsetData_d() it directly, but otherwise this won't work)
 
     download_data <- reactive({
 

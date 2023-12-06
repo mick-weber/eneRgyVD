@@ -51,11 +51,15 @@ mod_map_server <- function(id, inputVals){
       if(input$map_shape_click$group == "regions"){
 
         selected$groups <- c(selected$groups, input$map_shape_click$id)
+
         proxy %>% leaflet::showGroup(group = input$map_shape_click$id)
 
       } else {
+
         selected$groups <- setdiff(selected$groups, input$map_shape_click$group)
+
         proxy %>% leaflet::hideGroup(group = input$map_shape_click$group)
+
       }
     })
 

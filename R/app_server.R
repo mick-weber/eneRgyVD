@@ -406,7 +406,7 @@ app_server <- function(input, output, session) {
                           selectedUnit = selectedUnit,
                           # args for create_bar_plotly() & create_sunburst_plotly()
                           sunburstData = subset_sunburst_prod_data,
-                          legend_title = "Technologies",
+                          legend_title = NULL,
                           var_year = "annee",
                           var_commune = "commune",
                           var_rank_2 = "categorie",

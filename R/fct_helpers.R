@@ -207,8 +207,8 @@ create_bar_plotly <- function(data,
       legend = list(
         # font = list(size = 15),
         traceorder = "reversed",
-        orientation = "h", # puts the legend in the middle instead of default right
-        y = ifelse(n_communes == 1, 1.45, 1.35) # elevates the legend so its above the plot, not below
+        orientation = "h", # puts the legend in horizontal layout
+        y= max(1.075, 1.40+(n_communes*-0.025)) # empirical model for optimal spacing between legend and plot
       )) %>%
     plotly::config(modeBarButtons = list(list("toImage")),
                    locale = "fr")

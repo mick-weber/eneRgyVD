@@ -113,6 +113,13 @@ mod_regener_cons_charts_server <- function(id,
 
     })
 
+    # Make debounced inputs ----
+    # For alluvial plots functions only, this avoids flickering plots when many items are selected/removed
+
+    subset_rgr_cons_2_last_year_d <- reactive({subset_rgr_cons_2_last_year()}) |> debounce(debounce_plot_time)
+    subset_rgr_cons_1_last_year_d <- reactive({subset_rgr_cons_1_last_year()}) |> debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+
     # tabs and renderPlot() ----
 
     observe({
@@ -124,7 +131,7 @@ mod_regener_cons_charts_server <- function(id,
       output$chart_alluvial <- shiny::renderPlot({
 
 
-        subset_rgr_cons_1_last_year() %>%
+        subset_rgr_cons_1_last_year_d() %>%
           lump_alluvial_factors(var_commune = "commune",
                                 var_flow = "consommation",
                                 var_from = "ae",
@@ -138,9 +145,9 @@ mod_regener_cons_charts_server <- function(id,
 
 
 
-      },height = ifelse(test = is.null(inputVals$selectedCommunes),
+      },height = ifelse(test = is.null(inputVals_communes_d()),
                         yes = 400, # if no commune selected, default width = 400
-                        no = ceiling(length(inputVals$selectedCommunes)/2)*400)) # change height every two facets+
+                        no = ceiling(length(inputVals_communes_d())/2)*400)) # change height every two facets+
 
 
       }# End if tab...
@@ -149,7 +156,7 @@ mod_regener_cons_charts_server <- function(id,
         # Alluvial plot 2 : conso -> aff
         output$chart_alluvial <- shiny::renderPlot({
 
-          subset_rgr_cons_2_last_year() %>%
+          subset_rgr_cons_2_last_year_d() %>%
             lump_alluvial_factors(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
@@ -162,9 +169,9 @@ mod_regener_cons_charts_server <- function(id,
                                   label_to = "Affectation")
 
 
-        }, height = ifelse(test = is.null(inputVals$selectedCommunes),
+        }, height = ifelse(test = is.null(inputVals_communes_d()),
                            yes = 400, # if no commune selected, default width = 400
-                           no = ceiling(length(inputVals$selectedCommunes)/2)*400))
+                           no = ceiling(length(inputVals_communes_d())/2)*400))
 
       }# End elseif
 

@@ -143,6 +143,7 @@ mod_regener_needs_charts_server <- function(id,
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    # Preparing data ----
     # We process subsetData() in a nice, wide format for the TABLE and SUNBURST
     subsetData_wide <- reactive({
 
@@ -175,6 +176,13 @@ mod_regener_needs_charts_server <- function(id,
 
     })
 
+
+    # Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+
+    subsetData_barplot_d <- reactive({subsetData_barplot()}) |> shiny::debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
       length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
@@ -206,8 +214,8 @@ mod_regener_needs_charts_server <- function(id,
         output$chart_1 <- plotly::renderPlotly({
 
           # fct_helpers.R
-          create_bar_plotly(data = subsetData_barplot(),
-                            n_communes = length(inputVals$selectedCommunes),
+          create_bar_plotly(data = subsetData_barplot_d(),
+                            n_communes = length(inputVals_communes_d()),
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = selectedUnit$unit_to,

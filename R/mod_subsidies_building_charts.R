@@ -129,14 +129,21 @@ mod_subsidies_building_charts_server <- function(id,
                        SRE = sum(SRE))
     })
 
+
+    ## Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+
+    subsetData_agg_d <- reactive({subsetData_agg()}) |> shiny::debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+
     # Plot accordingly to which radioGroupButton (sre/n_egid) is selected
         output$plot_subsidies <- plotly::renderPlotly({
 
           if(input$tab_plot_type == "sre"){
 
             # Then plot aggregated data :
-            subsetData_agg() |>
-            create_bar_plotly(n_communes = length(inputVals$selectedCommunes),
+            subsetData_agg_d() |>
+            create_bar_plotly(n_communes = length(inputVals_communes_d()),
                               var_year = "etat",
                               var_commune = "commune",
                               var_values = "SRE",
@@ -153,8 +160,8 @@ mod_subsidies_building_charts_server <- function(id,
           }else if(input$tab_plot_type == "n_egid"){
 
             # Then plot aggregated data :
-            subsetData_agg() |>
-            create_bar_plotly(n_communes = length(inputVals$selectedCommunes),
+            subsetData_agg_d() |>
+            create_bar_plotly(n_communes = length(inputVals_communes_d()),
                               var_year = "etat",
                               var_commune = "commune",
                               var_values = "N_EGID",

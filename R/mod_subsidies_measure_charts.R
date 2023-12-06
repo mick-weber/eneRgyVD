@@ -106,17 +106,23 @@ mod_subsidies_measure_charts_server <- function(id,
 
     # Plot logic ----
 
+    ## Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+
+    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+
     output$plot_subsidies <- plotly::renderPlotly({
 
       # Plotly but factor lumped for clarity :
-      subsetData() |>
+      subsetData_d() |>
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,
                                                    n = 3,
                                                    w = nombre,
                                                    other_level = "Autres mesures")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-          create_bar_plotly(n_communes = length(inputVals$selectedCommunes),
+          create_bar_plotly(n_communes = length(inputVals_communes_d()),
                             var_year = "annee",
                             var_commune = "commune",
                             var_values = "nombre",

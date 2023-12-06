@@ -134,11 +134,11 @@ mod_elec_charts_server <- function(id,
     ns <- session$ns
 
 
-    # Make debounced alternatives for plotting functions only !
+    # Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
 
     subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
     inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-    selectedUnit_to <- reactive({selectedUnit$unit_to}) |> debounce(debounce_plot_time)
 
 
     # Initialize toggle free_y condition for conditionalPanel in ui
@@ -177,7 +177,7 @@ mod_elec_charts_server <- function(id,
                             n_communes = length(inputVals_communes_d()),
                             var_year = var_year,
                             var_commune = var_commune,
-                            unit = selectedUnit_to(),
+                            unit = selectedUnit$unit_to,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R

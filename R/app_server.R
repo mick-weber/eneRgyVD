@@ -274,6 +274,21 @@ app_server <- function(input, output, session) {
 
 
 
+   # Upload communes test ----
+
+   observeEvent(inputVals$uploadedCommunes,{
+
+     ## UpdateSelectizeInput ----
+     updateSelectizeInput(session = session,
+                          inputId = "inputs_1-selected_communes",
+                          choices = choices_canton_communes,
+                          selected = inputVals$uploadedCommunes)
+
+   })
+
+   # / Upload communes
+
+
    # Leaflet select map ----
 
    #   Unfortunately this couldn't be modularized because for some reason the communication between
@@ -316,6 +331,7 @@ app_server <- function(input, output, session) {
      # inputId got customized with the NS of the respective input module (inputs_1-)
      # this allows to update a widget from another module
 
+     ## UpdateSelectizeInput ----
      updateSelectizeInput(session = session,
                           inputId = "inputs_1-selected_communes",
                           choices = choices_canton_communes,

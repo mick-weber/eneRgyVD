@@ -70,7 +70,8 @@ golem::add_module(name = "regener_needs_charts", with_test = TRUE)
 golem::add_module(name = "regener_misc_charts", with_test = TRUE)
 golem::add_module(name = "subsidies_building_charts", with_test = TRUE)
 golem::add_module(name = "subsidies_measure_charts", with_test = TRUE)
-golem::add_module(name = "map", with_test = FALSE)
+#golem::add_module(name = "map", with_test = FALSE)
+golem::add_module(name = "upload_communes", with_test = FALSE)
 
 
 ## Add helper functions ----

@@ -402,6 +402,13 @@ communes_names <- sf_communes %>%
   dplyr::arrange(NOM_MIN) %>%
   dplyr::pull(NOM_MIN)
 
+# Create named vector of communes + OFS number, used for the upload file feature
+#  which requires OFS numbers from the user (less error prone !)
+communes_names_id <- sf_communes |>
+  dplyr::distinct(NOM_MIN, NO_COM_FED) |>
+  dplyr::arrange(NOM_MIN) |>
+  dplyr::pull(NOM_MIN,NO_COM_FED)
+
 ### Choices selectizeInput ----
 # Since we want to add the canton de Vaud as an input choice, we make a list for selectizeInput()
 

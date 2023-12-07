@@ -22,6 +22,14 @@ mod_inputs_ui <- function(id){
                           options = list(placeholder = "Plusieurs acceptées")
     ),
 
+    # fileInput() when tabMap selected ----
+    shiny::conditionalPanel(
+      condition="input.sidebarMenu == 'tabMap'",
+
+    mod_upload_communes_ui(ns("uploaded_communes"))
+
+    ),
+
     # selectizeInput() for district zoom ----
     # IF tabMap : Select input for zooming on the districts (WIP feature)
     shiny::conditionalPanel(
@@ -188,22 +196,26 @@ mod_inputs_server <- function(id,
     })
 
 
+    # Uploaded communes ----
+
+    uploaded_communes <- mod_upload_communes_server("uploaded_communes")
 
     # Storing in inputVals : ----
-
-# [inputVals 1/3] ----
-    # Initializing the inputVals item
+    # Initializing the inputVals items
 
     inputVals <- reactiveValues()
 
-    # [inputVals 1/4] Communes and district
-    # These are updated separately first for the district zoom feature to be fully operational.
+# [inputVals 1/3] ----
 
     observe({
 
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
 
+    })
+
+    observe({
+      inputVals$uploadedCommunes <- uploaded_communes()
     })
 
 # [inputVals 2/3] ----

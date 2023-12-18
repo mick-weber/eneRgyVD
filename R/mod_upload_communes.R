@@ -12,6 +12,11 @@ mod_upload_communes_ui <- function(id){
   tagList(
 
     # Input: Select a file ----
+    bs4Dash::box(title = "Sélection groupée", style = "padding:0;font-size:0.9rem;",
+                 collapsed = TRUE,
+                 width = NULL,
+                 solidHeader = FALSE,
+                 background = "gray-dark",
     fileInput(ns("file_communes"),
               label = p("Choisir un fichier CSV", br(),
                         tags$i("La première colonne doit contenir les numéros OFS.
@@ -24,7 +29,8 @@ mod_upload_communes_ui <- function(id){
               accept = c("text/csv",
                          "text/comma-separated-values,text/plain",
                          ".csv"))
-  )
+    )# End box
+  )# End tagList
 }
 
 #' upload_communes Server Functions

@@ -151,7 +151,7 @@ mod_about_the_app_ui <- function(id){
 
                 ),# End nested tabPanel 3/4
 
-
+                ### Subsidies ----
                 tabPanel("Subventions bâtiments",
                          # create div to apply class
                          tags$div(class = "addRetrait",
@@ -173,8 +173,10 @@ mod_about_the_app_ui <- function(id){
                                          catégorie 'Autres' co-existe avec d'autres mesures, ce qui est peu probable."),
                                   br(),
                                   h6(strong("Vue par subventions octroyées")),
-                                  tags$p("Ces données reflètent l'ensemble des mesures directes du Programme Bâtiments (M01 à M16).")
-
+                                  tags$p("Ces données reflètent l'ensemble des mesures directes du Programme Bâtiments (M01 à M16)."),
+                                  br(),
+                                  # Documentation table for both subsidies datasets
+                                  DT::dataTableOutput(ns("subsidies_doc"))
 
 
                          )# End tags$div
@@ -278,6 +280,13 @@ mod_about_the_app_server <- function(id){
         create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
     })
 
+
+    ### Subsidies ----
+
+    output$subsidies_doc <- DT::renderDataTable({
+      subsidies_doc %>%
+        create_doc_table_dt(doc_prefix = "doc_subventions_") # fct_helpers.R
+    })
 
 
     # Glossaire ----

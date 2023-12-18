@@ -30,6 +30,7 @@ load("./data/regener_doc.rda")
 
 load("./data/subsidies_by_building.rda")
 load("./data/subsidies_by_measure.rda")
+load("./data/subsidies_doc.rda")
 
 ## glossary ----
 

@@ -12,7 +12,7 @@ mod_upload_communes_ui <- function(id){
   tagList(
 
     # Input: Select a file ----
-    bs4Dash::box(title = "Sélection groupée", style = "padding:0;font-size:0.9rem;",
+    bs4Dash::box(title = "Sélection groupée", style = "padding:0;font-size:0.9rem;margin:0;",
                  collapsed = TRUE,
                  width = NULL,
                  solidHeader = FALSE,
@@ -21,7 +21,12 @@ mod_upload_communes_ui <- function(id){
               label = p("Choisir un fichier CSV", br(),
                         tags$i("La première colonne doit contenir les numéros OFS.
                                Séparateur point-virgule ';' uniquement.",
-                               style = "font-size:0.9rem; font-weight:normal;")
+                               style = "font-size:0.9rem; font-weight:normal;"),
+
+                        tags$i(tags$a(href= "www/exemple_import_communes.csv",
+                                          target="_blank", "Télécharger un exemple",
+                                          download = "exemple_import_communes.csv",
+                                          style = "color:#3a862d;"))
                         ),
               buttonLabel = "Importer...",
               placeholder = "(...).csv",

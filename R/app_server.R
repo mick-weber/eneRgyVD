@@ -10,6 +10,11 @@ app_server <- function(input, output, session) {
    # Record logs ----
    ## We record session and errors (no inputs/outputs)
 
+  # make sure the logs subfolder exists
+  if(!dir.exists("./logs")){
+    dir.create("./logs")
+  }
+
    shinylogs::track_usage(
       what = c("session","errors"),
       storage_mode = shinylogs::store_json(path = "logs/") # store in the /logs subfolder

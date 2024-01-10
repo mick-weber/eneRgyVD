@@ -53,6 +53,10 @@ usethis::use_package("future")   # asnyc report download ## RUN THIS ##
 
 usethis::use_package("shinylogs") # record session logs for user tracking
 
+# UPDATE bs5
+
+usethis::use_package("bslib")
+
 
 ## Add modules ----
 ## Create a module infrastructure in R/
@@ -83,7 +87,7 @@ golem::add_utils("helpers", with_test = TRUE)
 ## Creates .js and .css files at inst/app/www
 golem::add_js_file("script")
 golem::add_js_handler("handlers")
-golem::add_sass_file("custom")
+golem::add_sass_file("custom_bs5")
 
 ## Add internal datasets ----
 ## If you have data in your package

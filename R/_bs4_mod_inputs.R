@@ -24,7 +24,7 @@ mod_inputs_ui <- function(id){
 
     # fileInput() when tabMap selected ----
     shiny::conditionalPanel(
-      condition = "input.nav == 'Carte'",
+      condition="input.sidebarMenu == 'tabMap'",
 
     mod_upload_communes_ui(ns("uploaded_communes"))
 
@@ -33,7 +33,7 @@ mod_inputs_ui <- function(id){
     # selectizeInput() for district zoom ----
     # IF tabMap : Select input for zooming on the districts (WIP feature)
     shiny::conditionalPanel(
-      condition="input.nav == 'Carte'",
+      condition="input.sidebarMenu == 'tabMap'",
       shiny::selectizeInput(inputId = ns("selected_district"),
                             label = "Zoom sur un district",
                             choices = districts_names,
@@ -44,7 +44,7 @@ mod_inputs_ui <- function(id){
     # uiOutput for tabCons ----
 
     shiny::conditionalPanel(
-      condition="input.nav == 'Consommation'",
+      condition="input.sidebarMenu == 'tabCons'",
 
       shiny::uiOutput(ns("cons_year"))
 
@@ -55,7 +55,7 @@ mod_inputs_ui <- function(id){
     # --> uiOutput/renderUI because its parameters are reactive
 
     shiny::conditionalPanel(
-      condition="input.nav == 'Production'",
+      condition="input.sidebarMenu == 'tabProd'",
 
       shiny::uiOutput(ns("prod_year_n_techs"))
 
@@ -64,54 +64,19 @@ mod_inputs_ui <- function(id){
     # uiOutput() for tabRegener ----
     # Use js array for all tabs because we can't target the overarching 'tabRegener' it does not work
     shiny::conditionalPanel(
-      condition="['Besoins', 'Consommations', 'Autres'].includes(input.nav)",
+      condition="['tabRegenerNeeds', 'tabRegenerCons', 'tabRegenerMisc'].includes(input.sidebarMenu)",
       shiny::uiOutput(ns("regener_year_selector"))
 
-    ), # End conditionalPanel
-
-
-    # Unit converter ----
-
-    tags$div(style = "margin-top: auto;",
-             # Unit converter widget
-             bslib::accordion(open = TRUE,
-                              bslib::accordion_panel(title = "Changer d'unité",
-                                                           shinyWidgets::prettyRadioButtons(inputId = "selected_unit",
-                                                                                            label = NULL,
-                                                                                            choices = c("kWh", "MWh", "GWh", "TJ"),
-                                                                                            selected = "MWh",
-                                                                                            inline = FALSE,
-                                                                                            status =  "default",
-                                                                                            icon = icon("check"),
-                                                                                            animation = "jelly")
-             )),
-             hr(),
-
-    # ACV card ----
-             bslib::card(
-               # bslib::card_image(file = "logo_acv.png"), # TO BE DEFINED
-               bslib::card_body(padding = 0,
-                         fill = FALSE,
-                         bslib::card_title(
-                           style = "font-size:1rem;",
-                           class = "text-center",
-                           # "Direction de l'environnement (DGE)",
-                           # br(),
-                           "Direction de l'énergie"
-                         ))
-             )# End card()
-             ),# End div()
-
-
-
-
+    ) # End conditionalPanel
   ) # End tagList
 } # End UI
 
 #' sideboard_inputs Server Functions
 #'
 #' @noRd
-mod_inputs_server <- function(id){
+mod_inputs_server <- function(id,
+                              selectedUnit # app_server.R <- mod_unit_converter.R
+                              ){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -128,7 +93,7 @@ mod_inputs_server <- function(id){
     # !! CONS_ELEC removed !! #     filter(commune %in% input$selected_communes) |>
     # !! CONS_ELEC removed !! #     convert_units(colnames = "consommation",
     # !! CONS_ELEC removed !! #                   unit_from = "kWh",
-    # !! CONS_ELEC removed !! #                   unit_to = input$selected_unit)
+    # !! CONS_ELEC removed !! #                   unit_to = selectedUnit$unit_to)
     # !! CONS_ELEC removed !! #
     # !! CONS_ELEC removed !! # })
 
@@ -143,13 +108,12 @@ mod_inputs_server <- function(id){
     subset_elec_prod <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
 
       elec_prod %>%
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_to = selectedUnit$unit_to)
     })
 
 
@@ -162,13 +126,12 @@ mod_inputs_server <- function(id){
     subset_rgr_cons_1 <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
 
       regener_cons_ae_use %>%
         filter(commune %in% input$selected_communes) %>%
         convert_units(colnames = "consommation",
                       unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -178,13 +141,12 @@ mod_inputs_server <- function(id){
     subset_rgr_cons_2 <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
 
       regener_cons_ae_aff %>%
         filter(commune %in% input$selected_communes) %>%
         convert_units(colnames = "consommation",
                       unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -194,13 +156,12 @@ mod_inputs_server <- function(id){
     subset_rgr_needs <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
 
       regener_needs %>%
         dplyr::filter(commune %in% input$selected_communes) %>%
         convert_units(colnames = contains("besoins"),
                       unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_to = selectedUnit$unit_to)
 
     })
 
@@ -221,7 +182,6 @@ mod_inputs_server <- function(id){
 
     # 1/2
     subset_subsidies_building <- reactive({
-
       req(input$selected_communes)
 
       subsidies_by_building |>
@@ -245,25 +205,20 @@ mod_inputs_server <- function(id){
 
     inputVals <- reactiveValues()
 
-# [inputVals communes & unit] ----
+# [inputVals 1/3] ----
 
-    # communes
     observe({
+
       inputVals$selectedCommunes <- input$selected_communes
       inputVals$selectedDistrict <- input$selected_district
+
     })
 
-    # districts
     observe({
       inputVals$uploadedCommunes <- uploaded_communes()
     })
 
-    # unit selected
-    observe({
-      inputVals$selectedUnit <- input$selected_unit
-    })
-
-# [inputVals datasets & subsets] ----
+# [inputVals 2/3] ----
     # Other inputs not influenced by selectInputs() else than commune
 
     observe({
@@ -377,8 +332,7 @@ mod_inputs_server <- function(id){
                shiny::sliderInput(ns("regener_year"), label = "Choix des années",
                                   min = inputVals$min_regener_year,
                                   max = inputVals$max_regener_year,
-                                  value = c(inputVals$min_regener_year,
-                                            inputVals$max_regener_year),
+                                  value = c(inputVals$min_regener_year,inputVals$max_regener_year),
                                   step = 1L, sep = "", ticks = T))
 
     })
@@ -389,7 +343,6 @@ mod_inputs_server <- function(id){
     output$prod_year_n_techs <- shiny::renderUI({
 
         req(input$selected_communes)
-        req(input$selected_unit)
 
       shiny::tagList(
 

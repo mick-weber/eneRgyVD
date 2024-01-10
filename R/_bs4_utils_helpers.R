@@ -360,24 +360,35 @@ main_color_active <- "black"
 ## Custom {fresh} theme passed to bs4Dash in app_ui.R
 # Example from https://dreamrs.github.io/fresh/
 
-profil_theme <- bslib::bs_theme(version = 5,
-                                preset = "bootstrap",
-                                font_scale = 1.2,
-                                "navbar-bg" = "#3A862D",
-                                "modal-footer-margin-between" = "0rem",
-                                primary = "#3A862D",
-                                secondary = "#343A40"
-) |>
-  # add some variables
-  bslib::bs_add_variables(
-    "dropdown-link-active-bg" = "white",
-    "dropdown-link-active-color" = "$secondary",
-    "accordion-button-active-bg" = "$secondary", # bg color when activated
-    "accordion-button-active-color" = "white",   # text color when activated
-    "accordion-button-focus-box-shadow" = "0 0 0 $btn-focus-width rgba($secondary, 0.25)", # width + color of shadow when active
+eneRgy_theme <- fresh::create_theme(
 
-    .where = "declarations") |>
-    bslib::bs_add_rules(sass::sass_file("./inst/app/www/custom_bs5.scss")) # add complementary sass file
+  fresh::bs4dash_status(
+    primary = main_color
+  ),
+
+  fresh::bs4dash_vars(
+    navbar_dark_color = "white",
+    navbar_dark_active_color = main_color_active,
+    navbar_dark_hover_color = main_color_active
+  ),
+  fresh::bs4dash_yiq(
+    contrasted_threshold = 10,
+    text_dark = "#FFF",
+    text_light = "#272c30"
+  ),
+  fresh::bs4dash_layout(
+    main_bg = "white"
+  ),
+  fresh::bs4dash_sidebar_light(
+    bg = "#272c30",
+    color = "#bec5cb",
+    hover_color = "#FFF",
+    submenu_bg = "#272c30",
+    submenu_color = "#bec5cb",
+    submenu_hover_color = "#FFF"
+  )
+
+)
 
 
 # Non-reactive objects for input widgets ----

@@ -7,8 +7,6 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-   # Print test area if needed ----
-
    # Record logs ----
    ## We record session and errors (no inputs/outputs)
 
@@ -38,7 +36,7 @@ app_server <- function(input, output, session) {
    observeEvent({
 
       inputVals$selectedCommunes
-      inputVals$selectedUnit},{
+      selectedUnit$unit_to},{
 
       session$doBookmark()
 
@@ -64,35 +62,39 @@ app_server <- function(input, output, session) {
    # To avoid repetitive coding, we make a tribble of input events and target tabpanels
    #  only the last tabpanel is required, the others can be hard-coded in the purrr::walk
 
-   # subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
-   #                "cons_data_help", "Consommation d'électricité",
-   #                "prod_data_help", "Production d'électricité",
-   #                "rg_needs_help",  "Chaleur bâtiments",
-   #                "rg_cons_help",   "Chaleur bâtiments",
-   #                "rg_misc_help",   "Chaleur bâtiments",
-   #                "subsidies_help", "Subventions bâtiments")
-   #
-   # # Code below is to generate updatebs4TabItems redirections
-   # # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
-   # purrr::pwalk(subpanels_tribble,
-   #              ~ shiny::observeEvent(
-   #                 input[[.x]], {
-   #
-   #                    # First we redirect to sidebar's tabInfo
-   #                 bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
-   #                    # Then we update to the first tabPanel 'Données' (in 'about-' mod)
-   #                 bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
-   #                    # Last we update the nested tabPanel with subpanels_tribble$tabpanel_name
-   #                 bs4Dash::updatebs4TabItems(session, "about-nested_tabset", selected = .y)
-   #                 }
-   #                 )) #End pwalk
+   subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
+                  "cons_data_help", "Consommation d'électricité",
+                  "prod_data_help", "Production d'électricité",
+                  "rg_needs_help",  "Chaleur bâtiments",
+                  "rg_cons_help",   "Chaleur bâtiments",
+                  "rg_misc_help",   "Chaleur bâtiments",
+                  "subsidies_help", "Subventions bâtiments")
+
+   # Code below is to generate updatebs4TabItems redirections
+   # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
+   purrr::pwalk(subpanels_tribble,
+                ~ shiny::observeEvent(
+                   input[[.x]], {
+
+                      # First we redirect to sidebar's tabInfo
+                   bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
+                      # Then we update to the first tabPanel 'Données' (in 'about-' mod)
+                   bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
+                      # Last we update the nested tabPanel with subpanels_tribble$tabpanel_name
+                   bs4Dash::updatebs4TabItems(session, "about-nested_tabset", selected = .y)
+                   }
+                   )) #End pwalk
 
 
 
    # Inputs module ----
 
+    # This returns the reactiveVal() selected unit to convert the dataframes from
+   selectedUnit <- mod_unit_converter_server("unit_converter")
+
     # This retrieves the inputs saved in mod_inputs.R
-   inputVals <- mod_inputs_server("inputs_1")
+   inputVals <- mod_inputs_server("inputs_1",
+                                  selectedUnit = selectedUnit)
 
    ### Browser dimensions ----
    # height/width values are stored in inputVals because it's convenient
@@ -124,7 +126,7 @@ app_server <- function(input, output, session) {
    # !!CONS_ELEC removed!! #   req(inputVals$min_selected_cons,
    # !!CONS_ELEC removed!! #       inputVals$max_selected_cons,
    # !!CONS_ELEC removed!! #       inputVals$cons_dataset,
-   # !!CONS_ELEC removed!! #       inputVals$selectedUnit)
+   # !!CONS_ELEC removed!! #       selectedUnit$unit_to)
    # !!CONS_ELEC removed!! #
    # !!CONS_ELEC removed!! #   # further filter cons_dataset with selected min/max values and convert to selectedUnit()
    # !!CONS_ELEC removed!! #    # CONVERSION TEST IN PROGRESS
@@ -133,7 +135,7 @@ app_server <- function(input, output, session) {
    # !!CONS_ELEC removed!! #                   annee <= inputVals$max_selected_cons)  %>%
    # !!CONS_ELEC removed!! #       convert_units(colnames = "consommation",
    # !!CONS_ELEC removed!! #                     unit_from = "kWh",
-   # !!CONS_ELEC removed!! #                     unit_to = inputVals$selectedUnit)
+   # !!CONS_ELEC removed!! #                     unit_to = selectedUnit$unit_to)
    # !!CONS_ELEC removed!! #
    # !!CONS_ELEC removed!! # })
 
@@ -171,7 +173,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(selectedUnit$unit_to)
 
       # No filter needed yet for years, only year conversion
       inputVals$rgr_1
@@ -187,7 +189,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(selectedUnit$unit_to)
 
       # No filter needed yet for years, only year conversion
       inputVals$rgr_2
@@ -203,7 +205,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(selectedUnit$unit_to)
 
       # No filter needed yet for years, only year conversion
       inputVals$rgr_needs
@@ -222,7 +224,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(selectedUnit$unit_to)
 
       inputVals$rgr_misc
 
@@ -277,7 +279,7 @@ app_server <- function(input, output, session) {
 
 
 
-   # Upload communes ----
+   # Upload communes test ----
 
    observeEvent(inputVals$uploadedCommunes,{
 
@@ -288,6 +290,8 @@ app_server <- function(input, output, session) {
                           selected = inputVals$uploadedCommunes)
 
    })
+
+   # / Upload communes
 
 
    # Leaflet select map ----
@@ -416,137 +420,136 @@ app_server <- function(input, output, session) {
    # !!CONS_ELEC removed!! #                        # documentation file from utils_helpers.R
    # !!CONS_ELEC removed!! #                        doc_vars = elec_cons_doc)
 
-  #  ## tabProd: chart server logic ----
-  #  mod_elec_charts_server("production_charts",
-  #                         inputVals = inputVals,
-  #                         subsetData = subset_prod_data,
-  #                         selectedUnit = selectedUnit,
-  #                         # args for create_bar_plotly() & create_sunburst_plotly()
-  #                         sunburstData = subset_sunburst_prod_data,
-  #                         legend_title = NULL,
-  #                         var_year = "annee",
-  #                         var_commune = "commune",
-  #                         var_rank_2 = "categorie",
-  #                         var_values = "production",
-  #                         color_palette = colors_categories,
-  #                         third_rank = TRUE,
-  #                         var_rank_3_1 = "injection",
-  #                         var_rank_3_2 = "autoconsommation",
-  #                         # name of fct to create dt table
-  #                         fct_table_dt_type = create_prod_table_dt,
-  #                         # name of dl prefix to supply to download module
-  #                         dl_prefix = "prod_elec_",
-  #                         # documentation file from utils_helpers.R
-  #                         doc_vars = elec_prod_doc)
-  #
-  #  ## tabRegener: chart server logic ----
-  #  ### mod regener_cons ----
-  #
-  #  mod_regener_cons_charts_server("regener_cons",
-  #                            inputVals = inputVals,
-  #                            selectedUnit = selectedUnit,
-  #                            subset_rgr_cons_1 = subset_rgr_cons_1,
-  #                            subset_rgr_cons_2 = subset_rgr_cons_2)
-  #  ### mod regener_needs ----
-  #  mod_regener_needs_charts_server("regener_needs",
-  #                                  inputVals = inputVals,
-  #                                  subsetData = subset_rgr_needs, # filtered data for communes and selected years
-  #                                  selectedUnit = selectedUnit, # unit selected in mod_unit_converter.R
-  #                                  legend_title = "Usage", # for legend of barplot (either secteur/technologies)
-  #                                  var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
-  #                                  var_commune = "commune", # 'commune'
-  #                                  var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
-  #                                  var_values = "besoins", # prod/consumption/besoins
-  #                                  color_palette = colors_rg_type, # utils_helpers.R
-  #                                  third_rank = FALSE, # boolean
-  #                                  var_rank_3_1 = NULL, var_rank_3_2 = NULL,
-  #                                  fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
-  #                                  dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
-  #                                  doc_vars = regener_doc # utils_helpers.R
-  #                                  )
-  #
-  #  ### mod regener_misc ----
-  #  mod_regener_misc_charts_server("regener_misc",
-  #                                 inputVals = inputVals,
-  #                                 subsetData = subset_rgr_misc,
-  #                                 selectedUnit = selectedUnit,
-  #                                 dl_prefix = "regener_autres_",
-  #                                 doc_vars = regener_doc)
-  #
-  #
-  #  ## tabSubsidies: chart server logic ----
-  #
-  #  ### mod tabSubsidiesBuilding ----
-  #  mod_subsidies_building_charts_server("subsidies_building",
-  #                              subsetData = subset_subsidies_building,
-  #                              inputVals = inputVals,
-  #                              dl_prefix = "subventions_bat_",
-  #                              doc_vars = NULL # for now
-  #                              )
-  #
-  #  ###  mod tabSubsidiesMeasure ----
-  #  mod_subsidies_measure_charts_server("subsidies_measure",
-  #                              subsetData = subset_subsidies_measure,
-  #                              inputVals = inputVals,
-  #                              dl_prefix = "subventions_mesure_",
-  #                              doc_vars = NULL # for now
-  #  )
-  #
-  #
-  #
-  #  ## tabMap: boxes for statistics ----
-  #  ### VD Box ----
-  #  # Must be dynamically rendered because it depends on selectedUnit (reactive)
-  #
-  #  output$vd_box <- renderUI({
-  #
-  #  req(inputVals$selectedUnit)
-  #
-  #  mod_collapse_stats_box_server("vd_box",
-  #                                title = "Synthèse : Canton de Vaud",
-  #                                selectedUnit = selectedUnit,
-  #                                prod_elec_value = prod_elec_vd_last_year |>
-  #                                   convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
-  #
-  #                                # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
-  #
-  #                                cons_rg_value = cons_rg_vd_last_year |>
-  #                                   convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
-  #
-  #                                year = last_common_elec_year) # utils_helpers.R
-  #
-  #  })
-  #
-  #
-  #
-  # ### Communes box ----
-  # # Must be dynamically rendered because it depends on selectedUnit (reactive)
-  #  output$communes_box <- renderUI({
-  #
-  #    req(inputVals$selectedCommunes, inputVals$selectedUnit)
-  #
-  #    mod_collapse_stats_box_server("communes_box",
-  #                                  title = "Synthèse : Commune(s) sélectionnée(s)",
-  #                                  selectedUnit = selectedUnit,
-  #
-  #                                  prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
-  #
-  #                                  # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
-  #
-  #                                  cons_rg_value = inputVals$max_year_rg_cons,
-  #                                  year = last_common_elec_year) # utils_helpers.R
-  #  })
-  #
-  #
-  #  ## tabReport ----
-  #  # Module for producing rmd report based on downloadable_report.Rmd
-  #  mod_download_rmd_server("rmd",
-  #                          inputVals = inputVals,
-  #                          selectedUnit = selectedUnit)
-  #  ## tabInfo ----
-  #  # Module for producing the text about the app
-  #  mod_about_the_app_server("about")
-  #
+   ## tabProd: chart server logic ----
+   mod_elec_charts_server("production_charts",
+                          inputVals = inputVals,
+                          subsetData = subset_prod_data,
+                          selectedUnit = selectedUnit,
+                          # args for create_bar_plotly() & create_sunburst_plotly()
+                          sunburstData = subset_sunburst_prod_data,
+                          legend_title = NULL,
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_rank_2 = "categorie",
+                          var_values = "production",
+                          color_palette = colors_categories,
+                          third_rank = TRUE,
+                          var_rank_3_1 = "injection",
+                          var_rank_3_2 = "autoconsommation",
+                          # name of fct to create dt table
+                          fct_table_dt_type = create_prod_table_dt,
+                          # name of dl prefix to supply to download module
+                          dl_prefix = "prod_elec_",
+                          # documentation file from utils_helpers.R
+                          doc_vars = elec_prod_doc)
 
-   }
+   ## tabRegener: chart server logic ----
+   ### mod regener_cons ----
+
+   mod_regener_cons_charts_server("regener_cons",
+                             inputVals = inputVals,
+                             selectedUnit = selectedUnit,
+                             subset_rgr_cons_1 = subset_rgr_cons_1,
+                             subset_rgr_cons_2 = subset_rgr_cons_2)
+   ### mod regener_needs ----
+   mod_regener_needs_charts_server("regener_needs",
+                                   inputVals = inputVals,
+                                   subsetData = subset_rgr_needs, # filtered data for communes and selected years
+                                   selectedUnit = selectedUnit, # unit selected in mod_unit_converter.R
+                                   legend_title = "Usage", # for legend of barplot (either secteur/technologies)
+                                   var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
+                                   var_commune = "commune", # 'commune'
+                                   var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
+                                   var_values = "besoins", # prod/consumption/besoins
+                                   color_palette = colors_rg_type, # utils_helpers.R
+                                   third_rank = FALSE, # boolean
+                                   var_rank_3_1 = NULL, var_rank_3_2 = NULL,
+                                   fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
+                                   dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                   doc_vars = regener_doc # utils_helpers.R
+                                   )
+
+   ### mod regener_misc ----
+   mod_regener_misc_charts_server("regener_misc",
+                                  inputVals = inputVals,
+                                  subsetData = subset_rgr_misc,
+                                  selectedUnit = selectedUnit,
+                                  dl_prefix = "regener_autres_",
+                                  doc_vars = regener_doc)
+
+
+   ## tabSubsidies: chart server logic ----
+
+   ### mod tabSubsidiesBuilding ----
+   mod_subsidies_building_charts_server("subsidies_building",
+                               subsetData = subset_subsidies_building,
+                               inputVals = inputVals,
+                               dl_prefix = "subventions_bat_",
+                               doc_vars = NULL # for now
+                               )
+
+   ###  mod tabSubsidiesMeasure ----
+   mod_subsidies_measure_charts_server("subsidies_measure",
+                               subsetData = subset_subsidies_measure,
+                               inputVals = inputVals,
+                               dl_prefix = "subventions_mesure_",
+                               doc_vars = NULL # for now
+   )
+
+
+
+   ## tabMap: boxes for statistics ----
+   ### VD Box ----
+   # Must be dynamically rendered because it depends on selectedUnit (reactive)
+
+   output$vd_box <- renderUI({
+
+   req(selectedUnit$unit_to)
+
+   mod_collapse_stats_box_server("vd_box",
+                                 title = "Synthèse : Canton de Vaud",
+                                 selectedUnit = selectedUnit,
+                                 prod_elec_value = prod_elec_vd_last_year |>
+                                    convert_units(unit_to = selectedUnit$unit_to), # utils_helpers.R
+
+                                 # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
+
+                                 cons_rg_value = cons_rg_vd_last_year |>
+                                    convert_units(unit_to = selectedUnit$unit_to), # utils_helpers.R
+
+                                 year = last_common_elec_year) # utils_helpers.R
+
+   })
+
+
+
+  ### Communes box ----
+  # Must be dynamically rendered because it depends on selectedUnit (reactive)
+   output$communes_box <- renderUI({
+
+     req(inputVals$selectedCommunes, selectedUnit$unit_to)
+
+     mod_collapse_stats_box_server("communes_box",
+                                   title = "Synthèse : Commune(s) sélectionnée(s)",
+                                   selectedUnit = selectedUnit,
+
+                                   prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
+
+                                   # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
+
+                                   cons_rg_value = inputVals$max_year_rg_cons,
+                                   year = last_common_elec_year) # utils_helpers.R
+   })
+
+
+   ## tabReport ----
+   # Module for producing rmd report based on downloadable_report.Rmd
+   mod_download_rmd_server("rmd",
+                           inputVals = inputVals,
+                           selectedUnit = selectedUnit)
+   ## tabInfo ----
+   # Module for producing the text about the app
+   mod_about_the_app_server("about")
+
+}
 

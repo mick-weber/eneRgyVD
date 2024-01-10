@@ -1,0 +1,40 @@
+
+/* Add left margin to preexisting navbar-nav class (bootstrap) */
+/* This class is thus not explicitly mentioned in app_ui.R but is related to bslib::page_navbar() */
+
+.navbar-nav{
+
+  margin-left: 10%;
+
+}
+
+/* add flex property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */
+.sidebar{
+  display: flex;
+}
+
+/*On large media : 70% width to allow title space ; on smaller media 100% width to maximize screen space*/
+.customAccordion{
+
+	@include media-breakpoint-up(lg){
+	width: 65% !important;
+}
+
+}
+
+.customVB p{
+  font-size: 100% !important;
+  padding:0;
+}
+
+
+.dropdown-menu{
+  background-color:#3A862D;
+  .dropdown-item{
+    color:white;
+  }
+
+  .dropdown-header{
+    color:white;
+  }
+}

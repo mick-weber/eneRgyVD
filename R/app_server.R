@@ -416,28 +416,28 @@ app_server <- function(input, output, session) {
    # !!CONS_ELEC removed!! #                        # documentation file from utils_helpers.R
    # !!CONS_ELEC removed!! #                        doc_vars = elec_cons_doc)
 
-  #  ## tabProd: chart server logic ----
-  #  mod_elec_charts_server("production_charts",
-  #                         inputVals = inputVals,
-  #                         subsetData = subset_prod_data,
-  #                         selectedUnit = selectedUnit,
-  #                         # args for create_bar_plotly() & create_sunburst_plotly()
-  #                         sunburstData = subset_sunburst_prod_data,
-  #                         legend_title = NULL,
-  #                         var_year = "annee",
-  #                         var_commune = "commune",
-  #                         var_rank_2 = "categorie",
-  #                         var_values = "production",
-  #                         color_palette = colors_categories,
-  #                         third_rank = TRUE,
-  #                         var_rank_3_1 = "injection",
-  #                         var_rank_3_2 = "autoconsommation",
-  #                         # name of fct to create dt table
-  #                         fct_table_dt_type = create_prod_table_dt,
-  #                         # name of dl prefix to supply to download module
-  #                         dl_prefix = "prod_elec_",
-  #                         # documentation file from utils_helpers.R
-  #                         doc_vars = elec_prod_doc)
+   ## tabProd: chart server logic ----
+   mod_elec_charts_server("production_charts",
+                          inputVals = inputVals,
+                          subsetData = subset_prod_data,
+                          selectedUnit = inputVals$selectedUnit,
+                          # args for create_bar_plotly() & create_sunburst_plotly()
+                          sunburstData = subset_sunburst_prod_data,
+                          legend_title = NULL,
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_rank_2 = "categorie",
+                          var_values = "production",
+                          color_palette = colors_categories,
+                          third_rank = TRUE,
+                          var_rank_3_1 = "injection",
+                          var_rank_3_2 = "autoconsommation",
+                          # name of fct to create dt table
+                          fct_table_dt_type = create_prod_table_dt,
+                          # name of dl prefix to supply to download module
+                          dl_prefix = "prod_elec_",
+                          # documentation file from utils_helpers.R
+                          doc_vars = elec_prod_doc)
   #
   #  ## tabRegener: chart server logic ----
   #  ### mod regener_cons ----

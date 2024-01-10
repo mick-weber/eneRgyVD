@@ -17,9 +17,11 @@ app_ui <- function(request) {
 
     # Your application UI logic
     bslib::page_navbar(
+      fillable = TRUE,
       id = "nav", # conditionalPanels will refer to this as input.nav == <condition>
       # Footer
-      footer = p("@DGE-DIREN 2024", class = "fw-lighter text-end", style = "margin-bottom:-20px;"),
+      footer = p("DGE-DIREN @ 2024", class = "fw-lighter",
+                 style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
       # Custom theme
       theme = profil_theme, # utils_helpers.R
       # Title
@@ -39,6 +41,7 @@ app_ui <- function(request) {
       ## Carte ----
       bslib::nav_panel("Carte", icon = icon("map"),
                        bslib::layout_column_wrap(
+                         fill = TRUE,
                          width = NULL,
                          style = htmltools::css(grid_template_columns = "2fr 1fr"),
                          bslib::card(full_screen = TRUE,
@@ -50,7 +53,12 @@ app_ui <- function(request) {
 
 
                        ),
-      bslib::nav_panel("Production", icon = icon("bolt")),
+      bslib::nav_panel("Production", icon = icon("bolt"),
+
+                       # Module for producing prod elec charts
+                       mod_elec_charts_ui("production_charts")
+
+                       ),
       bslib::nav_menu("Chaleur des bâtiments", icon = icon("fire"),
                       bslib::nav_panel("Besoins "),
                       bslib::nav_panel("Consommations"),

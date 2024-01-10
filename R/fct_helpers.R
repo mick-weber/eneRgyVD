@@ -518,7 +518,7 @@ create_prod_table_dt <- function(data,
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
+                                 pageLength = 8,  # number of rows to output for each page
                                  scrollY = TRUE,   # enable scrolling on Y axis
                                  autoWidth = TRUE, # use smart column width handling
                                  server = FALSE,   # use server-side processing

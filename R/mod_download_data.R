@@ -11,12 +11,16 @@ mod_download_data_ui <- function(id){
   ns <- NS(id)
   tagList(
     h5("Télécharger les données"),
+    bslib::layout_columns(col_widths = 2, # each button will take ~15% of width (2/12)
 
-    fluidRow(
-    uiOutput(ns("download_ui_csv")),
-    HTML("&nbsp;"), # ws
-    uiOutput(ns("download_ui_excel"))
-    )# End fluidRow
+                          shiny::downloadButton(outputId = ns("download_csv"),
+                                                class = "btn-primary",
+                                                label = "CSV"),
+                          shiny::downloadButton(outputId = ns("download_excel"),
+                                                class = "btn-primary",
+                                                label = "XLSX")
+
+    )# End layout_columns_wrap
     )# End tagList
 }
 

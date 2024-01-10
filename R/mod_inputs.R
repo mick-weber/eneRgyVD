@@ -22,15 +22,8 @@ mod_inputs_ui <- function(id){
                           options = list(placeholder = "Plusieurs acceptées")
     ),
 
-    # fileInput() when tabMap selected ----
-    shiny::conditionalPanel(
-      condition = "input.nav == 'Carte'",
 
-    mod_upload_communes_ui(ns("uploaded_communes"))
-
-    ),
-
-    # selectizeInput() for district zoom ----
+    # selectizeInput() for district zoom & upload communes widget ----
     # IF tabMap : Select input for zooming on the districts (WIP feature)
     shiny::conditionalPanel(
       condition="input.nav == 'Carte'",
@@ -38,7 +31,9 @@ mod_inputs_ui <- function(id){
                             label = "Zoom sur un district",
                             choices = districts_names,
                             selected = 0,
-                            multiple = FALSE)
+                            multiple = FALSE),
+
+      mod_upload_communes_ui(ns("uploaded_communes"))
     ),
 
     # uiOutput for tabCons ----
@@ -75,8 +70,9 @@ mod_inputs_ui <- function(id){
     tags$div(style = "margin-top: auto;",
              # Unit converter widget
              bslib::accordion(open = TRUE,
+                              class = "fs-sidebar-header",
                               bslib::accordion_panel(title = "Changer d'unité",
-                                                           shinyWidgets::prettyRadioButtons(inputId = "selected_unit",
+                                                           shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
                                                                                             label = NULL,
                                                                                             choices = c("kWh", "MWh", "GWh", "TJ"),
                                                                                             selected = "MWh",
@@ -403,24 +399,26 @@ mod_inputs_server <- function(id){
 
 
         # For SELECTABLE technologies : these checkboxes are linked to other server parts
+        tags$div(class = "fs-sidebar",
         shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs"),
                                           label = "Choix des technologies",
-                                         choices = inputVals$techs_avail,
-                                         selected = inputVals$techs_avail,
-                                         inline = FALSE,
-                                         bigger = FALSE,
-                                         shape = "round",
-                                         status =  "default",
-                                         icon = icon("check"),
-                                         animation = "jelly"),
+                                          choices = inputVals$techs_avail,
+                                          selected = inputVals$techs_avail,
+                                          inline = FALSE,
+                                          bigger = FALSE,
+                                          shape = "round",
+                                          status =  "default",
+                                          icon = icon("check"),
+                                          animation = "jelly"),
         # For NON-SELECTABLE technologies : a title with a unordered list (see custom.css classes)
-          tags$p(class = "sidebar_na_title",
-                 "Non représentées :"),
-          tags$ul(class = "sidebar_na_list",
-                  setdiff(categories_diren, inputVals$techs_avail) %>% # unavailable techs
+        tags$p(#class = "sidebar_na_title",
+               "Non représentées :"),
+        tags$ul(class = "sidebar_na_list",
+                setdiff(categories_diren, inputVals$techs_avail) %>% # unavailable techs
                   purrr::map(tags$li) # map into list items of ul()
         )# End tags$ul
-      ) # End tagList
+      )# End tags$div
+      )# End tagList
     }) # End renderUI
 
 

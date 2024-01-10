@@ -1,16 +1,38 @@
 
+/* info_dev_message() custom class*/
+.sweet-alert > p{
+
+}
+
+/* Add bottom margin to avoid overlapping of main content and footer*/
+.main{
+  margin-bottom:15px;
+}
+
 /* Add left margin to preexisting navbar-nav class (bootstrap) */
-/* This class is thus not explicitly mentioned in app_ui.R but is related to bslib::page_navbar() */
 
 .navbar-nav{
-
   margin-left: 10%;
-
 }
 
 /* add flex property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */
 .sidebar{
   display: flex;
+}
+
+.sidebar_na_list{
+  list-style: none;
+  padding-left:10%;
+}
+
+.fs-sidebar{
+  font-size:0.9rem;
+}
+
+.fs-sidebar-header{
+  .accordion-title{
+    font-size:1rem;
+  }
 }
 
 /*On large media : 70% width to allow title space ; on smaller media 100% width to maximize screen space*/

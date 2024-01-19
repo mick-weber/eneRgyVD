@@ -61,31 +61,43 @@ app_server <- function(input, output, session) {
    ## Tabs redirecting ----
    # in app_ui.R we have actionButtons to redirect in 'mode_about_the_app.R' data tabs
 
-   # To avoid repetitive coding, we make a tribble of input events and target tabpanels
+   # To avoid repetitive coding, we make a tribble of module-input events and target tabpanels
    #  only the last tabpanel is required, the others can be hard-coded in the purrr::walk
+   #  since all redirect buttons end up in 'À propos' > 'about-tabset' area
 
-   # subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
-   #                "cons_data_help", "Consommation d'électricité",
-   #                "prod_data_help", "Production d'électricité",
-   #                "rg_needs_help",  "Chaleur bâtiments",
-   #                "rg_cons_help",   "Chaleur bâtiments",
-   #                "rg_misc_help",   "Chaleur bâtiments",
-   #                "subsidies_help", "Subventions bâtiments")
-   #
-   # # Code below is to generate updatebs4TabItems redirections
-   # # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
-   # purrr::pwalk(subpanels_tribble,
-   #              ~ shiny::observeEvent(
-   #                 input[[.x]], {
-   #
-   #                    # First we redirect to sidebar's tabInfo
-   #                 bs4Dash::updateTabItems(session, "sidebarMenu", "tabInfo")
-   #                    # Then we update to the first tabPanel 'Données' (in 'about-' mod)
-   #                 bs4Dash::updatebs4TabItems(session, "about-tabset", selected = "Données")
-   #                    # Last we update the nested tabPanel with subpanels_tribble$tabpanel_name
-   #                 bs4Dash::updatebs4TabItems(session, "about-nested_tabset", selected = .y)
-   #                 }
-   #                 )) #End pwalk
+   subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
+                  "cons_data_help",                    "Consommation d'électricité",
+                  "production_charts-prod_data_help",  "Production d'électricité",
+                  "regener_needs-rg_needs_help",       "Chaleur bâtiments",
+                  "regener_cons-rg_cons_help",         "Chaleur bâtiments",
+                  "regener_misc-rg_misc_help",         "Chaleur bâtiments",
+                  "subsidies_building-subsidies_help", "Subventions bâtiments",
+                  "subsidies_measure-subsidies_help",  "Subventions bâtiments")
+
+   # Code below is to generate updatebs4TabItems redirections
+   # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
+   purrr::pwalk(subpanels_tribble,
+                ~ shiny::observeEvent(
+                   input[[.x]], {
+
+                     # First we redirect to navbar's 'A propos'
+                     bslib::nav_select("nav", "À propos", session)
+                     # Then we update to the first nav_panel 'Données' (in 'about-' ns module)
+                     bslib::nav_select("about-tabset", selected = "Données", session)
+                     # Last we update the nested nav_panel with subpanels_tribble$tabpanel_name
+                     bslib::nav_select("about-nested_tabset", selected = .y, session)
+                   }
+                   )) #End pwalk
+
+
+   observe({
+     if (input$nav %in% "À propos") {
+       Sys.sleep(2)
+       session$sendCustomMessage(
+         type = "toggleDropdown",
+         message = list(msg = "hide dropdown"))
+     }
+   })
 
 
 
@@ -543,10 +555,10 @@ app_server <- function(input, output, session) {
   #  mod_download_rmd_server("rmd",
   #                          inputVals = inputVals,
   #                          selectedUnit = selectedUnit)
-  #  ## tabInfo ----
-  #  # Module for producing the text about the app
-  #  mod_about_the_app_server("about")
-  #
+   ## tabInfo ----
+   # Module for producing the text about the app
+   mod_about_the_app_server("about")
+
 
    }
 

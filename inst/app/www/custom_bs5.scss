@@ -9,10 +9,20 @@
   margin-bottom:15px;
 }
 
+
+
+
 /* Add left margin to preexisting navbar-nav class (bootstrap) */
 
 .navbar-nav{
   margin-left: 10%;
+}
+
+
+/*Invert the color of the svg arrow icon when the accordion is open */
+/* see : https://stackoverflow.com/questions/66335238/changing-the-color-arrow-in-bootstrap */
+.accordion-button:not(.collapsed)::after {
+    filter: invert(50%);
 }
 
 /* add flex property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */

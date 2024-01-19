@@ -12,11 +12,13 @@ mod_upload_communes_ui <- function(id){
   tagList(
 
 
-    bslib::accordion(open = TRUE,
-                     class = "fs-sidebar-header btn-sm",
-                     bslib::accordion_panel(title = "Importer commmunes",
+    bslib::accordion(open = FALSE,
+                     class = "fs-sidebar-header", # custom.css
+                     bslib::accordion_panel(title = "Fichier de communes",
+                                            icon = bsicons::bs_icon("cloud-arrow-up-fill"),
+
                                             shiny::fileInput(ns("file_communes"),
-                                                             label = p("Choisir un fichier CSV", br(),
+                                                             label = p("Importer un fichier", br(),
                                                                        tags$i(
                                                                        "La première colonne doit contenir les numéros OFS.
                                                                        Séparateur point-virgule ';' uniquement. \n", # new line
@@ -28,7 +30,7 @@ mod_upload_communes_ui <- function(id){
                                                                                      style = "color:#3a862d; font-size:0.8rem;"))
                                                              ),
                                                              buttonLabel = "Importer...",
-                                                             placeholder = "(...).csv",
+                                                             placeholder = ".csv",
                                                              multiple = FALSE,
                                                              accept = c("text/csv",
                                                                         "text/comma-separated-values,text/plain",

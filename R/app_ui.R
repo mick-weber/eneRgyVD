@@ -15,10 +15,27 @@ app_ui <- function(request) {
     # Shinybrowser identifies the web browser for use in app_server.R/fct_helpers.R
     shinybrowser::detect(),
 
-    # Your application UI logic
+    # Navbar page
     bslib::page_navbar(
-      fillable = TRUE,
+
       id = "nav", # conditionalPanels will refer to this as input.nav == <condition>
+      fillable = TRUE,
+
+      # This script (see app_server.R too) closes nav_menu's after being redirected by a click (2s delay)
+      # It is used for redirects from app_server.R to mod_about_the_app.R
+      # ! This may cause some unexpected behaviour since all dropdown-menu are targeted by the script !
+      # see here : https://github.com/rstudio/bslib/issues/621
+      tags$script("
+        Shiny.addCustomMessageHandler(
+          'toggleDropdown',
+          function toggleDropdown(msg) {
+            $('.dropdown-menu').removeClass('show')
+          });
+        "
+      ),
+
+
+
       # Footer
       footer = p("DGE-DIREN @ 2024", class = "fw-lighter",
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
@@ -39,7 +56,8 @@ app_ui <- function(request) {
 
       # Navigation panels ----
       ## Carte ----
-      bslib::nav_panel("Carte", icon = icon("map"),
+      bslib::nav_panel("Carte",
+                       icon = icon("map"),
                        bslib::layout_column_wrap(
                          fill = TRUE,
                          width = NULL,
@@ -53,12 +71,16 @@ app_ui <- function(request) {
 
 
                        ),
+
+      ## Prod elec----
       bslib::nav_panel("Production", icon = icon("bolt"),
 
                        # Module for producing prod elec charts
                        mod_elec_charts_ui("production_charts")
 
                        ),
+
+      ## Buildings heat ----
       bslib::nav_menu("Chaleur des bâtiments", icon = icon("fire"),
                       bslib::nav_panel("Besoins "),
                       bslib::nav_panel("Consommations"),
@@ -66,18 +88,39 @@ app_ui <- function(request) {
 
       ),#End nav_menu() 'Chaleur des bâtiments'
 
+
+      ## Subsidies ----
       bslib::nav_menu("Subventions", icon = icon("file-pen"),
                       bslib::nav_panel("Vue par bâtiments"),
                       bslib::nav_panel("Vue par subventions")
 
       ),#End nav_menu() 'Subventions'
 
+      ## Misc ----
       bslib::nav_menu("Divers",
         bslib::nav_panel("Rapport", icon = icon("file-code")),
-        bslib::nav_panel("À propos",icon = icon("circle-info"))
 
-      )#End nav_menu() 'Divers'
+        bslib::nav_panel("À propos",icon = icon("circle-info"),
 
+                         mod_about_the_app_ui("about")
+
+                         )
+
+      ),#End nav_menu() 'Divers'
+
+
+      ###Spacer ----
+      bslib::nav_spacer(),
+
+      ## Useful links ----
+      bslib::nav_menu(
+        align = "right",
+        title = "Liens utiles", # utils_helpers.R for links
+        bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact", href = paste0("mailto:", mail_address), target = "_blank")),
+        bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN", href = link_diren, target = "_blank")),
+        bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub", href = link_github, target = "_blank"))
+
+      )
 
 
       )#End page_navbar()

@@ -26,8 +26,10 @@ mod_elec_charts_ui <- function(id){
         class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
         bslib::accordion_panel(
           title = "Méthodologie",
-          div(lorem::ipsum(2, 3)),
-          actionButton(ns("popme"), label = "More details")
+          div(paste(generic_method_warning, # text in utils_helpers.R
+                    specific_prod_elec_warning)),
+              br(),
+          actionButton(ns("prod_data_help"), label = "Gotta be linked !")
         ),
         open = FALSE)
     ),#End div

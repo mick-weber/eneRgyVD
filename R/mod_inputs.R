@@ -69,9 +69,10 @@ mod_inputs_ui <- function(id){
 
     tags$div(style = "margin-top: auto;",
              # Unit converter widget
-             bslib::accordion(open = TRUE,
+             bslib::accordion(open = FALSE,
                               class = "fs-sidebar-header",
                               bslib::accordion_panel(title = "Changer d'unité",
+                                                     icon = bsicons::bs_icon("calculator-fill"),
                                                            shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
                                                                                             label = NULL,
                                                                                             choices = c("kWh", "MWh", "GWh", "TJ"),

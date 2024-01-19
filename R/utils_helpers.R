@@ -69,7 +69,7 @@ specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'i
 La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
 
 
-## User notifications  ----
+## NEWS notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R
 
 notif_msg <- tidyr::tribble(~icon, ~status, ~text,
@@ -103,7 +103,7 @@ mail_address <- "stat.energie@vd.ch"
 link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
 link_pter <- "https://www.vd.ch/themes/etat-droit-finances/communes/energie-environnement-agriculture/energie/planification-energetique-territoriale"
-
+link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ## DT language file ----
 ### Run ONCE : Store JSON french language items file for DT library

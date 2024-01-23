@@ -8,12 +8,13 @@
 #'
 #' @importFrom shiny NS tagList
 mod_collapse_stats_box_ui <- function(id){
+
   ns <- NS(id)
+
   tagList(
-
-    uiOutput(ns("vd_box"))
-
+    bslib::as_fill_carrier(uiOutput(ns("statbox"))) # https://rstudio.github.io/bslib/reference/as_fill_carrier.html
   )
+
 }
 
 #' collapse_stats_box Server Functions
@@ -30,79 +31,91 @@ mod_collapse_stats_box_server <- function(id,
     ns <- session$ns
 
 
-    output$vd_box <- renderUI({
+    output$statbox <- renderUI({
 
-      bs4Dash::box(
-        width = 12, # = 100% of the width = 4 allowed for the module
-        solidHeader = FALSE,
-        collapsible = TRUE,
-        title = title,
-        background = NULL,
-        status = "success",
-        fluidRow(
-          column(
-            width = 12, # before: 6 !!CONS_ELEC removed!!
-            bs4Dash::descriptionBlock(
-              marginBottom = TRUE,
-              number = year,
-              header = paste(format(prod_elec_value,
-                                    big.mark = "'", digits = 1, scientific = FALSE), selectedUnit$unit_to),
-              text = tags$p(class = "statboxText",
-                            "Production électricité",
-                            icon("bolt", class = "iconColor")),
+      library(bslib)
+      library(bsicons)
 
-              rightBorder = FALSE # set to TRUE when !! CONS_ELEC removed !! comes
-            )# End descriptionBlock 1/3
-          ),# End column
+        bslib::card(fill = TRUE,
+                    bslib::card_header(title,
+                                       class = "bg-secondary"),
 
-          # !!CONS_ELEC removed!! # column(
-          # !!CONS_ELEC removed!! #   width = 6,
-          # !!CONS_ELEC removed!! #   bs4Dash::descriptionBlock(
-          # !!CONS_ELEC removed!! #     number = year,
-          # !!CONS_ELEC removed!! #     # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
-          # !!CONS_ELEC removed!! #     header = paste(format(cons_elec_value%>% convert_units(unit_to = selectedUnit$unit_to),
-          # !!CONS_ELEC removed!! #                           big.mark = "'", digits = 1, scientific = FALSE),
-          # !!CONS_ELEC removed!! #                    selectedUnit$unit_to),
-          # !!CONS_ELEC removed!! #     text = tags$p(
-          # !!CONS_ELEC removed!! # class = "statboxText",
-          # !!CONS_ELEC removed!! # "Consommation", icon("bolt", class = "iconColor")),
-          # !!CONS_ELEC removed!! #     rightBorder = FALSE
-          # !!CONS_ELEC removed!! #   )# End descriptionBlock 2/3
-          # !!CONS_ELEC removed!! # )# End column
 
-        ),# End fluidRow1
 
-         fluidRow(
-        # !!CONS_ELEC removed!! #   column(
-        # !!CONS_ELEC removed!! #     width = 6,
-        # !!CONS_ELEC removed!! #     bs4Dash::descriptionBlock(
-        # !!CONS_ELEC removed!! #       number = year,
-        # !!CONS_ELEC removed!! #       # header: no need for unit conversion since it's percents
-        # !!CONS_ELEC removed!! #       header = scales::label_percent(accuracy = .1)(prod_elec_value/cons_elec_value),
-        # !!CONS_ELEC removed!! #       text = tags$p(class = "statboxText",
-        # !!CONS_ELEC removed!! # "Part production", icon("bolt", class = "iconColor")),
-        # !!CONS_ELEC removed!! #       rightBorder = TRUE
-        # !!CONS_ELEC removed!! #     )# End descriptionBlock 3/3
-        # !!CONS_ELEC removed!! #   ),# End column
 
-        column(
-          width = 12, # before: 6 !!CONS_ELEC removed!!
-          bs4Dash::descriptionBlock(
-            number = regener_current_year, # !! utils_helpers.R
-            # header: we paste the value in kwh and pass it to convert_units(), and we format it + add unit
-            header = paste(format(cons_rg_value,
-                                  big.mark = "'", digits = 1, scientific = FALSE),
-                           selectedUnit$unit_to),
-            text = tags$p(class = "statboxText",
-                          "Consommation chaleur bâtiments",
-                          icon("fire", class = "iconColor")
-                          ),
-            rightBorder = FALSE
-          )# End descriptionBlock
-        )# End column
-      )# End fluidRow2
-      )# End box
-    })# End renderUI
+                    bslib::layout_column_wrap(width = 1/3,heights_equal = "all",
+
+
+                                              tags$div(class = "text-center padding-top-1 rounded",
+
+                                                       bsicons::bs_icon("lightning-charge-fill", size = "2rem", class = "text-warning"),
+                                                       p(HTML("Production<br>électrique"), class = "p-0 m-0", style = "font-size:1.1rem;"),
+                                                       tags$div(
+                                                       strong("200 GWh", class = "fs-5"),
+                                                       p("2022")
+                                                       )
+
+                                              ),
+
+                                              tags$div(class = "text-center padding-top-1",
+
+                                                       bsicons::bs_icon("fire", size = "2rem", class = "text-danger"),
+                                                       p(HTML("Chaleur<br>bâtiments"), class = "p-0 m-0", style = "font-size:1.1rem;"),
+
+                                                       tags$div(
+                                                       strong("1'200 GWh", class = "fs-5"),
+                                                       p("2022")
+                                                       )
+
+                                              ),
+
+                                              tags$div(class = "text-center padding-top-1 rounded",
+
+                                                       bsicons::bs_icon("house-check-fill", size = "2rem", class = "text-success"),
+                                                       p(HTML("Subventions<br>bâtiments"), class = "p-0 m-0", style = "font-size:1.1rem;"),
+
+                                                       tags$div(
+                                                       strong("1'100", class = "fs-5"),
+                                                       p("2022")
+
+                                                       )
+
+                                              ),
+
+                                              tags$div(class = "text-center padding-top-1 rounded",
+
+                                                       bsicons::bs_icon("activity", size = "2rem", class = "text-info"),
+                                                       p(HTML("Morts<br>cardiaques"), class = "p-0 m-0", style = "font-size:1.1rem;"),
+
+                                                       tags$div(
+                                                         strong("1'400", class = "fs-5"),
+                                                         p("2022")
+
+                                                       )
+
+                                              ),
+
+                                              tags$div(class = "text-center padding-top-1 rounded",
+
+                                                       bsicons::bs_icon("apple", size = "2rem", class = "text-dark"),
+                                                       p(HTML("Pommes<br>mangées"), class = "p-0 m-0", style = "font-size:1.1rem;"),
+
+                                                       tags$div(
+                                                         strong("2", class = "fs-5"),
+                                                         p("2022")
+
+                                                       )
+
+                                              )
+
+                    )
+
+
+
+        )# End card
+    })# End RenderUI
   })# End moduleServer
 }
+
+
 

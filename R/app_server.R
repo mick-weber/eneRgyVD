@@ -7,7 +7,7 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-   # Print test area if needed ----
+  # Print test area if needed ----
 
    # Record logs ----
    ## We record session and errors (no inputs/outputs)
@@ -509,47 +509,52 @@ app_server <- function(input, output, session) {
   #  ## tabMap: boxes for statistics ----
   #  ### VD Box ----
   #  # Must be dynamically rendered because it depends on selectedUnit (reactive)
-  #
-  #  output$vd_box <- renderUI({
-  #
-  #  req(inputVals$selectedUnit)
-  #
-  #  mod_collapse_stats_box_server("vd_box",
-  #                                title = "Synthèse : Canton de Vaud",
-  #                                selectedUnit = selectedUnit,
-  #                                prod_elec_value = prod_elec_vd_last_year |>
-  #                                   convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
-  #
-  #                                # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
-  #
-  #                                cons_rg_value = cons_rg_vd_last_year |>
-  #                                   convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
-  #
-  #                                year = last_common_elec_year) # utils_helpers.R
-  #
-  #  })
-  #
-  #
-  #
-  # ### Communes box ----
-  # # Must be dynamically rendered because it depends on selectedUnit (reactive)
-  #  output$communes_box <- renderUI({
-  #
-  #    req(inputVals$selectedCommunes, inputVals$selectedUnit)
-  #
-  #    mod_collapse_stats_box_server("communes_box",
-  #                                  title = "Synthèse : Commune(s) sélectionnée(s)",
-  #                                  selectedUnit = selectedUnit,
-  #
-  #                                  prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
-  #
-  #                                  # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
-  #
-  #                                  cons_rg_value = inputVals$max_year_rg_cons,
-  #                                  year = last_common_elec_year) # utils_helpers.R
-  #  })
-  #
-  #
+
+
+   # output$vd_box <- renderUI({
+   #
+   # req(inputVals$selectedUnit)
+
+
+
+
+   mod_collapse_stats_box_server("vd_box",
+                                 title = "Synthèse : Canton de Vaud",
+                                 selectedUnit = selectedUnit,
+                                 prod_elec_value = prod_elec_vd_last_year |>
+                                    convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
+
+                                 # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
+
+                                 cons_rg_value = cons_rg_vd_last_year |>
+                                    convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
+
+                                 year = last_common_elec_year) # utils_helpers.R
+
+   # })
+
+
+
+  ### Communes box ----
+  # Must be dynamically rendered because it depends on selectedUnit (reactive)
+
+   #output$communes_box <- renderUI({
+
+    # req(inputVals$selectedCommunes, inputVals$selectedUnit)
+
+     mod_collapse_stats_box_server("communes_box",
+                                   title = "Synthèse : Commune(s) sélectionnée(s)",
+                                   selectedUnit = selectedUnit,
+
+                                   prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
+
+                                   # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
+
+                                   cons_rg_value = inputVals$max_year_rg_cons,
+                                   year = last_common_elec_year) # utils_helpers.R
+   #})
+
+
   #  ## tabReport ----
   #  # Module for producing rmd report based on downloadable_report.Rmd
   #  mod_download_rmd_server("rmd",

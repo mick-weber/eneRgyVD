@@ -10,6 +10,11 @@
 }
 
 
+.customLogo{
+    filter: brightness(0) invert(1);
+    height:5vh;
+    align:left;
+}
 
 
 /* Add left margin to preexisting navbar-nav class (bootstrap) */
@@ -19,15 +24,37 @@
 }
 
 
+
+
+
 /*Invert the color of the svg arrow icon when the accordion is open */
 /* see : https://stackoverflow.com/questions/66335238/changing-the-color-arrow-in-bootstrap */
 .accordion-button:not(.collapsed)::after {
     filter: invert(50%);
 }
 
+
+/*Used for mod_inputs.R unit converter widget : we change the orientation since the widget is as bottom of sidebar*/
+
+.rotatedSVG{
+
+  .accordion-button.collapsed::after{
+    transform:rotate(-180deg) !important;
+  }
+
+  .accordion-button::after{
+    transform:rotate(0deg);
+  }
+}
+
+
 /* add flex property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */
 .sidebar{
   display: flex;
+}
+
+.sidebar-content{
+  padding-top:15px !important;
 }
 
 .sidebar_na_list{

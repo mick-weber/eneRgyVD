@@ -70,7 +70,7 @@ mod_inputs_ui <- function(id){
     tags$div(style = "margin-top: auto;",
              # Unit converter widget
              bslib::accordion(open = FALSE,
-                              class = "fs-sidebar-header",
+                              class = "fs-sidebar-header rotatedSVG",
                               bslib::accordion_panel(title = "Changer d'unité",
                                                      icon = bsicons::bs_icon("calculator-fill"),
                                                            shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
@@ -82,21 +82,6 @@ mod_inputs_ui <- function(id){
                                                                                             icon = icon("check"),
                                                                                             animation = "jelly")
              )),
-             hr(),
-
-    # ACV card ----
-             bslib::card(
-               # bslib::card_image(file = "logo_acv.png"), # TO BE DEFINED
-               bslib::card_body(padding = 0,
-                         fill = FALSE,
-                         bslib::card_title(
-                           style = "font-size:1rem;",
-                           class = "text-center",
-                           # "Direction de l'environnement (DGE)",
-                           # br(),
-                           "Direction de l'énergie"
-                         ))
-             )# End card()
              ),# End div()
 
 

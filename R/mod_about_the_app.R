@@ -230,15 +230,19 @@ mod_about_the_app_ui <- function(id){
                                               # the fluidrow is here to force the horizontal alignment of github button + p()
 
 
+                                              tags$div(class = "d-flex align-items-center",
 
-                                              tags$a(href = "https://github.com/mick-weber/eneRgyVD",
-
-                                                     tags$p(bsicons::bs_icon("github",
-                                                                             size = "3rem",
-                                                                             class = "text-dark"
-                                                     ),
-                                                     "Repo GitHub"),
+                                              tags$a(href = link_github,
+                                                     bsicons::bs_icon("github",
+                                                                      size = "3rem",
+                                                                      class = "text-secondary"),
+                                                     target = "_blank"),
+                                              tags$a(class = "m-0 ps-3",
+                                                     href = link_github,
+                                                     "Visiter le GitHub",
                                                      target = "_blank")
+
+                                              )
 
                                        )# End layout_columns
                       )# End tabPanel 'Technologie'

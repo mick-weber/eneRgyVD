@@ -370,6 +370,7 @@ profil_theme <- bslib::bs_theme(version = 5,
 ) |>
   # add some variables
   bslib::bs_add_variables(
+
     "dropdown-link-active-bg" = "white",
     "dropdown-link-active-color" = "$secondary",
     "accordion-button-active-bg" = "$secondary", # bg color when activated

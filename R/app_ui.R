@@ -42,7 +42,8 @@ app_ui <- function(request) {
       # Custom theme
       theme = profil_theme, # utils_helpers.R
       # Title
-      title = strong("Profil énergétique des communes vaudoises"),
+      title = strong("Profil énergétique des communes vaudoises",
+                     style = "font-family: 'Verdana', sans-serif;"),
       # Browser title
       window_title = "Profil énergie VD",
       # Sidebar
@@ -50,6 +51,15 @@ app_ui <- function(request) {
 
         width = "300px",
         bg =  "#343A40",
+
+        # add brand
+        tags$div(
+        tags$img(src="www/vd-logo-black.svg", class = "customLogo"),
+        br(),
+        "Direction de l'énergie",
+        hr()
+        ),# End div brand,
+
         mod_inputs_ui("inputs_1")
 
       ),# End sidebar()
@@ -62,15 +72,25 @@ app_ui <- function(request) {
                          fill = TRUE,
                          width = NULL,
                          style = htmltools::css(grid_template_columns = "2fr 1fr"),
+
+                         # 1st column
                          bslib::card(full_screen = TRUE,
-                               bslib::card_header(class = "bg-secondary", "Carte des communes"),
-                              bslib::card_body(
-                                leafletOutput("map"))
-                         )# End card() map
-                       )# add tagList statboxes here
+                                     bslib::card_header("Carte des communes",
+                                                        class = "bg-secondary"),
+                                     bslib::card_body(
+                                       leafletOutput("map"))
+                         ),# End card() map
 
+                         # 2nd column
 
-                       ),
+                         tagList(
+
+                           mod_collapse_stats_box_ui("vd_box"),
+                           mod_collapse_stats_box_ui("communes_box")
+                         )
+                       )# End layout_column_wrap
+
+      ),# End nav_panel('Carte')
 
       ## Prod elec----
       bslib::nav_panel("Production", icon = icon("bolt"),
@@ -116,14 +136,18 @@ app_ui <- function(request) {
       bslib::nav_menu(
         align = "right",
         title = "Liens utiles", # utils_helpers.R for links
-        bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact", href = paste0("mailto:", mail_address), target = "_blank")),
-        bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN", href = link_diren, target = "_blank")),
-        bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub", href = link_github, target = "_blank"))
+        bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
+
+                               # add objet to mail manually, better UX
+                               href = paste0("mailto:", mail_address, "?subject=Question profil énergétique"), target = "_blank")),
+        bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
+                               href = link_diren, target = "_blank")),
+
+        bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
+                               href = link_github, target = "_blank"))
 
       )
-
-
-      )#End page_navbar()
+    )#End page_navbar()
   )# End tagList()
 }# End UI
 

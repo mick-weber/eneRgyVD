@@ -36,6 +36,41 @@ info_dev_message <- function(){
 
 }
 
+
+# Statbox items ----
+
+#' make_statbox_item()
+#' custom replacement for valueboxes (too rigid) to fill statboxes with icon, title, value and year info
+#' @return a HTML div container
+#' @export
+#' @import shiny
+#'
+#' @examples
+#' make_statbox_item(icon_name = "heart",icon_class = "text-danger", title = "Rescues", value = 100, unit = "people", year = 2022)
+make_statbox_item <- function(icon_name,
+                              icon_class,
+                              title,
+                              value,
+                              unit,
+                              year){
+
+
+  tags$div(class = "text-center padding-top-1 rounded",
+
+           bsicons::bs_icon(name = icon_name, size = "1.8rem", class = icon_class),
+           p(HTML(title), class = "p-0 m-0", style = "font-size:1rem;"),
+           tags$div(
+             # Nicely format value (rounded + big.mark) and add unit below as newline
+             strong(HTML(paste(format(round(value, digits = 0), big.mark = "'"), "<br>", unit)),
+                    class = "fs-6"),
+             p(year)
+           )
+
+  )
+
+}
+
+
 # Graph fns ----
 
 #' create_select_leaflet()
@@ -1009,7 +1044,7 @@ add_colname_units <- function(data, unit){
                                                              collapse = "|"),
                                                       ignore_case = TRUE)))){
 
-    data %>%
+    data <- data %>%
       # For all power-related units
       dplyr::rename_with(.cols = contains(power_col_keywords, # utils_helpers.R
                                           ignore.case = TRUE),

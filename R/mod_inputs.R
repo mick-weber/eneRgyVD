@@ -254,7 +254,7 @@ mod_inputs_server <- function(id){
       # !!CONS_ELEC removed!! #inputVals$cons_dataset <- subset_elec_cons()
 
       # store the commune prod dataset already filtered
-      inputVals$prod_dataset <- subset_elec_prod()
+    inputVals$prod_dataset <- subset_elec_prod()
 
       # store the regener commune dataset already filtered
 

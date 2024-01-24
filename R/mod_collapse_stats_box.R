@@ -33,85 +33,34 @@ mod_collapse_stats_box_server <- function(id,
 
     output$statbox <- renderUI({
 
-      library(bslib)
-      library(bsicons)
+      bslib::as_fill_carrier()
 
         bslib::card(fill = TRUE,
+
                     bslib::card_header(title,
                                        class = "bg-secondary"),
 
+                    bslib::layout_column_wrap(width = "150px",
+                                              fixed_width = TRUE,
+                                              heights_equal = "all",
+                                              fill = FALSE,
+                                              fillable = TRUE,
+                                              class = "justify-content-center",
 
 
+                                              # fct_helpers.R
 
-                    bslib::layout_column_wrap(width = 1/3,heights_equal = "all",
+           make_statbox_item(icon_name = "lightning-charge-fill",icon_class = "text-warning",
+                             title = "Production<br>électrique", value = prod_elec_value, unit = selectedUnit, year = year),
 
+           make_statbox_item(icon_name = "fire", icon_class = "text-danger",
+                             title = "Consommation<br>bâtiments", value = cons_rg_value, unit = selectedUnit, year = year),
 
-                                              tags$div(class = "text-center padding-top-1 rounded",
-
-                                                       bsicons::bs_icon("lightning-charge-fill", size = "2rem", class = "text-warning"),
-                                                       p(HTML("Production<br>électrique"), class = "p-0 m-0", style = "font-size:1.1rem;"),
-                                                       tags$div(
-                                                       strong("200 GWh", class = "fs-5"),
-                                                       p("2022")
-                                                       )
-
-                                              ),
-
-                                              tags$div(class = "text-center padding-top-1",
-
-                                                       bsicons::bs_icon("fire", size = "2rem", class = "text-danger"),
-                                                       p(HTML("Chaleur<br>bâtiments"), class = "p-0 m-0", style = "font-size:1.1rem;"),
-
-                                                       tags$div(
-                                                       strong("1'200 GWh", class = "fs-5"),
-                                                       p("2022")
-                                                       )
-
-                                              ),
-
-                                              tags$div(class = "text-center padding-top-1 rounded",
-
-                                                       bsicons::bs_icon("house-check-fill", size = "2rem", class = "text-success"),
-                                                       p(HTML("Subventions<br>bâtiments"), class = "p-0 m-0", style = "font-size:1.1rem;"),
-
-                                                       tags$div(
-                                                       strong("1'100", class = "fs-5"),
-                                                       p("2022")
-
-                                                       )
-
-                                              ),
-
-                                              tags$div(class = "text-center padding-top-1 rounded",
-
-                                                       bsicons::bs_icon("activity", size = "2rem", class = "text-info"),
-                                                       p(HTML("Morts<br>cardiaques"), class = "p-0 m-0", style = "font-size:1.1rem;"),
-
-                                                       tags$div(
-                                                         strong("1'400", class = "fs-5"),
-                                                         p("2022")
-
-                                                       )
-
-                                              ),
-
-                                              tags$div(class = "text-center padding-top-1 rounded",
-
-                                                       bsicons::bs_icon("apple", size = "2rem", class = "text-dark"),
-                                                       p(HTML("Pommes<br>mangées"), class = "p-0 m-0", style = "font-size:1.1rem;"),
-
-                                                       tags$div(
-                                                         strong("2", class = "fs-5"),
-                                                         p("2022")
-
-                                                       )
-
-                                              )
-
-                    )
+           make_statbox_item(icon_name = "house-check-fill",icon_class = "text-success",
+                             title = "Subventions<br>payées", value = 100, unit = "dossiers", year = year),
 
 
-
+                    )# End layout_column_wrap
         )# End card
     })# End RenderUI
   })# End moduleServer

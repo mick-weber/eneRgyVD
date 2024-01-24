@@ -14,21 +14,21 @@
 mod_download_rmd_ui <- function(id){
   ns <- NS(id)
   tagList(
+
+
+    bslib::layout_columns(col_widths = c(-1, 8, -3),
+
     # 1/2 Report ----
+
+    h4(strong("Générer un rapport")),
     shiny::htmlOutput(ns("selected_communes")), # htmlOutput because we style it in server
-    br(),
 
     # Add dynamic download button here (only if commune(s) selected)
     uiOutput(ns("dl_button")),
 
-    br(),
-    # Breathing
-    br(),
-
     # 2/2 Download all data----
 
     h4(strong("Télécharger toutes les données")),
-    br(),
     # moved to server side
     # p("En cliquant sur le button ci-dessous, toutes les données pour la sélection seront téléchargées : "),
     shiny::htmlOutput(ns("download_all_sentence")),
@@ -36,7 +36,8 @@ mod_download_rmd_ui <- function(id){
 
 
 
-  )
+    )# End layout_columns
+  )# End tagList
 }
 
 #' download_rmd Server Functions
@@ -46,8 +47,7 @@ mod_download_rmd_ui <- function(id){
 #' @noRd
 
 mod_download_rmd_server <- function(id,
-                                    inputVals,
-                                    selectedUnit){
+                                    inputVals){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -112,7 +112,7 @@ mod_download_rmd_server <- function(id,
         params <- list(communes = inputVals$selectedCommunes,
                        web_width = 1900, # manually set
                        web_height = 1000, # manually set
-                       unit = selectedUnit$unit_to,
+                       unit = inputVals$selectedUnit,
                        prod_data = inputVals$prod_dataset,
                       # !! CONS_ELEC removed !! # cons_data = inputVals$cons_dataset,
                        regener_data_0 = inputVals$rgr_needs,
@@ -158,7 +158,7 @@ mod_download_rmd_server <- function(id,
     output$download_all_sentence <- shiny::renderPrint({
 
       validate(need(inputVals$selectedCommunes,
-                    "Sélectionner au moins une commune pour générer un rapport."))
+                    "Sélectionner au moins une commune pour télécharger toutes les données."))
 
       p("En cliquant sur le button ci-dessous, toutes les données pour la sélection seront téléchargées au format xlsx : ")
 
@@ -181,31 +181,33 @@ mod_download_rmd_server <- function(id,
     # ! We rename colnames here too ! Check if still required !
 
     download_all_sheets <- reactive({
+
+
       # List all pertinent inputVals$<datasets> from mod_inputs.R
       list(
         # !! CONS_ELEC removed !! # cons_elec = inputVals$cons_dataset |>
         # rename_fr_colnames() |>
-        # add_colname_units(unit = selectedUnit$unit_to),
+        # add_colname_units(unit = inputVals$selectedUnit),
 
         # Prod elec renamed+units
         prod_elec = inputVals$prod_dataset |>
           rename_fr_colnames() |>
-          add_colname_units(unit = selectedUnit$unit_to),
+          add_colname_units(unit = inputVals$selectedUnit),
 
         # Regener renamed+units
         regener_besoins = inputVals$rgr_needs |>
           rename_fr_colnames() |>
-          add_colname_units(unit = selectedUnit$unit_to),
+          add_colname_units(unit = inputVals$selectedUnit),
 
         # Regener renamed+units
         regener_cons_use = inputVals$rgr_1 |>
           rename_fr_colnames() |>
-          add_colname_units(unit = selectedUnit$unit_to),
+          add_colname_units(unit = inputVals$selectedUnit),
 
         # Regener renamed+units
         regener_cons_aff = inputVals$rgr_2 |>
           rename_fr_colnames() |>
-          add_colname_units(unit = selectedUnit$unit_to),
+          add_colname_units(unit = inputVals$selectedUnit),
 
         # Regener misc renamed
         regener_autres = inputVals$rgr_misc |>

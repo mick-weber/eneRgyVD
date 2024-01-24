@@ -23,7 +23,16 @@
   margin-left: 10%;
 }
 
+/* Change color of nav's unselected links (and hovering) with full white instead of light grey, more visible */
+#nav{
+  .nav-link{
+  color:white;
 
+  &:hover{
+    color:white;
+  }
+  }
+}
 
 
 

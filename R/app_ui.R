@@ -118,8 +118,14 @@ app_ui <- function(request) {
 
       ## Misc ----
       bslib::nav_menu("Divers",
-        bslib::nav_panel("Rapport", icon = icon("file-code")),
+        ### Report ----
+        bslib::nav_panel("Rapport", icon = icon("file-code"),
 
+                         mod_download_rmd_ui("report")
+
+                         ),
+
+        ### About ----
         bslib::nav_panel("À propos",icon = icon("circle-info"),
 
                          mod_about_the_app_ui("about")

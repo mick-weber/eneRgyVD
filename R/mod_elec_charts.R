@@ -29,7 +29,7 @@ mod_elec_charts_ui <- function(id){
           div(paste(generic_method_warning, # text in utils_helpers.R
                     specific_prod_elec_warning)),
               br(),
-          actionButton(ns("prod_data_help"), label = "Gotta be linked !")
+          actionButton(ns("prod_data_help"), label = "Plus de détails")
         ),
         open = FALSE)
     ),#End div

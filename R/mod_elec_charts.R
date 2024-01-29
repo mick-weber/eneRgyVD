@@ -43,7 +43,7 @@ mod_elec_charts_ui <- function(id){
                                  icon = bsicons::bs_icon("bar-chart-fill"),
 
 
-                                bslib::layout_column_wrap(width = 3, # each col = 25% of avail. width
+                                bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
 
                                    # radioGroupButtons() for tab ----
                                    shinyWidgets::radioGroupButtons(

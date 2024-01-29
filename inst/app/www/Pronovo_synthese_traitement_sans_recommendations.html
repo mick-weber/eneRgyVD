@@ -3251,18 +3251,6 @@ border: 0;
   </ul></li>
   <li><a href="#exports" id="toc-exports" class="nav-link" data-scroll-target="#exports"><span class="header-section-number">2.4</span> Exports</a></li>
   </ul></li>
-  <li><a href="#améliorations-proposées-à-pronovo-ag" id="toc-améliorations-proposées-à-pronovo-ag" class="nav-link" data-scroll-target="#améliorations-proposées-à-pronovo-ag"><span class="header-section-number">3</span> Améliorations proposées à Pronovo AG</a>
-  <ul class="collapse">
-  <li><a href="#noms-des-variables" id="toc-noms-des-variables" class="nav-link" data-scroll-target="#noms-des-variables"><span class="header-section-number">3.1</span> Noms des variables</a></li>
-  <li><a href="#nombre-de-variables" id="toc-nombre-de-variables" class="nav-link" data-scroll-target="#nombre-de-variables"><span class="header-section-number">3.2</span> Nombre de variables</a></li>
-  <li><a href="#codage-des-variables" id="toc-codage-des-variables" class="nav-link" data-scroll-target="#codage-des-variables"><span class="header-section-number">3.3</span> Codage des variables</a></li>
-  <li><a href="#validation-des-localités" id="toc-validation-des-localités" class="nav-link" data-scroll-target="#validation-des-localités"><span class="header-section-number">3.4</span> Validation des localités</a></li>
-  <li><a href="#validation-des-adresses" id="toc-validation-des-adresses" class="nav-link" data-scroll-target="#validation-des-adresses"><span class="header-section-number">3.5</span> Validation des adresses</a></li>
-  <li><a href="#ajout-des-numéros-egid" id="toc-ajout-des-numéros-egid" class="nav-link" data-scroll-target="#ajout-des-numéros-egid"><span class="header-section-number">3.6</span> Ajout des numéros EGID</a></li>
-  <li><a href="#vérification-des-envois" id="toc-vérification-des-envois" class="nav-link" data-scroll-target="#vérification-des-envois"><span class="header-section-number">3.7</span> Vérification des envois</a></li>
-  <li><a href="#descriptif-général" id="toc-descriptif-général" class="nav-link" data-scroll-target="#descriptif-général"><span class="header-section-number">3.8</span> Descriptif général</a></li>
-  <li><a href="#transmission-automatisée" id="toc-transmission-automatisée" class="nav-link" data-scroll-target="#transmission-automatisée"><span class="header-section-number">3.9</span> Transmission automatisée</a></li>
-  </ul></li>
   </ul>
 </nav>
 </div>
@@ -3290,7 +3278,7 @@ border: 0;
     <div>
     <div class="quarto-title-meta-heading">Date de publication</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">27 novembre 2023</p>
+      <p class="date">25 janvier 2024</p>
     </div>
   </div>
   
@@ -3655,58 +3643,6 @@ font-size:0.9rem
 <li><p>Données des installations hydrauliques pour les contrôles DGE-EAUX</p></li>
 <li><p>etc.</p></li>
 </ul>
-</section>
-</section>
-<section id="améliorations-proposées-à-pronovo-ag" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Améliorations proposées à Pronovo AG</h1>
-<p>Avec désormais plusieurs années d’échanges entre Pronovo AG et la DGE-DIREN, la DGE-DIREN a suffisamment de recul pour mettre en avant quelques aspects qui faciliteraient le traitement des données énergétiques.</p>
-<p>La DGE-DIREN a conscience d’avoir développé une méthode d’estimation de la production d’électricité qui n’est pas connue ni harmonisée avec les approches des autres cantons ou de la Confédération.</p>
-<p>Cependant, il semblait important de proposer un pont méthodologique entre les données brutes Pronovo AG et la création d’une statistique sur la production, l’injection et l’autoconsommation d’électricité de manière à ce que celle-ci soit la plus complète possible.</p>
-<p>Cette méthode n’est qu’une approximation de la réalité et peut certainement être améliorée de nombreuses façons, en particulier si les spécialistes métiers de la certification étaient impliqués.</p>
-<p>À terme, il serait donc idéal que les Cantons ou la Confédération puisse proposer une méthode (inspirée ou non de ce document) afin d’harmoniser les approches et de bénéficier de statistiques comparables pour documenter la transition énergétique.</p>
-<p>Ci-après sont détaillés quelques éléments qui permettraient de faciliter grandement le traitement des données Pronovo AG.</p>
-<section id="noms-des-variables" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="noms-des-variables"><span class="header-section-number">3.1</span> Noms des variables</h2>
-<p>Malheureusement, nous avons constaté au fil des années que les noms de variables changent. Parfois elles sont traduites (avec des traductions divergentes selon les années). Ces inconsistances rendent plus difficile l’automatisation du traitement effectué par la DGE-DIREN.</p>
-<p>Il faudrait donc que ces noms de variables soient fixés, idéalement identiques avec ceux du registre généré par Pronovo AG, quitte à fournir une fois un dictionnaire de traduction (avec description) en tant que fichier séparé.</p>
-</section>
-<section id="nombre-de-variables" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="nombre-de-variables"><span class="header-section-number">3.2</span> Nombre de variables</h2>
-<p>Le nombre de variables change également au fil des années. Parfois une variable disparaît pour revenir une année ou deux plus tard. Parfois de nouvelles variables sont introduites sans l’avoir mentionné explicitement. Cette inconsistance pose problème pour le traitement des données, car parfois certaines de ces variables sont utiles au traitement.</p>
-<p>Idéalement, les variables fournies resteraient le plus stable possible afin que le traitement soit facilité. Les nouveautés seraient annoncées explicitement et détaillées.</p>
-</section>
-<section id="codage-des-variables" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="codage-des-variables"><span class="header-section-number">3.3</span> Codage des variables</h2>
-<p>Ici également le codage des variables change selon les années et les traductions. La casse diffère également. Par exemple, les numéros d’identification des installations (numéro SRI ou numéro de système GO) sont parfois codés avec des 0 <strong>avant</strong> les premiers chiffres identificateurs, parfois non. Typiquement cela implique des étapes supplémentaires de traitement qui pourraient être évitées si les extractions étaient similaires d’une année à l’autre.</p>
-<p>Renseigner les codes tels qu’ils le sont dans le registre de Pronovo AG serait souhaité.</p>
-</section>
-<section id="validation-des-localités" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="validation-des-localités"><span class="header-section-number">3.4</span> Validation des localités</h2>
-<p>Les localités sont saisies sans vérification orthographique. Pour une part non négligeable de localités, plusieurs dizaines d’orthographes différentes sont saisies. Cela implique un travail conséquent de vérification et de traitement pour que chaque localité soit correctement orthographiée pour ensuite être attribuée à une commune administrative.</p>
-<p>En effet, un aspect fondamental du traitement de ces données est de fournir des statistiques communales pour la planification énergétique des communes.</p>
-</section>
-<section id="validation-des-adresses" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="validation-des-adresses"><span class="header-section-number">3.5</span> Validation des adresses</h2>
-<p>Même constat que pour les localités : les adresses sont saisies avec des erreurs, des inconsistances et sont donc souvent inexploitables. Idéalement la saisie des informations de localisation des installations de production d’électricité serait faite à l’aide d’un formulaire de validation qui prend sa source dans les données officielles des adresses en Suisse.</p>
-<p>De plus, lorsque pertinent, le ou les identifiants fédéral du bâtiment devraient être disponible ce qui permettrait de procéder à des appariements avec d’autres tables de données officielles.</p>
-</section>
-<section id="ajout-des-numéros-egid" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="ajout-des-numéros-egid"><span class="header-section-number">3.6</span> Ajout des numéros EGID</h2>
-<p>Lorsqu’une installation est rattachée à un bâtiment (en particulier pour le solaire photovoltaïque), il serait intéressant de pouvoir identifier le bâtiment directement au travers de son numéro EGID qui est l’identifiant fédéral des bâtiments utilisé notamment dans le registre fédéral des bâtiments par l’Office fédéral de la statistique. Cela permettrait de faciliter le croisement des tables de données officielles et de permettre l’élaboration de nouvelles statistiques, par exemple sur le nombre de bâtiments équipés de toitures photovoltaïques.</p>
-</section>
-<section id="vérification-des-envois" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="vérification-des-envois"><span class="header-section-number">3.7</span> Vérification des envois</h2>
-<p>Nous avons constaté en 2022 qu’il manquait parfois des installations d’un fichier à l’autre ce qui a nécessité l’envoi d’une nouvelle extraction. Ces cas sont relativement anecdotiques mais soulignent l’importance d’une méthode qui permette de systématiquement envoyer le même périmètre de données.</p>
-<p>Nous avons également par exemple constaté que toutes les installations de la commune de Chavannes-le-Chêne étaient manquantes depuis le début des envois d’extractions. Un envoi correctif a été effectué mais pas rétroactivement ce qui impacte les statistiques cantonales antérieures.</p>
-</section>
-<section id="descriptif-général" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="descriptif-général"><span class="header-section-number">3.8</span> Descriptif général</h2>
-<p>L’interprétation des variables est le fruit d’échanges multiples entre Pronovo AG, d’une lecture aprofondie du guide de certification Pronovo AG et de l’interprétation issue d’observations lors de l’exploration des données.</p>
-<p>À ce niveau-là, il arrive que Pronovo AG ne réponde pas précisément aux interrogations envoyées. Il serait donc utile de fournir un guide d’interprétation pour toutes les variables essentielles de ce fichier (en particulier les statuts des installations et les variables qui quantifient l’injection ou l’autoconsommation).</p>
-</section>
-<section id="transmission-automatisée" class="level2" data-number="3.9">
-<h2 data-number="3.9" class="anchored" data-anchor-id="transmission-automatisée"><span class="header-section-number">3.9</span> Transmission automatisée</h2>
-<p>Le transfert de fichiers Excel sur demande de la DIREN nécessite passablement d’étapes (envoi de la demande, réception, traitement, vérification, envoi de l’extraction, …). Ces étapes sont chronophages pour Pronovo AG comme pour la DGE-DIREN, et un système d’extraction davantage automatisé serait fortement apprécié.</p>
 </section>
 </section>
 

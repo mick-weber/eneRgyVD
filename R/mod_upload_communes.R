@@ -24,6 +24,8 @@ mod_upload_communes_ui <- function(id){
                                                                        Séparateur point-virgule ';' uniquement. \n", # new line
                                                                               style = "font-size:0.8rem; font-weight:normal;"),
 
+                                                                       br(),
+
                                                                        tags$i(tags$a(href= "www/exemple_import_communes.csv",
                                                                                      target="_blank", "Télécharger un exemple",
                                                                                      download = "exemple_import_communes.csv",
@@ -51,6 +53,7 @@ mod_upload_communes_server <- function(id){
 
 
     input_communes_numbers <- reactive({
+
       req(input$file_communes)
 
       tryCatch(
@@ -60,7 +63,7 @@ mod_upload_communes_server <- function(id){
 
 
           input_communes <- communes_names_id[names(communes_names_id) %in% input_file[[1]]] |>
-            unname() # keep only commune names and no number
+            unname() # keep only commune names and no number to update selectInput in mod_inputs.R
 
         },
         error = function(e) {
@@ -71,12 +74,9 @@ mod_upload_communes_server <- function(id){
 
       return(input_communes)
 
-
     })
 
-
-    return(input_communes_numbers)
-
+    return(input_communes_numbers) # mod_inputs.R
 
   }
   )}

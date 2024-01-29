@@ -455,28 +455,28 @@ app_server <- function(input, output, session) {
   #  ## tabRegener: chart server logic ----
   #  ### mod regener_cons ----
   #
-  #  mod_regener_cons_charts_server("regener_cons",
-  #                            inputVals = inputVals,
-  #                            selectedUnit = selectedUnit,
-  #                            subset_rgr_cons_1 = subset_rgr_cons_1,
-  #                            subset_rgr_cons_2 = subset_rgr_cons_2)
+   mod_regener_cons_charts_server("regener_cons",
+                             inputVals = inputVals,
+                             subset_rgr_cons_1 = subset_rgr_cons_1,
+                             subset_rgr_cons_2 = subset_rgr_cons_2)
+
+
   #  ### mod regener_needs ----
-  #  mod_regener_needs_charts_server("regener_needs",
-  #                                  inputVals = inputVals,
-  #                                  subsetData = subset_rgr_needs, # filtered data for communes and selected years
-  #                                  selectedUnit = selectedUnit, # unit selected in mod_unit_converter.R
-  #                                  legend_title = "Usage", # for legend of barplot (either secteur/technologies)
-  #                                  var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
-  #                                  var_commune = "commune", # 'commune'
-  #                                  var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
-  #                                  var_values = "besoins", # prod/consumption/besoins
-  #                                  color_palette = colors_rg_type, # utils_helpers.R
-  #                                  third_rank = FALSE, # boolean
-  #                                  var_rank_3_1 = NULL, var_rank_3_2 = NULL,
-  #                                  fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
-  #                                  dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
-  #                                  doc_vars = regener_doc # utils_helpers.R
-  #                                  )
+   mod_regener_needs_charts_server("regener_needs",
+                                   inputVals = inputVals,
+                                   subsetData = subset_rgr_needs, # filtered data for communes and selected years
+                                   legend_title = "Usage", # for legend of barplot (either secteur/technologies)
+                                   var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
+                                   var_commune = "commune", # 'commune'
+                                   var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
+                                   var_values = "besoins", # prod/consumption/besoins
+                                   color_palette = colors_rg_type, # utils_helpers.R
+                                   third_rank = FALSE, # boolean
+                                   var_rank_3_1 = NULL, var_rank_3_2 = NULL,
+                                   fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
+                                   dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                   doc_vars = regener_doc # utils_helpers.R
+                                   )
   #
   #  ### mod regener_misc ----
   #  mod_regener_misc_charts_server("regener_misc",

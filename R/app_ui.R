@@ -102,8 +102,15 @@ app_ui <- function(request) {
 
       ## Buildings heat ----
       bslib::nav_menu("Chaleur des bâtiments", icon = icon("fire"),
-                      bslib::nav_panel("Besoins "),
-                      bslib::nav_panel("Consommations"),
+                      bslib::nav_panel("Besoins",
+
+                                       mod_regener_needs_charts_ui("regener_needs")
+
+                                       ),
+                      bslib::nav_panel("Consommations",
+
+                                       mod_regener_cons_charts_ui("regener_cons")
+                                       ),
                       bslib::nav_panel("Autres")
 
       ),#End nav_menu() 'Chaleur des bâtiments'

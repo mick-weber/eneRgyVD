@@ -235,7 +235,8 @@ mod_inputs_server <- function(id){
       inputVals$selectedDistrict <- input$selected_district
     })
 
-    # districts
+    # uploaded communes
+
     observe({
       inputVals$uploadedCommunes <- uploaded_communes()
     })

@@ -58,7 +58,7 @@ make_statbox_item <- function(icon_name,
   tags$div(class = "text-center padding-top-1 rounded",
 
            bsicons::bs_icon(name = icon_name, size = "1.8rem", class = icon_class),
-           p(HTML(title), class = "p-0 m-0", style = "font-size:1rem;"),
+           p(HTML(title), class = "p-0 m-0", style = "font-size:1.2rem;"),
            tags$div(
              # Nicely format value (rounded + big.mark) and add unit below as newline
              strong(HTML(paste(format(round(value, digits = 0), big.mark = "'"), "<br>", unit)),

@@ -12,112 +12,132 @@ mod_regener_needs_charts_ui <- function(id){
 
 
   tagList(
-    # TABSETS for better readability of plot / table
-    bs4Dash::tabsetPanel(
-      id = "tabset_rg_needs",
-      # tabPanel 'Graphique' ----
-      shiny::tabPanel(title = "Graphique",
-                      # breating
-                      br(),
-                      column(width = 10,
-                             # Disclaimer for regener needs data (in a column for better display)
-                             tags$p(
-                               "Ces graphiques illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
-                               l'eau chaude sanitaire et chauffage des locaux.",
-                               strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
-                               "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
-                             tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale.")
-                      ),# End column
+
+    # Header ----
+    # div to handle title + accordion layout
+    tags$div(
+      # Large+ screens : inline, flex layout, justified items
+      #  smaller screens : row by row (default layout without fill)
+      class = "d-lg-flex justify-content-between",
+      # Title
+      h4("Besoins théoriques des bâtiments"),
 
 
-                      fluidRow( # to display the plot buttons + materialswitches inline
+      # Methodology accordion
+      bslib::accordion(
+        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
+        bslib::accordion_panel(
+          title = "Méthodologie",
+          div(paste(generic_method_warning, # text in utils_helpers.R
+                    specific_rgr_warning)),
+          br(),
+          actionButton(ns("rgr_needs_help"), label = "Plus de détails")
+        ),
+        open = FALSE)
 
-                      ## radioGroupButtons() for tab ----
-                      shinyWidgets::radioGroupButtons(
-                        inputId = ns("tab_plot_type"),
-                        label = "Sélection du type de graphique",
-                        choices = c(`<i class='fa fa-bar-chart'></i>` = "bar",
-                                    `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-                        justified = TRUE,
-                        width = "25%"),
+    ),#End div
 
-                        # materialSwitch 1/2 for bar plot
-                        shiny::conditionalPanel(
-                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                          condition = "output.commune && input.tab_plot_type == 'bar'",
-                          ns = ns,
+    # Pills ----
 
-                          tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
-                                   tags$div(
-                                     shinyWidgets::materialSwitch(
-                                       inputId = ns("stacked_status"),
-                                       value = FALSE,
-                                       status = "success",
-                                       label = strong("Barres empilées"), inline = TRUE),
-                                     tags$span(strong("adjacentes"))
-                                   ))# End 2x tags$div()
-                        ),# End conditionalPanel 1/2
+    bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
 
-                        # Spaces between the two toggles
-                        HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
-                        HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                       ### Graph ----
+                       bslib::nav_panel(title = "Graphique",
+                                        icon = bsicons::bs_icon("bar-chart-fill"),
 
-                        # materialSwitch 2/2 for bar plot
-                        shiny::conditionalPanel(
-                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                          condition = "output.toggle && input.tab_plot_type == 'bar'",
-                          ns = ns,
-                          tags$div(
-                            style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
-                            shinyWidgets::materialSwitch(
-                              inputId = ns("toggle_status"),
-                              value = FALSE,
-                              label = strong("Axe vertical commun"),
-                              status = "success",
-                              inline = TRUE),
-                            tags$span(strong("indépendant"))
-                          )# End tags$div
-                        )# End 2nd conditionalPanel
+                                        tags$p(
+                                          "Ces graphiques illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
+                                          l'eau chaude sanitaire et chauffage des locaux.",
+                                          strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
+                                          "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
+                                        tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale."),
 
-                      ),# End fluidrow for plot buttons + materialswitches
 
-                      # Simple text to inform how the sunburst year works, if selected
-                      shiny::conditionalPanel(
-                        condition = "input.tab_plot_type == 'sunburst'",
-                        ns = ns,
+                                        bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
 
-                        tags$p("Seuls les besoins actuels théoriques sont affichés sur ce graphique.")
-
-                      ),# End conditionalPanel
-
-                      # # breathing
-                      # br(),
-
-                      ## Conditional plotly (bar/sunburst) ----
-                      # Rendered server side so that we can check if sunburst, then we apply a css class for padding
-                      uiOutput(ns("plot_render_ui"))
+                                                                  # radioGroupButtons() for tab ----
+                                                                  shinyWidgets::radioGroupButtons(
+                                                                    inputId = ns("tab_plot_type"),
+                                                                    label = "Sélection du type de graphique",
+                                                                    choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
+                                                                                `<i class='fa fa-pie-chart'></i>` = "sunburst"),
+                                                                    justified = TRUE,
+                                                                    width = "100%"),
 
 
 
-      ),# End tabPanel 'Graphique'
+                                                                  # materialSwitch 1/2 for bar plot
+                                                                  shiny::conditionalPanel(
+                                                                    # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                                                    condition = "output.commune && input.tab_plot_type == 'bar'",
+                                                                    ns = ns,
 
-      # tabPanel 'Table' ----
-      shiny::tabPanel(title = "Table",
+                                                                    tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
+                                                                             tags$div(
+                                                                               shinyWidgets::materialSwitch(
+                                                                                 inputId = ns("stacked_status"),
+                                                                                 value = FALSE,
+                                                                                 status = "success",
+                                                                                 label = strong("Barres empilées"), inline = TRUE),
+                                                                               tags$span(strong("adjacentes"))
+                                                                             ))# End 2x tags$div()
+                                                                  ),# End conditionalPanel 1/2
 
-                      column(width = 11,
-                             # breathing
-                             br(),
-                             tags$p("Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
-                             br(),
-                             # Download module
-                             mod_download_data_ui(ns("table_download")),
-                             # DT table
-                             DT::dataTableOutput(ns("table_1"))
-                      )# End column
-      )# End tabPanel 'Table'
-    )# End tabsetPanel
-  )# End tagList
+                                                                  # materialSwitch 2/2 for bar plot
+                                                                  shiny::conditionalPanel(
+                                                                    # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                                                    condition = "output.toggle && input.tab_plot_type == 'bar'",
+                                                                    ns = ns,
 
+                                                                    tags$div(
+                                                                      style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
+                                                                      shinyWidgets::materialSwitch(
+                                                                        inputId = ns("toggle_status"),
+                                                                        value = FALSE,
+                                                                        label = strong("Axe vertical commun"),
+                                                                        status = "success",
+                                                                        inline = TRUE),
+                                                                      tags$span(strong("indépendant"))
+                                                                    )# End tags$div
+                                                                  ),# End 2nd conditionalPanel
+
+                                        ),#End layout_column_wrap() for buttons
+
+
+                                        # Simple text to inform how the sunburst year works, if selected
+                                        shiny::conditionalPanel(
+                                          condition = "input.tab_plot_type == 'sunburst'",
+                                          ns = ns,
+
+                                          tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale.")
+
+                                        ),# End conditionalPanel
+
+
+
+                                        # Conditional plotly (bar/sunburst) ----
+                                        # Rendered server side so that we can check if sunburst, then we apply a css class for padding
+                                        uiOutput(ns("plot_render_ui"))
+
+
+
+
+                       ),# End nav_panel('Graphique')
+
+                       ### Table ----
+                       bslib::nav_panel(title = "Table",
+                                        icon = bsicons::bs_icon("table"),
+
+                                        # Download buttons
+                                        mod_download_data_ui(ns("table_download")),
+
+                                        # DT table
+                                        DT::dataTableOutput(ns("table_1"))
+
+
+                       )# End nav_panel() 'Table'
+    )#End navset_pill()
+  )# End tagList()
 }
 
 #' regener_needs_charts Server Functions
@@ -126,7 +146,6 @@ mod_regener_needs_charts_ui <- function(id){
 mod_regener_needs_charts_server <- function(id,
                                             inputVals,
                                             subsetData, # filtered data for communes and selected years
-                                            selectedUnit, # unit selected in mod_unit_converter.R
                                             legend_title, # for legend of barplot (either secteur/technologies)
                                             target_year, # which current year for the sunburst
                                             var_year, # 'annee'
@@ -208,7 +227,7 @@ mod_regener_needs_charts_server <- function(id,
       if(input$tab_plot_type == "bar"){
 
         # Update the initialized FALSE toggle_status with the input$toggle_status
-        # WIP with selectedUnit$unit_to
+        # WIP with inputVals$selectedUnit
 
         # ...PLOTLY BAR PLOT ----
         output$chart_1 <- plotly::renderPlotly({
@@ -218,7 +237,7 @@ mod_regener_needs_charts_server <- function(id,
                             n_communes = length(inputVals_communes_d()),
                             var_year = var_year,
                             var_commune = var_commune,
-                            unit = selectedUnit$unit_to,
+                            unit = inputVals$selectedUnit,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
@@ -238,7 +257,7 @@ mod_regener_needs_charts_server <- function(id,
         output$chart_1 <- plotly::renderPlotly({
           # fct_helpers.R
           create_sunburst_plotly(data_sunburst = subsetData_sunburst(), # must be adapted later
-                                 unit = selectedUnit$unit_to,
+                                 unit = inputVals$selectedUnit,
                                  var_year = var_year, # var name
                                  var_values = var_values, # var name
                                  var_commune = var_commune, # var name
@@ -262,7 +281,7 @@ mod_regener_needs_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
-                        unit = selectedUnit$unit_to,
+                        unit = inputVals$selectedUnit,
                         DT_dom = "frtip" # remove default button in DT extensions
                         )
 
@@ -276,7 +295,7 @@ mod_regener_needs_charts_server <- function(id,
         # Add the currently selected unit in the colnames (conversion is already done)
         rename_fr_colnames() %>%  # fct_helpers.R
         # Add energy units in brackets for energy/power related columns
-        add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
+        add_colname_units(unit = inputVals$selectedUnit) # fct_helpers.R
 
     })
 

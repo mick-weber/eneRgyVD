@@ -11,36 +11,13 @@ mod_regener_cons_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    # Header ----
-    # div to handle title + accordion layout
-    tags$div(
-      # Large+ screens : inline, flex layout, justified items
-      #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
-      # Title
-      h4("Besoins théoriques des bâtiments"),
-
-
-      # Methodology accordion
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_rgr_warning)),
-          br(),
-          actionButton(ns("rgr_cons_help"), label = "Plus de détails")
-        ),
-        open = FALSE)
-
-    ),#End div
-
-    bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
-
-    # nav_panel for better readability of plot / table
-
-    bslib::nav_panel(title = "Graphique",
-
+    # TABSETS for better readability of plot / table
+    bs4Dash::tabsetPanel(
+      id = "tabset_rg_cons",
+      shiny::tabPanel(title = "Graphique",
+                      # breating
+                      br(),
+                      column(width = 10,
                       # Disclaimer for regener cons data (in a column for better display)
                       tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
  se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
@@ -49,10 +26,8 @@ mod_regener_cons_charts_ui <- function(id){
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
  tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale."),
-
+                      ),# End column
                       # radioGroupButtons() for tab ----
-
- bslib::layout_column_wrap(width = 1/3, # 33% of avail. width
 
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
@@ -60,9 +35,10 @@ mod_regener_cons_charts_ui <- function(id){
                         choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                     `<i class='fa fa-house'></i> Par affectation` = "bar"),
                         justified = TRUE,
-                        width = "100%")
+                        width = "25%"),
 
- ),# End layout_column_wrap
+                      # # breathing
+                      # br(),
 
                       # Alluvial plot ----
 
@@ -74,11 +50,10 @@ mod_regener_cons_charts_ui <- function(id){
 
       ),# End tabPanel 'Graphique'
 
-
-
-      bslib::nav_panel(title = "Table",
-
-                       bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
+      shiny::tabPanel(title = "Table",
+                      column(width = 11,
+                             # breathing
+                             br(),
 
                              # radioGroupButtons() for tab ----
                              shinyWidgets::radioGroupButtons(
@@ -87,8 +62,7 @@ mod_regener_cons_charts_ui <- function(id){
                                choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                            `<i class='fa fa-house'></i> Par affectation` = "bar"),
                                justified = TRUE,
-                               width = "100%")
-                             ),# End layout_column_wrap
+                               width = "25%"),
 
                              # Download module
                              mod_download_data_ui(ns("table_download")),
@@ -97,8 +71,9 @@ mod_regener_cons_charts_ui <- function(id){
                              br(),
                              # DT table
                              DT::dataTableOutput(ns("table_1"))
-      )# End nav_panel 'Table'
-    )# End navset_pill
+                      )# End column
+      )# End tabPanel 'Table'
+    )# End tabsetPanel
   )# End tagList
 }
 
@@ -106,6 +81,7 @@ mod_regener_cons_charts_ui <- function(id){
 #'
 #' @noRd
 mod_regener_cons_charts_server <- function(id,
+                                      selectedUnit,
                                       inputVals, # for facet height
                                       subset_rgr_cons_1, # conso->use
                                       subset_rgr_cons_2 # conso->aff
@@ -210,7 +186,7 @@ mod_regener_cons_charts_server <- function(id,
         output$table_1 <- DT::renderDataTable({
 
             create_regener_table_dt(data = subset_rgr_cons_1(),
-                                    unit = inputVals$selectedUnit,
+                                    unit = selectedUnit$unit_to,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
 
@@ -224,7 +200,7 @@ mod_regener_cons_charts_server <- function(id,
         output$table_1 <- DT::renderDataTable({
 
             create_regener_table_dt(data = subset_rgr_cons_2(),
-                                    unit = inputVals$selectedUnit,
+                                    unit = selectedUnit$unit_to,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
         })
@@ -241,14 +217,14 @@ mod_regener_cons_charts_server <- function(id,
         subset_rgr_cons_1() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           rename_fr_colnames() %>% # fct_helpers.R
-          add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
+          add_colname_units(unit = selectedUnit$unit_to)  # fct_helpers.R
 
           } else if(input$tab_table_type == "bar"){
 
         subset_rgr_cons_2() %>% # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           rename_fr_colnames() %>%  # fct_helpers.R
-          add_colname_units(unit = inputVals$selectedUnit) # fct_helpers.R
+          add_colname_units(unit = selectedUnit$unit_to) # fct_helpers.R
 
       }
 

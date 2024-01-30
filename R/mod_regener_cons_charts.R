@@ -18,7 +18,7 @@ mod_regener_cons_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4("Besoins théoriques des bâtiments"),
+      h4("Consommations théoriques des bâtiments"),
 
 
       # Methodology accordion
@@ -40,6 +40,7 @@ mod_regener_cons_charts_ui <- function(id){
     # nav_panel for better readability of plot / table
 
     bslib::nav_panel(title = "Graphique",
+                     icon = bsicons::bs_icon("bar-chart-fill"),
 
                       # Disclaimer for regener cons data (in a column for better display)
                       tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
@@ -53,10 +54,11 @@ mod_regener_cons_charts_ui <- function(id){
                       # radioGroupButtons() for tab ----
 
  bslib::layout_column_wrap(width = 1/3, # 33% of avail. width
+                           class = "d-flex align-items-end",
 
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
-                        label = "Type de consommation",
+                        label = h6(strong("Affichage de la consommation")),
                         choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                     `<i class='fa fa-house'></i> Par affectation` = "bar"),
                         justified = TRUE,
@@ -72,18 +74,19 @@ mod_regener_cons_charts_ui <- function(id){
                                                      color= main_color) # color defined in utils_helpers.R
 
 
-      ),# End tabPanel 'Graphique'
+      ),# End nav_panel 'Graphique'
 
 
 
       bslib::nav_panel(title = "Table",
+                       icon = bsicons::bs_icon("table"),
 
-                       bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
+                       bslib::layout_column_wrap(width = 1/2, # each col = 33% of avail. width
 
                              # radioGroupButtons() for tab ----
                              shinyWidgets::radioGroupButtons(
                                inputId = ns("tab_table_type"),
-                               label = "Type de consommation",
+                               label = h6(strong("Affichage de la consommation")),
                                choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                            `<i class='fa fa-house'></i> Par affectation` = "bar"),
                                justified = TRUE,
@@ -93,8 +96,6 @@ mod_regener_cons_charts_ui <- function(id){
                              # Download module
                              mod_download_data_ui(ns("table_download")),
 
-                             # breathing
-                             br(),
                              # DT table
                              DT::dataTableOutput(ns("table_1"))
       )# End nav_panel 'Table'

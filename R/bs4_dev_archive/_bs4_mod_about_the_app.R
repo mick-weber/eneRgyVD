@@ -139,7 +139,7 @@ mod_about_the_app_ui <- function(id){
                          DT::dataTableOutput(ns("regener_doc")),
                          br(),
 
-                         h3(strong("Méthode détaillée à venir...")) #,
+                         h5(strong("Méthode détaillée à venir...")) #,
                          # br(),
                          # # Add download link when doc available
                          # tags$a(href= "www/synthese_regener_energyvd.html",

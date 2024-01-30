@@ -68,11 +68,11 @@ app_server <- function(input, output, session) {
    subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
                   "cons_data_help",                    "Consommation d'électricité",
                   "production_charts-prod_data_help",  "Production d'électricité",
-                  "regener_needs-rg_needs_help",       "Chaleur bâtiments",
-                  "regener_cons-rg_cons_help",         "Chaleur bâtiments",
-                  "regener_misc-rg_misc_help",         "Chaleur bâtiments",
-                  "subsidies_building-subsidies_help", "Subventions bâtiments",
-                  "subsidies_measure-subsidies_help",  "Subventions bâtiments")
+                  "regener_needs-rgr_needs_help",       "Chaleur bâtiments",
+                  "regener_cons-rgr_cons_help",         "Chaleur bâtiments",
+                  "regener_misc-rgr_misc_help",         "Chaleur bâtiments",
+                  "subsidies_building-subsidies_building_help", "Subventions bâtiments",
+                  "subsidies_measure-subsidies_measure_help",  "Subventions bâtiments")
 
    # Code below is to generate updatebs4TabItems redirections
    # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
@@ -390,18 +390,6 @@ app_server <- function(input, output, session) {
      }
    }, ignoreNULL = FALSE) # Don't trigger when input is NULL
 
-   # NEW FEATURE : change fitBounds based on input$district through inputVals$selectedDistrict
-
-   observeEvent(inputVals$selectedDistrict, {
-
-     proxy %>%
-       leaflet::fitBounds(
-         lng1= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("xmin"),
-         lng2= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("xmax"),
-         lat1= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("ymin"),
-         lat2= bboxes %>% purrr::pluck(inputVals$selectedDistrict) %>% purrr::pluck("ymax"))
-   })
-
    # END PROXY LEAFLET WORK
    # END MAP SELECTOR
 
@@ -477,36 +465,36 @@ app_server <- function(input, output, session) {
                                    dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars = regener_doc # utils_helpers.R
                                    )
-  #
-  #  ### mod regener_misc ----
-  #  mod_regener_misc_charts_server("regener_misc",
-  #                                 inputVals = inputVals,
-  #                                 subsetData = subset_rgr_misc,
-  #                                 selectedUnit = selectedUnit,
-  #                                 dl_prefix = "regener_autres_",
-  #                                 doc_vars = regener_doc)
-  #
-  #
-  #  ## tabSubsidies: chart server logic ----
-  #
-  #  ### mod tabSubsidiesBuilding ----
-  #  mod_subsidies_building_charts_server("subsidies_building",
-  #                              subsetData = subset_subsidies_building,
-  #                              inputVals = inputVals,
-  #                              dl_prefix = "subventions_bat_",
-  #                              doc_vars = NULL # for now
-  #                              )
-  #
-  #  ###  mod tabSubsidiesMeasure ----
-  #  mod_subsidies_measure_charts_server("subsidies_measure",
-  #                              subsetData = subset_subsidies_measure,
-  #                              inputVals = inputVals,
-  #                              dl_prefix = "subventions_mesure_",
-  #                              doc_vars = NULL # for now
-  #  )
-  #
-  #
-  #
+
+   ### mod regener_misc ----
+   mod_regener_misc_charts_server("regener_misc",
+                                  inputVals = inputVals,
+                                  subsetData = subset_rgr_misc,
+                                  selectedUnit = selectedUnit,
+                                  dl_prefix = "regener_autres_",
+                                  doc_vars = regener_doc)
+
+
+  ## tabSubsidies: chart server logic ----
+
+   ## mod tabSubsidiesBuilding ----
+   mod_subsidies_building_charts_server("subsidies_building",
+                               subsetData = subset_subsidies_building,
+                               inputVals = inputVals,
+                               dl_prefix = "subventions_bat_",
+                               doc_vars = NULL # for now
+                               )
+
+   ###  mod tabSubsidiesMeasure ----
+   mod_subsidies_measure_charts_server("subsidies_measure",
+                               subsetData = subset_subsidies_measure,
+                               inputVals = inputVals,
+                               dl_prefix = "subventions_mesure_",
+                               doc_vars = NULL # for now
+   )
+
+
+
   #  ## tabMap: boxes for statistics ----
 
 
@@ -519,8 +507,9 @@ app_server <- function(input, output, session) {
      req(inputVals$selectedUnit)
 
      mod_collapse_stats_box_server("vd_box",
-                                   title = "Synthèse : Canton de Vaud",
+                                   title = strong("Synthèse : Canton de Vaud"),
                                    selectedUnit = inputVals$selectedUnit,
+
                                    prod_elec_value = prod_elec_vd_last_year |>
                                      convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
 
@@ -529,7 +518,13 @@ app_server <- function(input, output, session) {
                                    cons_rg_value = cons_rg_vd_last_year |>
                                      convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
 
-                                   year = last_common_elec_year) # utils_helpers.R
+                                   subsidies_value = subsidies_m01_vd_last_year,
+
+                                   year_elec = last_common_elec_year,
+                                   year_rgr = last_common_elec_year,
+                                   year_subsidies = last_subsidies_year
+
+                                   ) # utils_helpers.R
 
   })
 
@@ -544,7 +539,7 @@ app_server <- function(input, output, session) {
 
 
      mod_collapse_stats_box_server("communes_box",
-                                   title = "Synthèse : Commune(s) sélectionnée(s)",
+                                   title = strong("Synthèse : Commune(s) sélectionnée(s)"),
                                    selectedUnit = inputVals$selectedUnit,
 
                                    prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
@@ -552,7 +547,12 @@ app_server <- function(input, output, session) {
                                    # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
 
                                    cons_rg_value = inputVals$max_year_rg_cons,
-                                   year = last_common_elec_year # utils_helpers.R
+
+                                   subsidies_value = inputVals$max_year_subsidies_m01,
+
+                                   year_elec = last_common_elec_year,
+                                   year_rgr = last_common_elec_year,
+                                   year_subsidies = last_subsidies_year
                                    )
 
    })

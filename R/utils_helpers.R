@@ -15,8 +15,8 @@ load("./data/elec_prod_doc.rda")
 
 ## electricity_consumption data ----
 
-# !!CONS_ELEC removed!! load("./data/elec_cons_communes.rda")
-# !!CONS_ELEC removed!! load("./data/elec_cons_doc.rda")
+load("./data/elec_cons.rda")
+load("./data/elec_cons_doc.rda")
 
 ## regener_communes data ----
 
@@ -67,6 +67,10 @@ specific_prod_elec_warning <- "Si des données sont visiblement manquantes ou er
 
 specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'information qui figure dans les registres cantonal et fédéral des bâtiments, en particulier pour les agents énergétiques.
 La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
+
+specific_subsidies_warning <- "Ces données sont issues d'un traitement des données du Programme bâtiments et concernent exclusivement les subventions versées (avec achèvement de travaux).
+Les promesses (subventions promises mais pas encore versées) sont exclues."
+
 
 
 ## NEWS notifications  ----
@@ -355,7 +359,7 @@ subsidies_measure_icons <- subsidies_measure_palette_table |>
 ## Color used for multiple ui items ----
 
 main_color <- "#3A862D"
-main_color_active <- "black"
+main_color_active <- "#343A40"
 
 ## Custom {fresh} theme passed to bs4Dash in app_ui.R
 # Example from https://dreamrs.github.io/fresh/
@@ -453,7 +457,7 @@ regener_current_year <- max_regener_year
 last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
 
   # !!CONS_ELEC removed!! # dplyr::intersect(
-  # !!CONS_ELEC removed!! # elec_cons_communes %>% dplyr::distinct(annee),
+  # !!CONS_ELEC removed!! # elec_cons %>% dplyr::distinct(annee),
   # !!CONS_ELEC removed!! # elec_prod %>% dplyr::distinct(annee)) %>%
   # !!CONS_ELEC removed!! # dplyr::slice_max(annee) %>%
   # !!CONS_ELEC removed!! # dplyr::pull(annee)
@@ -473,7 +477,7 @@ prod_elec_vd_last_year <- elec_prod %>%
 
 cons_elec_vd_last_year <- NULL   # so we keep most code unchanged in mod_collapse_stats_box.R !!
 
-# !!CONS_ELEC removed!! #  cons_elec_vd_last_year <- elec_cons_communes %>%
+# !!CONS_ELEC removed!! #  cons_elec_vd_last_year <- elec_cons %>%
 # !!CONS_ELEC removed!! #   dplyr::filter(annee == last_common_elec_year) %>%
 # !!CONS_ELEC removed!! #   dplyr::filter(commune == "Canton de Vaud") %>%
 # !!CONS_ELEC removed!! #   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
@@ -486,6 +490,17 @@ cons_rg_vd_last_year <- regener_cons_ae_aff %>%
   dplyr::filter(commune == "Canton de Vaud") %>%
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
   dplyr::pull()
+
+#### VD subsidies M01 for last common year
+last_subsidies_year <- max(subsidies_by_measure$annee)
+
+subsidies_m01_vd_last_year <- subsidies_by_measure |>
+  dplyr::filter(annee == last_subsidies_year) |>
+  dplyr::filter(commune == "Canton de Vaud") |>
+  dplyr::filter(mesure == "M01") |>
+  dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
+  dplyr::pull()
+
 
 ### Map-specific ----
 # We retrieve the coordinates

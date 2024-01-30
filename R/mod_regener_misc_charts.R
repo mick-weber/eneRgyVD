@@ -11,13 +11,43 @@ mod_regener_misc_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    # Download module
-    mod_download_data_ui(ns("table_download")),
 
-    # DT table
-    DT::dataTableOutput(ns("table_1"))
+    tags$div(
+      # Large+ screens : inline, flex layout, justified items
+      #  smaller screens : row by row (default layout without fill)
+      class = "d-lg-flex justify-content-between",
+      # Title
+      h4("Autres informations des bâtiments"),
 
-  )
+
+      # Methodology accordion
+      bslib::accordion(
+        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
+        bslib::accordion_panel(
+          title = "Méthodologie",
+          div(paste(generic_method_warning, # text in utils_helpers.R
+                    specific_rgr_warning)),
+          br(),
+          actionButton(ns("rgr_misc_help"), label = "Plus de détails")
+        ),
+        open = FALSE)
+
+    ),# End div
+
+    bslib::navset_pill(header = br(),
+
+    ### Table ----
+    bslib::nav_panel(title = "Table",
+                     icon = bsicons::bs_icon("table"),
+
+                     # Download buttons
+                     mod_download_data_ui(ns("table_download")),
+
+                     # DT table
+                     DT::dataTableOutput(ns("table_1"))
+  )# End nav_panel
+    )# End navset_pill
+  )# End tagList
 }
 
 #' regener_misc_charts Server Functions
@@ -30,9 +60,8 @@ mod_regener_misc_charts_server <- function(id,
                                            dl_prefix,
                                            doc_vars){
   moduleServer(id, function(input, output, session){
+
     ns <- session$ns
-
-
 
     # Renders the DT table ----
     output$table_1 <- DT::renderDataTable({

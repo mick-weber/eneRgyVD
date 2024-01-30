@@ -24,7 +24,9 @@
 }
 
 /* Change color of nav's unselected links (and hovering) with full white instead of light grey, more visible */
+
 #nav{
+
   .nav-link{
   color:white;
 
@@ -32,8 +34,23 @@
     color:white;
   }
   }
+
 }
 
+
+/* COMMENTED OUT FOR NOW
+Gradient for navbar with multibrowser compatibility
+.navbar{
+  /* fallback for old browsers
+    background: #3a3440;
+
+    /* Chrome 10-25, Safari 5.1-6
+    background: -webkit-linear-gradient(90deg, rgba(58,52,64,1) 0%, rgba(58,134,45,1) 50%, rgba(58,134,45,1) 100%);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+
+    background: linear-gradient(90deg, rgba(58,52,64,1) 0%, rgba(58,134,45,1) 50%, rgba(58,134,45,1) 100%);
+}
+*/
 
 
 /*Invert the color of the svg arrow icon when the accordion is open */

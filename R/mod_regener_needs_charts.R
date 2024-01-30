@@ -53,17 +53,18 @@ mod_regener_needs_charts_ui <- function(id){
                                         tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale."),
 
 
-                                        bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
+                                        bslib::layout_column_wrap(width = 1/4, # each col = 25% of avail. width
+
+                                                                    class = "d-flex align-items-end",
 
                                                                   # radioGroupButtons() for tab ----
                                                                   shinyWidgets::radioGroupButtons(
                                                                     inputId = ns("tab_plot_type"),
-                                                                    label = "Sélection du type de graphique",
+                                                                    label = h6(strong("Type de graphique")),
                                                                     choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
                                                                                 `<i class='fa fa-pie-chart'></i>` = "sunburst"),
                                                                     justified = TRUE,
                                                                     width = "100%"),
-
 
 
                                                                   # materialSwitch 1/2 for bar plot
@@ -72,15 +73,15 @@ mod_regener_needs_charts_ui <- function(id){
                                                                     condition = "output.commune && input.tab_plot_type == 'bar'",
                                                                     ns = ns,
 
-                                                                    tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
                                                                              tags$div(
+                                                                               class = "d-flex justify-content-center",
                                                                                shinyWidgets::materialSwitch(
                                                                                  inputId = ns("stacked_status"),
                                                                                  value = FALSE,
                                                                                  status = "success",
                                                                                  label = strong("Barres empilées"), inline = TRUE),
                                                                                tags$span(strong("adjacentes"))
-                                                                             ))# End 2x tags$div()
+                                                                             )
                                                                   ),# End conditionalPanel 1/2
 
                                                                   # materialSwitch 2/2 for bar plot
@@ -90,7 +91,7 @@ mod_regener_needs_charts_ui <- function(id){
                                                                     ns = ns,
 
                                                                     tags$div(
-                                                                      style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
+                                                                      class = "d-flex justify-content-center",
                                                                       shinyWidgets::materialSwitch(
                                                                         inputId = ns("toggle_status"),
                                                                         value = FALSE,
@@ -100,6 +101,9 @@ mod_regener_needs_charts_ui <- function(id){
                                                                       tags$span(strong("indépendant"))
                                                                     )# End tags$div
                                                                   ),# End 2nd conditionalPanel
+
+
+
 
                                         ),#End layout_column_wrap() for buttons
 

@@ -10,76 +10,100 @@
 mod_subsidies_measure_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
+
+    # div to handle title + accordion layout
+    tags$div(
+      # Large+ screens : inline, flex layout, justified items
+      #  smaller screens : row by row (default layout without fill)
+      class = "d-lg-flex justify-content-between",
+      # Title
+      h4(HTML("Subventions Programme bâtiments<br>(vue par mesures)")),
+
+
+      # Methodology accordion
+      bslib::accordion(
+        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
+        bslib::accordion_panel(
+          title = "Méthodologie",
+          div(paste(generic_method_warning, # text in utils_helpers.R
+                    specific_subsidies_warning)),
+          br(),
+          actionButton(ns("subsidies_measure_help"), label = "Plus de détails")
+        ),
+        open = FALSE)
+    ),
+
+
+
     # TABSETS for better readability of plot / table
-    bs4Dash::tabsetPanel(
+    bslib::navset_pill(
       id = "tabset_subsidies",
 
       ## Graphique tabPanel ----
 
-      shiny::tabPanel(title = "Graphique",
-                      # breating
-                      br(),
-                      column(width = 10,
-                             # Disclaimer for regener cons data (in a column for better display)
-                             tags$p("Ces graphiques illustrent le nombre de subventions versées par type et année depuis 2017
+      bslib::nav_panel(title = "Graphique",
+                       icon = bsicons::bs_icon("bar-chart-fill"),
+
+                       # breating
+                       br(),
+                       # Disclaimer for regener cons data (in a column for better display)
+                       tags$p("Ces graphiques illustrent le nombre de subventions versées par type et année depuis 2017
                                     (voir détails dans la méthodologie complète).
                                     Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,
                                     il ne faut pas interpréter une subvention comme un bâtiment subventionné. Une vision agrégée par
                                     bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments."),
-                      ),# End column
 
-                      fluidRow(
+                       bslib::layout_column_wrap(width = 1/3,
+                                                 class = "d-flex align-items-end",
 
-                        # Spaces between the two toggles
-                        # HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
-                        # HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                         # materialSwitch 1/1 for bar plot
+                         shiny::conditionalPanel(
+                           # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                           condition = "output.toggle",
+                           ns = ns,
+                           tags$div(
+                             class = "d-flex justify-content-center",
+                             shinyWidgets::materialSwitch(
+                               inputId = ns("toggle_status"),
+                               value = FALSE,
+                               label = strong("Axe vertical commun"),
+                               status = "success",
+                               inline = TRUE),
+                             tags$span(strong("indépendant"))
+                           )# End tags$div
+                         )# End conditionalPanel
 
-                        # materialSwitch 1/1 for bar plot
-                        shiny::conditionalPanel(
-                          # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                          condition = "output.toggle",
-                          ns = ns,
-                          tags$div(
-                            style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
-                            shinyWidgets::materialSwitch(
-                              inputId = ns("toggle_status"),
-                              value = FALSE,
-                              label = strong("Axe vertical commun"),
-                              status = "success",
-                              inline = TRUE),
-                            tags$span(strong("indépendant"))
-                          )# End tags$div
-                        )# End conditionalPanel
-                      ), # End fluidRow
+                       ), # End layout_column_wrap
 
-                      # breathing
-                      br(),
+                       # breathing
+                       br(),
 
-                      # Plotly bar (only one viz) ----
-                      # plotly barplot in server according to which flow/bar is selected
+                       # Plotly bar (only one viz) ----
+                       # plotly barplot in server according to which flow/bar is selected
 
-                      plotly::plotlyOutput(ns("plot_subsidies")) |>
-                        shinycssloaders::withSpinner(type = 6,
-                                                     color= main_color) # color defined in utils_helpers.R
+                       plotly::plotlyOutput(ns("plot_subsidies")) |>
+                         shinycssloaders::withSpinner(type = 6,
+                                                      color= main_color) # color defined in utils_helpers.R
 
       ),# End tabPanel 'Graphique'
 
       ## Table tabPanel ----
 
-      shiny::tabPanel(title = "Table",
-                      column(width = 11,
-                             # breathing
-                             br(),
+      bslib::nav_panel(title = "Table",
+                       icon = bsicons::bs_icon("table"),
+                       # breathing
+                       br(),
 
-                             # Download module
-                             mod_download_data_ui(ns("table_download")),
+                       p(shiny::HTML("Note : les données sont plus détaillées que celles affichées dans l'onglet <strong>Graphique</strong>.")),
 
-                             # DT table
-                             DT::dataTableOutput(ns("table_1"))
+                       # Download module
+                       mod_download_data_ui(ns("table_download")),
 
-                      )# End column
+                       # DT table
+                       DT::dataTableOutput(ns("table_1"))
+
       )# End tabPanel 'Table'
-    )# End tabsetPanel
+    )# End nav_menu
   )# End tagList
 }
 
@@ -117,24 +141,24 @@ mod_subsidies_measure_charts_server <- function(id,
       # Plotly but factor lumped for clarity :
       subsetData_d() |>
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,
-                                                   n = 3,
-                                                   w = nombre,
-                                                   other_level = "Autres mesures")) |>
+                                                              n = 3,
+                                                              w = nombre,
+                                                              other_level = "Autres mesures")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-          create_bar_plotly(n_communes = length(inputVals_communes_d()),
-                            var_year = "annee",
-                            var_commune = "commune",
-                            var_values = "nombre",
-                            var_rank_2 = "mesure_simplifiee",
-                            unit = "subventions",
-                            legend_title = NULL,
-                            color_palette = subsidies_measure_simplifiee_colors,
-                            dodge = FALSE, # we don't allow user to dodge w/ toggle button
-                            free_y = input$toggle_status, # reactive(input$toggle_status)
-                            web_width = inputVals$web_width, # px width of browser when app starts
-                            web_height = inputVals$web_height # px height of browser when app starts
-          )# End create_bar_plotly
+        create_bar_plotly(n_communes = length(inputVals_communes_d()),
+                          var_year = "annee",
+                          var_commune = "commune",
+                          var_values = "nombre",
+                          var_rank_2 = "mesure_simplifiee",
+                          unit = "subventions",
+                          legend_title = NULL,
+                          color_palette = subsidies_measure_simplifiee_colors,
+                          dodge = FALSE, # we don't allow user to dodge w/ toggle button
+                          free_y = input$toggle_status, # reactive(input$toggle_status)
+                          web_width = inputVals$web_width, # px width of browser when app starts
+                          web_height = inputVals$web_height # px height of browser when app starts
+        )# End create_bar_plotly
     })# End renderPlot
 
     # Table logic ----

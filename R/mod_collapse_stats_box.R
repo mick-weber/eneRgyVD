@@ -26,7 +26,10 @@ mod_collapse_stats_box_server <- function(id,
                                           prod_elec_value,
                                           cons_elec_value,
                                           cons_rg_value,
-                                          year){
+                                          subsidies_value,
+                                          year_elec,
+                                          year_rgr,
+                                          year_subsidies){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -51,13 +54,13 @@ mod_collapse_stats_box_server <- function(id,
                                               # fct_helpers.R
 
            make_statbox_item(icon_name = "lightning-charge-fill",icon_class = "text-warning",
-                             title = "Production<br>électrique", value = prod_elec_value, unit = selectedUnit, year = year),
+                             title = "Production<br>électrique", value = prod_elec_value, unit = selectedUnit, year = year_elec),
 
            make_statbox_item(icon_name = "fire", icon_class = "text-danger",
-                             title = "Consommation<br>bâtiments", value = cons_rg_value, unit = selectedUnit, year = year),
+                             title = "Consommation<br>bâtiments", value = cons_rg_value, unit = selectedUnit, year = year_rgr),
 
            make_statbox_item(icon_name = "house-check-fill",icon_class = "text-success",
-                             title = "Subventions<br>payées", value = 100, unit = "dossiers", year = year),
+                             title = "Subventions<br>rénovation M01", value = subsidies_value, unit = "dossiers", year = year_subsidies),
 
 
                     )# End layout_column_wrap

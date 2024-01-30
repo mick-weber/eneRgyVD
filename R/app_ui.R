@@ -43,14 +43,15 @@ app_ui <- function(request) {
       theme = profil_theme, # utils_helpers.R
       # Title
       title = strong("Profil énergétique des communes vaudoises",
-                     style = "font-family: 'Verdana', sans-serif;"),
+                     style = "font-family: 'Arial', sans-serif;"),
       # Browser title
       window_title = "Profil énergie VD",
       # Sidebar
       sidebar = bslib::sidebar(
 
+        class = "shadow-p", # add some shadow
         width = "300px",
-        bg =  "#343A40",
+          bg =  "#343A40",
 
         # add brand
         tags$div(
@@ -75,7 +76,7 @@ app_ui <- function(request) {
 
                          # 1st column
                          bslib::card(full_screen = TRUE,
-                                     bslib::card_header("Carte des communes",
+                                     bslib::card_header(strong("Carte des communes"),
                                                         class = "bg-secondary"),
                                      bslib::card_body(
                                        leafletOutput("map"))
@@ -93,12 +94,27 @@ app_ui <- function(request) {
       ),# End nav_panel('Carte')
 
       ## Prod elec----
-      bslib::nav_panel("Production", icon = icon("bolt"),
+      bslib::nav_menu("Electricité", icon = icon("bolt"),
 
-                       # Module for producing prod elec charts
-                       mod_elec_charts_ui("production_charts")
 
-                       ),
+                      bslib::nav_panel("Consommation",
+
+                                       # Module for producing cons elec charts
+
+                                       h5("A venir prochainement")
+                                       #mod_elec_charts_ui("consumption_charts")
+
+                      ),
+
+                      bslib::nav_panel("Production",
+
+                                       # Module for producing prod elec charts
+                                       mod_elec_charts_ui("production_charts")
+
+                      )
+
+      ),# End nav_menu Electricité
+
 
       ## Buildings heat ----
       bslib::nav_menu("Chaleur des bâtiments", icon = icon("fire"),
@@ -111,15 +127,26 @@ app_ui <- function(request) {
 
                                        mod_regener_cons_charts_ui("regener_cons")
                                        ),
-                      bslib::nav_panel("Autres")
+                      bslib::nav_panel("Autres",
+
+                                       mod_regener_misc_charts_ui("regener_misc")
+                      )
 
       ),#End nav_menu() 'Chaleur des bâtiments'
 
 
       ## Subsidies ----
       bslib::nav_menu("Subventions", icon = icon("file-pen"),
-                      bslib::nav_panel("Vue par bâtiments"),
-                      bslib::nav_panel("Vue par subventions")
+
+                      bslib::nav_panel("Vue par bâtiments",
+
+                                       mod_subsidies_building_charts_ui("subsidies_building")
+                      ),
+                      bslib::nav_panel("Vue par subventions",
+
+                                       mod_subsidies_measure_charts_ui("subsidies_measure")
+
+                      )
 
       ),#End nav_menu() 'Subventions'
 

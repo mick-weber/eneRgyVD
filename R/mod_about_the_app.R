@@ -143,7 +143,7 @@ mod_about_the_app_ui <- function(id){
                                                                                              DT::dataTableOutput(ns("regener_doc")),
                                                                                              br(),
 
-                                                                                             h3(strong("Méthode détaillée à venir...")) #,
+                                                                                             h5(strong("Méthode détaillée à venir...")) #,
                                                                                              # br(),
                                                                                              # # Add download link when doc available
                                                                                              # tags$a(href= "www/synthese_regener_energyvd.html",
@@ -192,14 +192,14 @@ mod_about_the_app_ui <- function(id){
                       # Glossaire ----
 
                       bslib::nav_panel(title = "Glossaire",
-                                       column(width = 8,
+                                       bslib::layout_columns(col_widths = c(-1, 8, -3),
                                               # breathing
                                               br(),
                                               tags$h4(strong("Glossaire")),
                                               tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
                                               DT::dataTableOutput(ns("glossary_table")),
 
-                                       )# End column
+                                       )# End layout_columns
                       ),# End tabPanel 'Confidentialité'
 
                       # Techno ----

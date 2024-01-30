@@ -10,40 +10,16 @@
 mod_subsidies_building_charts_ui <- function(id){
   ns <- NS(id)
   tagList(
-
-    # div to handle title + accordion layout
-    tags$div(
-      # Large+ screens : inline, flex layout, justified items
-      #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
-      # Title
-      h4(HTML("Subventions Programme bâtiments<br>(vue par bâtiment)")),
-
-
-      # Methodology accordion
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_subsidies_warning)),
-          br(),
-          actionButton(ns("subsidies_building_help"), label = "Plus de détails")
-        ),
-        open = FALSE)
-    ),
-
     # TABSETS for better readability of plot / table
-    bslib::navset_pill(
+    bs4Dash::tabsetPanel(
       id = "tabset_subsidies",
 
       ## Graphique tabPanel ----
 
-      bslib::nav_panel(title = "Graphique",
-                       icon = bsicons::bs_icon("bar-chart-fill"),
+      shiny::tabPanel(title = "Graphique",
                       # breating
                       br(),
-
+                      column(width = 10,
                              # Disclaimer for regener cons data (in a column for better display)
                              tags$p("Ces graphiques illustrent le nombre de bâtiments ayant reçu certaines subventions du Programme Bâtiment vaudois depuis 2017
                                     (voir détails dans la méthodologie complète).
@@ -52,20 +28,22 @@ mod_subsidies_building_charts_ui <- function(id){
                                     Le total des subventions versées d'une année ne peut donc pas être inférieur au total de l'année précédente.
                                     La SRE correspond à la surface de référence énergétique des bâtiments ayant reçu une subvention.
                                     Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD)."),
+                      ),# End column
 
-
-                      bslib::layout_column_wrap(width = 1/3,
-                                                class = "d-flex align-items-end",
+                      fluidRow(
 
                       # radioGroupButtons() for tab ----
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
-                        label = h6(strong("Représentation")),
+                        label = "Type de représentation",
                         choices = c(`<i class='fa fa-house'></i> Par nombre de bâtiments` = "n_egid",
                                     `<i class='fa fa-layer-group'></i> Par m<sup>2</sup> de SRE` = "sre"),
                         justified = TRUE,
-                        width = "100%"),
+                        width = "25%"),
 
+                      # Spaces between the two toggles
+                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
+                      HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
 
                       # materialSwitch 1/1 for bar plot
                       shiny::conditionalPanel(
@@ -73,7 +51,7 @@ mod_subsidies_building_charts_ui <- function(id){
                         condition = "output.toggle",
                         ns = ns,
                         tags$div(
-                          class = "d-flex justify-content-center",
+                          style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
                           shinyWidgets::materialSwitch(
                             inputId = ns("toggle_status"),
                             value = FALSE,
@@ -82,10 +60,8 @@ mod_subsidies_building_charts_ui <- function(id){
                             inline = TRUE),
                           tags$span(strong("indépendant"))
                         )# End tags$div
-
                       )# End conditionalPanel
-
-                      ), # End layout_column_wrap
+                      ), # End fluidRow
 
                       # breathing
                       br(),
@@ -101,9 +77,8 @@ mod_subsidies_building_charts_ui <- function(id){
 
       ## Table tabPanel ----
 
-      bslib::nav_panel(title = "Table",
-                      icon = bsicons::bs_icon("table"),
-
+      shiny::tabPanel(title = "Table",
+                      column(width = 11,
                              # breathing
                              br(),
 
@@ -116,9 +91,9 @@ mod_subsidies_building_charts_ui <- function(id){
 
                              # DT table
                              DT::dataTableOutput(ns("table_1"))
-
-      )# End nav_panel 'Table'
-    )# End nav_menu
+                      )# End column
+      )# End tabPanel 'Table'
+    )# End tabsetPanel
   )# End tagList
 }
 

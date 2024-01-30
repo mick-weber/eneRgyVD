@@ -10,7 +10,7 @@
 mod_download_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h5("Télécharger les données"),
+    h6(strong("Télécharger les données")),
     bslib::layout_columns(col_widths = 2, # each button will take ~15% of width (2/12)
 
                           shiny::downloadButton(outputId = ns("download_csv"),

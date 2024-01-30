@@ -23,16 +23,9 @@ mod_inputs_ui <- function(id){
     ),
 
 
-    # selectizeInput() for district zoom & upload communes widget ----
-    # IF tabMap : Select input for zooming on the districts (WIP feature)
+    # IF tab Carte : add upload communes widget
     shiny::conditionalPanel(
       condition="input.nav == 'Carte'",
-      shiny::selectizeInput(inputId = ns("selected_district"),
-                            label = "Zoom sur un district",
-                            choices = districts_names,
-                            selected = 0,
-                            multiple = FALSE),
-
       mod_upload_communes_ui(ns("uploaded_communes"))
     ),
 
@@ -232,7 +225,6 @@ mod_inputs_server <- function(id){
     # communes
     observe({
       inputVals$selectedCommunes <- input$selected_communes
-      inputVals$selectedDistrict <- input$selected_district
     })
 
     # uploaded communes
@@ -300,7 +292,9 @@ mod_inputs_server <- function(id){
 
       req(subset_elec_prod(),
           # !!CONS_ELEC removed!! # subset_elec_cons(),
-          subset_rgr_cons_1())
+          subset_rgr_cons_1(),
+          subset_subsidies_measure()
+          )
 
       # Statbox value for current selection's aggregated electricity production
       inputVals$common_year_elec_prod <- subset_elec_prod() %>%
@@ -324,6 +318,14 @@ mod_inputs_server <- function(id){
         dplyr::filter(!commune == "Canton de Vaud") %>%
         dplyr::summarise(consommation=sum(consommation, na.rm = T)) %>%
         dplyr::pull(consommation)
+
+
+      inputVals$max_year_subsidies_m01 <- subset_subsidies_measure() |>
+        dplyr::filter(annee == last_subsidies_year) |>
+        dplyr::filter(!commune == "Canton de Vaud") |>
+        dplyr::filter(mesure == "M01") |>
+        dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
+        dplyr::pull(nombre)
 
     })# End observe
 

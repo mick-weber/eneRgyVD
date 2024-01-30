@@ -43,12 +43,13 @@ mod_elec_charts_ui <- function(id){
                                  icon = bsicons::bs_icon("bar-chart-fill"),
 
 
-                                bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
+                                bslib::layout_column_wrap(width = 1/4, # each col = 25% of avail. width
+                                                          class = "d-flex align-items-end",
 
                                    # radioGroupButtons() for tab ----
                                    shinyWidgets::radioGroupButtons(
                                      inputId = ns("tab_plot_type"),
-                                     label = "Sélection du type de graphique",
+                                     label = h6(strong("Type de graphique")),
                                      choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
                                                  `<i class='fa fa-pie-chart'></i>` = "sunburst"),
                                      justified = TRUE,
@@ -62,7 +63,8 @@ mod_elec_charts_ui <- function(id){
                                      condition = "output.commune && input.tab_plot_type == 'bar'",
                                      ns = ns,
 
-                                     tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
+                                     tags$div(
+                                       class = "d-flex justify-content-center",
                                               tags$div(
                                                 shinyWidgets::materialSwitch(
                                                   inputId = ns("stacked_status"),
@@ -80,7 +82,7 @@ mod_elec_charts_ui <- function(id){
                                      ns = ns,
 
                                      tags$div(
-                                       style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
+                                       class = "d-flex justify-content-center",
                                        shinyWidgets::materialSwitch(
                                          inputId = ns("toggle_status"),
                                          value = FALSE,
@@ -128,112 +130,6 @@ mod_elec_charts_ui <- function(id){
                        )# End nav_panel() 'Table'
     )#End navset_pill()
   )# End tagList()
-
-
-
-
-
-
-
-    # BELOW : OLD BS4 ----
-
-
-  #  # TABSETS for better readability of plot / table
-  #   bs4Dash::tabsetPanel(
-  #     id = "tabset_elec",
-  #     shiny::tabPanel(title = "Graphique",
-  #                     # breathing
-  #                     br(),
-  #
-  #                     fluidRow( # to display the plot buttons + materialswitches
-  #
-  #                       # radioGroupButtons() for tab ----
-  #                       shinyWidgets::radioGroupButtons(
-  #                         inputId = ns("tab_plot_type"),
-  #                         label = "Sélection du type de graphique",
-  #                         choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
-  #                                     `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-  #                         justified = TRUE,
-  #                         width = "25%"),
-  #
-  #
-  #
-  #                       # materialSwitch 1/2 for bar plot
-  #                       shiny::conditionalPanel(
-  #                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
-  #                         condition = "output.commune && input.tab_plot_type == 'bar'",
-  #                         ns = ns,
-  #
-  #                         tags$div(style = "padding-left:80px;padding-top:40px;", # align with facets
-  #                                  tags$div(
-  #                                    shinyWidgets::materialSwitch(
-  #                                      inputId = ns("stacked_status"),
-  #                                      value = FALSE,
-  #                                      status = "success",
-  #                                      label = strong("Barres empilées"), inline = TRUE),
-  #                                    tags$span(strong("adjacentes"))
-  #                                  ))# End 2x tags$div()
-  #                       ),# End conditionalPanel 1/2
-  #
-  #                       # Spaces between the two toggles
-  #                       HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
-  #                       HTML("&nbsp;"),HTML("&nbsp;"),HTML("&nbsp;"),
-  #
-  #                       # materialSwitch 2/2 for bar plot
-  #                       shiny::conditionalPanel(
-  #                         # Both conditions: toggle must be TRUE and the bar plot button must be selected
-  #                         condition = "output.toggle && input.tab_plot_type == 'bar'",
-  #                         ns = ns,
-  #
-  #                         tags$div(
-  #                           style = "padding-left:30px;padding-top:40px;border-left:1px solid lightgrey;", # separator with prev toggle
-  #                           shinyWidgets::materialSwitch(
-  #                             inputId = ns("toggle_status"),
-  #                             value = FALSE,
-  #                             label = strong("Axe vertical commun"),
-  #                             status = "success",
-  #                             inline = TRUE),
-  #                           tags$span(strong("indépendant"))
-  #                         )# End tags$div
-  #                       )# End 2nd conditionalPanel
-  #
-  #                     ),# End fluidrow for plot buttons + materialswitches
-  #
-  #                     # Simple text to inform how the sunburst year works, if selected
-  #                     shiny::conditionalPanel(
-  #                       condition = "input.tab_plot_type == 'sunburst'",
-  #                       ns = ns,
-  #
-  #                       tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale.")
-  #
-  #                     ),# End conditionalPanel
-  #
-  #                     # # breathing
-  #                     # br(),
-  #
-  #                     # Conditional plotly (bar/sunburst) ----
-  #                     # Rendered server side so that we can check if sunburst, then we apply a css class for padding
-  #                     uiOutput(ns("plot_render_ui"))
-  #
-  #
-  #     ),# End tabPanel 'Graphique'
-  #
-  #     shiny::tabPanel(title = "Table",
-  #                     column(width = 11,
-  #                            # breathing
-  #                            br(),
-  #                            # Download module
-  #                            mod_download_data_ui(ns("table_download")),
-  #
-  #                            # breathing
-  #                            br(),
-  #                            # DT table
-  #                            DT::dataTableOutput(ns("table_1"))
-  #
-  #                     )# End column
-  #     )# End tabPanel 'Table'
-  #   )# End tabsetPanel
-  # )# End tagList
 }
 
 #' elec_charts Server Functions

@@ -125,29 +125,29 @@ app_server <- function(input, output, session) {
   ## Subset_cons_data ----
    ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
 
-   # !!CONS_ELEC removed!! # subset_cons_data <- reactive({
-   # !!CONS_ELEC removed!! #
-   # !!CONS_ELEC removed!! #   # explicitely require communes to be selected
-   # !!CONS_ELEC removed!! #   validate(
-   # !!CONS_ELEC removed!! #     need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
-   # !!CONS_ELEC removed!! #   )
-   # !!CONS_ELEC removed!! #
-   # !!CONS_ELEC removed!! #   # waiting on these to get initialized (renderUIs)
-   # !!CONS_ELEC removed!! #   req(inputVals$min_selected_cons,
-   # !!CONS_ELEC removed!! #       inputVals$max_selected_cons,
-   # !!CONS_ELEC removed!! #       inputVals$cons_dataset,
-   # !!CONS_ELEC removed!! #       inputVals$selectedUnit)
-   # !!CONS_ELEC removed!! #
-   # !!CONS_ELEC removed!! #   # further filter cons_dataset with selected min/max values and convert to selectedUnit()
-   # !!CONS_ELEC removed!! #    # CONVERSION TEST IN PROGRESS
-   # !!CONS_ELEC removed!! #   inputVals$cons_dataset %>%
-   # !!CONS_ELEC removed!! #     dplyr::filter(annee >= inputVals$min_selected_cons,
-   # !!CONS_ELEC removed!! #                   annee <= inputVals$max_selected_cons)  %>%
-   # !!CONS_ELEC removed!! #       convert_units(colnames = "consommation",
-   # !!CONS_ELEC removed!! #                     unit_from = "kWh",
-   # !!CONS_ELEC removed!! #                     unit_to = inputVals$selectedUnit)
-   # !!CONS_ELEC removed!! #
-   # !!CONS_ELEC removed!! # })
+    subset_cons_data <- reactive({
+
+      # explicitely require communes to be selected
+      validate(
+        need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
+      )
+
+      # waiting on these to get initialized (renderUIs)
+      req(inputVals$min_selected_cons,
+          inputVals$max_selected_cons,
+          inputVals$cons_dataset,
+          inputVals$selectedUnit)
+
+      # further filter cons_dataset with selected min/max values and convert to selectedUnit()
+       # CONVERSION TEST IN PROGRESS
+      inputVals$cons_dataset %>%
+        dplyr::filter(annee >= inputVals$min_selected_cons,
+                      annee <= inputVals$max_selected_cons)  %>%
+          convert_units(colnames = "consommation",
+                        unit_from = "kWh",
+                        unit_to = inputVals$selectedUnit)
+
+    })
 
    ## Subset_prod_data ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
@@ -278,14 +278,14 @@ app_server <- function(input, output, session) {
   })
 
    # CONS
-# !!CONS_ELEC removed!! #  subset_sunburst_cons_data <- reactive({
-# !!CONS_ELEC removed!! #
-# !!CONS_ELEC removed!! #    req(subset_cons_data())
-# !!CONS_ELEC removed!! #
-# !!CONS_ELEC removed!! #    subset_cons_data() %>%
-# !!CONS_ELEC removed!! #      filter(annee == inputVals$max_selected_cons)
-# !!CONS_ELEC removed!! #
-# !!CONS_ELEC removed!! #  })
+  subset_sunburst_cons_data <- reactive({
+
+    req(subset_cons_data())
+
+    subset_cons_data() %>%
+      filter(annee == inputVals$max_selected_cons)
+
+  })
 
 
 
@@ -396,26 +396,27 @@ app_server <- function(input, output, session) {
    # Output modules ----
 
    ## tabCons: chart server logic ----
-   # !!CONS_ELEC removed!! # mod_elec_charts_server("consumption_charts",
-   # !!CONS_ELEC removed!! #                        inputVals = inputVals,
-   # !!CONS_ELEC removed!! #                        subsetData = subset_cons_data,
-   # !!CONS_ELEC removed!! #                        selectedUnit = selectedUnit,
-   # !!CONS_ELEC removed!! #                        # args for create_bar_plotly() & create_sunburst_plotly()
-   # !!CONS_ELEC removed!! #                        sunburstData = subset_sunburst_cons_data,
-   # !!CONS_ELEC removed!! #                        legend_title = "Secteur",
-   # !!CONS_ELEC removed!! #                        var_year = "annee",
-   # !!CONS_ELEC removed!! #                        var_commune = "commune",
-   # !!CONS_ELEC removed!! #                        var_rank_2 = "secteur",
-   # !!CONS_ELEC removed!! #                        var_values = "consommation",
-   # !!CONS_ELEC removed!! #                        color_palette = colors_sectors,
-   # !!CONS_ELEC removed!! #                        third_rank = FALSE,
-   # !!CONS_ELEC removed!! #                        var_rank_3_1 = NULL, var_rank_3_2 = NULL,
-   # !!CONS_ELEC removed!! #                        # name of fct to create dt table
-   # !!CONS_ELEC removed!! #                        fct_table_dt_type = create_cons_table_dt,
-   # !!CONS_ELEC removed!! #                        # name of dl prefix to supply to download module
-   # !!CONS_ELEC removed!! #                        dl_prefix = "cons_elec_",
-   # !!CONS_ELEC removed!! #                        # documentation file from utils_helpers.R
-   # !!CONS_ELEC removed!! #                        doc_vars = elec_cons_doc)
+   mod_elec_charts_server("consumption_charts",
+                          inputVals = inputVals,
+                          subsetData = subset_cons_data,
+                          selectedUnit = inputVals$selectedUnit,
+                          # args for create_bar_plotly() & create_sunburst_plotly()
+                          sunburstData = subset_sunburst_cons_data,
+                          legend_title = "Secteur",
+                          var_year = "annee",
+                          var_commune = "commune",
+                          second_rank = FALSE,
+                          var_rank_2 = NULL, #"secteur", # secteur later on
+                          var_values = "consommation",
+                          color_palette = colors_sectors,
+                          third_rank = FALSE,
+                          var_rank_3_1 = NULL, var_rank_3_2 = NULL,
+                          # name of fct to create dt table
+                          fct_table_dt_type = create_cons_table_dt,
+                          # name of dl prefix to supply to download module
+                          dl_prefix = "cons_elec_",
+                          # documentation file from utils_helpers.R
+                          doc_vars = elec_cons_doc)
 
    ## tabProd: chart server logic ----
    mod_elec_charts_server("production_charts",
@@ -427,6 +428,7 @@ app_server <- function(input, output, session) {
                           legend_title = NULL,
                           var_year = "annee",
                           var_commune = "commune",
+                          second_rank = TRUE,
                           var_rank_2 = "categorie",
                           var_values = "production",
                           color_palette = colors_categories,

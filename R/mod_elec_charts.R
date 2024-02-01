@@ -7,7 +7,8 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_elec_charts_ui <- function(id){
+mod_elec_charts_ui <- function(id,
+                               title){
   ns <- NS(id)
   tagList(
 
@@ -18,7 +19,7 @@ mod_elec_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4("Production d'électricité par commune"),
+      h4(title),
 
 
       # Methodology accordion
@@ -144,6 +145,7 @@ mod_elec_charts_server <- function(id,
                                    target_year, # which current year for the sunburst
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
+                                   second_rank, # boolean
                                    var_rank_2, # categorical var ('secteur'/'categorie', ...)
                                    var_values, # prod/consumption kwh
                                    color_palette, # utils_helpers.R
@@ -227,6 +229,7 @@ mod_elec_charts_server <- function(id,
                                  var_year = var_year, # var name
                                  var_values = var_values, # var name
                                  var_commune = var_commune, # var name
+                                 second_rank = second_rank,
                                  var_rank_2 = var_rank_2, # var name
                                  third_rank = third_rank, # we do have a third layer (rank_3_1+rank_3_2)
                                  var_rank_3_1 = var_rank_3_1,

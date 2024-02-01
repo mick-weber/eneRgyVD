@@ -100,16 +100,16 @@ app_ui <- function(request) {
                       bslib::nav_panel("Consommation",
 
                                        # Module for producing cons elec charts
-
-                                       h5("A venir prochainement")
-                                       #mod_elec_charts_ui("consumption_charts")
+                                       mod_elec_charts_ui("consumption_charts",
+                                                          title = "Consommation d'électricité par commune")
 
                       ),
 
                       bslib::nav_panel("Production",
 
                                        # Module for producing prod elec charts
-                                       mod_elec_charts_ui("production_charts")
+                                       mod_elec_charts_ui("production_charts",
+                                                          title = "Production d'électricité par commune")
 
                       )
 

@@ -95,17 +95,17 @@ mod_inputs_server <- function(id){
 
     # 1. tabCons inputs ----
 
-    # !! CONS_ELEC removed !! # subset_elec_cons <- reactive({
-    # !! CONS_ELEC removed !! #
-    # !! CONS_ELEC removed !! #   req(input$selected_communes)
-    # !! CONS_ELEC removed !! #
-    # !! CONS_ELEC removed !! #   elec_cons_communes %>%
-    # !! CONS_ELEC removed !! #     filter(commune %in% input$selected_communes) |>
-    # !! CONS_ELEC removed !! #     convert_units(colnames = "consommation",
-    # !! CONS_ELEC removed !! #                   unit_from = "kWh",
-    # !! CONS_ELEC removed !! #                   unit_to = input$selected_unit)
-    # !! CONS_ELEC removed !! #
-    # !! CONS_ELEC removed !! # })
+     subset_elec_cons <- reactive({
+
+       req(input$selected_communes)
+
+       elec_cons %>%
+         filter(commune %in% input$selected_communes) |>
+         convert_units(colnames = "consommation",
+                       unit_from = "kWh",
+                       unit_to = input$selected_unit)
+
+     })
 
 
     # 2. tabProd inputs ----
@@ -242,9 +242,9 @@ mod_inputs_server <- function(id){
     # Other inputs not influenced by selectInputs() else than commune
 
     observe({
-      # store the commune cons dataset already filtered
 
-      # !!CONS_ELEC removed!! #inputVals$cons_dataset <- subset_elec_cons()
+      # store the commune cons dataset already filtered
+    inputVals$cons_dataset <- subset_elec_cons()
 
       # store the commune prod dataset already filtered
     inputVals$prod_dataset <- subset_elec_prod()
@@ -264,8 +264,8 @@ mod_inputs_server <- function(id){
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
-      # !!CONS_ELEC removed!! #  inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
-      # !!CONS_ELEC removed!! # inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
+      inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
+      inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
 
       # store min & max !available! years to feed sliderInput()
       inputVals$min_avail_prod <- min(subset_elec_prod()$annee)
@@ -291,7 +291,7 @@ mod_inputs_server <- function(id){
     observe({
 
       req(subset_elec_prod(),
-          # !!CONS_ELEC removed!! # subset_elec_cons(),
+          subset_elec_cons(),
           subset_rgr_cons_1(),
           subset_subsidies_measure()
           )
@@ -305,11 +305,11 @@ mod_inputs_server <- function(id){
 
       # Statbox value for current selection's aggregated electricity consumption
 
-      # !!CONS_ELEC removed!! # inputVals$common_year_elec_cons <- subset_elec_cons() %>%
-      # !!CONS_ELEC removed!! #   dplyr::filter(annee == last_common_elec_year) %>%
-      # !!CONS_ELEC removed!! # dplyr::filter(!commune == "Canton de Vaud")%>%
-      # !!CONS_ELEC removed!! #   dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
-      # !!CONS_ELEC removed!! #   dplyr::pull(consommation)
+      inputVals$common_year_elec_cons <- subset_elec_cons() %>%
+        dplyr::filter(annee == last_common_elec_year) %>%
+        dplyr::filter(!commune == "Canton de Vaud")%>%
+        dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
+        dplyr::pull(consommation)
 
       # Statbox value for current selection's aggregated buildings thermal consumption
 
@@ -334,22 +334,22 @@ mod_inputs_server <- function(id){
 
     ### tabCons dynamic select ----
 
-    # !!CONS_ELEC removed!! # output$cons_year <- shiny::renderUI({
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #   req(input$selected_communes)
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #   shiny::tagList(
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #     tags$div(class = 'customSliderInput', # custom.css -> go green
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #     shiny::sliderInput(ns("cons_year"), label = "Choix des années",
-    # !!CONS_ELEC removed!! #                        min = inputVals$min_avail_cons,
-    # !!CONS_ELEC removed!! #                        max = inputVals$max_avail_cons,
-    # !!CONS_ELEC removed!! #                        value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
-    # !!CONS_ELEC removed!! #                        step = 1L, sep = "", ticks = T)
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #     ))# End tagList
-    # !!CONS_ELEC removed!! # })# End renderUi
+     output$cons_year <- shiny::renderUI({
+
+       req(input$selected_communes)
+
+       shiny::tagList(
+
+         tags$div(class = 'customSliderInput', # custom.css -> go green
+
+         shiny::sliderInput(ns("cons_year"), label = "Choix des années",
+                            min = inputVals$min_avail_cons,
+                            max = inputVals$max_avail_cons,
+                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
+                            step = 1L, sep = "", ticks = T)
+
+         ))# End tagList
+     })# End renderUi
 
     ### tabRegener dynamic select ----
 
@@ -417,8 +417,8 @@ mod_inputs_server <- function(id){
     observe({
 
                         # Cons elec selected inputs
-# !!CONS_ELEC removed!! # inputVals$min_selected_cons <- input$cons_year[1] # current min year selected for elec consumption
-# !!CONS_ELEC removed!! # inputVals$max_selected_cons <- input$cons_year[2] # current max year selected for elec consumption
+      inputVals$min_selected_cons <- input$cons_year[1] # current min year selected for elec consumption
+      inputVals$max_selected_cons <- input$cons_year[2] # current max year selected for elec consumption
 
       # Prod elec selected inputs
       inputVals$min_selected_prod <- input$prod_year[1] # current min year selected for elec production

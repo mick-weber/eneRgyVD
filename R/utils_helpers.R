@@ -172,6 +172,11 @@ co2_keywords <- c("CO2")
 
 # Colors and icons ----
 
+## Default ggplot2 colors ----
+
+# Avoids darkgrey for geom_cols when 'var_rank_2' is NULL
+ggplot2::update_geom_defaults("col", aes(fill = "#90b0ee"))
+
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
 prod_colors <- dplyr::tribble(~icon, ~categorie, ~color,

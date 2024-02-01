@@ -169,39 +169,43 @@ create_select_leaflet <- function(sf_districts,
 #' @return an interactive plotly object
 #' @export
 
-create_bar_plotly <- function(data,
-                              n_communes,
-                              var_year,
-                              var_commune,
-                              unit, # input$selected_unit value retrieved in app_server
-                              var_rank_2, # one of secteur, categorie...
-                              var_values, # one of consommation, production_totale...
-                              color_palette, # 'colors_categories',
-                              dodge = FALSE, # stacked by default
-                              free_y = FALSE,
-                              legend_title = NULL,
-                              web_width = 1500, # set default when shinybrowser not used
-                              web_height = 800, # set default when shinybrowser not used
-                              ... # free
-                              ){
+create_bar_plotly_dev <- function(data,
+                                  n_communes,
+                                  var_year,
+                                  var_commune,
+                                  unit, # input$selected_unit value retrieved in app_server
+                                  var_rank_2, # one of secteur, categorie...
+                                  var_values, # one of consommation, production_totale...
+                                  color_palette, # 'colors_categories',
+                                  dodge = FALSE, # stacked by default
+                                  free_y = FALSE,
+                                  legend_title = NULL,
+                                  web_width = 1500, # set default when shinybrowser not used
+                                  web_height = 800, # set default when shinybrowser not used
+                                  ... # free
+){
 
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data %>%
     ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
-                        y = .data[[var_values]],
-                        fill = .data[[var_rank_2]],
-                        # Text is reused in ggplotly(tooltip = 'text')
-                        text = paste0(.data[[var_rank_2]], "\n",
-                                      format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-                                      paste("", unit, "en "), .data[[var_year]])))+
+                                 y = .data[[var_values]],
+                                 fill = if (!is.null(var_rank_2)){.data[[var_rank_2]]},
+                                 # Text is reused in ggplotly(tooltip = 'text')
+                                 text = paste0(
+                                   ifelse(is.null(var_rank_2),
+                                          "",
+                                          c(.data[[var_rank_2]], "\n")),
+                                   format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+                                   paste("", unit, "en "), .data[[var_year]]))
+    )+
     ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
-                                         true = "dodge",
-                                         false = "stack"))+
+                                                true = "dodge",
+                                                false = "stack"))+
     ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
                                                 scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3),
                                                 scales::label_number(big.mark = "'", accuracy = 1))
-                                )+
+    )+
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
                                values = color_palette)+ # palette defined in utils_helpers.R
     ggplot2::labs(x = "", y = unit)+
@@ -237,7 +241,7 @@ create_bar_plotly <- function(data,
                      width = return_dynamic_size(which = 'width',
                                                  web_size = web_width,
                                                  n_facets = n_facets)
-  ) %>%
+    ) %>%
     plotly::layout(
       legend = list(
         # font = list(size = 15),
@@ -266,6 +270,7 @@ create_sunburst_plotly <- function(data_sunburst,
                                    var_values,
                                    var_commune,
                                    var_rank_2,
+                                   second_rank,
                                    third_rank,
                                    var_rank_3_1,
                                    var_rank_3_2){
@@ -293,6 +298,7 @@ create_sunburst_plotly <- function(data_sunburst,
            parents = "Total",
            ids = paste0("Total - ",labels), .keep = "unused")
 
+  if(second_rank == TRUE){
   # total per rank_2 (either categorie or secteur)
   subsubtotal_row <- data_sunburst %>%
     dplyr::mutate(labels = .data[[var_rank_2]],
@@ -300,6 +306,7 @@ create_sunburst_plotly <- function(data_sunburst,
            parents = paste0("Total - ", .data[[var_commune]]),
            ids = paste0(parents, " - ", .data[[var_rank_2]]),
            .keep = "unused")
+  }
 
   # specificity : We have two cols that we pivot_long, hence the rank_3_1 and rank_3-2
   # if these were originally one column instead of two, we could simplify the code with rank_3 and remove pivot_longer()
@@ -313,12 +320,12 @@ create_sunburst_plotly <- function(data_sunburst,
                     Autonconsommation = .data[[var_rank_3_2]],
                     .keep = "unused") %>%
       tidyr::pivot_longer(cols = c(Injection, Autonconsommation),
-                   names_to = "labels",
-                   values_to = "values") %>%
+                          names_to = "labels",
+                          values_to = "values") %>%
       dplyr::mutate(labels = labels,
-             parents = ids,
-             ids = paste0(parents, " - ", labels),
-             values = values)
+                    parents = ids,
+                    ids = paste0(parents, " - ", labels),
+                    values = values)
     # assemble everything
     sunburst_df <- dplyr::bind_rows(list(total_row, subtotal_row, subsubtotal_row, lastsubtotal_row))
 
@@ -334,7 +341,7 @@ create_sunburst_plotly <- function(data_sunburst,
                                               digits = 3,
                                               drop0trailing = T,
                                               scientific = F),
-                                        unit))
+                                       unit))
 
   # plot & enjoy
   plotly::plot_ly(data = sunburst_df,
@@ -347,7 +354,7 @@ create_sunburst_plotly <- function(data_sunburst,
                   type='sunburst',
                   branchvalues = 'total',
                   height = 600, width = 600 # decent size
-                  ) %>%
+  ) %>%
     # change to fr
     plotly::config(modeBarButtons = list(list("toImage")),
                    locale = "fr")

@@ -11,6 +11,7 @@ create_sunburst_plotly(
   var_values,
   var_commune,
   var_rank_2,
+  second_rank,
   third_rank,
   var_rank_3_1,
   var_rank_3_2

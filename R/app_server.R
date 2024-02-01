@@ -264,31 +264,6 @@ app_server <- function(input, output, session) {
       inputVals$subsidies_measure
    })
 
-
-  ## Sunburst filter data prod/cons ----
-
-   # PROD
-  subset_sunburst_prod_data <- reactive({
-
-    req(subset_prod_data())
-
-    subset_prod_data() %>%
-      filter(annee == inputVals$max_selected_prod)
-
-  })
-
-   # CONS
-  subset_sunburst_cons_data <- reactive({
-
-    req(subset_cons_data())
-
-    subset_cons_data() %>%
-      filter(annee == inputVals$max_selected_cons)
-
-  })
-
-
-
    # Upload communes ----
 
    observeEvent(inputVals$uploadedCommunes,{
@@ -400,17 +375,12 @@ app_server <- function(input, output, session) {
                           inputVals = inputVals,
                           subsetData = subset_cons_data,
                           selectedUnit = inputVals$selectedUnit,
-                          # args for create_bar_plotly() & create_sunburst_plotly()
-                          sunburstData = subset_sunburst_cons_data,
                           legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
-                          second_rank = FALSE,
                           var_rank_2 = NULL, #"secteur", # secteur later on
                           var_values = "consommation",
                           color_palette = colors_sectors,
-                          third_rank = FALSE,
-                          var_rank_3_1 = NULL, var_rank_3_2 = NULL,
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
                           # name of dl prefix to supply to download module
@@ -423,18 +393,12 @@ app_server <- function(input, output, session) {
                           inputVals = inputVals,
                           subsetData = subset_prod_data,
                           selectedUnit = inputVals$selectedUnit,
-                          # args for create_bar_plotly() & create_sunburst_plotly()
-                          sunburstData = subset_sunburst_prod_data,
                           legend_title = NULL,
                           var_year = "annee",
                           var_commune = "commune",
-                          second_rank = TRUE,
                           var_rank_2 = "categorie",
                           var_values = "production",
                           color_palette = colors_categories,
-                          third_rank = TRUE,
-                          var_rank_3_1 = "injection",
-                          var_rank_3_2 = "autoconsommation",
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
                           # name of dl prefix to supply to download module
@@ -461,8 +425,6 @@ app_server <- function(input, output, session) {
                                    var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
                                    var_values = "besoins", # prod/consumption/besoins
                                    color_palette = colors_rg_type, # utils_helpers.R
-                                   third_rank = FALSE, # boolean
-                                   var_rank_3_1 = NULL, var_rank_3_2 = NULL,
                                    fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
                                    dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars = regener_doc # utils_helpers.R

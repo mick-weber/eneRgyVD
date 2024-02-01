@@ -47,21 +47,11 @@ mod_elec_charts_ui <- function(id,
                                 bslib::layout_column_wrap(width = 1/4, # each col = 25% of avail. width
                                                           class = "d-flex align-items-end",
 
-                                   # radioGroupButtons() for tab ----
-                                   shinyWidgets::radioGroupButtons(
-                                     inputId = ns("tab_plot_type"),
-                                     label = h6(strong("Type de graphique")),
-                                     choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
-                                                 `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-                                     justified = TRUE,
-                                     width = "100%"),
-
-
 
                                    # materialSwitch 1/2 for bar plot
                                    shiny::conditionalPanel(
                                      # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                     condition = "output.commune && input.tab_plot_type == 'bar'",
+                                     condition = "output.commune",
                                      ns = ns,
 
                                      tags$div(
@@ -79,7 +69,7 @@ mod_elec_charts_ui <- function(id,
                                    # materialSwitch 2/2 for bar plot
                                    shiny::conditionalPanel(
                                      # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                     condition = "output.toggle && input.tab_plot_type == 'bar'",
+                                     condition = "output.toggle",
                                      ns = ns,
 
                                      tags$div(
@@ -97,19 +87,7 @@ mod_elec_charts_ui <- function(id,
                                 ),#End layout_column_wrap() for buttons
 
 
-                                 # Simple text to inform how the sunburst year works, if selected
-                                 shiny::conditionalPanel(
-                                   condition = "input.tab_plot_type == 'sunburst'",
-                                   ns = ns,
-
-                                   tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale.")
-
-                                 ),# End conditionalPanel
-
-
-
-                                 # Conditional plotly (bar/sunburst) ----
-                                 # Rendered server side so that we can check if sunburst, then we apply a css class for padding
+                                 # !! Since sunburst is removed we can directly use renderPlotly
                                  uiOutput(ns("plot_render_ui"))
 
 
@@ -140,18 +118,13 @@ mod_elec_charts_server <- function(id,
                                    inputVals,
                                    subsetData, # filtered data for communes and selected years
                                    selectedUnit, # unit selected in mod_unit_converter.R
-                                   sunburstData, # specific data for sunburst
                                    legend_title, # for legend of barplot (either secteur/technologies)
                                    target_year, # which current year for the sunburst
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
-                                   second_rank, # boolean
                                    var_rank_2, # categorical var ('secteur'/'categorie', ...)
                                    var_values, # prod/consumption kwh
                                    color_palette, # utils_helpers.R
-                                   third_rank, # boolean
-                                   var_rank_3_1, # var 1/2 to pivot for the last level of sunburst, if third_rank
-                                   var_rank_3_2, # var 2/2
                                    fct_table_dt_type, # table function to pass (data specific)
                                    dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars){ # the non-reactive documentation file for variables description
@@ -188,9 +161,6 @@ mod_elec_charts_server <- function(id,
 
     output$plot_render_ui <- renderUI({
 
-
-      if(input$tab_plot_type == "bar"){
-
         # Update the initialized FALSE toggle_status with the input$toggle_status
         # WIP with selectedUnit$unit_to
 
@@ -217,31 +187,9 @@ mod_elec_charts_server <- function(id,
         })# End renderPlotly
 
 
-      }# End if
-      else if(input$tab_plot_type == "sunburst"){
-
-
-        # PLOTLY SUNBURST PLOT
-        output$chart_1 <- plotly::renderPlotly({
-
-          create_sunburst_plotly(data_sunburst = sunburstData(), #subsetData_d(), # created just abovez
-                                 unit = inputVals$selectedUnit,
-                                 var_year = var_year, # var name
-                                 var_values = var_values, # var name
-                                 var_commune = var_commune, # var name
-                                 second_rank = second_rank,
-                                 var_rank_2 = var_rank_2, # var name
-                                 third_rank = third_rank, # we do have a third layer (rank_3_1+rank_3_2)
-                                 var_rank_3_1 = var_rank_3_1,
-                                 var_rank_3_2 = var_rank_3_2) # var names pivotted
-        })# End renderPlotly
-      }# End else if
-
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
 
-      tags$div(class = ifelse(input$tab_plot_type == "sunburst",
-                              yes = "sunburstClass",
-                              no = "barClass"),
+      tags$div(
                plotly::plotlyOutput(ns("chart_1")) %>%
                  shinycssloaders::withSpinner(type = 6,
                                               color= main_color) # color defined in utils_helpers.R

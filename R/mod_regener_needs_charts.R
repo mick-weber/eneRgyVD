@@ -57,20 +57,11 @@ mod_regener_needs_charts_ui <- function(id){
 
                                                                     class = "d-flex align-items-end",
 
-                                                                  # radioGroupButtons() for tab ----
-                                                                  shinyWidgets::radioGroupButtons(
-                                                                    inputId = ns("tab_plot_type"),
-                                                                    label = h6(strong("Type de graphique")),
-                                                                    choices = c(`<i class='fa fa-bar-chart'></i>` = "bar", # html for icons
-                                                                                `<i class='fa fa-pie-chart'></i>` = "sunburst"),
-                                                                    justified = TRUE,
-                                                                    width = "100%"),
-
 
                                                                   # materialSwitch 1/2 for bar plot
                                                                   shiny::conditionalPanel(
                                                                     # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                                                    condition = "output.commune && input.tab_plot_type == 'bar'",
+                                                                    condition = "output.commune",
                                                                     ns = ns,
 
                                                                              tags$div(
@@ -87,7 +78,7 @@ mod_regener_needs_charts_ui <- function(id){
                                                                   # materialSwitch 2/2 for bar plot
                                                                   shiny::conditionalPanel(
                                                                     # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                                                    condition = "output.toggle && input.tab_plot_type == 'bar'",
+                                                                    condition = "output.toggle",
                                                                     ns = ns,
 
                                                                     tags$div(
@@ -106,17 +97,6 @@ mod_regener_needs_charts_ui <- function(id){
 
 
                                         ),#End layout_column_wrap() for buttons
-
-
-                                        # Simple text to inform how the sunburst year works, if selected
-                                        shiny::conditionalPanel(
-                                          condition = "input.tab_plot_type == 'sunburst'",
-                                          ns = ns,
-
-                                          tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale.")
-
-                                        ),# End conditionalPanel
-
 
 
                                         # Conditional plotly (bar/sunburst) ----
@@ -157,9 +137,6 @@ mod_regener_needs_charts_server <- function(id,
                                             var_rank_2, # categorical var ('secteur'/'categorie', ...)
                                             var_values, # prod/consumption kwh
                                             color_palette, # utils_helpers.R
-                                            third_rank, # boolean
-                                            var_rank_3_1, # var 1/2 to pivot for the last level of sunburst, if third_rank exists
-                                            var_rank_3_2, # var 2/2
                                             fct_table_dt_type, # table function to pass (data specific)
                                             dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                             doc_vars){
@@ -176,16 +153,6 @@ mod_regener_needs_charts_server <- function(id,
                            values_from = "besoins") # not passed as arguments (could be if needed)
     })
 
-    # We also process subsetData_wide() in a compatible format for create_sunburst_plotly()
-    subsetData_sunburst <- reactive({
-
-      req(inputVals$max_selected_regener)
-
-      subsetData_wide() %>%  # not passed as arguments (could be if needed)
-       dplyr::filter(etat == inputVals$max_selected_regener) |>
-       dplyr::rename(besoins = `Besoins actuels`) # needed to use arg `var_values` for both plotly/sunburst
-
-    })
 
     # We process subsetData() for create_bar_plotly() below
     #  we only plot on the latest year selected in the regener_year selector
@@ -228,9 +195,7 @@ mod_regener_needs_charts_server <- function(id,
 
     output$plot_render_ui <- renderUI({
 
-      if(input$tab_plot_type == "bar"){
-
-        # Update the initialized FALSE toggle_status with the input$toggle_status
+      # Update the initialized FALSE toggle_status with the input$toggle_status
         # WIP with inputVals$selectedUnit
 
         # ...PLOTLY BAR PLOT ----
@@ -252,25 +217,6 @@ mod_regener_needs_charts_server <- function(id,
                             web_height = inputVals$web_height # px height of browser when app starts
                             )
         })# End renderPlotly
-
-      }# End if
-      else if(input$tab_plot_type == "sunburst"){
-
-
-        # ...PLOTLY SUNBURST PLOT ----
-        output$chart_1 <- plotly::renderPlotly({
-          # fct_helpers.R
-          create_sunburst_plotly(data_sunburst = subsetData_sunburst(), # must be adapted later
-                                 unit = inputVals$selectedUnit,
-                                 var_year = var_year, # var name
-                                 var_values = var_values, # var name
-                                 var_commune = var_commune, # var name
-                                 var_rank_2 = var_rank_2, # var name
-                                 third_rank = third_rank, # we do have a third layer (rank_3_1+rank_3_2)
-                                 var_rank_3_1 = var_rank_3_1,
-                                 var_rank_3_2 = var_rank_3_2) # var names pivotted
-        })# End renderPlotly
-      } # End else if
 
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),

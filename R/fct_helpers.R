@@ -57,13 +57,14 @@ make_statbox_item <- function(icon_name,
 
   tags$div(class = "text-center padding-top-1 rounded",
 
-           bsicons::bs_icon(name = icon_name, size = "1.8rem", class = icon_class),
-           p(HTML(title), class = "p-0 m-0", style = "font-size:1.2rem;"),
+           bsicons::bs_icon(name = icon_name, size = "1.6rem", class = icon_class),
+           p(HTML(title), class = "p-0 m-0", style = "font-size:1.1rem;"),
            tags$div(
              # Nicely format value (rounded + big.mark) and add unit below as newline
-             strong(HTML(paste(format(round(value, digits = 0), big.mark = "'"), "<br>", unit)),
-                    class = "fs-6"),
-             p(year)
+             strong(HTML(paste(format(round(value, digits = 0), big.mark = "'"),
+                               "<br>", unit)),
+                    style = "font-size:1.2rem;"),
+             p(year, style = "font-size:1rem;")
            )
 
   )
@@ -169,7 +170,7 @@ create_select_leaflet <- function(sf_districts,
 #' @return an interactive plotly object
 #' @export
 
-create_bar_plotly_dev <- function(data,
+create_bar_plotly <- function(data,
                                   n_communes,
                                   var_year,
                                   var_commune,
@@ -507,14 +508,15 @@ create_cons_table_dt <- function(data,
                                                digits = 3,
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) %>%
-    # clear out useless vars
-    select(-code_secteur) %>%
     # put installed power in the last position
     dplyr::relocate(commune, annee, secteur, consommation) %>%
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(cons_icons, by = "secteur") %>%
-    dplyr::relocate(icon, .before = secteur) %>% #
-    dplyr::rename(" " = "icon") %>% # empty colname for icons
+    dplyr::relocate(icon, .before = secteur) %>%
+    # !! ADD BACK SECTEUR WHEN AVAILABLE
+    # dplyr::rename(" " = "icon") %>% # empty colname for icons
+    select(-secteur, -icon) |>
+    # !! ADD BACK SECTEUR WHEN AVAILABLE
     rename_fr_colnames() %>% # fct_helpers.R
     add_colname_units(unit = unit) %>%  # fct_helpers.R
     #turn to DT

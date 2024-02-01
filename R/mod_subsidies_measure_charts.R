@@ -75,9 +75,6 @@ mod_subsidies_measure_charts_ui <- function(id){
 
                        ), # End layout_column_wrap
 
-                       # breathing
-                       br(),
-
                        # Plotly bar (only one viz) ----
                        # plotly barplot in server according to which flow/bar is selected
 

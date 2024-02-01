@@ -142,10 +142,7 @@ app_server <- function(input, output, session) {
        # CONVERSION TEST IN PROGRESS
       inputVals$cons_dataset %>%
         dplyr::filter(annee >= inputVals$min_selected_cons,
-                      annee <= inputVals$max_selected_cons)  %>%
-          convert_units(colnames = "consommation",
-                        unit_from = "kWh",
-                        unit_to = inputVals$selectedUnit)
+                      annee <= inputVals$max_selected_cons)
 
     })
 

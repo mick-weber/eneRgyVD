@@ -43,7 +43,7 @@ mod_collapse_stats_box_server <- function(id,
                     bslib::card_header(title,
                                        class = "bg-secondary"),
 
-                    bslib::layout_column_wrap(width = "150px",
+                    bslib::layout_column_wrap(width = "140px",
                                               fixed_width = TRUE,
                                               heights_equal = "all",
                                               fill = FALSE,
@@ -61,6 +61,9 @@ mod_collapse_stats_box_server <- function(id,
 
            make_statbox_item(icon_name = "house-check-fill",icon_class = "text-success",
                              title = "Subventions<br>rénovation M01", value = subsidies_value, unit = "dossiers", year = year_subsidies),
+
+           make_statbox_item(icon_name = "plugin", icon_class = "text-warning",
+                             title = "Consommation<br>électrique", value = subsidies_value, unit = selectedUnit, year = year_elec)
 
 
                     )# End layout_column_wrap

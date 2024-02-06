@@ -99,8 +99,9 @@ mod_regener_needs_charts_ui <- function(id){
                                         ),#End layout_column_wrap() for buttons
 
 
-                                        # Conditional plotly (bar/sunburst) ----
-                                        # Rendered server side so that we can check if sunburst, then we apply a css class for padding
+                                        # Conditional plotly (bar) ----
+                                        # We'll apply a css class for padding. The renderUI can be changed to plotly render funs
+                                        # since sunburst is removed
                                         uiOutput(ns("plot_render_ui"))
 
 

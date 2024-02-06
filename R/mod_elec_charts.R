@@ -28,9 +28,12 @@ mod_elec_charts_ui <- function(id,
         bslib::accordion_panel(
           title = "Méthodologie",
           div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_prod_elec_warning)),
+                    specific_elec_warning)),
               br(),
-          actionButton(ns("prod_data_help"), label = "Plus de détails")
+          # Since multiple mod_elec_charts can exist, we play with the namespace to land the correct 'mod_about_the_app.R' page
+          # This is done in app_server.R, `subpanels_tribble` object
+
+          actionButton(ns("elec_data_help"), label = "Plus de détails")
         ),
         open = FALSE)
     ),#End div
@@ -50,7 +53,7 @@ mod_elec_charts_ui <- function(id,
 
                                    # materialSwitch 1/2 for bar plot
                                    shiny::conditionalPanel(
-                                     # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                     # Commune condition in server must be reached
                                      condition = "output.commune",
                                      ns = ns,
 
@@ -68,7 +71,7 @@ mod_elec_charts_ui <- function(id,
 
                                    # materialSwitch 2/2 for bar plot
                                    shiny::conditionalPanel(
-                                     # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                     # Toggle condition in server must be reached
                                      condition = "output.toggle",
                                      ns = ns,
 
@@ -122,7 +125,7 @@ mod_elec_charts_server <- function(id,
                                    target_year, # which current year for the sunburst
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
-                                   var_rank_2, # categorical var ('secteur'/'categorie', ...)
+                                   var_rank_2, # categorical var ('secteur'/'categorie', NULL, ...)
                                    var_values, # prod/consumption kwh
                                    color_palette, # utils_helpers.R
                                    fct_table_dt_type, # table function to pass (data specific)
@@ -162,8 +165,6 @@ mod_elec_charts_server <- function(id,
     output$plot_render_ui <- renderUI({
 
         # Update the initialized FALSE toggle_status with the input$toggle_status
-        # WIP with selectedUnit$unit_to
-
         # PLOTLY BAR PLOT
 
         output$chart_1 <- plotly::renderPlotly({

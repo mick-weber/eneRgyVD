@@ -66,8 +66,8 @@ app_server <- function(input, output, session) {
    #  since all redirect buttons end up in 'À propos' > 'about-tabset' area
 
    subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
-                  "cons_data_help",                    "Consommation d'électricité",
-                  "production_charts-prod_data_help",  "Production d'électricité",
+                  "consumption_charts-elec_data_help",  "Consommation d'électricité",
+                  "production_charts-elec_data_help",   "Production d'électricité",
                   "regener_needs-rgr_needs_help",       "Chaleur bâtiments",
                   "regener_cons-rgr_cons_help",         "Chaleur bâtiments",
                   "regener_misc-rgr_misc_help",         "Chaleur bâtiments",
@@ -377,7 +377,7 @@ app_server <- function(input, output, session) {
                           var_commune = "commune",
                           var_rank_2 = NULL, #"secteur", # secteur later on
                           var_values = "consommation",
-                          color_palette = colors_sectors,
+                          color_palette = colors_sectors, # app's defaults is blue if no var_rank_2 supplied
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
                           # name of dl prefix to supply to download module
@@ -471,27 +471,38 @@ app_server <- function(input, output, session) {
                                    title = strong("Synthèse : Canton de Vaud"),
                                    selectedUnit = inputVals$selectedUnit,
 
+                                   # Computed in utils_helpers.R (using years below) then converted if needed
                                    prod_elec_value = prod_elec_vd_last_year |>
-                                     convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
-
-                                   # !! CONS_ELEC removed !! # cons_elec_value = cons_elec_vd_last_year, # utils_helpers.R
+                                     convert_units(unit_to = inputVals$selectedUnit),
 
                                    cons_rg_value = cons_rg_vd_last_year |>
-                                     convert_units(unit_to = inputVals$selectedUnit), # utils_helpers.R
+                                     convert_units(unit_to = inputVals$selectedUnit),
 
                                    subsidies_value = subsidies_m01_vd_last_year,
 
-                                   year_elec = last_common_elec_year,
-                                   year_rgr = last_common_elec_year,
-                                   year_subsidies = last_subsidies_year
+                                   cons_elec_value = cons_elec_vd_last_year |>
+                                     convert_units(unit_to = inputVals$selectedUnit),
 
-                                   ) # utils_helpers.R
+                                   # Computed in utils_helpers.R for both statboxes
+                                   year_elec_prod = last_year_elec_prod,
+                                   year_elec_cons = last_year_elec_cons,
+                                   year_rgr = last_year_rgr,
+                                   year_subsidies = last_year_subsidies
+
+                                   )
 
   })
 
 
   ### Communes box ----
-  # Must be dynamically rendered because it depends on selectedUnit (reactive)
+  # This is dependant on a UI's conditionalpanel toggled with output.commune below
+  # So that we remove the statbox if no more commune is selected (it was persisting without it)
+
+   output$commune <- reactive({
+     length(inputVals$selectedCommunes) > 0 # Returns TRUE if at least one commune is selected, else FALSE
+   })
+
+   outputOptions(output, 'commune', suspendWhenHidden = FALSE) # keep active to evaluate the condition
 
    observe({
 
@@ -503,17 +514,17 @@ app_server <- function(input, output, session) {
                                    title = strong("Synthèse : Commune(s) sélectionnée(s)"),
                                    selectedUnit = inputVals$selectedUnit,
 
-                                   prod_elec_value = inputVals$common_year_elec_prod, # mod_inputs.R
-
-                                   # !! CONS_ELEC removed !! # cons_elec_value = inputVals$common_year_elec_cons, # mod_inputs.R
-
+                                   # Computed in utils_helpers.R (using years below) then converted if needed
+                                   prod_elec_value = inputVals$elec_cons_last_year, # mod_inputs.R
                                    cons_rg_value = inputVals$max_year_rg_cons,
-
                                    subsidies_value = inputVals$max_year_subsidies_m01,
+                                   cons_elec_value = inputVals$elec_cons_last_year,
 
-                                   year_elec = last_common_elec_year,
-                                   year_rgr = last_common_elec_year,
-                                   year_subsidies = last_subsidies_year
+                                   # Computed in utils_helpers.R for both statboxes
+                                   year_elec_prod = last_year_elec_prod,
+                                   year_elec_cons = last_year_elec_cons,
+                                   year_rgr = last_year_rgr,
+                                   year_subsidies = last_year_subsidies
                                    )
 
    })

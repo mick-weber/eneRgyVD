@@ -63,7 +63,7 @@ req_communes_phrase <- "Sélectionner au moins une commune pour générer un ré
 generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
                                                        Les grands principes de chaque méthode ainsi que les principales modifications sont documentés dans l'onglet 'À propos'."
 
-specific_prod_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de nous contacter afin que nous puissions améliorer les résultats."
+specific_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite."
 
 specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'information qui figure dans les registres cantonal et fédéral des bâtiments, en particulier pour les agents énergétiques.
 La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
@@ -175,7 +175,7 @@ co2_keywords <- c("CO2")
 ## Default ggplot2 colors ----
 
 # Avoids darkgrey for geom_cols when 'var_rank_2' is NULL
-ggplot2::update_geom_defaults("col", aes(fill = "#90b0ee"))
+ggplot2::update_geom_defaults("col", ggplot2::aes(fill = "#90b0ee"))
 
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
@@ -427,20 +427,20 @@ districts_names <- sf_districts %>%
   dplyr::add_row(NOM_MIN = "Canton", .before = 1) %>%
   dplyr::pull(NOM_MIN)
 
-## Objects specific to the tabProd  ----
+## Objects specific 'Production électricité'  ----
 
-### Colors for categorie ----
+### Colors for categorie
 
 categories_diren <- elec_prod %>%
   dplyr::distinct(categorie) %>%
   dplyr::arrange(categorie) %>%
   dplyr::pull()
 
-## Objects specific to the tabCons  ----
+## Objects specific 'Consommation électricité'  ----
 
 # to be populated
 
-## Objects specific to the tabRegener  ----
+## Objects specific 'Chaleur bâtiments'  ----
 # used for fct_helpers.R -> mod_regener_cons_charts.R + mod_collapse_stats_box.R
 
 min_regener_year <- min(regener_cons_ae_use$etat)
@@ -448,60 +448,53 @@ max_regener_year <- max(regener_cons_ae_use$etat)
 
 regener_current_year <- max_regener_year
 
-## Objects specific to the tabSubsidies  ----
+## Objects specific 'Subventions'  ----
 
 # mesures_pb |> dplyr::select(MESURE, MESURE_TRAD, MESURE_SIMPLIFIEE2)
 
 
-## Objects specific to the tabMap  ----
+## Objects specific 'Carte' (Statbox)  ----
 
-### Common electricity year ----
-# We seek for the year that is common to both electricity consumption and production datasets
-# This is to create the statistic boxes (tabMap) and compare similar years.
-
-last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
-
-  # !!CONS_ELEC removed!! # dplyr::intersect(
-  # !!CONS_ELEC removed!! # elec_cons %>% dplyr::distinct(annee),
-  # !!CONS_ELEC removed!! # elec_prod %>% dplyr::distinct(annee)) %>%
-  # !!CONS_ELEC removed!! # dplyr::slice_max(annee) %>%
-  # !!CONS_ELEC removed!! # dplyr::pull(annee)
-
+#last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
 
 ### Cantonal statbox values ----
 
-#### VD electricity production for last common year
+#### VD electricity production for last available year
+
+last_year_elec_prod <- max(elec_prod$annee) # When prod elec alone
 
 prod_elec_vd_last_year <- elec_prod %>%
   dplyr::filter(commune == "Canton de Vaud") %>%
-  dplyr::filter(annee == last_common_elec_year) %>%
+  dplyr::filter(annee == last_year_elec_prod) %>%
   dplyr::summarise(production = sum(production, na.rm = TRUE)) %>%
   dplyr::pull()
 
-#### VD electricity consumption for last common year
+#### VD electricity consumption for last available year
 
-cons_elec_vd_last_year <- NULL   # so we keep most code unchanged in mod_collapse_stats_box.R !!
+last_year_elec_cons <- max(elec_cons$annee) # When prod elec alone
 
-# !!CONS_ELEC removed!! #  cons_elec_vd_last_year <- elec_cons %>%
-# !!CONS_ELEC removed!! #   dplyr::filter(annee == last_common_elec_year) %>%
-# !!CONS_ELEC removed!! #   dplyr::filter(commune == "Canton de Vaud") %>%
-# !!CONS_ELEC removed!! #   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
-# !!CONS_ELEC removed!! #   dplyr::pull()
+cons_elec_vd_last_year <- elec_cons %>%
+  dplyr::filter(commune == "Canton de Vaud") %>%
+  dplyr::filter(annee == last_year_elec_cons) %>%
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
+  dplyr::pull()
 
 #### VD heat consumption for last common year
+# !`annee` -> `etat`
+last_year_rgr <- max(regener_needs$etat)
 
 cons_rg_vd_last_year <- regener_cons_ae_aff %>%
-  # dplyr::filter(annee == last_common_elec_year) %>% when year is here
   dplyr::filter(commune == "Canton de Vaud") %>%
+  dplyr::filter(etat == last_year_rgr) %>%
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
   dplyr::pull()
 
 #### VD subsidies M01 for last common year
-last_subsidies_year <- max(subsidies_by_measure$annee)
+last_year_subsidies <- max(subsidies_by_measure$annee)
 
 subsidies_m01_vd_last_year <- subsidies_by_measure |>
-  dplyr::filter(annee == last_subsidies_year) |>
   dplyr::filter(commune == "Canton de Vaud") |>
+  dplyr::filter(annee == last_year_subsidies) |>
   dplyr::filter(mesure == "M01") |>
   dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
   dplyr::pull()
@@ -512,12 +505,12 @@ subsidies_m01_vd_last_year <- subsidies_by_measure |>
 # With a nested list ; each district name has 4 coordinates (xmin,ymin,xmax,ymax)
 # These coordinates represent the boundaries for the leaflet map zoom adjustments (through widget)
 
-bboxes <- districts_names %>%
-  purrr::map(.f = ~ sf::st_bbox(sf_districts %>% dplyr::filter(NOM_MIN == .x))) %>%
-  purrr::set_names(districts_names)
-
-## Add & fill the Canton bbox in our bboxes using the whole districts borders
-
-bboxes$Canton <- sf_districts %>% sf::st_bbox()
+# bboxes <- districts_names %>%
+#   purrr::map(.f = ~ sf::st_bbox(sf_districts %>% dplyr::filter(NOM_MIN == .x))) %>%
+#   purrr::set_names(districts_names)
+#
+# ## Add & fill the Canton bbox in our bboxes using the whole districts borders
+#
+# bboxes$Canton <- sf_districts %>% sf::st_bbox()
 
 

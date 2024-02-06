@@ -49,68 +49,66 @@ mod_about_the_app_ui <- function(id){
                                               tags$p("Les sources de données suivantes sont utilisées : "),
 
 
-                                              ## tabsetPanel (nested) ----
+                                              ## Données subtabs ----
                                               bslib::navset_tab(id = ns("nested_tabset"),
 
+                                                                   ### 1. Cons elec ----
+                                                                   bslib::nav_panel("Consommation d'électricité",
+                                                                   tags$div(
+                                                                            br(),
+                                                                   h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
+                                                                             tags$p("En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. La distribution d'électricité à chaque
+                                                                   point de mesure du territoire vaudois a pu être récoltée et ce sont ces données agrégées par commune qui alimentent cette application.",
+                                                                   "La mise à jour est faite annuellement avec une année de retard, le relevé se faisant par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
+                                                                   compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
+                                                                   les données peuvent prendre quelques mois à être disponibles dans l'application.",
+                                                                   tags$strong("Les répartitions sectorielles (ménages, services, etc.) ne sont pas encore disponibles, la nomenclature diffère selon chaque gestionnaire de réseau.
+                                                                               Des travaux d'harmonisation sont en cours.")
+                                                                   ),# End tags$p()
+                                                                   br(),
+
+                                                                   # Documentation table for electricity production
+                                                                   DT::dataTableOutput(ns("elec_cons_doc")),
+                                                                   br()
+                                                                   )# End tags$div
+                                                                   ),# End nested tabPanel 1.
 
 
-                                                                   ### Prod élec ----
-                                                                   bslib::nav_panel("Production d'électricité",
-                                                                                    # create div to apply class
-                                                                                    tags$div(
-                                                                                             br(),
-                                                                                             # Overview method
-                                                                                             h4(strong("Synthèse de la méthode")),
+                                                                ### 2. Prod élec ----
+                                                                bslib::nav_panel("Production d'électricité",
+                                                                                 # create div to apply class
+                                                                                 tags$div(
+                                                                                   br(),
+                                                                                   # Overview method
+                                                                                   h4(strong("Synthèse de la méthode")),
 
-                                                                                             p("La grande majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
+                                                                                   p("La grande majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
                 pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables.
                 Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles,
                 nettoyage des communes, estimation de l'autoconsommation photovoltaïque, etc.) permet de créer une table de données pour chaque commune vaudoise.",
-                                                                                               br(),
-                                                                                               tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur Pronovo AG", target = "_blank")),# open in new tab
-                                                                                             p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."),
-                                                                                             DT::dataTableOutput(ns("elec_prod_doc")),
-                                                                                             br(),
+                                                                                     br(),
+                                                                                     tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur Pronovo AG", target = "_blank")),# open in new tab
+                                                                                   p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."),
+                                                                                   DT::dataTableOutput(ns("elec_prod_doc")),
+                                                                                   br(),
 
-                                                                                             # Detailed method
-                                                                                             h4(strong("Méthode détaillée")),
-                                                                                             br(),
-                                                                                             # Add download link
-                                                                                             tags$a(href= "www/Pronovo_synthese_traitement_sans_recommendations.html",
-                                                                                                    target="_blank", "Télécharger la documentation",
-                                                                                                    download = "Pronovo_synthese_traitement_sans_recommendations.html"),
-                                                                                             br(),
+                                                                                   # Detailed method
+                                                                                   h4(strong("Méthode détaillée")),
+                                                                                   br(),
+                                                                                   # Add download link
+                                                                                   tags$a(href= "www/Pronovo_synthese_traitement_sans_recommendations.html",
+                                                                                          target="_blank", "Télécharger la documentation",
+                                                                                          download = "Pronovo_synthese_traitement_sans_recommendations.html"),
+                                                                                   br(),
 
-                                                                                             tags$iframe(src = "www/Pronovo_synthese_traitement_sans_recommendations.html",
-                                                                                                         target = "_self",
-                                                                                                         height = "800px", width = "100%")
-                                                                                    )# End tags$div
+                                                                                   tags$iframe(src = "www/Pronovo_synthese_traitement_sans_recommendations.html",
+                                                                                               target = "_self",
+                                                                                               height = "800px", width = "100%")
+                                                                                 )# End tags$div
 
-                                                                   ),# End nested tabPanel 1/4
+                                                                ),# End nested tabPanel 2.
 
-                                                                   ### Cons elec ----
-                                                                   # !!CONS_ELEC removed!! # bslib::nav_panel("Consommation d'électricité",
-                                                                   # !!CONS_ELEC removed!! # tags$div(
-                                                                   # !!CONS_ELEC removed!! #          br(),
-                                                                   # !!CONS_ELEC removed!! # h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
-                                                                   # !!CONS_ELEC removed!! #           tags$p("En 2022, la DGE-DIREN a procédé à la première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. L'injection d'électricité à chaque
-                                                                   # !!CONS_ELEC removed!! # point de mesure du territoire vaudois a pu être récoltée, le type de client associé à chaque point de mesure a été catégorisé en secteurs,
-                                                                   # !!CONS_ELEC removed!! # et ce sont ces données agrégées par commune qui alimentent cette application.",
-                                                                   # !!CONS_ELEC removed!! # "La mise à jour est faite annuellement avec une année de retard, le relevé se fait par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
-                                                                   # !!CONS_ELEC removed!! # compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
-                                                                   # !!CONS_ELEC removed!! # les données peuvent prendre quelques mois à être disponibles dans l'application.",
-                                                                   # !!CONS_ELEC removed!! # tags$strong("Les répartitions sectorielles sont encore hautement incertaines, la méthode diffère notamment selon chaque gestionnaire de réseau.
-                                                                   # !!CONS_ELEC removed!! #             Une meilleure catégorisation et davantage d'harmonisation sont souhaitées à terme mais c'est un long processus.")
-                                                                   # !!CONS_ELEC removed!! # ),# End tags$p()
-                                                                   # !!CONS_ELEC removed!! # br(),
-                                                                   # !!CONS_ELEC removed!! #
-                                                                   # !!CONS_ELEC removed!! # # Documentation table for electricity production
-                                                                   # !!CONS_ELEC removed!! # DT::dataTableOutput(ns("elec_cons_doc")),
-                                                                   # !!CONS_ELEC removed!! # br()
-                                                                   # !!CONS_ELEC removed!! # )# End tags$div
-                                                                   # !!CONS_ELEC removed!! # ),# End nested tabPanel 2/4
-
-                                                                   ### Regener ----
+                                                                   ### 3. Regener ----
                                                                    bslib::nav_panel("Chaleur bâtiments",
                                                                                     # create div to apply class
                                                                                     tags$div(
@@ -153,9 +151,9 @@ mod_about_the_app_ui <- function(id){
 
                                                                                     )# End tags$div
 
-                                                                   ),# End nested tabPanel 3/4
+                                                                   ),# End nested tabPanel 3.
 
-                                                                   ### Subsidies ----
+                                                                   ### 4. Subsidies ----
                                                                    bslib::nav_panel("Subventions bâtiments",
                                                                                     # create div to apply class
                                                                                     tags$div(
@@ -197,15 +195,13 @@ mod_about_the_app_ui <- function(id){
                                               br(),
                                               tags$h4(strong("Glossaire")),
                                               tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
-                                              DT::dataTableOutput(ns("glossary_table")),
+                                              DT::dataTableOutput(ns("glossary_table"))
 
                                        )# End layout_columns
                       ),# End tabPanel 'Confidentialité'
 
                       # Techno ----
                       bslib::nav_panel(title = "Technologie",
-
-
                                        bslib::layout_columns(col_widths = c(-1, 9, -2),
                                               # breathing
                                               br(),
@@ -257,7 +253,19 @@ mod_about_the_app_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    # Prod élec ----
+    # 1. Cons élec ----
+
+    # Table for electricity consumption documentation
+
+    output$elec_cons_doc <- DT::renderDataTable({
+
+      elec_cons_doc %>%  # loaded in utils_helpers.R
+        create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
+
+      })
+
+
+    # 2. Prod élec ----
     # Table for electricity production documentation
     output$elec_prod_doc <- DT::renderDataTable({
 
@@ -266,20 +274,7 @@ mod_about_the_app_server <- function(id){
 
     })
 
-
-    # Cons élec ----
-
-    # Table for electricity consumption documentation
-
-    # !!CONS_ELEC removed!! # output$elec_cons_doc <- DT::renderDataTable({
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! #   elec_cons_doc %>%  # loaded in utils_helpers.R
-    # !!CONS_ELEC removed!! #     create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
-    # !!CONS_ELEC removed!! #
-    # !!CONS_ELEC removed!! # })
-
-
-    # Regener ----
+    # 3. Regener ----
 
     output$regener_doc <- DT::renderDataTable({
       regener_doc %>%
@@ -287,7 +282,7 @@ mod_about_the_app_server <- function(id){
     })
 
 
-    ### Subsidies ----
+    # 4. Subsidies ----
 
     output$subsidies_doc <- DT::renderDataTable({
       subsidies_doc %>%

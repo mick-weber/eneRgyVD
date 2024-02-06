@@ -5,7 +5,7 @@
 \title{make_statbox_item()
 custom replacement for valueboxes (too rigid) to fill statboxes with icon, title, value and year info}
 \usage{
-make_statbox_item(icon_name, icon_class, title, value, unit, year)
+make_statbox_item(iconBgClass, title, value, unit, year)
 }
 \value{
 a HTML div container

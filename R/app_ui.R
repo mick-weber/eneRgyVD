@@ -87,7 +87,15 @@ app_ui <- function(request) {
                          tagList(
 
                            mod_collapse_stats_box_ui("vd_box"),
-                           mod_collapse_stats_box_ui("communes_box")
+
+                           # Display communes statbox only if any is selected !
+                           # output$commune in app_server.R
+
+                           shiny::conditionalPanel(
+
+                             condition = "output.commune",
+                             mod_collapse_stats_box_ui("communes_box")
+                           )
                          )
                        )# End layout_column_wrap
 
@@ -169,20 +177,24 @@ app_ui <- function(request) {
       ),#End nav_menu() 'Divers'
 
 
-      ###Spacer ----
+      #### (spacer) ----
       bslib::nav_spacer(),
 
       ## Useful links ----
       bslib::nav_menu(
         align = "right",
         title = "Liens utiles", # utils_helpers.R for links
+
+        ### Contact ----
         bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
 
                                # add objet to mail manually, better UX
                                href = paste0("mailto:", mail_address, "?subject=Question profil énergétique"), target = "_blank")),
+        ### DGE-DIREN ----
         bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
                                href = link_diren, target = "_blank")),
 
+        ### GitHub ----
         bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
                                href = link_github, target = "_blank"))
 

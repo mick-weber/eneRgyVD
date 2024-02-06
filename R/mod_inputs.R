@@ -297,16 +297,16 @@ mod_inputs_server <- function(id){
           )
 
       # Statbox value for current selection's aggregated electricity production
-      inputVals$common_year_elec_prod <- subset_elec_prod() %>%
-        dplyr::filter(annee == last_common_elec_year) %>%
+      inputVals$elec_prod_last_year <- subset_elec_prod() %>%
+        dplyr::filter(annee == last_year_elec_prod) %>%
         dplyr::filter(!commune == "Canton de Vaud") %>% # remove cantonal row
         dplyr::summarise(production = sum(production, na.rm = T)) %>%
         dplyr::pull(production)
 
       # Statbox value for current selection's aggregated electricity consumption
 
-      inputVals$common_year_elec_cons <- subset_elec_cons() %>%
-        dplyr::filter(annee == last_common_elec_year) %>%
+      inputVals$elec_cons_last_year <- subset_elec_cons() %>%
+        dplyr::filter(annee == last_year_elec_cons) %>%
         dplyr::filter(!commune == "Canton de Vaud")%>%
         dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
         dplyr::pull(consommation)
@@ -314,14 +314,14 @@ mod_inputs_server <- function(id){
       # Statbox value for current selection's aggregated buildings thermal consumption
 
       inputVals$max_year_rg_cons <- subset_rgr_cons_1() %>%
-        dplyr::filter(etat == max_regener_year) %>%
+        dplyr::filter(etat == last_year_rgr) %>%
         dplyr::filter(!commune == "Canton de Vaud") %>%
         dplyr::summarise(consommation=sum(consommation, na.rm = T)) %>%
         dplyr::pull(consommation)
 
 
       inputVals$max_year_subsidies_m01 <- subset_subsidies_measure() |>
-        dplyr::filter(annee == last_subsidies_year) |>
+        dplyr::filter(annee == last_year_subsidies) |>
         dplyr::filter(!commune == "Canton de Vaud") |>
         dplyr::filter(mesure == "M01") |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>

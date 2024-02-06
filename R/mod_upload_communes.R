@@ -18,7 +18,7 @@ mod_upload_communes_ui <- function(id){
                                             icon = bsicons::bs_icon("cloud-arrow-up-fill"),
 
                                             shiny::fileInput(ns("file_communes"),
-                                                             label = p("Importer un fichier", br(),
+                                                             label = p("Importer un fichier csv", br(),
                                                                        tags$i(
                                                                        "La première colonne doit contenir les numéros OFS.
                                                                        Séparateur point-virgule ';' uniquement. \n", # new line

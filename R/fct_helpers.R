@@ -47,27 +47,27 @@ info_dev_message <- function(){
 #'
 #' @examples
 #' make_statbox_item(icon_name = "heart",icon_class = "text-danger", title = "Rescues", value = 100, unit = "people", year = 2022)
-make_statbox_item <- function(icon_name,
-                              icon_class,
+make_statbox_item <- function(iconBgClass,
                               title,
                               value,
                               unit,
                               year){
 
 
-  tags$div(class = "text-center padding-top-1 rounded",
+  tags$div(class = glue::glue("text-center padding-top-1 rounded {iconBgClass}"),
 
-           bsicons::bs_icon(name = icon_name, size = "1.6rem", class = icon_class),
-           p(HTML(title), class = "p-0 m-0", style = "font-size:1.1rem;"),
-           tags$div(
-             # Nicely format value (rounded + big.mark) and add unit below as newline
-             strong(HTML(paste(format(round(value, digits = 0), big.mark = "'"),
-                               "<br>", unit)),
-                    style = "font-size:1.2rem;"),
-             p(year, style = "font-size:1rem;")
+           p(HTML(title), class = "p-0 m-0", style = "font-size:1.1rem;font-weight:500;"),
+                     tags$div(
+                       # Nicely format value (rounded + big.mark) and add unit below as newline
+                       strong(HTML(format(round(value, digits = 0), big.mark = "'")),
+                              style = "font-size:1.3rem;"),
+
+                       strong(p(unit, style = "font-size:1.2rem;")),
+
+
+                       p(year, style = "font-size:1.1rem;font-weight:500;")
+                     )
            )
-
-  )
 
 }
 

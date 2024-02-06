@@ -235,7 +235,7 @@ mod_about_the_app_ui <- function(id){
                                                      target = "_blank"),
                                               tags$a(class = "m-0 ps-3",
                                                      href = link_github,
-                                                     "Visiter le GitHub",
+                                                     "Visiter le repo GitHub",
                                                      target = "_blank")
 
                                               )
@@ -259,7 +259,7 @@ mod_about_the_app_server <- function(id){
 
     output$elec_cons_doc <- DT::renderDataTable({
 
-      elec_cons_doc %>%  # loaded in utils_helpers.R
+      elec_cons_doc |>  # loaded in utils_helpers.R
         create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
 
       })
@@ -269,7 +269,7 @@ mod_about_the_app_server <- function(id){
     # Table for electricity production documentation
     output$elec_prod_doc <- DT::renderDataTable({
 
-      elec_prod_doc %>%  # loaded in utils_helpers.R
+      elec_prod_doc |>  # loaded in utils_helpers.R
         create_doc_table_dt(doc_prefix = "doc_elec_prod_") # fct_helpers.R
 
     })
@@ -277,7 +277,7 @@ mod_about_the_app_server <- function(id){
     # 3. Regener ----
 
     output$regener_doc <- DT::renderDataTable({
-      regener_doc %>%
+      regener_doc |>
         create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
     })
 
@@ -285,14 +285,14 @@ mod_about_the_app_server <- function(id){
     # 4. Subsidies ----
 
     output$subsidies_doc <- DT::renderDataTable({
-      subsidies_doc %>%
+      subsidies_doc |>
         create_doc_table_dt(doc_prefix = "doc_subventions_") # fct_helpers.R
     })
 
 
     # Glossaire ----
     output$glossary_table <- DT::renderDataTable({
-      glossary %>%
+      glossary |>
         create_doc_table_dt(doc_prefix = "glossaire_")
     })
 

@@ -23,7 +23,6 @@ Imports:
     knitr,
     leaflet,
     leaflet.extras,
-    magrittr,
     markdown,
     openxlsx,
     plotly,

@@ -59,7 +59,10 @@ make_statbox_item <- function(iconBgClass,
            p(HTML(title), class = "p-0 m-0", style = "font-size:1.1rem;font-weight:500;"),
                      tags$div(
                        # Nicely format value (rounded + big.mark) and add unit below as newline
-                       strong(HTML(format(round(value, digits = 0), big.mark = "'")),
+                       strong(HTML(format(round(value, digits = 0),
+                                          big.mark = "'",
+                                          zero.print = "-" # ! important when no commune is selected,0 is passed
+                                          )),
                               style = "font-size:1.3rem;"),
 
                        strong(p(unit, style = "font-size:1.2rem;")),
@@ -140,7 +143,7 @@ create_select_leaflet <- function(sf_districts,
                            fillColor = NULL,
                            fillOpacity = NULL,
                            color = "#CFCFCF",
-                           bringToFront = FALSE)) %>%
+                           bringToFront = FALSE)) |>
     # This will be switched on/off through the code below using click events
     leaflet::hideGroup(group = sf_communes$NOM_MIN)   |>
     # Set the background to white
@@ -188,7 +191,7 @@ create_bar_plotly <- function(data,
 
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
-  ggplot <- data %>%
+  ggplot <- data |>
     ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
                                  y = .data[[var_values]],
                                  fill = if (!is.null(var_rank_2)){.data[[var_rank_2]]},
@@ -233,7 +236,7 @@ create_bar_plotly <- function(data,
   n_facets <- n_communes
 
   # Turn to plotly object and deal with plotting sizes
-  ggplot %>%
+  ggplot |>
     plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
 
                      height = return_dynamic_size(which = 'height',
@@ -242,14 +245,14 @@ create_bar_plotly <- function(data,
                      width = return_dynamic_size(which = 'width',
                                                  web_size = web_width,
                                                  n_facets = n_facets)
-    ) %>%
+    ) |>
     plotly::layout(
       legend = list(
         # font = list(size = 15),
         traceorder = "reversed",
         orientation = "h", # puts the legend in horizontal layout
         y= max(1.075, 1.40-(n_communes*0.035)) # empirical model for optimal spacing between legend and plot
-      )) %>%
+      )) |>
     plotly::config(modeBarButtons = list(list("toImage")),
                    locale = "fr")
 }
@@ -281,7 +284,7 @@ create_alluvial_chart <- function(data,
 
 
   # data plotting
-  data %>%
+  data |>
     ggplot2::ggplot(ggplot2::aes(axis1 = .data[[var_from]],
                                  axis2 = .data[[var_to]],
                                  y = .data[[var_flow]],
@@ -303,7 +306,7 @@ create_alluvial_chart <- function(data,
     ggplot2::theme_void()+
     ggplot2::theme(legend.position = "none",
                    strip.text = element_text(size =16),
-                   axis.text.x = element_text(size = 14)) %>%
+                   axis.text.x = element_text(size = 14)) |>
     suppressWarnings() # avoid annoying warning due to 'Autres' <fct> in both strata
 
 }
@@ -330,12 +333,12 @@ lump_alluvial_factors <- function(data,
   # lumping factors both left and right of alluvia to 4 max (for readability)
   # fct_lump_prop won't lump a factor ALONE, there needs to be 2 factors to meet the prop criteria
 
-  data %>%
-    dplyr::group_by(.data[[var_commune]]) %>% # !! must group_by commune
+  data |>
+    dplyr::group_by(.data[[var_commune]]) |> # !! must group_by commune
     dplyr::mutate({{var_from}} := forcats::fct_lump_n(f = .data[[var_from]],
                                                       n = 3,
                                                       w = .data[[var_flow]],
-                                                      other_level = "Autres sources")) %>%
+                                                      other_level = "Autres sources")) |>
     dplyr::mutate({{var_to}} := forcats::fct_lump_prop(f = .data[[var_to]],
                                                        prop = 0.1, # 10% min to appear individually
                                                        w = .data[[var_flow]],
@@ -422,10 +425,10 @@ create_prod_table_dt <- function(data,
                                  DT_dom = "Bfrtip" # we set default with Buttons
                                  ){
 
-  data %>%
+  data |>
     # Basic clean up for table output
     dplyr::mutate(
-      # change year to factor %>%
+      # change year to factor |>
       annee = as.factor(annee),
       # format numeric cols
       #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
@@ -437,17 +440,17 @@ create_prod_table_dt <- function(data,
                                                         drop0trailing = TRUE,
                                                         scientific = FALSE),
                                           false = NA_character_ )
-             )) %>%
-    dplyr::select(-c(numero_de_la_commune)) %>%
+             )) |>
+    dplyr::select(-c(numero_de_la_commune)) |>
     dplyr::relocate(commune, annee, categorie,
                     production, injection, autoconsommation,
-                    puissance_electrique_installee) %>%
+                    puissance_electrique_installee) |>
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(prod_icons, by = "categorie") %>%
-    dplyr::relocate(icon, .before = categorie) %>%
-    dplyr::rename(" " = "icon") %>% # empty colname for icons
-    rename_fr_colnames() %>%  # fct_helpers.R
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    dplyr::left_join(prod_icons, by = "categorie") |>
+    dplyr::relocate(icon, .before = categorie) |>
+    dplyr::rename(" " = "icon") |> # empty colname for icons
+    rename_fr_colnames() |>  # fct_helpers.R
+    add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -497,7 +500,7 @@ create_cons_table_dt <- function(data,
                                  DT_dom = "Bfrtip" # we set default with Buttons
                                  ){
 
-  data %>%
+  data |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor
@@ -507,18 +510,18 @@ create_cons_table_dt <- function(data,
                                                big.mark = "'",
                                                digits = 3,
                                                drop0trailing = TRUE,
-                                               scientific = FALSE))) %>%
+                                               scientific = FALSE))) |>
     # put installed power in the last position
-    dplyr::relocate(commune, annee, secteur, consommation) %>%
+    dplyr::relocate(commune, annee, secteur, consommation) |>
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(cons_icons, by = "secteur") %>%
-    dplyr::relocate(icon, .before = secteur) %>%
+    dplyr::left_join(cons_icons, by = "secteur") |>
+    dplyr::relocate(icon, .before = secteur) |>
     # !! ADD BACK SECTEUR WHEN AVAILABLE
-    # dplyr::rename(" " = "icon") %>% # empty colname for icons
+    # dplyr::rename(" " = "icon") |> # empty colname for icons
     select(-secteur, -icon) |>
     # !! ADD BACK SECTEUR WHEN AVAILABLE
-    rename_fr_colnames() %>% # fct_helpers.R
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    rename_fr_colnames() |> # fct_helpers.R
+    add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -555,7 +558,7 @@ create_rg_needs_table_dt <- function(data,
                                      DT_dom = "Bfrtip" # we set default with Buttons
                                      ){
 
-  data %>%
+  data |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year (etat for rg dataset) to factor
@@ -565,14 +568,14 @@ create_rg_needs_table_dt <- function(data,
                                                big.mark = "'",
                                                digits = 3,
                                                drop0trailing = TRUE,
-                                               scientific = FALSE))) %>%
+                                               scientific = FALSE))) |>
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(regener_icons_type, by = "type") %>%
+    dplyr::left_join(regener_icons_type, by = "type") |>
     # relocate call
-    dplyr::relocate(commune, etat, icon, type) %>%
-    dplyr::rename(" " = "icon") %>% # empty colname for icons
-    rename_fr_colnames() %>% # fct_helpers.R
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    dplyr::relocate(commune, etat, icon, type) |>
+    dplyr::rename(" " = "icon") |> # empty colname for icons
+    rename_fr_colnames() |> # fct_helpers.R
+    add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -611,10 +614,10 @@ create_regener_table_dt <- function(data,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
-  data %>%
+  data |>
     # Set pct_commune to % display (output for dl is in numeric)
     dplyr::mutate(pct_commune = scales::percent(
-      pct_commune, accuracy = 0.01)) %>%
+      pct_commune, accuracy = 0.01)) |>
     dplyr::mutate(
       # change year to factor
       etat = as.factor(etat), # if needed later
@@ -623,17 +626,17 @@ create_regener_table_dt <- function(data,
                                           big.mark = "'",
                                           digits = 3,
                                           drop0trailing = TRUE,
-                                          scientific = FALSE))) %>%
+                                          scientific = FALSE))) |>
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(regener_icons, by = "ae") %>%
+    dplyr::left_join(regener_icons, by = "ae") |>
     # relocate call
     dplyr::relocate(commune, etat, icon, ae,
                     tidyselect::any_of(c("usage", "affectation")),
-                    consommation, pct_commune) %>%
-    dplyr::rename(" " = "icon") %>% # empty colname for icons
+                    consommation, pct_commune) |>
+    dplyr::rename(" " = "icon") |> # empty colname for icons
     #turn to DT
-    rename_fr_colnames() %>% # fct_helpers.R
-    add_colname_units(unit = unit) %>%  # fct_helpers.R
+    rename_fr_colnames() |> # fct_helpers.R
+    add_colname_units(unit = unit) |>  # fct_helpers.R
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
@@ -671,7 +674,7 @@ create_rg_misc_table_dt <- function(data,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
-  data %>%
+  data |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year (etat for rg dataset) to factor
@@ -681,10 +684,10 @@ create_rg_misc_table_dt <- function(data,
                                                big.mark = "'",
                                                digits = 3,
                                                drop0trailing = TRUE,
-                                               scientific = FALSE))) %>%
-    dplyr::relocate(commune, etat) %>%
+                                               scientific = FALSE))) |>
+    dplyr::relocate(commune, etat) |>
     rename_misc_colnames() |>
-    # add_colname_units(unit = unit) %>%  # fct_helpers.R
+    # add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -718,7 +721,7 @@ create_rg_misc_table_dt <- function(data,
 create_doc_table_dt <- function(data,
                                 doc_prefix){
 
-  data %>%
+  data |>
     DT::datatable(rownames = FALSE, # no index col
                   extensions = "Buttons",
                   options = list(
@@ -769,11 +772,11 @@ create_subsidies_table_dt <- function(data,
                                          digits = 3,
                                          drop0trailing = TRUE,
                                          scientific = FALSE))
-      )%>%
+      )|>
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(icon_list, by = var_rank_2) %>%
-    dplyr::relocate(icon, .before = any_of(var_rank_2)) %>%
-    dplyr::rename(" " = "icon") %>% # empty colname for icons
+    dplyr::left_join(icon_list, by = var_rank_2) |>
+    dplyr::relocate(icon, .before = any_of(var_rank_2)) |>
+    dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_misc_colnames() |> # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R
     #turn to DT
@@ -892,14 +895,14 @@ convert_units <- function(data,
                           unit_to){ # check if it's worth saving the widget selected unit in a specific variable before (in mod_inputs.R)
 
   # Retrieves the right conversion factor unit_table in utils_helpers.R according to unit_to
-  conversion_factor <- units_table %>%
-    dplyr::filter(unit == unit_to) %>%
+  conversion_factor <- units_table |>
+    dplyr::filter(unit == unit_to) |>
     dplyr::pull(kWh)
 
   # If we have a dataframe we call mutate
   if(is.data.frame(data)){
   # Applies the conversion factor to the target colnames of the dataframe (division)
-  data %>%
+  data |>
     dplyr::mutate(dplyr::across(colnames, ~.x / conversion_factor))
   }else{
     # if numeric value (not df) we directly apply the conversion factor
@@ -944,7 +947,7 @@ add_colname_units <- function(data, unit){
                                                              collapse = "|"),
                                                       ignore_case = TRUE)))){
 
-    data <- data %>%
+    data <- data |>
       # For all power-related units
       dplyr::rename_with(.cols = contains(power_col_keywords, # utils_helpers.R
                                           ignore.case = TRUE),
@@ -981,11 +984,11 @@ add_colname_units <- function(data, unit){
 
 rename_fr_colnames <- function(data){
 
-  data %>%
+  data |>
     # Standard renaming
-    rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) %>%
+    rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) |>
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
-                pattern = "_", replacement = " ") %>%
+                pattern = "_", replacement = " ") |>
     rename_with(.cols = everything(),
                 .fn = stringr::str_replace_all, replace_fr_accents) # utils_helpers.R
 

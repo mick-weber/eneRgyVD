@@ -191,7 +191,7 @@ mod_elec_charts_server <- function(id,
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
 
       tags$div(
-               plotly::plotlyOutput(ns("chart_1")) %>%
+               plotly::plotlyOutput(ns("chart_1")) |>
                  shinycssloaders::withSpinner(type = 6,
                                               color= main_color) # color defined in utils_helpers.R
       )
@@ -216,8 +216,8 @@ mod_elec_charts_server <- function(id,
 
 
       # Make colnames nicelly formatted and add the current unit
-      subsetData() %>%
-        rename_fr_colnames()  %>%  # fct_helpers.R
+      subsetData() |>
+        rename_fr_colnames()  |>  # fct_helpers.R
         add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
 
     })

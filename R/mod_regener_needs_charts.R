@@ -148,7 +148,7 @@ mod_regener_needs_charts_server <- function(id,
     # We process subsetData() in a nice, wide format for the TABLE and SUNBURST
     subsetData_wide <- reactive({
 
-      subsetData() %>%
+      subsetData() |>
         # this creates vars `Besoins actuels` & `Besoins optimaux` from var `besoins`
         tidyr::pivot_wider(names_from = "statut",
                            values_from = "besoins") # not passed as arguments (could be if needed)
@@ -221,7 +221,7 @@ mod_regener_needs_charts_server <- function(id,
 
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
-               plotly::plotlyOutput(ns("chart_1")) %>%
+               plotly::plotlyOutput(ns("chart_1")) |>
                  shinycssloaders::withSpinner(type = 6,
                                               color= main_color) # color defined in utils_helpers.R
       )#End div
@@ -242,9 +242,9 @@ mod_regener_needs_charts_server <- function(id,
     download_data <- reactive({
 
       # We send data in wide format too (Besoins actuels/optimaux)
-      subsetData_wide() %>%
+      subsetData_wide() |>
         # Add the currently selected unit in the colnames (conversion is already done)
-        rename_fr_colnames() %>%  # fct_helpers.R
+        rename_fr_colnames() |>  # fct_helpers.R
         # Add energy units in brackets for energy/power related columns
         add_colname_units(unit = inputVals$selectedUnit) # fct_helpers.R
 

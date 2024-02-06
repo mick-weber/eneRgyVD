@@ -43,6 +43,7 @@ app_ui <- function(request) {
       theme = profil_theme, # utils_helpers.R
       # Title
       title = strong("Profil énergétique des communes vaudoises",
+                     class = "h4 text-wrap",
                      style = "font-family: 'Arial', sans-serif;"),
       # Browser title
       window_title = "Profil énergie VD",
@@ -70,12 +71,14 @@ app_ui <- function(request) {
       bslib::nav_panel("Carte",
                        icon = icon("map"),
                        bslib::layout_column_wrap(
+                         height_mobile = "200vh", # when mobile we allow 2x scren height of scrollable area (map+2statboxes)
                          fill = TRUE,
                          width = NULL,
                          style = htmltools::css(grid_template_columns = "2fr 1fr"),
 
                          # 1st column
                          bslib::card(full_screen = TRUE,
+
                                      bslib::card_header(strong("Carte des communes"),
                                                         class = "bg-secondary"),
                                      bslib::card_body(
@@ -88,14 +91,8 @@ app_ui <- function(request) {
 
                            mod_collapse_stats_box_ui("vd_box"),
 
-                           # Display communes statbox only if any is selected !
-                           # output$commune in app_server.R
+                           mod_collapse_stats_box_ui("communes_box")
 
-                           shiny::conditionalPanel(
-
-                             condition = "output.commune",
-                             mod_collapse_stats_box_ui("communes_box")
-                           )
                          )
                        )# End layout_column_wrap
 

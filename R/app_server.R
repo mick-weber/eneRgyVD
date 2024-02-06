@@ -9,10 +9,14 @@ app_server <- function(input, output, session) {
 
   # Print test area if needed ----
 
+  # observe({
+  #   print(inputVals$selectedCommunes)
+  # })
+
    # Record logs ----
    ## We record session and errors (no inputs/outputs)
 
-  # make sure the logs subfolder exists
+  # make sure the logs subfolder exists to store logs below
   if(!dir.exists("./logs")){
     dir.create("./logs")
   }
@@ -140,7 +144,7 @@ app_server <- function(input, output, session) {
 
       # further filter cons_dataset with selected min/max values and convert to selectedUnit()
        # CONVERSION TEST IN PROGRESS
-      inputVals$cons_dataset %>%
+      inputVals$cons_dataset |>
         dplyr::filter(annee >= inputVals$min_selected_cons,
                       annee <= inputVals$max_selected_cons)
 
@@ -162,9 +166,9 @@ app_server <- function(input, output, session) {
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 
-     inputVals$prod_dataset %>%
+     inputVals$prod_dataset |>
        dplyr::filter(annee >= inputVals$min_selected_prod,
-                     annee <= inputVals$max_selected_prod) %>%
+                     annee <= inputVals$max_selected_prod) |>
        dplyr::filter(categorie %in% inputVals$techs_selected)
 
    }) # End reactive()
@@ -307,11 +311,11 @@ app_server <- function(input, output, session) {
      if(input$map_shape_click$group == "regions"){
 
        selected$groups <- c(selected$groups, input$map_shape_click$id)
-       proxy %>% leaflet::showGroup(group = input$map_shape_click$id)
+       proxy |> leaflet::showGroup(group = input$map_shape_click$id)
 
      } else {
        selected$groups <- setdiff(selected$groups, input$map_shape_click$group)
-       proxy %>% leaflet::hideGroup(group = input$map_shape_click$group)
+       proxy |> leaflet::hideGroup(group = input$map_shape_click$group)
      }
      # Update selectInput for bilateral communication map/widget
      # inputId got customized with the NS of the respective input module (inputs_1-)
@@ -353,12 +357,12 @@ app_server <- function(input, output, session) {
 
      if(length(removed_via_selectInput) > 0){
        selected$groups <- inputVals$selectedCommunes
-       proxy %>% leaflet::hideGroup(group = removed_via_selectInput)
+       proxy |> leaflet::hideGroup(group = removed_via_selectInput)
      }
 
      if(length(added_via_selectInput) > 0){
        selected$groups <- inputVals$selectedCommunes
-       proxy %>% leaflet::showGroup(group = added_via_selectInput)
+       proxy |> leaflet::showGroup(group = added_via_selectInput)
      }
    }, ignoreNULL = FALSE) # Don't trigger when input is NULL
 
@@ -498,16 +502,11 @@ app_server <- function(input, output, session) {
   # This is dependant on a UI's conditionalpanel toggled with output.commune below
   # So that we remove the statbox if no more commune is selected (it was persisting without it)
 
-   output$commune <- reactive({
-     length(inputVals$selectedCommunes) > 0 # Returns TRUE if at least one commune is selected, else FALSE
-   })
-
-   outputOptions(output, 'commune', suspendWhenHidden = FALSE) # keep active to evaluate the condition
-
    observe({
 
-     req(inputVals$selectedCommunes)
      req(inputVals$selectedUnit)
+
+     check_selected_communes <- !is.null(inputVals$selectedCommunes)
 
 
      mod_collapse_stats_box_server("communes_box",
@@ -515,10 +514,22 @@ app_server <- function(input, output, session) {
                                    selectedUnit = inputVals$selectedUnit,
 
                                    # Computed in utils_helpers.R (using years below) then converted if needed
-                                   prod_elec_value = inputVals$elec_cons_last_year, # mod_inputs.R
-                                   cons_rg_value = inputVals$max_year_rg_cons,
-                                   subsidies_value = inputVals$max_year_subsidies_m01,
-                                   cons_elec_value = inputVals$elec_cons_last_year,
+                                   prod_elec_value = ifelse(
+                                     check_selected_communes,
+                                     inputVals$elec_prod_last_year,
+                                     0),
+                                   cons_rg_value = ifelse(
+                                     check_selected_communes,
+                                     inputVals$max_year_rg_cons,
+                                     0),
+                                   subsidies_value = ifelse(
+                                     check_selected_communes,
+                                     inputVals$max_year_subsidies_m01,
+                                     0),
+                                   cons_elec_value = ifelse(
+                                     check_selected_communes,
+                                     inputVals$elec_cons_last_year,
+                                     0),
 
                                    # Computed in utils_helpers.R for both statboxes
                                    year_elec_prod = last_year_elec_prod,
@@ -526,7 +537,6 @@ app_server <- function(input, output, session) {
                                    year_rgr = last_year_rgr,
                                    year_subsidies = last_year_subsidies
                                    )
-
    })
 
 

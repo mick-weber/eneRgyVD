@@ -41,7 +41,7 @@ mod_collapse_stats_box_server <- function(id,
       bslib::as_fill_carrier() # REQUIRED : https://rstudio.github.io/bslib/reference/as_fill_carrier.html
 
         bslib::card(fill = TRUE,
-                    max_height = "50vh", # Limit the extension when VD box is displayed alone
+                    #max_height = "50vh", # Limit the extension when VD box is displayed alone
 
                     bslib::card_header(title,
                                        class = "bg-secondary"),
@@ -55,17 +55,22 @@ mod_collapse_stats_box_server <- function(id,
 
                                               # fct_helpers.R
 
+           # 1. Cons elec
            make_statbox_item(iconBgClass = "iconBgElec",
-                             title = "Production<br>électrique", value = prod_elec_value, unit = selectedUnit, year = year_elec_prod),
+                            title = "Consommation<br>électrique", value = cons_elec_value, unit = selectedUnit, year = year_elec_cons),
 
+           # 2. RG cons
            make_statbox_item(iconBgClass = "iconBgRgr",
                              title = "Consommation<br>chaleur bâtiment", value = cons_rg_value, unit = selectedUnit, year = year_rgr),
 
+           # 3. Subsidies M01
            make_statbox_item(iconBgClass = "iconBgSubs",
                              title = "Subventions<br>rénovation M01", value = subsidies_value, unit = "dossiers", year = year_subsidies),
 
+           # 4. Prod elec
            make_statbox_item(iconBgClass = "iconBgElec",
-                             title = "Consommation<br>électrique", value = cons_elec_value, unit = selectedUnit, year = year_elec_cons)
+                             title = "Production<br>électrique", value = prod_elec_value, unit = selectedUnit, year = year_elec_prod)
+
 
 
                     )# End layout_column_wrap

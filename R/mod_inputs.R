@@ -99,7 +99,7 @@ mod_inputs_server <- function(id){
 
        req(input$selected_communes)
 
-       elec_cons %>%
+       elec_cons |>
          filter(commune %in% input$selected_communes) |>
          convert_units(colnames = "consommation",
                        unit_from = "kWh",
@@ -120,7 +120,7 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
       req(input$selected_unit)
 
-      elec_prod %>%
+      elec_prod |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh",
@@ -139,8 +139,8 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
       req(input$selected_unit)
 
-      regener_cons_ae_use %>%
-        filter(commune %in% input$selected_communes) %>%
+      regener_cons_ae_use |>
+        filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
                       unit_from = "kWh",
                       unit_to = input$selected_unit)
@@ -155,8 +155,8 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
       req(input$selected_unit)
 
-      regener_cons_ae_aff %>%
-        filter(commune %in% input$selected_communes) %>%
+      regener_cons_ae_aff |>
+        filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
                       unit_from = "kWh",
                       unit_to = input$selected_unit)
@@ -171,8 +171,8 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
       req(input$selected_unit)
 
-      regener_needs %>%
-        dplyr::filter(commune %in% input$selected_communes) %>%
+      regener_needs |>
+        dplyr::filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains("besoins"),
                       unit_from = "kWh",
                       unit_to = input$selected_unit)
@@ -186,7 +186,7 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-      regener_misc %>%
+      regener_misc |>
         dplyr::filter(commune %in% input$selected_communes)
 
     })
@@ -272,8 +272,8 @@ mod_inputs_server <- function(id){
       inputVals$max_avail_prod <- max(subset_elec_prod()$annee)
 
       # store list of !available! techs to feed pickerInput()
-      inputVals$techs_avail <- subset_elec_prod() %>%
-        dplyr::distinct(categorie) %>%
+      inputVals$techs_avail <- subset_elec_prod() |>
+        dplyr::distinct(categorie) |>
         dplyr::pull()
 
       # store min & max years from regener dataset (this does not need to by commune specific)
@@ -297,26 +297,26 @@ mod_inputs_server <- function(id){
           )
 
       # Statbox value for current selection's aggregated electricity production
-      inputVals$elec_prod_last_year <- subset_elec_prod() %>%
-        dplyr::filter(annee == last_year_elec_prod) %>%
-        dplyr::filter(!commune == "Canton de Vaud") %>% # remove cantonal row
-        dplyr::summarise(production = sum(production, na.rm = T)) %>%
+      inputVals$elec_prod_last_year <- subset_elec_prod() |>
+        dplyr::filter(annee == last_year_elec_prod) |>
+        dplyr::filter(!commune == "Canton de Vaud") |> # remove cantonal row
+        dplyr::summarise(production = sum(production, na.rm = T)) |>
         dplyr::pull(production)
 
       # Statbox value for current selection's aggregated electricity consumption
 
-      inputVals$elec_cons_last_year <- subset_elec_cons() %>%
-        dplyr::filter(annee == last_year_elec_cons) %>%
-        dplyr::filter(!commune == "Canton de Vaud")%>%
-        dplyr::summarise(consommation = sum(consommation, na.rm = T)) %>%
+      inputVals$elec_cons_last_year <- subset_elec_cons() |>
+        dplyr::filter(annee == last_year_elec_cons) |>
+        dplyr::filter(!commune == "Canton de Vaud")|>
+        dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
         dplyr::pull(consommation)
 
       # Statbox value for current selection's aggregated buildings thermal consumption
 
-      inputVals$max_year_rg_cons <- subset_rgr_cons_1() %>%
-        dplyr::filter(etat == last_year_rgr) %>%
-        dplyr::filter(!commune == "Canton de Vaud") %>%
-        dplyr::summarise(consommation=sum(consommation, na.rm = T)) %>%
+      inputVals$max_year_rg_cons <- subset_rgr_cons_1() |>
+        dplyr::filter(etat == last_year_rgr) |>
+        dplyr::filter(!commune == "Canton de Vaud") |>
+        dplyr::summarise(consommation=sum(consommation, na.rm = T)) |>
         dplyr::pull(consommation)
 
 
@@ -403,7 +403,7 @@ mod_inputs_server <- function(id){
         tags$p(#class = "sidebar_na_title",
                "Non représentées :"),
         tags$ul(class = "sidebar_na_list",
-                setdiff(categories_diren, inputVals$techs_avail) %>% # unavailable techs
+                setdiff(categories_diren, inputVals$techs_avail) |> # unavailable techs
                   purrr::map(tags$li) # map into list items of ul()
         )# End tags$ul
       )# End tags$div

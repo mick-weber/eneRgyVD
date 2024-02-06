@@ -69,7 +69,7 @@ mod_regener_cons_charts_ui <- function(id){
                       # Alluvial plot ----
 
                       # ggalluvial plot
-                      shiny::plotOutput(ns("chart_alluvial"), height = "auto") %>%
+                      shiny::plotOutput(ns("chart_alluvial"), height = "auto") |>
                         shinycssloaders::withSpinner(type = 6,
                                                      color= main_color) # color defined in utils_helpers.R
 
@@ -156,11 +156,11 @@ mod_regener_cons_charts_server <- function(id,
       output$chart_alluvial <- shiny::renderPlot({
 
 
-        subset_rgr_cons_1_last_year_d() %>%
+        subset_rgr_cons_1_last_year_d()  |>
           lump_alluvial_factors(var_commune = "commune",
                                 var_flow = "consommation",
                                 var_from = "ae",
-                                var_to = "usage") %>%
+                                var_to = "usage") |>
           create_alluvial_chart(var_commune = "commune",
                                 var_flow = "consommation",
                                 var_from = "ae",
@@ -181,11 +181,11 @@ mod_regener_cons_charts_server <- function(id,
         # Alluvial plot 2 : conso -> aff
         output$chart_alluvial <- shiny::renderPlot({
 
-          subset_rgr_cons_2_last_year_d() %>%
+          subset_rgr_cons_2_last_year_d() |>
             lump_alluvial_factors(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
-                                  var_to = "affectation") %>%
+                                  var_to = "affectation") |>
             create_alluvial_chart(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
@@ -239,16 +239,16 @@ mod_regener_cons_charts_server <- function(id,
 
       if(input$tab_table_type == "flow"){
 
-        subset_rgr_cons_1() %>% # from app_server.R
+        subset_rgr_cons_1() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          rename_fr_colnames() %>% # fct_helpers.R
+          rename_fr_colnames() |> # fct_helpers.R
           add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
 
           } else if(input$tab_table_type == "bar"){
 
-        subset_rgr_cons_2() %>% # from app_server.R
+        subset_rgr_cons_2() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          rename_fr_colnames() %>%  # fct_helpers.R
+          rename_fr_colnames() |>  # fct_helpers.R
           add_colname_units(unit = inputVals$selectedUnit) # fct_helpers.R
 
       }

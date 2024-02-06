@@ -1,5 +1,4 @@
 # This script loads and stores all 'static' or initial objects fed to the app
-library(magrittr)
 # Loading .rda objects ----
 ## sf data ----
 
@@ -113,8 +112,8 @@ link_github <- "https://github.com/mick-weber/eneRgyVD"
 ### Run ONCE : Store JSON french language items file for DT library
 
 # rjson::fromJSON(
-#   file = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/French.json') %>%
-#   toJSON() %>%
+#   file = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/French.json') |>
+#   toJSON() |>
 # write(file = "./data/DT_fr_language.json")
 
 ### Load json french language file for DT library
@@ -194,16 +193,16 @@ prod_colors <- dplyr::tribble(~icon, ~categorie, ~color,
 # Used for table icons
 # Adding the color style in the html tag for the icon
 
-prod_icons <- prod_colors %>%
-  dplyr::rowwise() %>%
+prod_icons <- prod_colors |>
+  dplyr::rowwise() |>
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
-                                     replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color) %>%
+                                     replacement = paste0(" style=\"color:", color, '\"></i>'))) |>
+  dplyr::select(-color) |>
   dplyr::ungroup()
 
 # Palette for plots: named vector with level + associated color
 
-colors_categories <- prod_colors$color %>%
+colors_categories <- prod_colors$color |>
   setNames(nm = prod_colors$categorie)
 
 ## Cons colors and icons (cons) ----
@@ -217,17 +216,17 @@ cons_colors <- dplyr::tribble(~icon, ~secteur, ~color,
 # Used for table icons
 # Adding the color style in the html tag for the icon
 
-cons_icons <- cons_colors %>%
-  dplyr::rowwise() %>%
+cons_icons <- cons_colors |>
+  dplyr::rowwise() |>
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
-                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color) %>%
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) |>
+  dplyr::select(-color) |>
   dplyr::ungroup()
 
 # Palette for plots: named vector with level + associated color
 # Be careful if sectors change name ! (SDN wrote them inconsistently here...)
 
-colors_sectors <- cons_colors$color %>%
+colors_sectors <- cons_colors$color |>
   setNames(nm = cons_colors$secteur)
 
 ## Regener AE colors and icons (rg) ----
@@ -247,16 +246,16 @@ regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
 # Used for table icons
 # Adding the color style in the html tag for the icon
 
-regener_icons <- regener_colors %>%
-  dplyr::rowwise() %>%
+regener_icons <- regener_colors |>
+  dplyr::rowwise() |>
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
-                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color) %>%
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) |>
+  dplyr::select(-color) |>
   dplyr::ungroup()
 
 # Used for plots: named vector with level + associated color
 
-colors_ae <- regener_colors$color %>%
+colors_ae <- regener_colors$color |>
   setNames(nm = regener_colors$ae)
 
 ## Regener type colors and icons  (rg) ----
@@ -271,16 +270,16 @@ regener_colors_type <- dplyr::tribble(~icon, ~type, ~color,
 # Used for table icons
 # Adding the color style in the html tag for the icon
 
-regener_icons_type <- regener_colors_type %>%
-  dplyr::rowwise() %>%
+regener_icons_type <- regener_colors_type |>
+  dplyr::rowwise() |>
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
-                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color) %>%
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) |>
+  dplyr::select(-color) |>
   dplyr::ungroup()
 
 # Used for plots: named vector with level + associated color
 
-colors_rg_type <- regener_colors_type$color %>%
+colors_rg_type <- regener_colors_type$color |>
   setNames(nm = regener_colors_type$type)
 
 ## Subsidies colors and icons (subs) ----
@@ -301,15 +300,15 @@ subsidies_building_palette <- dplyr::tribble(~icon, ~subv_type, ~color,
 # Used for table icons
 
 subsidies_building_icons <- subsidies_building_palette |>
-  dplyr::rowwise() %>%
+  dplyr::rowwise() |>
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
-                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color) %>%
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) |>
+  dplyr::select(-color) |>
   dplyr::ungroup()
 
 # Used for plots: named vector with level + associated color
 
-subsidies_building_colors <- subsidies_building_palette$color %>%
+subsidies_building_colors <- subsidies_building_palette$color |>
   setNames(nm = subsidies_building_palette$subv_type)
 
 ### Subsidies measure ----
@@ -330,7 +329,7 @@ subsidies_measure_palette_plot <- subsidies_by_measure |>
     name = "Pastel1"
   ))
 # Prepare palette for create_bar_plotly()
-subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color %>%
+subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color |>
   setNames(nm = subsidies_measure_palette_plot$mesure_simplifiee)
 
 
@@ -347,15 +346,15 @@ subsidies_measure_palette_table <- subsidies_by_measure |>
 # Used for table icons
 
 subsidies_measure_icons <- subsidies_measure_palette_table |>
-  dplyr::rowwise() %>%
+  dplyr::rowwise() |>
   dplyr::mutate(icon = stringr::str_replace(string = icon, pattern = "></i>",
-                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) %>%
-  dplyr::select(-color) %>%
+                                            replacement = paste0(" style=\"color:", color, '\"></i>'))) |>
+  dplyr::select(-color) |>
   dplyr::ungroup()
 
 # Unused for plots: we only take the simplified version above
 
-# subsidies_measure_detail_colors <- subsidies_measure_palette_table$color %>%
+# subsidies_measure_detail_colors <- subsidies_measure_palette_table$color |>
 #   setNames(nm = subsidies_measure_palette_table$mesure)
 
 
@@ -397,9 +396,9 @@ profil_theme <- bslib::bs_theme(version = 5,
 ### Available communes ----
 # Used exclusively for selectizeInput in mod_inputs.R and its update counterpart in app_server.R
 # The map is thus the reference for the commune names !
-communes_names <- sf_communes %>%
-  dplyr::distinct(NOM_MIN) %>%
-  dplyr::arrange(NOM_MIN) %>%
+communes_names <- sf_communes |>
+  dplyr::distinct(NOM_MIN) |>
+  dplyr::arrange(NOM_MIN) |>
   dplyr::pull(NOM_MIN)
 
 # Create named vector of communes + OFS number, used for the upload file feature
@@ -417,23 +416,13 @@ choices_canton_communes <- list(
   Communes = communes_names
 )
 
-### Available districts ----
-# For the zooming feature. We add one row for the cantonal view
-
-districts_names <- sf_districts %>%
-  dplyr::distinct(NOM_MIN) %>%
-  dplyr::arrange(NOM_MIN) %>%
-  # add one row manually for the Canton, it should be placed first
-  dplyr::add_row(NOM_MIN = "Canton", .before = 1) %>%
-  dplyr::pull(NOM_MIN)
-
 ## Objects specific 'Production électricité'  ----
 
 ### Colors for categorie
 
-categories_diren <- elec_prod %>%
-  dplyr::distinct(categorie) %>%
-  dplyr::arrange(categorie) %>%
+categories_diren <- elec_prod |>
+  dplyr::distinct(categorie) |>
+  dplyr::arrange(categorie) |>
   dplyr::pull()
 
 ## Objects specific 'Consommation électricité'  ----
@@ -463,30 +452,30 @@ regener_current_year <- max_regener_year
 
 last_year_elec_prod <- max(elec_prod$annee) # When prod elec alone
 
-prod_elec_vd_last_year <- elec_prod %>%
-  dplyr::filter(commune == "Canton de Vaud") %>%
-  dplyr::filter(annee == last_year_elec_prod) %>%
-  dplyr::summarise(production = sum(production, na.rm = TRUE)) %>%
+prod_elec_vd_last_year <- elec_prod |>
+  dplyr::filter(commune == "Canton de Vaud") |>
+  dplyr::filter(annee == last_year_elec_prod) |>
+  dplyr::summarise(production = sum(production, na.rm = TRUE)) |>
   dplyr::pull()
 
 #### VD electricity consumption for last available year
 
 last_year_elec_cons <- max(elec_cons$annee) # When prod elec alone
 
-cons_elec_vd_last_year <- elec_cons %>%
-  dplyr::filter(commune == "Canton de Vaud") %>%
-  dplyr::filter(annee == last_year_elec_cons) %>%
-  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
+cons_elec_vd_last_year <- elec_cons |>
+  dplyr::filter(commune == "Canton de Vaud") |>
+  dplyr::filter(annee == last_year_elec_cons) |>
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
   dplyr::pull()
 
 #### VD heat consumption for last common year
 # !`annee` -> `etat`
 last_year_rgr <- max(regener_needs$etat)
 
-cons_rg_vd_last_year <- regener_cons_ae_aff %>%
-  dplyr::filter(commune == "Canton de Vaud") %>%
-  dplyr::filter(etat == last_year_rgr) %>%
-  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) %>%
+cons_rg_vd_last_year <- regener_cons_ae_aff |>
+  dplyr::filter(commune == "Canton de Vaud") |>
+  dplyr::filter(etat == last_year_rgr) |>
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
   dplyr::pull()
 
 #### VD subsidies M01 for last common year
@@ -505,12 +494,12 @@ subsidies_m01_vd_last_year <- subsidies_by_measure |>
 # With a nested list ; each district name has 4 coordinates (xmin,ymin,xmax,ymax)
 # These coordinates represent the boundaries for the leaflet map zoom adjustments (through widget)
 
-# bboxes <- districts_names %>%
-#   purrr::map(.f = ~ sf::st_bbox(sf_districts %>% dplyr::filter(NOM_MIN == .x))) %>%
+# bboxes <- districts_names |>
+#   purrr::map(.f = ~ sf::st_bbox(sf_districts |> dplyr::filter(NOM_MIN == .x))) |>
 #   purrr::set_names(districts_names)
 #
 # ## Add & fill the Canton bbox in our bboxes using the whole districts borders
 #
-# bboxes$Canton <- sf_districts %>% sf::st_bbox()
+# bboxes$Canton <- sf_districts |> sf::st_bbox()
 
 

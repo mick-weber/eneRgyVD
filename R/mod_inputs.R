@@ -23,7 +23,8 @@ mod_inputs_ui <- function(id){
     ),
 
 
-    # IF tab Carte : add upload communes widget
+    # uploadCommunes widget ----
+    # IF tab Carte
     shiny::conditionalPanel(
       condition="input.nav == 'Carte'",
       mod_upload_communes_ui(ns("uploaded_communes"))

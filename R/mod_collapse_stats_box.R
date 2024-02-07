@@ -43,7 +43,13 @@ mod_collapse_stats_box_server <- function(id,
         bslib::card(fill = TRUE,
                     #max_height = "50vh", # Limit the extension when VD box is displayed alone
 
-                    bslib::card_header(title,
+                    bslib::card_header(title, bslib::tooltip(
+                      id = ns("tooltip_card"),
+                      placement = "right",
+                      options = list(customClass = "customTooltips"), # custom.scss
+                      trigger = bsicons::bs_icon("info-circle"),
+                      "Les années peuvent différer et reflètent la disponibilité de chaque source de données"
+                    ),
                                        class = "bg-secondary"),
 
                     bslib::layout_column_wrap(width = "140px",

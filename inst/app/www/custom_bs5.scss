@@ -9,6 +9,13 @@
   margin-bottom:20px;
 }
 
+/* Remove SelectizeInput's shadow when .focus is on */
+
+.selectize-input.focus{
+  border-color:black !important;
+  box-shadow:none !important;
+}
+
 
 .customLogo{
     filter: brightness(0) invert(1);
@@ -16,15 +23,17 @@
     align:left;
 }
 
+.customTooltips{
+  max-width:none;
+}
+
 
 /* Add left margin to preexisting navbar-nav class (bootstrap) */
-
 .navbar-nav{
   margin-left: 10%;
 }
 
 /* Change color of nav's unselected links (and hovering) with full white instead of light grey, more visible */
-
 #nav{
 
   .nav-link{
@@ -132,8 +141,6 @@ Gradient for navbar with multibrowser compatibility
     color:white;
   }
 }
-
-
 
 
 /* Div backgrounds with icons used in mod_collapse_stats_box.R for each type of make_statbox_item() call*/

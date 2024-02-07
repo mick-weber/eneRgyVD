@@ -18,18 +18,29 @@ mod_upload_communes_ui <- function(id){
                                             icon = bsicons::bs_icon("cloud-arrow-up-fill"),
 
                                             shiny::fileInput(ns("file_communes"),
-                                                             label = p("Importer un fichier csv", br(),
-                                                                       tags$i(
-                                                                       "La première colonne doit contenir les numéros OFS.
-                                                                       Séparateur point-virgule ';' uniquement. \n", # new line
-                                                                              style = "font-size:0.8rem; font-weight:normal;"),
+                                                             label = p(
+
+                                                                       bslib::tooltip(
+                                                                         id = ns("tooltip_upload"),
+                                                                         options = list(customClass = "customTooltips"),
+                                                                         trigger = tags$span(
+                                                                           class = "link-primary",
+                                                                           "Format requis",
+                                                                           bsicons::bs_icon("info-circle")),
+                                                                            shiny::markdown("La **première** colonne du fichier .csv (séparateur **point-virgule ';'** uniquement)
+                                                                          doit contenir les **numéros OFS** des communes à sélectionner.
+                                                                          <br>
+                                                                                            Attention aux fusions de communes !"),
+
+                                                                       ),
 
                                                                        br(),
 
                                                                        tags$i(tags$a(href= "www/exemple_import_communes.csv",
                                                                                      target="_blank", "Télécharger un exemple",
                                                                                      download = "exemple_import_communes.csv",
-                                                                                     style = "color:#3a862d; font-size:0.8rem;"))
+                                                                                     class = "link-primary",
+                                                                                     style = "font-size:1rem;"))
                                                              ),
                                                              buttonLabel = "Importer...",
                                                              placeholder = ".csv",

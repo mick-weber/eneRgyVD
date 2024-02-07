@@ -34,8 +34,6 @@ app_ui <- function(request) {
         "
       ),
 
-
-
       # Footer
       footer = p("DGE-DIREN @ 2024", class = "fw-lighter",
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
@@ -79,8 +77,17 @@ app_ui <- function(request) {
                          # 1st column
                          bslib::card(full_screen = TRUE,
 
-                                     bslib::card_header(strong("Carte des communes"),
-                                                        class = "bg-secondary"),
+                                     bslib::card_header(strong("Carte des communes"), bslib::tooltip(
+                                       id = "tooltip_map_card",
+                                       placement = "right",
+                                       options = list(customClass = "customTooltips"), # custom.scss
+                                       trigger = bsicons::bs_icon("info-circle"),
+
+                                       "En cas de fusions communales, un décalage de quelques semaines peut être appliqué
+                                       afin de procéder aux ajustements statistiques nécessaires"),
+
+                                       class = "bg-secondary"),
+
                                      bslib::card_body(
                                        leafletOutput("map"))
                          ),# End card() map

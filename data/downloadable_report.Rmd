@@ -45,7 +45,9 @@ library(eneRgyVD)
 
 ```{css basic-theme, echo=FALSE}
 .main-container {
-    margin-left: 30px;
+  max-width: 90vw !important;
+  margin-left: 5vw !important;
+  margin-right: 5vw !important;
 }
 
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
@@ -56,19 +58,19 @@ library(eneRgyVD)
 }
 
 h2,h3,h4,h5,h6{
-  font-size: 14pt;
-  color:midnightblue;
+  font-size: 14pt !important;
+  color:midnightblue !important;
 }
 
 h1{
-font-size:16pt;
-color:midnightblue;
+font-size:16pt !important;
+color:midnightblue !important;
 }
 ```
 
 Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) le `r format(Sys.Date(), "%d/%m/%Y")` pour le(s) territoire(s) suivant(s) :
 
-## `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` {-}
+# `r knitr::combine_words(words = params$communes,sep = ", ",and = " et ",oxford_comma = F)` {-}
 
 Le contenu de ce rapport sera adapté progressivement en fonction des données disponibles ainsi que des fonctionnalités souhaitées par les utilisateurs.
 

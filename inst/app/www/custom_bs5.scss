@@ -1,7 +1,15 @@
 
 /* info_dev_message() custom class*/
 .sweet-alert > p{
+  font-size:1.2rem;
+}
 
+.shiny-notification{
+  position:fixed;
+  top: calc(50%);
+  left: calc(40%);
+  width:20vw;
+  text-align:center;
 }
 
 /* Add bottom margin to avoid overlapping of main content and footer*/

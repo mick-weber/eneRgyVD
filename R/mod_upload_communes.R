@@ -93,9 +93,21 @@ mod_upload_communes_server <- function(id){
 
       unique_communes <- length(input_communes_numbers())
 
-    showNotification(paste0("Importation de communes : ",
-                            unique_communes,
-                            " communes distinctes ont été importées"),
+
+      if(unique_communes > 0){
+      notify_text <- paste0("Importation de communes : ",
+                             unique_communes,
+                             " communes distinctes ont été importées")
+
+      }else{
+
+        notify_text <- paste0("Erreur : aucune commune n'a pu être importée.
+                             Vérifier le fichier d'entrée ou consulter le fichier d'exemple.")
+      }
+
+
+
+    showNotification(notify_text,
                      type = "message")
 
     })

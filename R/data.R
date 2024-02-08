@@ -59,7 +59,22 @@
 
 "subsidies_by_measure"
 
+#' Electricity consumption by commune for Canton de Vaud
+#'
+#' The dataset is an agregation and simplification of all electricity delivery datapoints
+#' which are yearly transmitted to DGE-DIREN by the distribution network managers.
+#' Data is cleaned, affiliated to municipalities then aggregated and sent to the app.
+#' @name elec_cons
+#' @keywords datasets
+#' @format A tibble with various rows and cols which are not detailed yet
+#' @source DGE-DIREN(<https://www.vd.ch/>)
+#' @examples
+#' elec_cons.rda
 
+"elec_cons"
+
+#' @rdname elec_cons
+"elec_cons_doc"
 
 
 #' Electricity production by commune for Canton de Vaud

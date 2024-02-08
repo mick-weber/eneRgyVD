@@ -19,7 +19,7 @@ mod_upload_communes_ui <- function(id){
 
                                             shiny::fileInput(ns("file_communes"),
                                                              label = p(
-
+                                                               # add tooltip to provide details about the format
                                                                        bslib::tooltip(
                                                                          id = ns("tooltip_upload"),
                                                                          options = list(customClass = "customTooltips"),

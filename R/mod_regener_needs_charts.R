@@ -31,7 +31,7 @@ mod_regener_needs_charts_ui <- function(id){
           div(paste(generic_method_warning, # text in utils_helpers.R
                     specific_rgr_warning)),
           br(),
-          actionButton(ns("rgr_needs_help"), label = "Plus de détails")
+          actionButton(ns("rgr_needs_help"), label = "Plus de détails sur la donnée")
         ),
         open = FALSE)
 

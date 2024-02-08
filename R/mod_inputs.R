@@ -21,14 +21,21 @@ mod_inputs_ui <- function(id){
                           multiple = TRUE,
                           options = list(placeholder = "Plusieurs acceptées")
     ),
+      # conditionalPanel uploadCommunes widget ----
 
+      # IF tab Carte
+      shiny::conditionalPanel(
+        condition="input.nav == 'Carte'",
 
-    # uploadCommunes widget ----
-    # IF tab Carte
-    shiny::conditionalPanel(
-      condition="input.nav == 'Carte'",
-      mod_upload_communes_ui(ns("uploaded_communes"))
-    ),
+        # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
+        tags$div(
+          br(),
+          # Label as for selectizeInput for esthetics (form-label bs5 class)
+          tags$p("Importer des communes",
+                 style = "margin-bottom:0.5rem !important;"),
+          mod_upload_communes_ui(ns("uploaded_communes"))
+        )
+      ),# End div
 
     # uiOutput for tabCons ----
 

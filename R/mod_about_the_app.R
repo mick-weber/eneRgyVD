@@ -57,7 +57,7 @@ mod_about_the_app_ui <- function(id){
                                                                    tags$div(
                                                                             br(),
                                                                    h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
-                                                                             tags$p("En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du Canton. La distribution d'électricité à chaque
+                                                                             tags$p("En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du canton. La distribution d'électricité à chaque
                                                                    point de mesure du territoire vaudois a pu être récoltée et ce sont ces données agrégées par commune qui alimentent cette application.",
                                                                    "La mise à jour est faite annuellement avec une année de retard, le relevé se faisant par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
                                                                    compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,

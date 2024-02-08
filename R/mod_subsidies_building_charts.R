@@ -28,7 +28,7 @@ mod_subsidies_building_charts_ui <- function(id){
           div(paste(generic_method_warning, # text in utils_helpers.R
                     specific_subsidies_warning)),
           br(),
-          actionButton(ns("subsidies_building_help"), label = "Plus de détails")
+          actionButton(ns("subsidies_building_help"), label = "Plus de détails sur la donnée")
         ),
         open = FALSE)
     ),

@@ -33,7 +33,7 @@ mod_elec_charts_ui <- function(id,
           # Since multiple mod_elec_charts can exist, we play with the namespace to land the correct 'mod_about_the_app.R' page
           # This is done in app_server.R, `subpanels_tribble` object
 
-          actionButton(ns("elec_data_help"), label = "Plus de détails")
+          actionButton(ns("elec_data_help"), label = "Plus de détails sur la donnée")
         ),
         open = FALSE)
     ),#End div

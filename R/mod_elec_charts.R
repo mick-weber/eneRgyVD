@@ -8,7 +8,8 @@
 #'
 #' @importFrom shiny NS tagList
 mod_elec_charts_ui <- function(id,
-                               title){
+                               title,
+                               title_complement){
   ns <- NS(id)
   tagList(
 
@@ -37,6 +38,9 @@ mod_elec_charts_ui <- function(id,
         ),
         open = FALSE)
     ),#End div
+
+
+    tags$p(title_complement),
 
     # Pills ----
 

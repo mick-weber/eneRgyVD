@@ -76,7 +76,7 @@ Le contenu de ce rapport sera adapté progressivement en fonction des données d
 
 **Attention** : cette application contient des données résultant de méthodologies complexes vouées à améliorations. Pour cette raison, des valeurs peuvent changer de manière rétroactive. Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour. 
 
-# Consommation d'électricité
+# Distribution d'électricité
 
 
 En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du canton. La distribution d'électricité à chaque point de mesure du territoire vaudois a pu être récoltée et ce sont ces données agrégées par commune qui alimentent cette application.

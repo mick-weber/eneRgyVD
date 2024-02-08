@@ -40,7 +40,7 @@ mod_inputs_ui <- function(id){
     # uiOutput for tabCons ----
 
     shiny::conditionalPanel(
-      condition="input.nav == 'Consommation'",
+      condition="input.nav == 'Distribution'",
 
       shiny::uiOutput(ns("cons_year"))
 
@@ -290,7 +290,6 @@ mod_inputs_server <- function(id){
 
 
     })# End observe
-
 
 
     ### Statbox subsets, communes only (!) ----

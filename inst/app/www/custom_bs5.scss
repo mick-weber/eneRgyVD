@@ -18,13 +18,18 @@
 }
 
 /* Remove SelectizeInput's shadow when .focus is on */
-
 .selectize-input.focus{
   border-color:black !important;
   box-shadow:none !important;
 }
 
+/* Remove ugly minor ticks for slider inputs */
+.irs-grid-pol.small{
+  height: 0px;
 
+}
+
+/* Invert logo color, set height and align left*/
 .customLogo{
     filter: brightness(0) invert(1);
     height:5vh;

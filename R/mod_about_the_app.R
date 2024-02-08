@@ -53,15 +53,17 @@ mod_about_the_app_ui <- function(id){
                                               bslib::navset_tab(id = ns("nested_tabset"),
 
                                                                    ### 1. Cons elec ----
-                                                                   bslib::nav_panel("Consommation d'électricité",
+                                                                   bslib::nav_panel("Distribution d'électricité",
                                                                    tags$div(
                                                                             br(),
-                                                                   h5(strong("Consommation d'électricité : Enquête DGE-DIREN auprès des GRD")),
+                                                                   h5(strong("Distribution d'électricité : Enquête DGE-DIREN auprès des GRD")),
                                                                              tags$p("En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du canton. La distribution d'électricité à chaque
                                                                    point de mesure du territoire vaudois a pu être récoltée et ce sont ces données agrégées par commune qui alimentent cette application.",
                                                                    "La mise à jour est faite annuellement avec une année de retard, le relevé se faisant par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
                                                                    compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
                                                                    les données peuvent prendre quelques mois à être disponibles dans l'application.",
+                                                                   tags$p("On ne parle pas à proprement parler de consommation car l'autoconsommation d'électricité (notamment d'origine photovoltaïque)
+                                                                          n'est pas comprise dans ce qui est distribué par les GRD. Cette donnée est estimée dans les données de production d'électricité."),
                                                                    tags$strong("Les répartitions sectorielles (ménages, services, etc.) ne sont pas encore disponibles, la nomenclature diffère selon chaque gestionnaire de réseau.
                                                                                Des travaux d'harmonisation sont en cours.")
                                                                    ),# End tags$p()

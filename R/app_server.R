@@ -10,7 +10,7 @@ app_server <- function(input, output, session) {
   # Print test area if needed ----
 
   # observe({
-  #   print(inputVals$selectedCommunes)
+  #   print(inputVals$cons_elec_dataset)
   # })
 
    # Record logs ----
@@ -126,10 +126,10 @@ app_server <- function(input, output, session) {
    # that may be further changed (subset_prod_data gets additionnal filtering if selected)
    # or that may be unchanged (e.g. regener data).
 
-  ## Subset_cons_data ----
+  ## Subset_cons_elec_data ----
    ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
 
-    subset_cons_data <- reactive({
+    subset_cons_elec_data <- reactive({
 
       # explicitely require communes to be selected
       validate(
@@ -139,20 +139,21 @@ app_server <- function(input, output, session) {
       # waiting on these to get initialized (renderUIs)
       req(inputVals$min_selected_cons,
           inputVals$max_selected_cons,
-          inputVals$cons_dataset,
+          inputVals$cons_elec_dataset,
           inputVals$selectedUnit)
 
       # further filter cons_dataset with selected min/max values and convert to selectedUnit()
        # CONVERSION TEST IN PROGRESS
-      inputVals$cons_dataset |>
+      inputVals$cons_elec_dataset |>
         dplyr::filter(annee >= inputVals$min_selected_cons,
                       annee <= inputVals$max_selected_cons)
 
     })
 
-   ## Subset_prod_data ----
+
+   ## Subset_prod_elec_data ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
-   subset_prod_data <- reactive({
+   subset_prod_elec_data <- reactive({
 
      # explicitly require communes to be selected
      validate(
@@ -166,7 +167,7 @@ app_server <- function(input, output, session) {
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 
-     inputVals$prod_dataset |>
+     inputVals$prod_elec_dataset |>
        dplyr::filter(annee >= inputVals$min_selected_prod,
                      annee <= inputVals$max_selected_prod) |>
        dplyr::filter(categorie %in% inputVals$techs_selected)
@@ -374,7 +375,7 @@ app_server <- function(input, output, session) {
    ## tabCons: chart server logic ----
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
-                          subsetData = subset_cons_data,
+                          subsetData = subset_cons_elec_data,
                           selectedUnit = inputVals$selectedUnit,
                           legend_title = "Secteur",
                           var_year = "annee",
@@ -392,7 +393,7 @@ app_server <- function(input, output, session) {
    ## tabProd: chart server logic ----
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
-                          subsetData = subset_prod_data,
+                          subsetData = subset_prod_elec_data,
                           selectedUnit = inputVals$selectedUnit,
                           legend_title = NULL,
                           var_year = "annee",

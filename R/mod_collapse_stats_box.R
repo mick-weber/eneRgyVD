@@ -63,7 +63,7 @@ mod_collapse_stats_box_server <- function(id,
 
            # 1. Cons elec
            make_statbox_item(iconBgClass = "iconBgElec",
-                            title = "Consommation<br>électrique", value = cons_elec_value, unit = selectedUnit, year = year_elec_cons),
+                            title = "Distribution<br>électricité", value = cons_elec_value, unit = selectedUnit, year = year_elec_cons),
 
            # 2. RG cons
            make_statbox_item(iconBgClass = "iconBgRgr",

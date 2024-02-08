@@ -110,11 +110,15 @@ app_ui <- function(request) {
 
 
                       # cons----
-                      bslib::nav_panel("Consommation",
+                      bslib::nav_panel("Distribution",
+
 
                                        # Module for producing cons elec charts
                                        mod_elec_charts_ui("consumption_charts",
-                                                          title = "Consommation d'électricité par commune")
+                                                          title = "Distribution d'électricité par commune",
+                                                          title_complement = HTML("La distribution **ne correspond pas exactement à de la consommation**
+                                                          car il manque l'autoconsommation (notamment photovoltaïque). Celle-ci peut être trouvée
+                                                          dans la table des données de **production d'électricité**."))
 
                       ),
 
@@ -123,7 +127,8 @@ app_ui <- function(request) {
 
                                        # Module for producing prod elec charts
                                        mod_elec_charts_ui("production_charts",
-                                                          title = "Production d'électricité par commune")
+                                                          title = "Production d'électricité par commune",
+                                                          title_complement = NULL)
 
                       )
 

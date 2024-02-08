@@ -32,10 +32,11 @@ change rétroactivement avec la nouvelle méthode.
 de l'estimation de production d'électricité photovoltaïque, ainsi que des modifications
 négligeables pour les autres catégories
 
-#### Consommation d'électricité
+#### Distribution d'électricité
 
-* Ajout de nouvelles données de consommation d'électricité. Les données proviennent
-des GRD et le traitement est assuré par la DGE-DIREN
+* Ajout de nouvelles données de distribution d'électricité. Les données proviennent
+des GRD et le traitement est assuré par la DGE-DIREN. On ne parle pas de consommation car
+l'autoconsommation (notamment photovoltaïque) n'est pas inclue dans la distribution.
 
 #### Consommation de gaz naturel
 

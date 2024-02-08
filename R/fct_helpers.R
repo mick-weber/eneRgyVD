@@ -197,9 +197,8 @@ create_bar_plotly <- function(data,
                                  fill = if (!is.null(var_rank_2)){.data[[var_rank_2]]},
                                  # Text is reused in ggplotly(tooltip = 'text')
                                  text = paste0(
-                                   ifelse(is.null(var_rank_2),
-                                          "",
-                                          c(.data[[var_rank_2]], "\n")),
+
+                                   if(!is.null(var_rank_2)){paste0(.data[[var_rank_2]], "\n")},
                                    format(round(.data[[var_values]], digits = 0), big.mark = "'"),
                                    paste("", unit, "en "), .data[[var_year]]))
     )+

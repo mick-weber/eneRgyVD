@@ -18,8 +18,8 @@ mod_elec_charts_ui <- function(id,
       # Large+ screens : inline, flex layout, justified items
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
-      # Title
-      h4(title),
+      # Title (w small padding to avoid it touching the accordion)
+      h4(title, style = "padding-right:10px;"),
 
 
       # Methodology accordion

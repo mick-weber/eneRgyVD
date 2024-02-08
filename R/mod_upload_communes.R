@@ -91,29 +91,29 @@ mod_upload_communes_server <- function(id){
 
     observeEvent(input_communes_numbers(),{
 
+      # Prepare notification
       unique_communes <- length(input_communes_numbers())
-
 
       if(unique_communes > 0){
       notify_text <- paste0("Importation de communes : ",
                              unique_communes,
                              " communes distinctes ont été importées")
+      type = "message"
 
       }else{
 
         notify_text <- paste0("Erreur : aucune commune n'a pu être importée.
                              Vérifier le fichier d'entrée ou consulter le fichier d'exemple.")
+        type <- "error"
       }
 
-
-
+    # Actually notify
     showNotification(notify_text,
-                     type = "message")
+                     type = type)
 
     })
 
-
-
+    # return value to module call
     return(input_communes_numbers) # mod_inputs.R
 
   }

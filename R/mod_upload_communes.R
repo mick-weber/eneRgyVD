@@ -87,6 +87,21 @@ mod_upload_communes_server <- function(id){
 
     })
 
+    # Notify how many communes are retrieved
+
+    observeEvent(input_communes_numbers(),{
+
+      unique_communes <- length(input_communes_numbers())
+
+    showNotification(paste0("Importation de communes : ",
+                            unique_communes,
+                            " communes distinctes ont été importées"),
+                     type = "message")
+
+    })
+
+
+
     return(input_communes_numbers) # mod_inputs.R
 
   }

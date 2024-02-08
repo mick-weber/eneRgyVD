@@ -166,7 +166,7 @@ mod_about_the_app_ui <- function(id){
                                          subventions de travaux achevés sont présentés, les promesses de subventions ne sont pas intégrées."),
                                                                                              tags$a(href = "https://www.vd.ch/themes/environnement/energie/subventions-programme-batiments",
                                                                                                     target = "_blank", "Voir ce lien pour le détail des subventions"),
-                                                                                             br(),
+                                                                                             br(), br(),
                                                                                              h6(strong("Vue par bâtiments subventionnés")),
                                                                                              tags$p("Ces données de subventions sont croisées avec les données du registre énergétique des bâtiments (RegEner)
                                          afin de fournir une vision par bâtiments. Uniquement les mesures directes du Programme Bâtiments

@@ -105,10 +105,11 @@ app_ui <- function(request) {
 
       ),# End nav_panel('Carte')
 
-      ## Prod elec----
+      ## cons/prod elec----
       bslib::nav_menu("Electricité", icon = icon("bolt"),
 
 
+                      # cons----
                       bslib::nav_panel("Consommation",
 
                                        # Module for producing cons elec charts
@@ -117,6 +118,7 @@ app_ui <- function(request) {
 
                       ),
 
+                      # prod ----
                       bslib::nav_panel("Production",
 
                                        # Module for producing prod elec charts

@@ -162,7 +162,7 @@ app_server <- function(input, output, session) {
      req(inputVals$min_selected_prod,
          inputVals$max_selected_prod,
          inputVals$techs_selected,
-         inputVals$prod_dataset)
+         inputVals$prod_elec_dataset)
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 

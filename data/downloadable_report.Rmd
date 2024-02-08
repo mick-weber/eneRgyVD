@@ -20,7 +20,8 @@ params:
   web_width: NULL
   web_height: NULL
   unit: NULL
-  prod_data: NULL
+  cons_elec_data: NULL
+  prod_elec_data: NULL
   regener_data_0: NULL
   regener_data_1: NULL
   regener_data_2: NULL
@@ -73,6 +74,48 @@ Le contenu de ce rapport sera adapté progressivement en fonction des données d
 
 **Attention** : cette application contient des données résultant de méthodologies complexes vouées à améliorations. Pour cette raison, des valeurs peuvent changer de manière rétroactive. Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour. 
 
+# Consommation d'électricité
+
+
+En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du canton. La distribution d'électricité à chaque point de mesure du territoire vaudois a pu être récoltée et ce sont ces données agrégées par commune qui alimentent cette application.
+
+La mise à jour est faite annuellement avec une année de retard, le relevé se faisant par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire, les données peuvent prendre quelques mois à être disponibles dans l'application.
+
+Les répartitions sectorielles (ménages, services, etc.) ne sont pas encore disponibles, la nomenclature diffère selon chaque gestionnaire de réseau. Des travaux d'harmonisation sont en cours.
+
+## Tableau
+
+```{r}
+# Generate the table for electricity consumption and add copy/download buttons
+params$cons_elec_data |>
+    eneRgyVD::create_cons_table_dt(unit = params$unit,
+                                   DT_dom = "Bfrtip"
+                                   )
+
+```
+
+
+## Graphique
+
+```{r}
+# Generate the barplot for electricity consumption
+params$cons_elec_data |>
+    eneRgyVD::create_bar_plotly(unit = params$unit,
+                                n_communes = length(params$communes),
+                                # web_width = params$web_width, # manually defined
+                                # web_height = params$web_height, # manually defined
+                                var_year = "annee",
+                                var_commune = "commune",
+                                var_rank_2 = NULL, # 'secteur' when available
+                                var_values = "consommation",
+                                color_palette = eneRgyVD::return_palette_prod_elec(),
+                                dodge = F,
+                                free_y = F,
+                                legend_title = "Technologies")
+
+```
+
+
 # Production d'électricité
 
 **Important**: les données d'une catégorie pour laquelle la commune recense moins de trois installations sont retirées.
@@ -85,7 +128,7 @@ La mise à jour est faite annuellement après réception et traitement des donn�
 
 ```{r}
 # Generate the table for electricity production and add copy/download buttons
-params$prod_data |>
+params$prod_elec_data |>
     eneRgyVD::create_prod_table_dt(unit = params$unit,
                                    DT_dom = "Bfrtip"
                                    )
@@ -95,7 +138,7 @@ params$prod_data |>
 
 ```{r}
 # Generate the barplot for electricity production
-params$prod_data |>
+params$prod_elec_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
                                 # web_width = params$web_width, # manually defined

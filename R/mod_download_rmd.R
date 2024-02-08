@@ -113,8 +113,8 @@ mod_download_rmd_server <- function(id,
                        web_width = 1900, # manually set
                        web_height = 1000, # manually set
                        unit = inputVals$selectedUnit,
-                       prod_data = inputVals$prod_dataset,
-                      # !! CONS_ELEC removed !! # cons_data = inputVals$cons_dataset,
+                       prod_elec_data = inputVals$prod_elec_dataset,
+                       cons_elec_data = inputVals$cons_elec_dataset,
                        regener_data_0 = inputVals$rgr_needs,
                        regener_data_1 = inputVals$rgr_1,
                        regener_data_2 = inputVals$rgr_2,

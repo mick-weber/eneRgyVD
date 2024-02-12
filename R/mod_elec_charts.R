@@ -39,8 +39,8 @@ mod_elec_charts_ui <- function(id,
         open = FALSE)
     ),#End div
 
-
-    tags$p(title_complement),
+    # If any : pass title_complement at 70% width of container
+      tags$p(title_complement, style = "width:70vw;"),
 
     # Pills ----
 

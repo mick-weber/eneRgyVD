@@ -109,7 +109,7 @@ link_pter <- "https://www.vd.ch/themes/etat-droit-finances/communes/energie-envi
 link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ## DT language file ----
-### Run ONCE : Store JSON french language items file for DT library
+### RUN ONCE : Store JSON french language items file for DT library. May require rjson library (not in DESCRIPTION)
 
 # rjson::fromJSON(
 #   file = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/French.json') |>

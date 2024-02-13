@@ -131,9 +131,17 @@ Gradient for navbar with multibrowser compatibility
 
 /*On large media : 70% width to allow title space ; on smaller media 100% width to maximize screen space*/
 .customAccordion{
-
 	@include media-breakpoint-up(lg){
 	width: 65% !important;
+
+  /* Change default's collapsed state border with primary color*/
+
+	.collapsed {
+	  border-style: solid;
+	  border-width: 1px !important;
+	  border-color: #3A862D !important;
+
+	}
 }
 
 }

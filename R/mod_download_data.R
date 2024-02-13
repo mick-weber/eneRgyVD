@@ -10,15 +10,13 @@
 mod_download_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h6(strong("Télécharger les données")),
-    bslib::layout_columns(col_widths = 2, # each button will take ~15% of width (2/12)
 
-                          shiny::downloadButton(outputId = ns("download_csv"),
-                                                class = "btn-primary",
-                                                label = "CSV"),
-                          shiny::downloadButton(outputId = ns("download_excel"),
-                                                class = "btn-primary",
-                                                label = "XLSX")
+    h6(strong("Télécharger les données")),
+
+    bslib::layout_columns(col_widths = 2, # each button will take ~15% of avail. width (2/12)
+
+                          shiny::uiOutput(ns("download_ui_csv")),
+                          shiny::uiOutput(ns("download_ui_excel"))
 
     )# End layout_columns_wrap
     )# End tagList
@@ -39,29 +37,25 @@ mod_download_data_server <- function(id,
     ## CSV button ----
     output$download_ui_csv <- shiny::renderUI({
 
-      # if no commune selected ; don't display
-      req(shiny::isTruthy(inputVals$selectedCommunes))
+      req(inputVals$selectedCommunes)
 
       shiny::downloadButton(outputId = ns("download_csv"),
-                          label = "CSV", class = "dlButton")
+                          label = "CSV", class = "btn-primary")
       })
 
     ## Excel button ----
     output$download_ui_excel <- shiny::renderUI({
 
-      # if no commune selected ; don't display
-      req(shiny::isTruthy(inputVals$selectedCommunes))
+      req(inputVals$selectedCommunes)
 
       shiny::downloadButton(outputId = ns("download_excel"),
-                          label = "XLSX", class = "dlButton" ) # class defined in custom.css
+                          label = "XLSX", class = "btn-primary" ) # class defined in custom.css
     })
-
 
 
     # Download handlers ----
     ## CSV handler ----
     output$download_csv <- downloadHandler(
-
       filename = paste0(dl_prefix, Sys.Date(), ".csv"),
       content = function(file){
 
@@ -76,6 +70,7 @@ mod_download_data_server <- function(id,
     # We add documentation for XLSX since it's easy (CSV would require two separate files which must be in a ZIP...)
 
     download_sheets <- reactive({
+
       list(donnees = data(),
            doc = doc_vars)
       })

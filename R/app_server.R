@@ -94,6 +94,9 @@ app_server <- function(input, output, session) {
                    )) #End pwalk
 
 
+   # When redirected to input$nav from a nav_select(), the dropdown remains open
+   # We add this code to wait 2s before closing it so the user knows where it comes from
+
    observe({
      if (input$nav %in% "À propos") {
        Sys.sleep(2)

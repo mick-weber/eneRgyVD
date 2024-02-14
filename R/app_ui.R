@@ -48,7 +48,7 @@ app_ui <- function(request) {
       # Sidebar
       sidebar = bslib::sidebar(
 
-        class = "shadow-p", # add some shadow
+        class = "shadow", # add some shadow
         width = "300px",
           bg =  "#343A40",
 

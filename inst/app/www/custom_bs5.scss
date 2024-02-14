@@ -23,10 +23,10 @@
   box-shadow:none !important;
 }
 
-/* !!!!!!!! DOESNT WORK !!!!!!!!  Remove ugly minor ticks for slider inputs */
-.irs-grid-pol.small{
-  height: 0px;
 
+/* sliderInputs minor ticks removal */
+.irs-grid-pol.small{
+  display: none !important;
 }
 
 /* Invert logo color, set height and align left*/

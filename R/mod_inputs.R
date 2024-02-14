@@ -347,15 +347,14 @@ mod_inputs_server <- function(id){
 
        shiny::tagList(
 
-         tags$div(class = 'customSliderInput', # custom.css -> go green
-
          shiny::sliderInput(ns("cons_year"), label = "Choix des années",
                             min = inputVals$min_avail_cons,
                             max = inputVals$max_avail_cons,
                             value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
-                            step = 1L, sep = "", ticks = T)
+                            step = 1L, sep = "", ticks = T, dragRange = T
+                            )
 
-         ))# End tagList
+         )# End tagList
      })# End renderUi
 
     ### tabRegener dynamic select ----
@@ -364,14 +363,13 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-      tags$div(class = 'customSliderInput', # custom.css -> go green
-
-               shiny::sliderInput(ns("regener_year"), label = "Choix des années",
+               shiny::sliderInput(ns("regener_year"),
+                                  label = "Choix des années",
                                   min = inputVals$min_regener_year,
                                   max = inputVals$max_regener_year,
                                   value = c(inputVals$min_regener_year,
                                             inputVals$max_regener_year),
-                                  step = 1L, sep = "", ticks = T))
+                                  step = 1L, sep = "", ticks = T, dragRange = T)
 
     })
 
@@ -385,13 +383,12 @@ mod_inputs_server <- function(id){
 
       shiny::tagList(
 
-        tags$div(class = 'customSliderInput', # custom.css -> go green
-
-        shiny::sliderInput(ns("prod_year"), label = "Choix des années",
-                    min = inputVals$min_avail_prod,
-                    max = inputVals$max_avail_prod,
-                    value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),
-                    step = 1L, sep = "", ticks = T)),
+        shiny::sliderInput(ns("prod_year"),
+                           label = "Choix des années",
+                           min = inputVals$min_avail_prod,
+                           max = inputVals$max_avail_prod,
+                           value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),
+                           step = 1L, sep = "", ticks = TRUE, dragRange = TRUE),
 
 
         # For SELECTABLE technologies : these checkboxes are linked to other server parts

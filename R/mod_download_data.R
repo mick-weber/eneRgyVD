@@ -15,8 +15,8 @@ mod_download_data_ui <- function(id){
 
     bslib::layout_columns(col_widths = 2, # each button will take ~15% of avail. width (2/12)
 
-                          shiny::uiOutput(ns("download_ui_csv")),
-                          shiny::uiOutput(ns("download_ui_excel"))
+                          shiny::uiOutput(ns("download_ui_csv"), fill = TRUE),   # explicitly take 100% avail width
+                          shiny::uiOutput(ns("download_ui_excel"), fill = TRUE)  # explicitly take 100% avail width
 
     )# End layout_columns_wrap
     )# End tagList

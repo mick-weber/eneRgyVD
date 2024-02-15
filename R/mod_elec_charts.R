@@ -24,6 +24,7 @@ mod_elec_charts_ui <- function(id,
 
 
       # Methodology accordion
+
       bslib::accordion(
         class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
         bslib::accordion_panel(

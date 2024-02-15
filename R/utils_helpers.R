@@ -7,17 +7,17 @@ load("./data/sf_communes.rda")
 load("./data/sf_districts.rda")
 load("./data/sf_lacs.rda")
 
-## electricity_production data ----
+## elec_prod data ----
 
 load("./data/elec_prod.rda")
 load("./data/elec_prod_doc.rda")
 
-## electricity_consumption data ----
+## elec_cons data ----
 
 load("./data/elec_cons.rda")
 load("./data/elec_cons_doc.rda")
 
-## regener_communes data ----
+## regener data ----
 
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
@@ -35,6 +35,14 @@ load("./data/subsidies_doc.rda")
 
 load("./data/glossary.rda")
 
+## doc panels for accordions ----
+# see fct_helpers.R
+
+elec_prod_doc_panels <- generate_doc_accordion_panels(md_file = "elec_prod-doc.md")
+elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "elec_cons-doc.md")
+regener_doc_panels <- generate_doc_accordion_panels(md_file = "regener-doc.md")
+subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "subsidies-doc.md")
+
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 
@@ -49,7 +57,7 @@ file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 ## Debounce time ----
 # Usef in app_server.R + plotting modules to avoid loop errors and flickering
 
-debounce_plot_time <- 400 # ms
+debounce_plot_time <- 400 # ms, empirically defined as ideal
 
 ## Sentence for required communes ----
 # To avoid multiple repetitions troughout the app we store it once here

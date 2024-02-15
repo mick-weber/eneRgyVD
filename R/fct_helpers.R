@@ -74,6 +74,54 @@ make_statbox_item <- function(iconBgClass,
 
 }
 
+# Accordion documentation ----
+
+#' generate_doc_accordion_panels()
+#' Create HTML `bslib::accordion_panel()` items for each dataset documented in ./data-doc. These are then used and
+#' spliced as arguments inside a `bslib::accordion()` item. Each markdown h2 heading is used as a `title` argument for
+#' `accordion_panel()` and each paragraph (i.e. not a h2 header) is used as content to fill the `accordion_panel()`.
+#' @param md_file the documentation filename stored in `./data-doc`
+#'
+#' @importFrom stringr str_extract_all str_subset
+#' @importFrom purrr map2
+#' @importFrom bslib accordion_panel
+#' @importFrom shiny markdown
+#'
+#' @return a list of HTML accordion_panels to be spliced in a `bslib::accordion()`
+#' @export
+#'
+#' @examples items <- generate_doc_panels("elec_prod-doc.md")
+#' bslib::accordion(!!!items, open = FALSE)
+
+generate_doc_accordion_panels <- function(md_file){
+
+  # Locale md file
+  doc_txt <- readLines(paste0("./data-doc/", md_file), skipNul = TRUE)
+
+  # Extract HTML titles following ## headers (titles for accordion_panel)
+  titles <- stringr::str_extract_all(doc_txt, pattern = "(?<=#{2}\\s).*", simplify =  TRUE) |>
+    stringr::str_subset(pattern = "^\\w") # remove empty lines
+
+  # Extract HTML content
+  paragraphs <- stringr::str_extract_all(doc_txt, pattern = "^([^#]+)", simplify =  TRUE) |>
+    stringr::str_subset(pattern = "^\\w")  # remove empty lines
+
+  # Map titles & values into separate accordion_panels
+  items <- purrr::map2(titles, paragraphs, function(titles, paragraphs){
+
+    bslib::accordion_panel(
+      titles,
+      icon = bsicons::bs_icon("question-circle", class = "text-secondary"),
+      tags$div(class = "customPanel",
+               shiny::markdown(paragraphs))
+      )
+
+  })
+
+  # Return list of accordion_panels
+  return(items)
+
+}
 
 # Graph fns ----
 

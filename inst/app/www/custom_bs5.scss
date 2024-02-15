@@ -146,6 +146,11 @@ Gradient for navbar with multibrowser compatibility
 
 }
 
+/* Remove default's bottom margin for <p> elements. Used in fct_helpers.R (generate_doc_accordion_panels()) */
+.customPanel p{
+  margin-bottom:0 !important;
+}
+
 .customVB p{
   font-size: 100% !important;
   padding:0;

@@ -44,7 +44,7 @@ app_ui <- function(request) {
                      class = "h4 text-wrap",
                      style = "font-family: 'Arial', sans-serif;"),
       # Browser title
-      window_title = "Profil énergie VD",
+      # window_title = "Profil énergie VD",
       # Sidebar
       sidebar = bslib::sidebar(
 
@@ -77,14 +77,14 @@ app_ui <- function(request) {
                          # 1st column
                          bslib::card(full_screen = TRUE,
 
-                                     bslib::card_header(strong("Carte des communes"), bslib::tooltip(
+                                     bslib::card_header(strong("Carte interactive des communes"), bslib::tooltip(
                                        id = "tooltip_map_card",
                                        placement = "right",
                                        options = list(customClass = "customTooltips"), # custom.scss
                                        trigger = bsicons::bs_icon("info-circle"),
 
-                                       "En cas de fusions communales, un décalage de quelques semaines peut être appliqué
-                                       afin de procéder aux ajustements statistiques nécessaires"),
+                                       "En cas de fusions communales, un décalage de quelques semaines peut être nécessaire
+                                        pour mettre à jour les données avec les nouveaux périmètres communaux"),
 
                                        class = "bg-secondary"),
 

@@ -46,54 +46,40 @@ mod_about_the_app_ui <- function(id){
                                     Néanmoins, l'exactitude de ces informations ne peut être garantie. En cas d'incohérence, n'hésitez pas à prendre contact afin d'en clarifier les causes probables.
                                     Lorsque disponibles, des documentations plus détaillées sont annexées en-dessous de chaque onglet."),
                                               br(),
-                                              tags$p("Les sources de données suivantes sont utilisées : "),
-
 
                                               ## Données subtabs ----
                                               bslib::navset_tab(id = ns("nested_tabset"),
 
                                                                    ### 1. Cons elec ----
-                                                                   bslib::nav_panel("Distribution d'électricité",
+                                                                   bslib::nav_panel(h6("Distribution d'électricité"),
                                                                    tags$div(
                                                                             br(),
-                                                                   h5(strong("Distribution d'électricité : Enquête DGE-DIREN auprès des GRD")),
-                                                                             tags$p("En 2022, la DGE-DIREN a procédé à sa première enquête auprès des gestionnaires de réseau de distribution (GRD) du canton. La distribution d'électricité à chaque
-                                                                   point de mesure du territoire vaudois a pu être récoltée et ce sont ces données agrégées par commune qui alimentent cette application.",
-                                                                   "La mise à jour est faite annuellement avec une année de retard, le relevé se faisant par exemple en fin d'année 2021 pour obtenir les données 2020 afin de garantir qu'un maximum de
-                                                                   compteurs aient pu être relevés durant 2021 pour l'année 2020. Selon l'importance du traitement nécessaire,
-                                                                   les données peuvent prendre quelques mois à être disponibles dans l'application.",
-                                                                   tags$p("On ne parle pas à proprement parler de consommation car l'autoconsommation d'électricité (notamment d'origine photovoltaïque)
-                                                                          n'est pas comprise dans ce qui est distribué par les GRD. Cette donnée est estimée dans les données de production d'électricité."),
-                                                                   tags$strong("Les répartitions sectorielles (ménages, services, etc.) ne sont pas encore disponibles, la nomenclature diffère selon chaque gestionnaire de réseau.
-                                                                               Des travaux d'harmonisation sont en cours.")
-                                                                   ),# End tags$p()
-                                                                   br(),
+                                                                            h4(strong("Détails méthodologiques")),
+                                                                            br(),
+                                                                            bslib::accordion(!!!elec_cons_doc_panels, open = FALSE),
+                                                                            br(),
+                                                                            h5(strong("Descriptif des variables")),
+                                                                            br(),
+                                                                            DT::dataTableOutput(ns("elec_cons_doc"))
 
-                                                                   # Documentation table for electricity production
-                                                                   DT::dataTableOutput(ns("elec_cons_doc")),
-                                                                   br()
                                                                    )# End tags$div
                                                                    ),# End nested tabPanel 1.
 
 
                                                                 ### 2. Prod élec ----
-                                                                bslib::nav_panel("Production d'électricité",
+                                                                bslib::nav_panel(h6("Production d'électricité"),
                                                                                  # create div to apply class
                                                                                  tags$div(
                                                                                    br(),
                                                                                    # Overview method
-                                                                                   h4(strong("Synthèse de la méthode")),
-
-                                                                                   p("La grande majorité des installations de production d'électricité sont répertoriées par l'organisme de certification accrédité
-                pour la saisie de garanties d'origine (GO) et le traitement des programmes d'encouragement de la Confédération concernant les énergies renouvelables.
-                Les données pour le canton de Vaud sont transmises annuellement à la DGE-DIREN, qui après plusieurs traitements (harmonisation des extractions annuelles,
-                nettoyage des communes, estimation de l'autoconsommation photovoltaïque, etc.) permet de créer une table de données pour chaque commune vaudoise.",
-                                                                                     br(),
-                                                                                     tags$a(href = "https://pronovo.ch/fr/", "Plus d'informations sur Pronovo AG", target = "_blank")),# open in new tab
-                                                                                   p("La mise à jour est faite annuellement après réception et traitement des données, en général vers juin, par exemple juin 2022 pour les données 2021."),
+                                                                                   h4(strong("Détails méthodologiques")),
+                                                                                   br(),
+                                                                                   bslib::accordion(!!!elec_prod_doc_panels, open = FALSE),
+                                                                                   br(),
+                                                                                   h5(strong("Descriptif des variables")),
+                                                                                   br(),
                                                                                    DT::dataTableOutput(ns("elec_prod_doc")),
                                                                                    br(),
-
                                                                                    # Detailed method
                                                                                    h4(strong("Méthode détaillée")),
                                                                                    br(),
@@ -102,7 +88,6 @@ mod_about_the_app_ui <- function(id){
                                                                                           target="_blank", "Télécharger la documentation",
                                                                                           download = "Pronovo_synthese_traitement_sans_recommendations.html"),
                                                                                    br(),
-
                                                                                    tags$iframe(src = "www/Pronovo_synthese_traitement_sans_recommendations.html",
                                                                                                target = "_self",
                                                                                                height = "800px", width = "100%")
@@ -111,73 +96,34 @@ mod_about_the_app_ui <- function(id){
                                                                 ),# End nested tabPanel 2.
 
                                                                    ### 3. Regener ----
-                                                                   bslib::nav_panel("Chaleur bâtiments",
+                                                                   bslib::nav_panel(h6("Chaleur bâtiments"),
                                                                                     # create div to apply class
                                                                                     tags$div(
                                                                                              br(),
-                                                                                             h4(strong("Synthèse de la méthode")),
-                                                                                             h5("Chaleur des bâtiments : exploitation du registre énergétique des bâtiments vaudois (RegEner)"),
-                                                                                             tags$p("En 2022, la DGE-DIREN a procédé à une refonte du cadastre des énergies (CadEner, 2017) qui se base sur l'exploitation
-                                 des données du registre cantonal des bâtiments (RCB) et de nombreuses autres données énergétiques du bâtiment
-                                 (subventions, CECB, données empiriques de consommation, etc.). Une nouvelle méthode, plus détaillée et mieux coordonnée avec le
-                                 registre fédéral des bâtiments (RegBL) a été élaborée en 2022 sous le nom de RegEner. Pour chaque bâtiment (EGID), jusqu'à 4 producteurs
-                                 de chaleur peuvent être renseignés, les besoins et la consommation sont estimés selon la surface de référence énergétique, l'année et l'affectation du bâtiment
-                                 ainsi que la présence d'une ou de plusieurs rénovations. Ces besoins et consommations sont théoriques mais fondés sur des données de consommation empiriques.
-                                 Les données qui alimentent cette application sont le résultat d'agrégations du RegEner. De nouveaux indices seront prochainement calculés suite à la récolte importante
-                                 de données de consommation et à l'ajout d'une correction climatique sur les besoins de chauffage.",
-                                                                                                    br(),
-                                                                                                    "Les", strong("besoins optimisés"),"traduisent les besoins théoriques si tous les bâtiments construits avant 2001 ou qui n'ont pas été rénovés lourdement
-                                     après 2001 étaient assainis énergétiquement. Uniquement les besoins de chauffage sont concernés. Ces valeurs sont indicatives et ne reflètent pas un objectif politique.",
-                                                                                                    tags$br(), tags$br(),
-                                                                                                    "Davantage de détails peuvent être fournis sur demande à",
-                                                                                                    tags$a(href = paste0("mailto:", mail_address, "."), mail_address,target = "_blank"),
-                                                                                                    "Un document de synthèse méthodologique est prévu prochainement afin de présenter plus en détail la méthode appliquée.",
-                                                                                                    tags$br(),
-                                                                                                    "Les communes étant responsables de ce qui figure dans le registre cantonal des bâtiments (et par extension dans le registre fédéral des bâtiments),
-                                     la qualité des données relatives aux agents énergétique est donc directement liée à l'état de mise à jour de ces données par la commune.
-                                     La DGE-DIREN se tient à disposition des communes qui souhaiteraient améliorer ces données par la mise à jour des agents énergétiques dans ces registres."
-                                                                                             ),# End tags$p()
+                                                                                             h4(strong("Détails méthodologiques")),
                                                                                              br(),
-
-                                                                                             # Documentation table for electricity production
+                                                                                             bslib::accordion(!!!regener_doc_panels, open = FALSE),
+                                                                                             br(),
+                                                                                             h5(strong("Descriptif des variables")),
+                                                                                             br(),
                                                                                              DT::dataTableOutput(ns("regener_doc")),
                                                                                              br(),
-
-                                                                                             h5(strong("Méthode détaillée à venir...")) #,
-                                                                                             # br(),
-                                                                                             # # Add download link when doc available
-                                                                                             # tags$a(href= "www/synthese_regener_energyvd.html",
-                                                                                             #        target="_blank", "Télécharger la documentation",
-                                                                                             #        download = "profil-energie_doc_regener_v[???].html"),
-                                                                                             # br(),
+                                                                                             h5(strong("Méthode détaillée à venir..."))
 
                                                                                     )# End tags$div
 
                                                                    ),# End nested tabPanel 3.
 
                                                                    ### 4. Subsidies ----
-                                                                   bslib::nav_panel("Subventions bâtiments",
+                                                                   bslib::nav_panel(h6("Subventions bâtiments"),
                                                                                     # create div to apply class
                                                                                     tags$div(
                                                                                              br(),
-                                                                                             h4(strong("Synthèse de la méthode")),
-                                                                                             h5("Subventions bâtiments : exploitation des données du Programme Bâtiments vaudois"),
+                                                                                             h4(strong("Détails méthodologiques")),
                                                                                              br(),
-                                                                                             tags$p("Ces données sont utilisées afin de fournir deux perspectives : une selon le nombre
-                                         de bâtiments subventionnés, et une sur le nombre de subventions émises. Uniquement les
-                                         subventions de travaux achevés sont présentés, les promesses de subventions ne sont pas intégrées."),
-                                                                                             tags$a(href = "https://www.vd.ch/themes/environnement/energie/subventions-programme-batiments",
-                                                                                                    target = "_blank", "Voir ce lien pour le détail des subventions"),
-                                                                                             br(), br(),
-                                                                                             h6(strong("Vue par bâtiments subventionnés")),
-                                                                                             tags$p("Ces données de subventions sont croisées avec les données du registre énergétique des bâtiments (RegEner)
-                                         afin de fournir une vision par bâtiments. Uniquement les mesures directes du Programme Bâtiments
-                                          sont inclues dans ces statistiques. La catégorie 'Autres' regroupe les mesures M09 à M11 et M-16 à M-18.
-                                         Afin de simplifier la représentation des données, aucune indication n'est faite lorsqu'une mesure de la
-                                         catégorie 'Autres' co-existe avec d'autres mesures, ce qui est peu probable."),
+                                                                                             bslib::accordion(!!!subsidies_doc_panels, open = FALSE),
                                                                                              br(),
-                                                                                             h6(strong("Vue par subventions octroyées")),
-                                                                                             tags$p("Ces données reflètent l'ensemble des mesures directes du Programme Bâtiments (M01 à M16)."),
+                                                                                             h5(strong("Descriptif des variables")),
                                                                                              br(),
                                                                                              # Documentation table for both subsidies datasets
                                                                                              DT::dataTableOutput(ns("subsidies_doc"))
@@ -209,7 +155,7 @@ mod_about_the_app_ui <- function(id){
                                               br(),
                                               tags$h4(strong("Technologie")),
                                               tags$p("Cette application est programmée avec le language",
-                                                     tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie Shiny", target = "_blank"),
+                                                     tags$b("R"), "et la", tags$a(href = "https://shiny.rstudio.com/", "librairie shiny", target = "_blank"),
                                                      "qui permet la création d'applications web interactives. L'architecture de l'application est construite
             à l'aide des librairies ",
                                                      tags$a(href = "https://github.com/ThinkR-open/golem", "golem (ThinkR)", target = "_blank"),

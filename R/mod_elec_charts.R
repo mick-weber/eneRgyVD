@@ -52,7 +52,7 @@ mod_elec_charts_ui <- function(id,
                                  icon = bsicons::bs_icon("bar-chart-fill"),
 
 
-                                bslib::layout_column_wrap(width = 1/4, # each col = 25% of avail. width
+                                bslib::layout_column_wrap(width = 1/4, # each col = 33% of avail. width
                                                           class = "d-flex align-items-end",
 
 
@@ -65,12 +65,14 @@ mod_elec_charts_ui <- function(id,
                                      tags$div(
                                        class = "d-flex justify-content-center",
                                               tags$div(
+                                                class = "align-middle",
                                                 shinyWidgets::materialSwitch(
                                                   inputId = ns("stacked_status"),
                                                   value = FALSE,
                                                   status = "success",
-                                                  label = strong("Barres empilées"), inline = TRUE),
-                                                tags$span(strong("adjacentes"))
+                                                  label = strong("Barres empilées", class = "align-middle"),
+                                                  inline = TRUE),
+                                                tags$span(strong("adjacentes", class = "align-middle"))
                                               ))# End 2x tags$div()
                                    ),# End conditionalPanel 1/2
 
@@ -85,10 +87,10 @@ mod_elec_charts_ui <- function(id,
                                        shinyWidgets::materialSwitch(
                                          inputId = ns("toggle_status"),
                                          value = FALSE,
-                                         label = strong("Axe vertical commun"),
+                                         label = strong("Axe vertical commun", class = "align-middle"),
                                          status = "success",
                                          inline = TRUE),
-                                       tags$span(strong("indépendant"))
+                                       tags$span(strong("indépendant", class = "align-middle"))
                                      )# End tags$div
                                    ),# End 2nd conditionalPanel
 

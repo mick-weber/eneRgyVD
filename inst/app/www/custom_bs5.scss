@@ -12,6 +12,14 @@
   text-align:center;
 }
 
+/* shiny::fileInput() generates a progress bar once the file is uploaded with 'Upload complete' text */
+/* we can't easily overwrite the text so we turn it to transparent so nobody can see it ;) */
+.progress-bar {
+  color: transparent!important
+
+}
+
+
 /* Add bottom margin to avoid overlapping of main content and footer*/
 .main{
   margin-bottom:20px;

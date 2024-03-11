@@ -70,8 +70,9 @@ mod_regener_needs_charts_ui <- function(id){
                                                                                  inputId = ns("stacked_status"),
                                                                                  value = FALSE,
                                                                                  status = "success",
-                                                                                 label = strong("Barres empilées"), inline = TRUE),
-                                                                               tags$span(strong("adjacentes"))
+                                                                                 label = strong("Barres empilées", class = "align-middle"),
+                                                                                 inline = TRUE),
+                                                                               tags$span(strong("adjacentes", class = "align-middle"))
                                                                              )
                                                                   ),# End conditionalPanel 1/2
 
@@ -86,10 +87,10 @@ mod_regener_needs_charts_ui <- function(id){
                                                                       shinyWidgets::materialSwitch(
                                                                         inputId = ns("toggle_status"),
                                                                         value = FALSE,
-                                                                        label = strong("Axe vertical commun"),
+                                                                        label = strong("Axe vertical commun", class = "align-middle"),
                                                                         status = "success",
                                                                         inline = TRUE),
-                                                                      tags$span(strong("indépendant"))
+                                                                      tags$span(strong("indépendant", class = "align-middle"))
                                                                     )# End tags$div
                                                                   ),# End 2nd conditionalPanel
 

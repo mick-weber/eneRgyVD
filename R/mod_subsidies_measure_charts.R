@@ -66,10 +66,10 @@ mod_subsidies_measure_charts_ui <- function(id){
                              shinyWidgets::materialSwitch(
                                inputId = ns("toggle_status"),
                                value = FALSE,
-                               label = strong("Axe vertical commun"),
+                               label = strong("Axe vertical commun", class = "align-middle"),
                                status = "success",
                                inline = TRUE),
-                             tags$span(strong("indépendant"))
+                             tags$span(strong("indépendant", class = "align-middle"))
                            )# End tags$div
                          )# End conditionalPanel
 

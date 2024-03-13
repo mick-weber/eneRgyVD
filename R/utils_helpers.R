@@ -217,10 +217,9 @@ colors_categories <- prod_colors$color |>
 # Base tribble with sector, icon and color
 
 cons_colors <- dplyr::tribble(~icon, ~secteur, ~color,
-                             as.character(shiny::icon("industry")), "Industrie/Services","#6495ED",
+                             as.character(shiny::icon("industry")), "Hors-ménages","#6495ED",
                              as.character(shiny::icon("house")), "Ménages", "#FFB90F",
-                             as.character(shiny::icon("car")),  "Transports", "#BFDB86",
-                             as.character(shiny::icon("question")),  "Inconnu", "#BFDB86")
+                             as.character(shiny::icon("question")),  "Indéfini", "#BFDB86")
 # Used for table icons
 # Adding the color style in the html tag for the icon
 
@@ -386,9 +385,8 @@ profil_theme <- bslib::bs_theme(version = 5,
 ) |>
   # add some variables
   bslib::bs_add_variables(
-
-    "dropdown-link-active-bg" = "white",
-    "dropdown-link-active-color" = "$secondary",
+    "dropdown-link-active-bg" = "white",         # nav menus
+    "dropdown-link-active-color" = "$secondary", # nav menus
     "accordion-button-active-bg" = "$secondary", # bg color when activated
     "accordion-button-active-color" = "white",   # text color when activated
     "accordion-button-focus-box-shadow" = "0 0 0 $btn-focus-width rgba($secondary, 0.25)", # width + color of shadow when active

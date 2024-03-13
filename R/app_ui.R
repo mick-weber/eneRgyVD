@@ -116,7 +116,8 @@ app_ui <- function(request) {
                                        # Module for producing cons elec charts
                                        mod_elec_charts_ui("consumption_charts",
                                                           title = "Distribution d'électricité par commune",
-                                                          title_complement = HTML("La <strong>distribution</strong> ne correspond pas exactement à de la <strong>consommation</strong> car il manque l'autoconsommation (notamment photovoltaïque).<br>L'autoconsommation estimée est disponible dans la <strong>table des données de production d'électricité</strong>.")
+                                                          title_complement = HTML("La <strong>distribution</strong> ne doit pas être confondue à la <strong>consommation finale</strong> car il manque l'autoconsommation (notamment photovoltaïque) ou encore l'électricité du réseau des CFF.
+                                                                                  <br>L'autoconsommation estimée est disponible dans la <strong>table des données de production d'électricité</strong>.")
                                                           )
 
                       ),

@@ -75,7 +75,7 @@ mod_collapse_stats_box_server <- function(id,
 
            # 4. Prod elec
            make_statbox_item(iconBgClass = "iconBgElec",
-                             title = "Production<br>électrique", value = prod_elec_value, unit = selectedUnit, year = year_elec_prod)
+                             title = "Production<br>électricité", value = prod_elec_value, unit = selectedUnit, year = year_elec_prod)
 
 
 

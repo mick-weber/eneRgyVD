@@ -383,7 +383,7 @@ app_server <- function(input, output, session) {
                           legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
-                          var_rank_2 = NULL, #"secteur", # secteur later on
+                          var_rank_2 = "secteur", # might be NULL if needed
                           var_values = "consommation",
                           color_palette = colors_sectors, # app's defaults is blue if no var_rank_2 supplied
                           # name of fct to create dt table

@@ -1,7 +1,7 @@
 # These tests aim at checking that supplied datasets have the expected structure
 #  both in terms of variable names and lengths. Variable names order does not matter.
 
-test_that("Check all regener related datasets", {
+test_that("Check all REGENER related datasets", {
 
   # Prepare ordered expected colnames
 
@@ -18,21 +18,43 @@ test_that("Check all regener related datasets", {
                               "N_RENOV_H_POST_2000", "N_NO_GBAUJ", "etat") |> sort()
 
   # Run tests
-  expect_equal(regener_cons_ae_aff |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for RegEner datasets",
+               expected.label = "RegEner colnames do not match",
+               regener_cons_ae_aff |> colnames() |> sort(),
                expected_cons_aff_colnames)
 
-  expect_equal(regener_cons_ae_use |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for RegEner datasets",
+               expected.label = "RegEner colnames do not match",
+               regener_cons_ae_use |> colnames() |> sort(),
                expected_cons_use_colnames)
 
-  expect_equal(regener_needs |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for RegEner datasets",
+               expected.label = "RegEner colnames do not match",
+               regener_needs |> colnames() |> sort(),
                expected_needs_colnames)
 
-  expect_equal(regener_misc |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for RegEner datasets",
+               expected.label = "RegEner colnames do not match",
+               regener_misc |> colnames() |> sort(),
                expected_misc_colnames)
 
 
 })
 
+
+test_that("Check all ELEC_CONS related datasets", {
+
+  # Prepare ordered expected colnames
+
+  expected_elec_cons_colnames <- c("annee", "commune", "consommation", "secteur") |> sort()
+
+  # Run tests
+  expect_equal(label = "Expected colnames for elec_cons dataset",
+               expected.label = "colnames do not match",
+               elec_cons|> colnames() |> sort(),
+               expected_elec_cons_colnames)
+
+})
 
 
 test_that("Check all PRONOVO related datasets", {
@@ -43,13 +65,15 @@ test_that("Check all PRONOVO related datasets", {
                                    "injection", "autoconsommation", "production", "numero_de_la_commune") |>sort()
 
   # Run tests
-  expect_equal(elec_prod |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for elec_prod dataset",
+               expected.label = "colnames do not match",
+               elec_prod |> colnames() |> sort(),
                expected_elec_prod_colnames)
 
 })
 
 
-test_that("Check all subsidies related datasets", {
+test_that("Check all SUBSIDIES related datasets", {
 
   # Prepare ordered expected colnames
 
@@ -60,10 +84,14 @@ test_that("Check all subsidies related datasets", {
                             "mesure_simplifiee", "nombre") |> sort()
 
   # Run tests
-  expect_equal(subsidies_by_building |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for subsidies dataset",
+               expected.label = "colnames do not match",
+               subsidies_by_building |> colnames() |> sort(),
                expected_subsidies_building_colnames)
 
-  expect_equal(subsidies_by_measure |> colnames() |> sort(),
+  expect_equal(label = "Expected colnames for subsidies dataset",
+               expected.label = "colnames do not match",
+               subsidies_by_measure |> colnames() |> sort(),
                expected_subsidies_measure_colnames)
 
 

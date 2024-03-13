@@ -81,7 +81,7 @@ mod_regener_cons_charts_ui <- function(id){
       bslib::nav_panel(title = "Table",
                        icon = bsicons::bs_icon("table"),
 
-                       bslib::layout_column_wrap(width = 1/2, # each col = 33% of avail. width
+                       bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
 
                              # radioGroupButtons() for tab ----
                              shinyWidgets::radioGroupButtons(

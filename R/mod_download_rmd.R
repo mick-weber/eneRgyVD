@@ -20,6 +20,7 @@ mod_download_rmd_ui <- function(id){
 
     # 1/2 Report ----
 
+    br(),
     h4(strong("Générer un rapport")),
     shiny::htmlOutput(ns("selected_communes")), # htmlOutput because we style it in server
 

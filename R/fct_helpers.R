@@ -96,7 +96,7 @@ make_statbox_item <- function(iconBgClass,
 generate_doc_accordion_panels <- function(md_file){
 
   # Locale md file
-  doc_txt <- readLines(paste0("./data-doc/", md_file), skipNul = TRUE)
+  doc_txt <- readLines(md_file, skipNul = TRUE)
 
   # Extract HTML titles following ## headers (titles for accordion_panel)
   titles <- stringr::str_extract_all(doc_txt, pattern = "(?<=#{2}\\s).*", simplify =  TRUE) |>

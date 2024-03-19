@@ -179,6 +179,14 @@ app_ui <- function(request) {
 
                          ),
 
+        ## News ----
+
+        bslib::nav_panel("Nouveautés",
+                         icon = bsicons::bs_icon("star"),
+
+                         mod_news_ui("news")
+                         ),
+
         ### About ----
         bslib::nav_panel("À propos",icon = icon("circle-info"),
 

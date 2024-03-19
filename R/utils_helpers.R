@@ -38,10 +38,10 @@ load("./data/glossary.rda")
 ## doc panels for accordions ----
 # see fct_helpers.R
 
-elec_prod_doc_panels <- generate_doc_accordion_panels(md_file = "elec_prod-doc.md")
-elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "elec_cons-doc.md")
-regener_doc_panels <- generate_doc_accordion_panels(md_file = "regener-doc.md")
-subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "subsidies-doc.md")
+elec_prod_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_prod-doc.md")
+elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_cons-doc.md")
+regener_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/regener-doc.md")
+subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subsidies-doc.md")
 
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports

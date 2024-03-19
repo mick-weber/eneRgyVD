@@ -108,12 +108,12 @@ params$cons_elec_data |>
                                 # web_height = params$web_height, # manually defined
                                 var_year = "annee",
                                 var_commune = "commune",
-                                var_rank_2 = NULL, # 'secteur' when available
+                                var_rank_2 = 'secteur',
                                 var_values = "consommation",
-                                color_palette = eneRgyVD::return_palette_prod_elec(),
+                                color_palette = eneRgyVD::return_palette_cons_elec(),
                                 dodge = F,
                                 free_y = F,
-                                legend_title = "Technologies")
+                                legend_title = "Secteur")
 
 ```
 

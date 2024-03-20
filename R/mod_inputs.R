@@ -239,7 +239,7 @@ mod_inputs_server <- function(id){
 
     observe({
       inputVals$uploadedCommunes <- uploaded_communes()
-    })
+      })
 
     # unit selected
     observe({

@@ -29,8 +29,7 @@ mod_upload_communes_ui <- function(id){
                                                                            bsicons::bs_icon("info-circle")),
                                                                             shiny::markdown("La **première** colonne du fichier .csv (séparateur **point-virgule ';'** uniquement)
                                                                           doit contenir les **numéros OFS** des communes à sélectionner.
-                                                                          <br>
-                                                                                            Attention aux fusions de communes !"),
+                                                                          <br> Attention aux fusions de communes !"),
 
                                                                        ),
 
@@ -61,8 +60,6 @@ mod_upload_communes_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-
-
     input_communes_numbers <- reactive({
 
       req(input$file_communes)
@@ -71,7 +68,6 @@ mod_upload_communes_server <- function(id){
         {
           input_file <- read.csv(input$file_communes$datapath,
                                  sep = ";")
-
 
           input_communes <- communes_names_id[names(communes_names_id) %in% input_file[[1]]] |>
             unname() # keep only commune names and no number to update selectInput in mod_inputs.R
@@ -84,7 +80,6 @@ mod_upload_communes_server <- function(id){
       )
 
       return(input_communes)
-
     })
 
     # Notify how many communes are retrieved
@@ -117,6 +112,7 @@ mod_upload_communes_server <- function(id){
     return(input_communes_numbers) # mod_inputs.R
 
   }
+
   )}
 
 ## To be copied in the UI

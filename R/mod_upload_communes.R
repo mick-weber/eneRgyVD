@@ -60,7 +60,7 @@ mod_upload_communes_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    input_communes_numbers <- reactive({
+    input_communes_timed <- reactive({
 
       req(input$file_communes)
 
@@ -69,7 +69,8 @@ mod_upload_communes_server <- function(id){
           input_file <- read.csv(input$file_communes$datapath,
                                  sep = ";")
 
-          input_communes <- communes_names_id[names(communes_names_id) %in% input_file[[1]]] |>
+          # communes_names_id -> utils_helpers.R ; this code implicitely removes dupe ids !
+          input_communes <- communes_names_id[names(communes_names_id) %in% input_file[[1]]] |> # [[1]] -> first col is read only
             unname() # keep only commune names and no number to update selectInput in mod_inputs.R
 
         },
@@ -79,20 +80,22 @@ mod_upload_communes_server <- function(id){
         }
       )
 
-      return(input_communes)
+      # Add a <chr> time stamp upfront, so that reactivity triggers even when we reload the same file !
+      return(c(as.character(Sys.time()), input_communes))
+
     })
 
     # Notify how many communes are retrieved
 
-    observeEvent(input_communes_numbers(),{
+    observeEvent(input_communes_timed(),{
 
       # Prepare notification
-      unique_communes <- length(input_communes_numbers())
+      unique_communes <- length(input_communes_timed())-1 # ignore the time stamp with -1 !
 
       if(unique_communes > 0){
       notify_text <- paste0("Importation de communes : ",
                              unique_communes,
-                             " communes distinctes ont été importées")
+                             " communes distinctes ont été importées.")
       type = "message"
 
       }else{
@@ -109,7 +112,7 @@ mod_upload_communes_server <- function(id){
     })
 
     # return value to module call
-    return(input_communes_numbers) # mod_inputs.R
+    return(input_communes_timed) # mod_inputs.R
 
   }
 

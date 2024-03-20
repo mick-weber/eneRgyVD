@@ -271,13 +271,14 @@ app_server <- function(input, output, session) {
 
    # Upload communes ----
 
-   observeEvent(inputVals$uploadedCommunes,{
+   observeEvent(inputVals$uploadedCommunesTimed,{
 
      ## UpdateSelectizeInput ----
      updateSelectizeInput(session = session,
                           inputId = "inputs_1-selected_communes",
                           choices = choices_canton_communes,
-                          selected = inputVals$uploadedCommunes)
+                          # We remove the first timestamp element (see mod_upload_communes.R/mod_inputs.R)
+                          selected = inputVals$uploadedCommunesTimed[-1])
 
    })
 

@@ -220,8 +220,10 @@ mod_inputs_server <- function(id){
 
 
     # Uploaded communes ----
+    ## '_timed' because we have a timestamp as the first element to force reactivity
+    ##    when reuploading the same file (see mod_upload_communes.R)
 
-    uploaded_communes <- mod_upload_communes_server("uploaded_communes")
+    uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
     # Storing in inputVals : ----
     # Initializing the inputVals items
@@ -236,9 +238,10 @@ mod_inputs_server <- function(id){
     })
 
     # uploaded communes
+    ## we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval
 
     observe({
-      inputVals$uploadedCommunes <- uploaded_communes()
+      inputVals$uploadedCommunesTimed <- uploaded_communes_timed()
       })
 
     # unit selected

@@ -33,8 +33,12 @@
   box-shadow:none !important;
 }
 
+/* sliderInputs major ticks color */
+.irs-grid-pol{
+  background:lightgrey !important;
+}
 
-/* sliderInputs minor ticks removal */
+/* sliderInputs minor ticks remove */
 .irs-grid-pol.small{
   display: none !important;
 }

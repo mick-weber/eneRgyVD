@@ -76,7 +76,7 @@ specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'i
 La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
 
 specific_subsidies_warning <- "Ces données sont issues d'un traitement des données du Programme bâtiments et concernent exclusivement les subventions versées (avec achèvement de travaux).
-Les promesses (subventions promises mais pas encore versées) sont exclues."
+Les subventions promises pour lesquels les travaux n'ont pas été effectués ne sont donc pas comptabilisées."
 
 
 

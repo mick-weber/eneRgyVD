@@ -48,7 +48,7 @@ mod_collapse_stats_box_server <- function(id,
                       placement = "right",
                       options = list(customClass = "customTooltips"), # custom.scss
                       trigger = bsicons::bs_icon("info-circle"),
-                      "Les années peuvent différer et reflètent la disponibilité de chaque source de données"
+                      "Les années de référence correspondent aux dernières années pour lesquelles des données sont disponibles"
                     ),
                                        class = "bg-secondary"),
 

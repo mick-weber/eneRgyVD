@@ -4,7 +4,7 @@
 
 ## D'où viennent les données ?
 
-Les données viennent de Pronovo, l'organisme de certification des garanties d'origine. Pour chaque installation de production d'électricité enregistrée des données d'injection, et selon le profil d'installation d'autoconsommation, sont fournies à la DGE-DIREN.
+Les quantités d'électricité injectées dans le réseau sont fournies à la DGE-DIREN pour chaque installation de production d'électricité. Des estimations de l'autoconsommation sont effectuées selon le type d'installation lorsque cette donnée n'est pas disponible.
 
 ## Qui traite ces données ?
 
@@ -16,4 +16,4 @@ Les données sont généralement disponibles en juin pour l'année précédente.
 
 ## À quoi faut-il faire attention ?
 
-L'autoconsommation pour les installations photovoltaïques est essentiellement estimée par la DGE-DIREN sur la base de la puissance électrique installée recensée et de la valeur d'injection. La production résulte donc d'une estimation de l'autoconsommation et de la valeur d'injection transmise par Pronovo. Certaines installations non enregistrées peuvent ne pas être inclues dans cette statistique. C'est le cas d'installations "plug & play" ou d'installations non annoncées. Néanmoins la grande majorité des installations sont comprises dans ces données. 
+L'autoconsommation pour les installations photovoltaïques est essentiellement estimée par la DGE-DIREN sur la base de la puissance électrique installée recensée et de la valeur d'injection. La production résulte donc d'une estimation de l'autoconsommation et de la valeur d'injection transmise par Pronovo. Certaines installations non enregistrées peuvent ne pas être incluses dans cette statistique. C'est le cas d'installations "plug & play" ou d'installations non annoncées. Néanmoins la grande majorité des installations sont comprises dans ces données. 

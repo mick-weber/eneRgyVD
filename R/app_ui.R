@@ -109,7 +109,7 @@ app_ui <- function(request) {
       bslib::nav_menu("Electricité", icon = icon("bolt"),
 
 
-                      # cons----
+                      # cons elec ----
                       bslib::nav_panel("Distribution",
 
 
@@ -122,7 +122,7 @@ app_ui <- function(request) {
 
                       ),
 
-                      # prod ----
+                      # prod elec ----
                       bslib::nav_panel("Production",
 
                                        # Module for producing prod elec charts
@@ -147,7 +147,7 @@ app_ui <- function(request) {
 
                                        mod_regener_cons_charts_ui("regener_cons")
                                        ),
-                      bslib::nav_panel("Autres",
+                      bslib::nav_panel("Informations bâtiments",
 
                                        mod_regener_misc_charts_ui("regener_misc")
                       )

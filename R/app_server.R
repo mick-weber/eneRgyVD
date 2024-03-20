@@ -277,7 +277,7 @@ app_server <- function(input, output, session) {
      updateSelectizeInput(session = session,
                           inputId = "inputs_1-selected_communes",
                           choices = choices_canton_communes,
-                          # We remove the first timestamp element (see mod_upload_communes.R/mod_inputs.R)
+                          # We remove the first timestamp item (see mod_upload_communes.R/mod_inputs.R)
                           selected = inputVals$uploadedCommunesTimed[-1])
 
    })

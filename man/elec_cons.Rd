@@ -8,7 +8,7 @@
 \format{
 A tibble with various rows and cols which are not detailed yet
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 4 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 4 columns.
 }
 \source{
 DGE-DIREN(<https://www.vd.ch/>)

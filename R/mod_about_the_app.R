@@ -21,16 +21,16 @@ mod_about_the_app_ui <- function(id){
                                                                  h4(strong("Pourquoi cette application ?")),
                                                                  tags$p("Le but de ce profil énergétique est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
-           Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement"),
+           Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
                                                                  # breathing
                                                                  br(),
                                                                  h4(strong("Contact")),
-                                                                 tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à l'unité données et indicateurs via ",
+                                                                 tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer via ",
                                                                         tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
-                                                                        " qui est l'unité transversale de la",
-                                                                        tags$a (href = link_diren, "Direction de l'énergie de l'Etat de Vaud (DGE-DIREN)",
-                                                                                target = "_blank"),
-                                                                        "chargée des données énergétiques.")
+                                                                        " à l'unité chargée des données énergétiques (unité données, indicateurs et politique UDIP) de la",
+                                                                        tags$a (href = link_diren, # utils_helpers.R
+                                                                                "Direction de l'énergie du Canton de Vaud (DGE-DIREN).",
+                                                                                target = "_blank"))
 
                                        )# End 1st layout_columns'
                                        ),# End nav_panel' Général
@@ -43,7 +43,7 @@ mod_about_the_app_ui <- function(id){
                                               br(),
                                               h4(strong("Sources des données")),
                                               tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
-                                    Néanmoins, l'exactitude de ces informations ne peut être garantie. En cas d'incohérence, n'hésitez pas à prendre contact afin d'en clarifier les causes probables.
+                                    L'exactitude de ces informations ne peut être garantie. En cas d'incohérence de données, prière d'en informer la Direction de l'énergie.
                                     Lorsque disponibles, des documentations plus détaillées sont annexées en-dessous de chaque onglet."),
                                               br(),
 
@@ -54,7 +54,7 @@ mod_about_the_app_ui <- function(id){
                                                                    bslib::nav_panel(h6("Distribution d'électricité"),
                                                                    tags$div(
                                                                             br(),
-                                                                            h4(strong("Détails méthodologiques")),
+                                                                            h4(strong("Détails méthodologiques : distribution d'électricité")),
                                                                             br(),
                                                                             bslib::accordion(!!!elec_cons_doc_panels, open = FALSE),
                                                                             br(),
@@ -72,7 +72,7 @@ mod_about_the_app_ui <- function(id){
                                                                                  tags$div(
                                                                                    br(),
                                                                                    # Overview method
-                                                                                   h4(strong("Détails méthodologiques")),
+                                                                                   h4(strong("Détails méthodologiques : production d'électricité")),
                                                                                    br(),
                                                                                    bslib::accordion(!!!elec_prod_doc_panels, open = FALSE),
                                                                                    br(),
@@ -100,7 +100,7 @@ mod_about_the_app_ui <- function(id){
                                                                                     # create div to apply class
                                                                                     tags$div(
                                                                                              br(),
-                                                                                             h4(strong("Détails méthodologiques")),
+                                                                                             h4(strong("Détails méthodologiques : chaleur bâtiments")),
                                                                                              br(),
                                                                                              bslib::accordion(!!!regener_doc_panels, open = FALSE),
                                                                                              br(),
@@ -119,7 +119,7 @@ mod_about_the_app_ui <- function(id){
                                                                                     # create div to apply class
                                                                                     tags$div(
                                                                                              br(),
-                                                                                             h4(strong("Détails méthodologiques")),
+                                                                                             h4(strong("Détails méthodologiques : subventions bâtiments")),
                                                                                              br(),
                                                                                              bslib::accordion(!!!subsidies_doc_panels, open = FALSE),
                                                                                              br(),

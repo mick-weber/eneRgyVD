@@ -563,10 +563,7 @@ create_cons_table_dt <- function(data,
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(cons_icons, by = "secteur") |>
     dplyr::relocate(icon, .before = secteur) |>
-    # !! ADD BACK SECTEUR WHEN AVAILABLE
-    # dplyr::rename(" " = "icon") |> # empty colname for icons
-    select(-secteur, -icon) |>
-    # !! ADD BACK SECTEUR WHEN AVAILABLE
+    dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |> # fct_helpers.R
     add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT

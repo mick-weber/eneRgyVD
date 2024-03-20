@@ -137,7 +137,7 @@ create_select_leaflet <- function(sf_districts,
                                   sf_lacs,
                                   sf_communes){
 
-  leaflet::leaflet(options = leafletOptions(
+  leaflet::leaflet(options = leaflet::leafletOptions(
     zoomControl = TRUE,
     zoomSnap = 0.1, # small scroll zoom
     zoomDelta = 0.2, # bigger button zoom

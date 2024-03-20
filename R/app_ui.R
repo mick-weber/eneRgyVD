@@ -40,11 +40,11 @@ app_ui <- function(request) {
       # Custom theme
       theme = profil_theme, # utils_helpers.R
       # Title
-      title = strong("Profil énergétique des communes vaudoises",
+      title = strong("Profil énergétique des communes",
                      class = "h4 text-wrap",
                      style = "font-family: 'Arial', sans-serif;"),
       # Browser title
-      # window_title = "Profil énergie VD",
+      # window_title = "Profil énergétique VD",
       # Sidebar
       sidebar = bslib::sidebar(
 
@@ -54,7 +54,8 @@ app_ui <- function(request) {
 
         # add brand
         tags$div(
-        tags$img(src="www/vd-logo-black.svg", class = "customLogo"),
+        tags$img(src="www/vd-logo-black.svg",
+                 class = "customLogo"),
         br(),
         "Direction de l'énergie",
         hr()
@@ -88,7 +89,7 @@ app_ui <- function(request) {
 
                                        class = "bg-secondary"),
 
-                                     bslib::card_body(
+                                     bslib::card_body(class = "m-0 p-0",
                                        leafletOutput("map"))
                          ),# End card() map
 
@@ -241,7 +242,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Profil énergie VD"
+      app_title = "Profil énergétique VD"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

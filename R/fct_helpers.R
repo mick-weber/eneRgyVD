@@ -20,7 +20,8 @@ info_dev_message <- function(){
                                        tags$br(), tags$br(),
                                        "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
                                        Pour cette raison, des valeurs peuvent changer de manière rétroactive.
-                                       Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour."
+                                       Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour.",
+                                       markdown("Un aperçu des ajouts récents est disponible dans le menu <strong>**Divers > Nouveautés**</strong>.")
                                        ),
                          html = TRUE,
                          size = "m",

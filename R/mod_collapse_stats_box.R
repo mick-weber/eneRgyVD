@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_collapse_stats_box_ui <- function(id){
+mod_stats_box_ui <- function(id){
 
   ns <- NS(id)
 
@@ -21,7 +21,7 @@ mod_collapse_stats_box_ui <- function(id){
 #' collapse_stats_box Server Functions
 #'
 #' @noRd
-mod_collapse_stats_box_server <- function(id,
+mod_stats_box_server <- function(id,
                                           title,
                                           selectedUnit,
                                           prod_elec_value,

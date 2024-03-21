@@ -436,7 +436,7 @@ categories_diren <- elec_prod |>
 # to be populated
 
 ## Objects specific 'Chaleur bâtiments'  ----
-# used for fct_helpers.R -> mod_regener_cons_charts.R + mod_collapse_stats_box.R
+# used for fct_helpers.R -> mod_regener_cons_charts.R + mod_stats_box.R
 
 min_regener_year <- min(regener_cons_ae_use$etat)
 max_regener_year <- max(regener_cons_ae_use$etat)

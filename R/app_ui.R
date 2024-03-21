@@ -97,9 +97,9 @@ app_ui <- function(request) {
 
                          tagList(
 
-                           mod_collapse_stats_box_ui("vd_box"),
+                           mod_stats_box_ui("vd_box"),
 
-                           mod_collapse_stats_box_ui("communes_box")
+                           mod_stats_box_ui("communes_box")
 
                          )
                        )# End layout_column_wrap

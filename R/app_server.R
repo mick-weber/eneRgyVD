@@ -476,7 +476,7 @@ app_server <- function(input, output, session) {
 
      req(inputVals$selectedUnit)
 
-     mod_collapse_stats_box_server("vd_box",
+     mod_stats_box_server("vd_box",
                                    title = strong("Synthèse : Canton de Vaud"),
                                    selectedUnit = inputVals$selectedUnit,
 
@@ -514,7 +514,7 @@ app_server <- function(input, output, session) {
      check_selected_communes <- !is.null(inputVals$selectedCommunes)
 
 
-     mod_collapse_stats_box_server("communes_box",
+     mod_stats_box_server("communes_box",
                                    title = strong("Synthèse : Commune(s) sélectionnée(s)"),
                                    selectedUnit = inputVals$selectedUnit,
 

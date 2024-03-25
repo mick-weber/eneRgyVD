@@ -772,8 +772,14 @@ create_doc_table_dt <- function(data,
                   options = list(
       dom = "Bfti", # Button ; filter; table ; information summary
       buttons = list(
-        list(className = "btn btn-outline-secondary mx-1", extend = 'csv', filename = paste0(doc_prefix, Sys.Date())),
-        list(className = "btn btn-outline-secondary mx-1", extend = 'excel', filename = paste0(doc_prefix, Sys.Date()))),
+        list(className = "btn btn-outline-secondary mx-1",
+             extend = 'csv',
+             filename = paste0(doc_prefix, Sys.Date()),
+             title = NULL),
+        list(className = "btn btn-outline-secondary mx-1",
+             extend = 'excel',
+             filename = paste0(doc_prefix, Sys.Date()),
+             title = NULL)),
       columnDefs = list(list(targets = 0, className = 'dt-center')), # or "_all"
       paging = TRUE,
       pageLength = 20,

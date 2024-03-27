@@ -44,7 +44,7 @@ app_ui <- function(request) {
                      class = "h4 text-wrap",
                      style = "font-family: 'Arial', sans-serif;"),
       # Browser title
-      # window_title = "Profil énergétique VD",
+      window_title = "Profil énergie VD",
       # Sidebar
       sidebar = bslib::sidebar(
 
@@ -242,7 +242,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Profil énergétique VD"
+      app_title = "Profil énergie VD"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

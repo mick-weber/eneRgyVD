@@ -24,8 +24,8 @@ mod_stats_box_ui <- function(id){
 mod_stats_box_server <- function(id,
                                           title,
                                           selectedUnit,
-                                          prod_elec_value,
-                                          cons_elec_value,
+                                          elec_prod_value,
+                                          elec_cons_value,
                                           cons_rg_value,
                                           subsidies_value,
                                           year_elec_cons,
@@ -63,7 +63,7 @@ mod_stats_box_server <- function(id,
 
            # 1. Cons elec
            make_statbox_item(iconBgClass = "iconBgElec",
-                            title = "Distribution<br>électricité", value = cons_elec_value, unit = selectedUnit, year = year_elec_cons),
+                            title = "Distribution<br>électricité", value = elec_cons_value, unit = selectedUnit, year = year_elec_cons),
 
            # 2. RG cons
            make_statbox_item(iconBgClass = "iconBgRgr",
@@ -75,7 +75,7 @@ mod_stats_box_server <- function(id,
 
            # 4. Prod elec
            make_statbox_item(iconBgClass = "iconBgElec",
-                             title = "Production<br>électricité", value = prod_elec_value, unit = selectedUnit, year = year_elec_prod)
+                             title = "Production<br>électricité", value = elec_prod_value, unit = selectedUnit, year = year_elec_prod)
 
 
 

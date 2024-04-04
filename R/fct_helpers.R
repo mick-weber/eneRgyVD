@@ -510,7 +510,7 @@ create_prod_table_dt <- function(data,
                                  dom = DT_dom,
                                  buttons = list(
                                    list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
                                  ),
                                  columnDefs = list(list(
                                    targets = "_all",
@@ -578,7 +578,7 @@ create_cons_table_dt <- function(data,
                      dom = DT_dom, # dynamic according to needs
                      buttons = list(
                        list(extend = 'copy', text = "Copier"),
-                       list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                       list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
                      ),
                      columnDefs = list(list(targets = "_all", className = 'dt-center')),
                      # https://rstudio.github.io/DT/004-i18n.html   for languages
@@ -841,7 +841,7 @@ create_subsidies_table_dt <- function(data,
                                  dom = DT_dom,
                                  buttons = list(
                                    list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("prod_elec_vd_", Sys.Date()))
+                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
                                  ),
                                  columnDefs = list(list(
                                    targets = "_all",
@@ -861,23 +861,23 @@ create_subsidies_table_dt <- function(data,
 
 # Palette fns ----
 
-#' return_palette_prod_elec
+#' return_palette_elec_prod
 #' Returns the color palette for categories in the electricity production dataset
 #' @return a vector with categorical data and hex color strings
 #' @export
 
-return_palette_prod_elec <- function(){
+return_palette_elec_prod <- function(){
 
   return(colors_categories) # in utils_helpers.R
 
 }
 
-#' return_palette_cons_elec
+#' return_palette_elec_cons
 #' Returns the color palette for sectors in the electricity consumption dataset
 #' @return a vector with categorical data and hex color strings
 #' @export
 
-return_palette_cons_elec <- function(){
+return_palette_elec_cons <- function(){
 
   return(colors_sectors) # in utils_helpers.R
 

@@ -10,7 +10,7 @@ app_server <- function(input, output, session) {
   # Print test area if needed ----
 
   # observe({
-  #   print(inputVals$cons_elec_dataset)
+  #   print(inputVals$elec_cons_dataset)
   # })
 
    # Record logs ----
@@ -129,10 +129,10 @@ app_server <- function(input, output, session) {
    # that may be further changed (subset_prod_data gets additionnal filtering if selected)
    # or that may be unchanged (e.g. regener data).
 
-  ## Subset_cons_elec_data ----
+  ## Subset_elec_cons_data ----
    ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
 
-    subset_cons_elec_data <- reactive({
+    subset_elec_cons_data <- reactive({
 
       # explicitely require communes to be selected
       validate(
@@ -140,39 +140,39 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$min_selected_cons_elec,
-          inputVals$max_selected_cons_elec,
-          inputVals$cons_elec_dataset,
+      req(inputVals$min_selected_elec_cons,
+          inputVals$max_selected_elec_cons,
+          inputVals$elec_cons_dataset,
           inputVals$selectedUnit)
 
       # further filter cons_dataset with selected min/max values and convert to selectedUnit()
        # CONVERSION TEST IN PROGRESS
-      inputVals$cons_elec_dataset |>
-        dplyr::filter(annee >= inputVals$min_selected_cons_elec,
-                      annee <= inputVals$max_selected_cons_elec)
+      inputVals$elec_cons_dataset |>
+        dplyr::filter(annee >= inputVals$min_selected_elec_cons,
+                      annee <= inputVals$max_selected_elec_cons)
 
     })
 
 
-   ## Subset_prod_elec_data ----
+   ## Subset_elec_prod_data ----
    ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
-   subset_prod_elec_data <- reactive({
+   subset_elec_prod_data <- reactive({
 
      # explicitly require communes to be selected
      validate(
        need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
      )
      # waiting on these to get initialized (renderUIs)
-     req(inputVals$min_selected_prod_elec,
-         inputVals$max_selected_prod_elec,
+     req(inputVals$min_selected_elec_prod,
+         inputVals$max_selected_elec_prod,
          inputVals$techs_selected,
-         inputVals$prod_elec_dataset)
+         inputVals$elec_prod_dataset)
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 
-     inputVals$prod_elec_dataset |>
-       dplyr::filter(annee >= inputVals$min_selected_prod_elec,
-                     annee <= inputVals$max_selected_prod_elec) |>
+     inputVals$elec_prod_dataset |>
+       dplyr::filter(annee >= inputVals$min_selected_elec_prod,
+                     annee <= inputVals$max_selected_elec_prod) |>
        dplyr::filter(categorie %in% inputVals$techs_selected)
 
    }) # End reactive()
@@ -379,7 +379,7 @@ app_server <- function(input, output, session) {
    ## tabCons: chart server logic ----
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
-                          subsetData = subset_cons_elec_data,
+                          subsetData = subset_elec_cons_data,
                           selectedUnit = inputVals$selectedUnit,
                           legend_title = "Secteur",
                           var_year = "annee",
@@ -390,7 +390,7 @@ app_server <- function(input, output, session) {
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
                           # name of dl prefix to supply to download module
-                          dl_prefix = "cons_elec_",
+                          dl_prefix = "elec_cons_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_cons_doc)
 
@@ -398,7 +398,7 @@ app_server <- function(input, output, session) {
    ## tabProd: chart server logic ----
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
-                          subsetData = subset_prod_elec_data,
+                          subsetData = subset_elec_prod_data,
                           selectedUnit = inputVals$selectedUnit,
                           legend_title = NULL,
                           var_year = "annee",
@@ -409,7 +409,7 @@ app_server <- function(input, output, session) {
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
                           # name of dl prefix to supply to download module
-                          dl_prefix = "prod_elec_",
+                          dl_prefix = "elec_prod_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
   #
@@ -482,7 +482,7 @@ app_server <- function(input, output, session) {
                                    selectedUnit = inputVals$selectedUnit,
 
                                    # Computed in utils_helpers.R (using years below) then converted if needed
-                                   prod_elec_value = prod_elec_vd_last_year |>
+                                   elec_prod_value = elec_prod_vd_last_year |>
                                      convert_units(unit_to = inputVals$selectedUnit),
 
                                    cons_rg_value = cons_rg_vd_last_year |>
@@ -490,7 +490,7 @@ app_server <- function(input, output, session) {
 
                                    subsidies_value = subsidies_m01_vd_last_year,
 
-                                   cons_elec_value = cons_elec_vd_last_year |>
+                                   elec_cons_value = elec_cons_vd_last_year |>
                                      convert_units(unit_to = inputVals$selectedUnit),
 
                                    # Computed in utils_helpers.R for both statboxes
@@ -520,7 +520,7 @@ app_server <- function(input, output, session) {
                                    selectedUnit = inputVals$selectedUnit,
 
                                    # Computed in utils_helpers.R (using years below) then converted if needed
-                                   prod_elec_value = ifelse(
+                                   elec_prod_value = ifelse(
                                      check_selected_communes,
                                      inputVals$elec_prod_last_year,
                                      0),
@@ -532,7 +532,7 @@ app_server <- function(input, output, session) {
                                      check_selected_communes,
                                      inputVals$max_year_subsidies_m01,
                                      0),
-                                   cons_elec_value = ifelse(
+                                   elec_cons_value = ifelse(
                                      check_selected_communes,
                                      inputVals$elec_cons_last_year,
                                      0),

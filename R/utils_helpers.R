@@ -458,7 +458,7 @@ regener_current_year <- max_regener_year
 
 last_year_elec_prod <- max(elec_prod$annee) # When prod elec alone
 
-prod_elec_vd_last_year <- elec_prod |>
+elec_prod_vd_last_year <- elec_prod |>
   dplyr::filter(commune == "Canton de Vaud") |>
   dplyr::filter(annee == last_year_elec_prod) |>
   dplyr::summarise(production = sum(production, na.rm = TRUE)) |>
@@ -468,7 +468,7 @@ prod_elec_vd_last_year <- elec_prod |>
 
 last_year_elec_cons <- max(elec_cons$annee) # When prod elec alone
 
-cons_elec_vd_last_year <- elec_cons |>
+elec_cons_vd_last_year <- elec_cons |>
   dplyr::filter(commune == "Canton de Vaud") |>
   dplyr::filter(annee == last_year_elec_cons) |>
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>

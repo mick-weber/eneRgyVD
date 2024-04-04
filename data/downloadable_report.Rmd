@@ -20,8 +20,8 @@ params:
   web_width: NULL
   web_height: NULL
   unit: NULL
-  cons_elec_data: NULL
-  prod_elec_data: NULL
+  elec_cons_data: NULL
+  elec_prod_data: NULL
   regener_data_0: NULL
   regener_data_1: NULL
   regener_data_2: NULL
@@ -89,7 +89,7 @@ Les répartitions sectorielles (ménages, services, etc.) ne sont pas encore dis
 
 ```{r}
 # Generate the table for electricity consumption and add copy/download buttons
-params$cons_elec_data |>
+params$elec_cons_data |>
     eneRgyVD::create_cons_table_dt(unit = params$unit,
                                    DT_dom = "Bfrtip"
                                    )
@@ -101,7 +101,7 @@ params$cons_elec_data |>
 
 ```{r}
 # Generate the barplot for electricity consumption
-params$cons_elec_data |>
+params$elec_cons_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
                                 # web_width = params$web_width, # manually defined
@@ -110,7 +110,7 @@ params$cons_elec_data |>
                                 var_commune = "commune",
                                 var_rank_2 = 'secteur',
                                 var_values = "consommation",
-                                color_palette = eneRgyVD::return_palette_cons_elec(),
+                                color_palette = eneRgyVD::return_palette_elec_cons(),
                                 dodge = F,
                                 free_y = F,
                                 legend_title = "Secteur")
@@ -130,7 +130,7 @@ La mise à jour est faite annuellement après réception et traitement des donn�
 
 ```{r}
 # Generate the table for electricity production and add copy/download buttons
-params$prod_elec_data |>
+params$elec_prod_data |>
     eneRgyVD::create_prod_table_dt(unit = params$unit,
                                    DT_dom = "Bfrtip"
                                    )
@@ -140,7 +140,7 @@ params$prod_elec_data |>
 
 ```{r}
 # Generate the barplot for electricity production
-params$prod_elec_data |>
+params$elec_prod_data |>
     eneRgyVD::create_bar_plotly(unit = params$unit,
                                 n_communes = length(params$communes),
                                 # web_width = params$web_width, # manually defined
@@ -149,7 +149,7 @@ params$prod_elec_data |>
                                 var_commune = "commune",
                                 var_rank_2 = "categorie",
                                 var_values = "production",
-                                color_palette = eneRgyVD::return_palette_prod_elec(),
+                                color_palette = eneRgyVD::return_palette_elec_prod(),
                                 dodge = F,
                                 free_y = F,
                                 legend_title = "Technologies")

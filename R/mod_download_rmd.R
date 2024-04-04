@@ -114,8 +114,8 @@ mod_download_rmd_server <- function(id,
                        web_width = 1900, # manually set
                        web_height = 1000, # manually set
                        unit = inputVals$selectedUnit,
-                       prod_elec_data = inputVals$prod_elec_dataset,
-                       cons_elec_data = inputVals$cons_elec_dataset,
+                       elec_prod_data = inputVals$elec_prod_dataset,
+                       elec_cons_data = inputVals$elec_cons_dataset,
                        regener_data_0 = inputVals$rgr_needs,
                        regener_data_1 = inputVals$rgr_1,
                        regener_data_2 = inputVals$rgr_2,
@@ -187,12 +187,12 @@ mod_download_rmd_server <- function(id,
       # List all pertinent inputVals$<datasets> from mod_inputs.R
       list(
         # Cons elec renamed+units
-        cons_elec = inputVals$cons_elec_dataset |>
+        elec_cons = inputVals$elec_cons_dataset |>
         rename_fr_colnames() |>
         add_colname_units(unit = inputVals$selectedUnit),
 
         # Prod elec renamed+units
-        prod_elec = inputVals$prod_elec_dataset |>
+        elec_prod = inputVals$elec_prod_dataset |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$selectedUnit),
 

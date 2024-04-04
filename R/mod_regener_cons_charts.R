@@ -49,7 +49,9 @@ mod_regener_cons_charts_ui <- function(id){
  "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
- tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale."),
+ tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
+      shiny::textOutput(ns("current_year_txt"), inline = TRUE)
+      ),
 
                       # radioGroupButtons() for tab ----
 
@@ -113,6 +115,17 @@ mod_regener_cons_charts_server <- function(id,
                                       ){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # renderText() latest year for UI's textOutput() ----
+
+    output$current_year_txt <- renderText({
+
+      req(inputVals$max_selected_regener)
+
+      inputVals$max_selected_regener
+
+    })
+
 
     # filter for the latest year for the plots (not the table) ----
 

@@ -50,7 +50,9 @@ mod_regener_needs_charts_ui <- function(id){
                                           l'eau chaude sanitaire et chauffage des locaux.",
                                           strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
                                           "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
-                                        tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale."),
+                                        tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
+                                               shiny::textOutput(ns("current_year_txt"), inline = TRUE)
+                                               ),
 
 
                                         bslib::layout_column_wrap(width = 1/4, # each col = 25% of avail. width
@@ -144,6 +146,17 @@ mod_regener_needs_charts_server <- function(id,
                                             doc_vars){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+
+    # renderText() latest year for UI's textOutput() ----
+
+    output$current_year_txt <- renderText({
+
+      req(inputVals$max_selected_regener)
+
+      inputVals$max_selected_regener
+
+    })
 
     # Preparing data ----
     # We process subsetData() in a nice, wide format for the TABLE and SUNBURST

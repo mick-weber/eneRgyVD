@@ -33,7 +33,12 @@ mod_subsidies_measure_charts_ui <- function(id){
         open = FALSE)
     ),
 
-
+    # Disclaimer for regener cons data (in a column for better display)
+    tags$p("Ces données illustrent le nombre de subventions versées par type et année depuis 2017
+                                    (voir détails dans la méthodologie complète).
+                                    Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,
+                                    il ne faut pas interpréter une subvention comme un bâtiment subventionné. Une vision agrégée par
+                                    bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments."),
 
     # TABSETS for better readability of plot / table
     bslib::navset_pill(
@@ -46,12 +51,6 @@ mod_subsidies_measure_charts_ui <- function(id){
 
                        # breating
                        br(),
-                       # Disclaimer for regener cons data (in a column for better display)
-                       tags$p("Ces graphiques illustrent le nombre de subventions versées par type et année depuis 2017
-                                    (voir détails dans la méthodologie complète).
-                                    Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,
-                                    il ne faut pas interpréter une subvention comme un bâtiment subventionné. Une vision agrégée par
-                                    bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments."),
 
                        bslib::layout_column_wrap(width = 1/3,
                                                  class = "d-flex align-items-end",

@@ -37,6 +37,13 @@ mod_regener_needs_charts_ui <- function(id){
 
     ),#End div
 
+
+    tags$p(
+      "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
+                                          l'eau chaude sanitaire et chauffage des locaux.",
+      strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
+      "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
+
     # Pills ----
 
     bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
@@ -45,11 +52,6 @@ mod_regener_needs_charts_ui <- function(id){
                        bslib::nav_panel(title = "Graphique",
                                         icon = bsicons::bs_icon("bar-chart-fill"),
 
-                                        tags$p(
-                                          "Ces graphiques illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
-                                          l'eau chaude sanitaire et chauffage des locaux.",
-                                          strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
-                                          "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus."),
                                         tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
                                                shiny::textOutput(ns("current_year_txt"), inline = TRUE)
                                                ),

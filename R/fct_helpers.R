@@ -762,6 +762,7 @@ create_rg_misc_table_dt <- function(data,
 #' @param data the dataset containing variables and descriptions
 #'
 #' @return A DT object
+#' @export
 
 create_doc_table_dt <- function(data,
                                 doc_prefix){
@@ -789,8 +790,6 @@ create_doc_table_dt <- function(data,
     ))
 
 }
-
-
 
 
 

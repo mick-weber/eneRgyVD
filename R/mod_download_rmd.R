@@ -230,7 +230,7 @@ mod_download_rmd_server <- function(id,
 
     # When button (server-side) is clicked; download all sheets as xlsx
     output$download_all_excel <- downloadHandler(
-      filename = paste0("global_", Sys.Date(), ".xlsx"),
+      filename = paste0("profil_energie_global_", Sys.Date(), ".xlsx"),
       content = function(file){
         writexl::write_xlsx(download_all_sheets(), path = file)
       }

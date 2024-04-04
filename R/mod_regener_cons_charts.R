@@ -35,19 +35,19 @@ mod_regener_cons_charts_ui <- function(id){
 
     ),#End div
 
+    # Disclaimer for regener cons data (in a column for better display)
+    tags$p("Ces données illustrent comment la consommation de différents agents énergétiques
+ se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
+           strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
+           "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
+ pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
+
     bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
 
     # nav_panel for better readability of plot / table
 
     bslib::nav_panel(title = "Graphique",
                      icon = bsicons::bs_icon("bar-chart-fill"),
-
-                      # Disclaimer for regener cons data (in a column for better display)
-                      tags$p("Ces graphiques illustrent comment la consommation de différents agents énergétiques
- se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
- strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
- "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
- pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
  tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
       shiny::textOutput(ns("current_year_txt"), inline = TRUE)
@@ -111,7 +111,9 @@ mod_regener_cons_charts_ui <- function(id){
 mod_regener_cons_charts_server <- function(id,
                                       inputVals, # for facet height
                                       subset_rgr_cons_1, # conso->use
-                                      subset_rgr_cons_2 # conso->aff
+                                      subset_rgr_cons_2, # conso->aff
+                                      doc_vars = doc_vars,
+                                      dl_prefix
                                       ){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -272,8 +274,8 @@ mod_regener_cons_charts_server <- function(id,
     mod_download_data_server("table_download",
                              inputVals = inputVals,
                              data = download_data, # see if() above
-                             dl_prefix = "regener_",
-                             doc_vars = regener_doc) # dl prefix for file name, passed into app_server.R
+                             dl_prefix = dl_prefix,
+                             doc_vars = doc_vars) # dl prefix for file name, passed into app_server.R
 
 
   })

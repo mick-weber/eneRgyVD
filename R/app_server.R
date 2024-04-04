@@ -390,7 +390,7 @@ app_server <- function(input, output, session) {
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
                           # name of dl prefix to supply to download module
-                          dl_prefix = "elec_cons_",
+                          dl_prefix = "profil_energie_elec_cons_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_cons_doc)
 
@@ -409,7 +409,7 @@ app_server <- function(input, output, session) {
                           # name of fct to create dt table
                           fct_table_dt_type = create_prod_table_dt,
                           # name of dl prefix to supply to download module
-                          dl_prefix = "elec_prod_",
+                          dl_prefix = "profil_energie_elec_prod_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
   #
@@ -419,7 +419,10 @@ app_server <- function(input, output, session) {
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
                              subset_rgr_cons_1 = subset_rgr_cons_1,
-                             subset_rgr_cons_2 = subset_rgr_cons_2)
+                             subset_rgr_cons_2 = subset_rgr_cons_2,
+                             dl_prefix = "profil_energie_conso_bat_",
+                             doc_vars = regener_doc # utils_helpers.R
+                             )
 
 
   #  ### mod regener_needs ----
@@ -433,7 +436,7 @@ app_server <- function(input, output, session) {
                                    var_values = "besoins", # prod/consumption/besoins
                                    color_palette = colors_rg_type, # utils_helpers.R
                                    fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
-                                   dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
+                                   dl_prefix = "profil_energie_besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars = regener_doc # utils_helpers.R
                                    )
 
@@ -442,7 +445,7 @@ app_server <- function(input, output, session) {
                                   inputVals = inputVals,
                                   subsetData = subset_rgr_misc,
                                   selectedUnit = selectedUnit,
-                                  dl_prefix = "regener_autres_",
+                                  dl_prefix = "profil_energie_regener_autres_",
                                   doc_vars = regener_doc)
 
 
@@ -452,7 +455,7 @@ app_server <- function(input, output, session) {
    mod_subsidies_building_charts_server("subsidies_building",
                                subsetData = subset_subsidies_building,
                                inputVals = inputVals,
-                               dl_prefix = "subventions_bat_",
+                               dl_prefix = "profil_energie_subventions_bat_",
                                doc_vars = NULL # for now
                                )
 
@@ -460,7 +463,7 @@ app_server <- function(input, output, session) {
    mod_subsidies_measure_charts_server("subsidies_measure",
                                subsetData = subset_subsidies_measure,
                                inputVals = inputVals,
-                               dl_prefix = "subventions_mesure_",
+                               dl_prefix = "profil_energie_subventions_mesure_",
                                doc_vars = NULL # for now
    )
 

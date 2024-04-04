@@ -66,6 +66,10 @@ h1{
 font-size:16pt !important;
 color:midnightblue !important;
 }
+
+.btn-group>.btn, .btn-group-vertical>.btn{
+  margin-right:2px !important;
+}
 ```
 
 Ce rapport a été généré depuis l'application [stat-energie-vd.ch](https://stat-energie-vd.ch/profil-energie) le `r format(Sys.Date(), "%d/%m/%Y")` pour le(s) territoire(s) suivant(s) :

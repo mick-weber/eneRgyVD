@@ -40,9 +40,9 @@ app_ui <- function(request) {
       # Custom theme
       theme = profil_theme, # utils_helpers.R
       # Title
-      title = strong("Profil énergétique des communes",
-                     class = "h4 text-wrap",
-                     style = "font-family: 'Arial', sans-serif;"),
+      title = strong("Profil énergétique des communes vaudoises",
+                     class = "h5 text-wrap",
+                     style = "font-family: 'Tahoma', sans-serif;font-weight:600;"),
       # Browser title
       window_title = "Profil énergétique VD",
       # Sidebar

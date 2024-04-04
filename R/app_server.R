@@ -140,16 +140,16 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$min_selected_cons,
-          inputVals$max_selected_cons,
+      req(inputVals$min_selected_cons_elec,
+          inputVals$max_selected_cons_elec,
           inputVals$cons_elec_dataset,
           inputVals$selectedUnit)
 
       # further filter cons_dataset with selected min/max values and convert to selectedUnit()
        # CONVERSION TEST IN PROGRESS
       inputVals$cons_elec_dataset |>
-        dplyr::filter(annee >= inputVals$min_selected_cons,
-                      annee <= inputVals$max_selected_cons)
+        dplyr::filter(annee >= inputVals$min_selected_cons_elec,
+                      annee <= inputVals$max_selected_cons_elec)
 
     })
 
@@ -163,16 +163,16 @@ app_server <- function(input, output, session) {
        need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
      )
      # waiting on these to get initialized (renderUIs)
-     req(inputVals$min_selected_prod,
-         inputVals$max_selected_prod,
+     req(inputVals$min_selected_prod_elec,
+         inputVals$max_selected_prod_elec,
          inputVals$techs_selected,
          inputVals$prod_elec_dataset)
 
      # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
 
      inputVals$prod_elec_dataset |>
-       dplyr::filter(annee >= inputVals$min_selected_prod,
-                     annee <= inputVals$max_selected_prod) |>
+       dplyr::filter(annee >= inputVals$min_selected_prod_elec,
+                     annee <= inputVals$max_selected_prod_elec) |>
        dplyr::filter(categorie %in% inputVals$techs_selected)
 
    }) # End reactive()
@@ -393,6 +393,7 @@ app_server <- function(input, output, session) {
                           dl_prefix = "cons_elec_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_cons_doc)
+
 
    ## tabProd: chart server logic ----
    mod_elec_charts_server("production_charts",

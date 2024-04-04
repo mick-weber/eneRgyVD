@@ -42,7 +42,7 @@ mod_inputs_ui <- function(id){
     shiny::conditionalPanel(
       condition="input.nav == 'Distribution'",
 
-      shiny::uiOutput(ns("cons_year"))
+      shiny::uiOutput(ns("cons_elec_year"))
 
     ), # End conditionalPanel
 
@@ -275,12 +275,12 @@ mod_inputs_server <- function(id){
 
       # store min & max !available! years from consumption data to feed sliderInput()
 
-      inputVals$min_avail_cons <- min(subset_elec_cons()$annee)
-      inputVals$max_avail_cons <- max(subset_elec_cons()$annee)
+      inputVals$min_avail_cons_elec <- min(subset_elec_cons()$annee)
+      inputVals$max_avail_cons_elec <- max(subset_elec_cons()$annee)
 
       # store min & max !available! years to feed sliderInput()
-      inputVals$min_avail_prod <- min(subset_elec_prod()$annee)
-      inputVals$max_avail_prod <- max(subset_elec_prod()$annee)
+      inputVals$min_avail_prod_elec <- min(subset_elec_prod()$annee)
+      inputVals$max_avail_prod_elec <- max(subset_elec_prod()$annee)
 
       # store list of !available! techs to feed pickerInput()
       inputVals$techs_avail <- subset_elec_prod() |>
@@ -344,16 +344,17 @@ mod_inputs_server <- function(id){
 
     ### tabCons dynamic select ----
 
-     output$cons_year <- shiny::renderUI({
+     output$cons_elec_year <- shiny::renderUI({
 
        req(input$selected_communes)
 
        shiny::tagList(
 
-         shiny::sliderInput(ns("cons_year"), label = "Choix des années",
-                            min = inputVals$min_avail_cons,
-                            max = inputVals$max_avail_cons,
-                            value = c(inputVals$min_avail_cons, inputVals$max_avail_cons),
+         shiny::sliderInput(ns("cons_elec_year"), label = "Choix des années",
+                            min = inputVals$min_avail_cons_elec,
+                            max = inputVals$max_avail_cons_elec,
+                            value = c(inputVals$min_avail_cons_elec,
+                                      inputVals$max_avail_cons_elec),
                             step = 1L, sep = "", ticks = T, dragRange = T
                             )
 
@@ -386,11 +387,12 @@ mod_inputs_server <- function(id){
 
       shiny::tagList(
 
-        shiny::sliderInput(ns("prod_year"),
+        shiny::sliderInput(ns("prod_elec_year"),
                            label = "Choix des années",
-                           min = inputVals$min_avail_prod,
-                           max = inputVals$max_avail_prod,
-                           value = c(inputVals$min_avail_prod, inputVals$max_avail_prod),
+                           min = inputVals$min_avail_prod_elec,
+                           max = inputVals$max_avail_prod_elec,
+                           value = c(inputVals$min_avail_prod_elec,
+                                     inputVals$max_avail_prod_elec),
                            step = 1L, sep = "", ticks = TRUE, dragRange = TRUE),
 
 
@@ -424,12 +426,12 @@ mod_inputs_server <- function(id){
     observe({
 
                         # Cons elec selected inputs
-      inputVals$min_selected_cons <- input$cons_year[1] # current min year selected for elec consumption
-      inputVals$max_selected_cons <- input$cons_year[2] # current max year selected for elec consumption
+      inputVals$min_selected_cons_elec <- input$cons_elec_year[1] # current min year selected for elec consumption
+      inputVals$max_selected_cons_elec <- input$cons_elec_year[2] # current max year selected for elec consumption
 
       # Prod elec selected inputs
-      inputVals$min_selected_prod <- input$prod_year[1] # current min year selected for elec production
-      inputVals$max_selected_prod <- input$prod_year[2] # current max year selected for elec production
+      inputVals$min_selected_prod_elec <- input$prod_elec_year[1] # current min year selected for elec production
+      inputVals$max_selected_prod_elec <- input$prod_elec_year[2] # current max year selected for elec production
       inputVals$techs_selected <- input$prod_techs      # current selected technologies for elec production
 
 

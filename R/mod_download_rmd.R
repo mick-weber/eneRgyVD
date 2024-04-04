@@ -187,12 +187,12 @@ mod_download_rmd_server <- function(id,
       # List all pertinent inputVals$<datasets> from mod_inputs.R
       list(
         # Cons elec renamed+units
-        cons_elec = inputVals$cons_dataset |>
+        cons_elec = inputVals$cons_elec_dataset |>
         rename_fr_colnames() |>
         add_colname_units(unit = inputVals$selectedUnit),
 
         # Prod elec renamed+units
-        prod_elec = inputVals$prod_dataset |>
+        prod_elec = inputVals$prod_elec_dataset |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$selectedUnit),
 

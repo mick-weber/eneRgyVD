@@ -42,7 +42,7 @@ app_ui <- function(request) {
       # Title
       title = strong("Profil énergétique des communes vaudoises",
                      class = "h5 text-wrap",
-                     style = "font-family: 'Tahoma', sans-serif;font-weight:600;"),
+                     style = "font-family: 'Tahoma', sans-serif;font-weight:500;"),
       # Browser title
       window_title = "Profil énergétique VD",
       # Sidebar

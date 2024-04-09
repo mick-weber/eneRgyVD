@@ -15,7 +15,7 @@ mod_inputs_ui <- function(id){
     # selectizeInput() for municipalities ----
 
     shiny::selectizeInput(inputId = ns("selected_communes"),
-                          label = "Sélection par commune(s)",
+                          label = "Sélection des communes",
                           choices = choices_canton_communes,
                           selected = NULL,
                           multiple = TRUE,

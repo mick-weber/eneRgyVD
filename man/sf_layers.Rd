@@ -36,7 +36,4 @@ simplified polygons (accuracy is not required here) taken from viageo.ch (see so
 and loaded as shapefiles with {sf} library
 These layers must be updated when some merging between communes happens
 }
-\examples{
-sf_canton
-}
 \keyword{datasets}

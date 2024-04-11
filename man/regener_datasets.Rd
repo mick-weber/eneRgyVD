@@ -44,7 +44,4 @@ and affectation (respectively final use) by commune. `regener_needs` show
 heating needs, `regener_misc` show non-energetic data (surface, number of buildings, etc.)
 and finally `regener_doc` documents the important variables
 }
-\examples{
-regener_cons_ae_aff
-}
 \keyword{datasets}

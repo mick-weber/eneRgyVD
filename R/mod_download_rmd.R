@@ -71,7 +71,6 @@ mod_download_rmd_server <- function(id,
                              oxford_comma = F),
                      # Green font
                      style = "color:#3A862D;")),
-      br(),
       p("Celui-ci contient les éléments suivants :"),
       # [u]nordered [l]ist of [l]ist [i]tems
       tags$ul(
@@ -99,7 +98,7 @@ mod_download_rmd_server <- function(id,
       shiny::downloadButton(
       outputId = ns("report"),
       label = "Générer un rapport",
-      class = "dlButtonXL" # class defined in custom.css
+      class = "downloadAllButtons" # class defined in custom.css
       )
     })
 
@@ -173,7 +172,7 @@ mod_download_rmd_server <- function(id,
       shiny::downloadButton(
         outputId = ns("download_all_excel"),
         label = "Tout télécharger",
-        class = "dlButtonXL" # class defined in custom.css
+        class = "downloadAllButtons" # class defined in custom.css
       )
     })
 

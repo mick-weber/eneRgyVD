@@ -89,7 +89,7 @@ make_statbox_item <- function(iconBgClass,
 #' @return a list of HTML accordion_panels to be spliced in a `bslib::accordion()`
 #' @export
 #'
-#' @examples items <- generate_doc_panels("elec_prod-doc.md")
+#' @examples items <- generate_doc_accordion_panels("elec_prod-doc.md")
 #' bslib::accordion(!!!items, open = FALSE)
 
 generate_doc_accordion_panels <- function(md_file){
@@ -309,6 +309,9 @@ create_bar_plotly <- function(data,
 #' names as arguments for a flexible data input
 #'
 #' @param data the dataset used to create the ggalluvial plot
+#' @param var_commune the variable holding the commune name
+#' @param label_from legend located below the left side of the alluvial
+#' @param label_to legend located below the right side of the alluvial
 #' @param var_from the variable for the left stratum
 #' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
 #' @param var_to the variable for the right stratum

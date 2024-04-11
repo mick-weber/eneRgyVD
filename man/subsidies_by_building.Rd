@@ -22,7 +22,4 @@ IWF's platform used to process the subsidies. Data is acquired
 through a authentified API by DGE-DIREN, and data is pre-processed locally
 before making it available to the application.
 }
-\examples{
-subsidies_by_building
-}
 \keyword{datasets}

@@ -47,9 +47,9 @@ subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subs
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 
 report_path <- tempfile(fileext = ".Rmd")
-file.copy("./data/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Files others than .Rd are in ./inst/extdata/
+file.copy("./inst/extdata/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Generic utils ----
 # Tab-specific items at the end (see outline : `Objects specific to...`) !
@@ -122,12 +122,12 @@ link_github <- "https://github.com/mick-weber/eneRgyVD"
 # rjson::fromJSON(
 #   file = 'https://cdn.datatables.net/plug-ins/1.10.11/i18n/French.json') |>
 #   toJSON() |>
-# write(file = "./data/DT_fr_language.json")
+# write(file = "./inst/extdata/DT_fr_language.json")
 
 ### Load json french language file for DT library
 # Files others than .Rd are in ./inst/extdata/
 
-DT_fr_language <- rjson::fromJSON(file = "./data/DT_fr_language.json")
+DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 
 ## Units conversion table ----
 # Must match the choices in header's widget

@@ -23,7 +23,4 @@ The dataset is an agregation and simplification of all electricity delivery data
 which are yearly transmitted to DGE-DIREN by the distribution network managers.
 Data is cleaned, affiliated to municipalities then aggregated and sent to the app.
 }
-\examples{
-elec_cons.rda
-}
 \keyword{datasets}

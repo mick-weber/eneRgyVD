@@ -66,7 +66,7 @@ mod_upload_communes_server <- function(id){
 
       tryCatch(
         {
-          input_file <- read.csv(input$file_communes$datapath,
+          input_file <- utils::read.csv(input$file_communes$datapath,
                                  sep = ";")
 
           # communes_names_id -> utils_helpers.R ; this code implicitely removes dupe ids !

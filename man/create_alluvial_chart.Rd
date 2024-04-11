@@ -19,13 +19,19 @@ create_alluvial_chart(
 \arguments{
 \item{data}{the dataset used to create the ggalluvial plot}
 
+\item{var_commune}{the variable holding the commune name}
+
 \item{var_flow}{the variable that quantifies the flows from `var_from` to `var_to`}
 
 \item{var_from}{the variable for the left stratum}
 
+\item{label_from}{legend located below the left side of the alluvial}
+
 \item{var_to}{the variable for the right stratum
 creates a ggplot2 alluvial chart using the ggalluvial library and heat building
 consumption data from an aggregated RegEner dataset}
+
+\item{label_to}{legend located below the right side of the alluvial}
 }
 \value{
 a ggplot2 object for regener alluvial visualisations

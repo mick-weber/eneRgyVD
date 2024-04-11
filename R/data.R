@@ -9,8 +9,7 @@
 #' @keywords datasets
 #' @format Each is a tibble with various rows and cols which are not detailed yet
 #' @source <https://viageo.ch/md/5be7ce8a-62b8-4031-8caa-5dfe7c0ef089>
-#' @examples
-#' sf_canton
+
 
 "sf_canton"
 
@@ -37,8 +36,7 @@
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.leprogrammebatiments.ch/fr>
-#' @examples
-#' subsidies_by_building
+
 
 "subsidies_by_measure"
 
@@ -54,8 +52,7 @@
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.leprogrammebatiments.ch/fr>
-#' @examples
-#' subsidies_by_measure
+
 
 "subsidies_by_measure"
 
@@ -68,8 +65,7 @@
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source DGE-DIREN(<https://www.vd.ch/>)
-#' @examples
-#' elec_cons.rda
+
 
 "elec_cons"
 
@@ -89,8 +85,7 @@
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.pronovo.ch/fr>
-#' @examples
-#' elec_prod.rda
+
 
 "elec_prod"
 
@@ -111,8 +106,7 @@
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
 #' @source <https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/diren-energie>
-#' @examples
-#' regener_cons_ae_aff
+
 
 #' @rdname regener_datasets
 "regener_cons_ae_aff"

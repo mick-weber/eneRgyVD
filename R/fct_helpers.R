@@ -21,7 +21,8 @@ info_dev_message <- function(){
                                        "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
                                        Pour cette raison, des valeurs peuvent changer de manière rétroactive.
                                        Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour.",
-                                       markdown("Un aperçu des ajouts récents est disponible dans le menu <strong>**Divers > Nouveautés**</strong>.")
+                                       tags$br(), tags$br(),
+                                       "<i>Un aperçu des ajouts récents est disponible dans le menu Divers > Nouveautés</i>."
                                        ),
                          html = TRUE,
                          size = "m",
@@ -47,7 +48,7 @@ info_dev_message <- function(){
 #' @import shiny
 #'
 #' @examples
-#' make_statbox_item(icon_name = "heart",icon_class = "text-danger", title = "Rescues", value = 100, unit = "people", year = 2022)
+#' make_statbox_item(iconBgClass = NULL, title = "Rescues", value = 100, unit = "people", year = 2022)
 make_statbox_item <- function(iconBgClass,
                               title,
                               value,
@@ -65,10 +66,7 @@ make_statbox_item <- function(iconBgClass,
                                           zero.print = "-" # ! important when no commune is selected,0 is passed
                                           )),
                               style = "font-size:1.3rem;"),
-
                        strong(p(unit, style = "font-size:1.2rem;")),
-
-
                        p(year, style = "font-size:1.1rem;font-weight:500;")
                      )
            )
@@ -474,6 +472,7 @@ create_prod_table_dt <- function(data,
                                  ){
 
   data |>
+    dplyr::arrange(desc(annee)) |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor |>
@@ -549,6 +548,7 @@ create_cons_table_dt <- function(data,
                                  ){
 
   data |>
+    dplyr::arrange(desc(annee)) |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year to factor
@@ -604,6 +604,7 @@ create_rg_needs_table_dt <- function(data,
                                      ){
 
   data |>
+    dplyr::arrange(desc(etat)) |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year (etat for rg dataset) to factor
@@ -660,6 +661,7 @@ create_regener_table_dt <- function(data,
 ){
 
   data |>
+    dplyr::arrange(desc(etat)) |>
     # Set pct_commune to % display (output for dl is in numeric)
     dplyr::mutate(pct_commune = scales::percent(
       pct_commune, accuracy = 0.01)) |>
@@ -720,6 +722,7 @@ create_rg_misc_table_dt <- function(data,
 ){
 
   data |>
+    dplyr::arrange(desc(etat)) |>
     # Basic clean up for table output
     dplyr::mutate(
       # change year (etat for rg dataset) to factor
@@ -811,6 +814,7 @@ create_subsidies_table_dt <- function(data,
 ){
 
   data |>
+    dplyr::arrange(desc(.data[[var_year]])) |>
     # Clear undesired vars
     dplyr::select(-any_of("mesure_simplifiee")) |>
     # Basic clean up for table output

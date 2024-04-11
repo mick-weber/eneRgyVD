@@ -113,7 +113,7 @@ height_facet_above_limit <- 700
 mail_address <- "stat.energie@vd.ch"
 link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
-link_pter <- "https://www.vd.ch/themes/etat-droit-finances/communes/energie-environnement-agriculture/energie/planification-energetique-territoriale"
+link_pter <- "https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc"
 link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ## DT language file ----
@@ -242,7 +242,7 @@ colors_sectors <- cons_colors$color |>
 regener_colors <- dplyr::tribble(~icon, ~ae, ~color,
                               as.character(shiny::icon("tree")), "Bois", "#CC9E62",
                               as.character(shiny::icon("industry")), "CAD", "#A58DE6",
-                              as.character(shiny::icon("bolt")), "Electricité (direct)", "#FFEF0F",
+                              as.character(shiny::icon("bolt")), "Electricité (direct)", "#ffdb0f",
                               as.character(shiny::icon("bolt-lightning")), "Electricité (PAC)", "#FF870F",
                               as.character(shiny::icon("temperature-half")), "Chaleur ambiante (PAC)", "#FF870F", # 2023-05-10
                               as.character(shiny::icon("fire-flame-simple")), "Gaz", "#477fc1", #gaznat
@@ -295,12 +295,12 @@ colors_rg_type <- regener_colors_type$color |>
 # if needed : subsidies_building |> distinct(subv_type)
 
 subsidies_building_palette <- dplyr::tribble(~icon, ~subv_type, ~color,
-                                         as.character(shiny::icon("house")), "Isolation partielle", "#FFEF0F",
+                                         as.character(shiny::icon("house")), "Isolation partielle", "#ffdb0f",
                                          as.character(shiny::icon("house")), "Isolation globale", "#FF870F",
                                          as.character(shiny::icon("house-fire")), "Isolation partielle + chauffage renouvelable", "#66ccff",
                                          as.character(shiny::icon("house-fire")), "Isolation globale + chauffage renouvelable", "#0077b3",
                                          as.character(shiny::icon("fire")), "Chauffage renouvelable", "#6cb76d",
-                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc",
+                                         as.character(shiny::icon("asterisk")), "Autres", "#cccccc"
 
 )
 
@@ -325,16 +325,27 @@ subsidies_building_colors <- subsidies_building_palette$color |>
 # It's flexible enough if new/removed subsidies appear
 # Thanks https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
 
-# Extract number of categories for mesure_simplifiee (supplied to brewer.pal below)
-n_max_mesure_simplifiee <- dplyr::n_distinct(subsidies_by_measure$mesure_simplifiee)
+## |---------------------------------------------------------------|
+##          REVIEW START
+## |---------------------------------------------------------------|
 
-# This palette is only used for the plot, based on `mesure_simplifiee`
-subsidies_measure_palette_plot <- subsidies_by_measure |>
-  dplyr::distinct(mesure_simplifiee) |>
-  dplyr::mutate(color = RColorBrewer::brewer.pal(
-    n = n_max_mesure_simplifiee,
-    name = "Pastel1"
-  ))
+# NEW CODE
+subsidies_measure_palette_plot <- dplyr::tribble(~mesure_simplifiee, ~ color,
+                                                 "Isolation partielle", "#ffdb0f",
+                                                 "Isolation globale", "#FF870F",
+                                                 "Chauffage PAC", "#c8e4c9",
+                                                 "Chauffage solaire thermique", "#aed7ae",
+                                                 "Chauffage bois", "#93ca94",
+                                                 "Chauffage CAD", "#79bd7a",
+                                                 "Autres", "#cccccc",
+                                                 "Autres mesures (voir table)", "#cccccc"
+                                                 )
+
+
+## |---------------------------------------------------------------|
+##          REVIEW END
+## |---------------------------------------------------------------|
+
 # Prepare palette for create_bar_plotly()
 subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color |>
   setNames(nm = subsidies_measure_palette_plot$mesure_simplifiee)

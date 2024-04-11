@@ -15,5 +15,5 @@ make_statbox_item()
 custom replacement for valueboxes (too rigid) to fill statboxes with icon, title, value and year info
 }
 \examples{
-make_statbox_item(icon_name = "heart",icon_class = "text-danger", title = "Rescues", value = 100, unit = "people", year = 2022)
+make_statbox_item(iconBgClass = NULL, title = "Rescues", value = 100, unit = "people", year = 2022)
 }

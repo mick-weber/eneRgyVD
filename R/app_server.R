@@ -68,17 +68,19 @@ app_server <- function(input, output, session) {
    # To avoid repetitive coding, we make a tribble of module-input events and target tabpanels
    #  only the last tabpanel is required, the others can be hard-coded in the purrr::walk
    #  since all redirect buttons end up in 'À propos' > 'about-tabset' area
+   # <h6> tags are necessary since the titles of each panels (mod_about_the_app.R) have h6 wrappers
+   # would be best to use a robust <id> argument but it's not implemented yet !
 
    subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
-                  "consumption_charts-elec_data_help",  "Consommation d'électricité",
-                  "production_charts-elec_data_help",   "Production d'électricité",
-                  "regener_needs-rgr_needs_help",       "Chaleur bâtiments",
-                  "regener_cons-rgr_cons_help",         "Chaleur bâtiments",
-                  "regener_misc-rgr_misc_help",         "Chaleur bâtiments",
-                  "subsidies_building-subsidies_building_help", "Subventions bâtiments",
-                  "subsidies_measure-subsidies_measure_help",  "Subventions bâtiments")
+                  "consumption_charts-elec_data_help",  "<h6>Distribution d'électricité</h6>",
+                  "production_charts-elec_data_help",   "<h6>Production d'électricité</h6>",
+                  "regener_needs-rgr_needs_help",       "<h6>Chaleur bâtiments</h6>",
+                  "regener_cons-rgr_cons_help",         "<h6>Chaleur bâtiments</h6>",
+                  "regener_misc-rgr_misc_help",         "<h6>Chaleur bâtiments</h6>",
+                  "subsidies_building-subsidies_building_help", "<h6>Subventions bâtiments</h6>",
+                  "subsidies_measure-subsidies_measure_help",  "<h6>Subventions bâtiments</h6>")
 
-   # Code below is to generate updatebs4TabItems redirections
+   # Code below is to generate redirections from methodological accordions in each module to mod_about_the_app.R
    # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
    purrr::pwalk(subpanels_tribble,
                 ~ shiny::observeEvent(
@@ -89,7 +91,7 @@ app_server <- function(input, output, session) {
                      # Then we update to the first nav_panel 'Données' (in 'about-' ns module)
                      bslib::nav_select("about-tabset", selected = "Données", session)
                      # Last we update the nested nav_panel with subpanels_tribble$tabpanel_name
-                     bslib::nav_select("about-nested_tabset", selected = .y, session)
+                     bslib::nav_select(id = "about-nested_tabset", selected = .y, session)
                    }
                    )) #End pwalk
 

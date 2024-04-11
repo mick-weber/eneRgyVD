@@ -139,7 +139,8 @@ mod_subsidies_measure_charts_server <- function(id,
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,
                                                               n = 3,
                                                               w = nombre,
-                                                              other_level = "Autres mesures")) |>
+                                                              # other_level should match utils_helpers.R subsidies_measure_palette_plot value for color matching !
+                                                              other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
         create_bar_plotly(n_communes = length(inputVals_communes_d()),

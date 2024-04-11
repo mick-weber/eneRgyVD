@@ -22,16 +22,16 @@ mod_stats_box_ui <- function(id){
 #'
 #' @noRd
 mod_stats_box_server <- function(id,
-                                          title,
-                                          selectedUnit,
-                                          elec_prod_value,
-                                          elec_cons_value,
-                                          cons_rg_value,
-                                          subsidies_value,
-                                          year_elec_cons,
-                                          year_elec_prod,
-                                          year_rgr,
-                                          year_subsidies){
+                                 title,
+                                 selectedUnit,
+                                 elec_prod_value,
+                                 elec_cons_value,
+                                 cons_rg_value,
+                                 subsidies_value,
+                                 year_elec_cons,
+                                 year_elec_prod,
+                                 year_rgr,
+                                 year_subsidies){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 

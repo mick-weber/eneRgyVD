@@ -34,6 +34,10 @@ mod_regener_misc_charts_ui <- function(id){
 
     ),# End div
 
+
+    tags$p("Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune."),
+
+
     bslib::navset_pill(header = br(),
 
     ### Table ----

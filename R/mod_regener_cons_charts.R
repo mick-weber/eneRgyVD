@@ -49,9 +49,9 @@ mod_regener_cons_charts_ui <- function(id){
     bslib::nav_panel(title = "Graphique",
                      icon = bsicons::bs_icon("bar-chart-fill"),
 
- tags$p("L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
-      shiny::textOutput(ns("current_year_txt"), inline = TRUE)
-      ),
+ tags$p(class = "text-muted",
+   "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
+      shiny::textOutput(ns("current_year_txt"), inline = TRUE)),
 
                       # radioGroupButtons() for tab ----
 

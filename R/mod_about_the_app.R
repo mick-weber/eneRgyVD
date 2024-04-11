@@ -51,6 +51,7 @@ mod_about_the_app_ui <- function(id){
                                               bslib::navset_tab(id = ns("nested_tabset"),
 
                                                                    ### 1. Cons elec ----
+                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
                                                                    bslib::nav_panel(h6("Distribution d'électricité"),
                                                                    tags$div(
                                                                             br(),
@@ -67,6 +68,7 @@ mod_about_the_app_ui <- function(id){
 
 
                                                                 ### 2. Prod élec ----
+                                                                # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
                                                                 bslib::nav_panel(h6("Production d'électricité"),
                                                                                  # create div to apply class
                                                                                  tags$div(
@@ -78,24 +80,13 @@ mod_about_the_app_ui <- function(id){
                                                                                    br(),
                                                                                    h5(strong("Descriptif des variables")),
                                                                                    br(),
-                                                                                   DT::dataTableOutput(ns("elec_prod_doc")),
-                                                                                   br(),
-                                                                                   # Detailed method
-                                                                                   h4(strong("Méthode détaillée")),
-                                                                                   br(),
-                                                                                   # Add download link
-                                                                                   tags$a(href= "www/Pronovo_synthese_traitement_sans_recommendations.html",
-                                                                                          target="_blank", "Télécharger la documentation",
-                                                                                          download = "Pronovo_synthese_traitement_sans_recommendations.html"),
-                                                                                   br(),
-                                                                                   tags$iframe(src = "www/Pronovo_synthese_traitement_sans_recommendations.html",
-                                                                                               target = "_self",
-                                                                                               height = "800px", width = "100%")
+                                                                                   DT::dataTableOutput(ns("elec_prod_doc"))
                                                                                  )# End tags$div
 
                                                                 ),# End nested tabPanel 2.
 
                                                                    ### 3. Regener ----
+                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
                                                                    bslib::nav_panel(h6("Chaleur bâtiments"),
                                                                                     # create div to apply class
                                                                                     tags$div(
@@ -106,15 +97,14 @@ mod_about_the_app_ui <- function(id){
                                                                                              br(),
                                                                                              h5(strong("Descriptif des variables")),
                                                                                              br(),
-                                                                                             DT::dataTableOutput(ns("regener_doc")),
-                                                                                             br(),
-                                                                                             h5(strong("Méthode détaillée à venir..."))
+                                                                                             DT::dataTableOutput(ns("regener_doc"))
 
                                                                                     )# End tags$div
 
                                                                    ),# End nested tabPanel 3.
 
                                                                    ### 4. Subsidies ----
+                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
                                                                    bslib::nav_panel(h6("Subventions bâtiments"),
                                                                                     # create div to apply class
                                                                                     tags$div(

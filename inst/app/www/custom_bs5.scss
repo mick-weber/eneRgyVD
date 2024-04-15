@@ -170,12 +170,6 @@ Gradient for navbar with multibrowser compatibility
   margin-bottom:0 !important;
 }
 
-.customVB p{
-  font-size: 100% !important;
-  padding:0;
-}
-
-
 .dropdown-menu{
   background-color:#3A862D;
   .dropdown-item{
@@ -213,9 +207,14 @@ Gradient for navbar with multibrowser compatibility
         background-position: center;
 }
 
-.downloadAllButtons{
-  background-color:#3A862D;
+/*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
+.btnCustomWidth{
   width:50%;
 }
 
+/*When sidebar is collapsed, make the deploy arrow more visible*/
+.bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{
+  background-color: rgba(58, 134, 45, 0.5);
+
+}
 

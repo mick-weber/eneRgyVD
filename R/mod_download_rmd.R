@@ -98,7 +98,7 @@ mod_download_rmd_server <- function(id,
       shiny::downloadButton(
       outputId = ns("report"),
       label = "Générer un rapport",
-      class = "downloadAllButtons" # class defined in custom.css
+      class = "btn btn-primary btnCustomWidth" # btnCustomWidth class defined in custom.css
       )
     })
 
@@ -172,7 +172,7 @@ mod_download_rmd_server <- function(id,
       shiny::downloadButton(
         outputId = ns("download_all_excel"),
         label = "Tout télécharger",
-        class = "downloadAllButtons" # class defined in custom.css
+        class = "btn btn-primary btnCustomWidth" # btnCustomWidth class defined in custom.css
       )
     })
 

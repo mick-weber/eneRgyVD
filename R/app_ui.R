@@ -215,6 +215,10 @@ app_ui <- function(request) {
         bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
                                href = link_diren, target = "_blank")),
 
+        ### PECC ----
+        bslib::nav_item(tags$a(bsicons::bs_icon("link"), "Plan énergie climat",
+                               href = link_pecc, target = "_blank")),
+
         ### GitHub ----
         bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
                                href = link_github, target = "_blank"))

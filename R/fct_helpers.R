@@ -15,8 +15,8 @@ info_dev_message <- function(){
                                        " afin de diffuser des données énergétiques à l'échelle des communes vaudoises.",
                                        tags$br(),
                                        "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",
-                                       tags$a(href = link_pter, target = "_blank", # utils_helpers.R
-                                              "planifications énergétiques territoriales."),
+                                       tags$a(href = link_pecc, target = "_blank", # utils_helpers.R
+                                              "plans énergie et climat communaux (PECC)."),
                                        tags$br(), tags$br(),
                                        "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
                                        Pour cette raison, des valeurs peuvent changer de manière rétroactive.

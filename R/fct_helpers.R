@@ -270,7 +270,7 @@ create_bar_plotly <- function(data,
                      color="black", fill=main_color, linewidth = 1, linetype="solid"
                    ),
                    strip.text = ggplot2::element_text(
-                     size =10, color = "white"),
+                     size = 13, color = "white"),
                    legend.text = ggplot2::element_text(size = 12),
                    legend.title = ggplot2::element_text(size = 12),
                    legend.background = ggplot2::element_rect(fill = NA), # transparent

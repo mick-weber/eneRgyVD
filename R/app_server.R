@@ -17,6 +17,10 @@ app_server <- function(input, output, session) {
    ## We record session and errors (no inputs/outputs)
 
   # make sure the logs subfolder exists to store logs below
+  # note to myself : if logs don't work this is probably due to lacking write authorisations !
+
+  # RUN <sudo chmod -R 757 /srv/shiny-server/> in terminal if needed
+
   if(!dir.exists("./logs")){
     dir.create("./logs")
   }

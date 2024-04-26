@@ -45,7 +45,7 @@ mod_subsidies_building_charts_ui <- function(id){
 
     # TABSETS for better readability of plot / table
     bslib::navset_pill(
-      id = "tabset_subsidies",
+      id = ns("tabset_subsidies"),
 
       ## Graphique tabPanel ----
 

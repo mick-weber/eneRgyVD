@@ -21,9 +21,7 @@
 /* we can't easily overwrite the text so we turn it to transparent so nobody can see it ;) */
 .progress-bar {
   color: transparent!important
-
 }
-
 
 /* Add bottom margin to avoid overlapping of main content and footer, and override default padding for main container of 1rem*/
 .main{
@@ -31,6 +29,26 @@
   padding:0.75rem !important;
   padding-bottom:0.1rem !important;
 }
+
+/* Add left margin to preexisting navbar-nav class (bootstrap) */
+.navbar-nav{
+  margin-left: 3%;
+}
+
+/*For laptop screens (lg <-> xl): adapt font-size of navbar items (1.15rem is default's h5)*/
+@include media-breakpoint-up(lg){
+  .navbar-nav{
+    font-size:calc(min(1.25vw, 1.15rem));
+  }
+}
+
+.adaptiveTitle{
+  text-wrap: wrap;
+  font-family: 'Tahoma', sans-serif;
+  font-size:22px;
+  font-weight:500;
+}
+
 
 /* Remove SelectizeInput's shadow when .focus is on */
 .selectize-input.focus{
@@ -59,11 +77,6 @@
   max-width:none;
 }
 
-
-/* Add left margin to preexisting navbar-nav class (bootstrap) */
-.navbar-nav{
-  margin-left: 10%;
-}
 
 /* Change color of nav's unselected links (and hovering) with full white instead of light grey, more visible */
 #nav{

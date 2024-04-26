@@ -41,8 +41,8 @@ app_ui <- function(request) {
       theme = profil_theme, # utils_helpers.R
       # Title
       title = strong("Profil énergétique des communes vaudoises",
-                     class = "h5 text-wrap",
-                     style = "font-family: 'Tahoma', sans-serif;font-weight:500;"),
+                     class = "adaptiveTitle"
+                     ),
       # Browser title
       window_title = "Profil énergétique VD",
       # Sidebar

@@ -26,7 +26,7 @@ app_server <- function(input, output, session) {
   }
 
    shinylogs::track_usage(
-      what = c("session","error", "output"),
+      what = c("session"),
       storage_mode = shinylogs::store_json(path = "logs/") # store in the /logs subfolder
    )
 

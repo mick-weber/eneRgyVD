@@ -10,6 +10,8 @@
 
 #### Chaleur des bâtiments 
 
+* Correctif 30.04.2024 : modification des indices de besoin de chaleur avec un impact global de +2.5% de consommation pour le canton de Vaud : dû à un correctif du traitement des données de consommation au bâtiment (gaz/CAD) utilisées pour la génération des IBC
+
 * Ajustement de la méthodologie RegEner et ajout de l'année 2023. L'année 2022 
 change rétroactivement avec la nouvelle méthode.
 

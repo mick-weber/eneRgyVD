@@ -44,7 +44,10 @@ mod_news_ui <- function(id){
                                                                        "Ajout des données de distribution d'électricité 2018-2021 (2022 à venir)"),
                                                                   br(),br(),
                                                                   HTML(bsicons::bs_icon("database-fill-add", size = "1.5rem"),
-                                                                       "Ajout des données chaleur bâtiments 2023 (méthode 2024)"),
+                                                                       "Ajout des données chaleur bâtiments 2023 (méthode 2024)
+                                                                       <br>
+                                                                       <li>   Correctif 30.04.2024 avec pour effet +2.4% de besoins et de consommation (correctif IBC)"
+                                                                       ),
                                                                   br(),br(),
                                                                   HTML(bsicons::bs_icon("arrow-clockwise", size = "1.5rem"),
                                                                        "Mise à jour rétroactive des données chaleur bâtiments 2022 (méthode 2024)")

@@ -89,7 +89,7 @@ make_statbox_item <- function(iconBgClass,
 #' @return a list of HTML accordion_panels to be spliced in a `bslib::accordion()`
 #' @export
 #'
-#' @examples items <- generate_doc_accordion_panels("elec_prod-doc.md")
+#' @examples items <- generate_doc_accordion_panels("./data-doc/elec_prod-doc.md")
 #' bslib::accordion(!!!items, open = FALSE)
 
 generate_doc_accordion_panels <- function(md_file){

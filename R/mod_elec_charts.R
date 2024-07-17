@@ -129,7 +129,6 @@ mod_elec_charts_server <- function(id,
                                    subsetData, # filtered data for communes and selected years
                                    selectedUnit, # unit selected in mod_unit_converter.R
                                    legend_title, # for legend of barplot (either secteur/technologies)
-                                   target_year, # which current year for the sunburst
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
                                    var_rank_2, # categorical var ('secteur'/'categorie', NULL, ...)

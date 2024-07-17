@@ -98,7 +98,7 @@ mod_generic_charts_ui <- function(id,
 
 
                                         # !! Since sunburst is removed we can directly use renderPlotly
-                                        uiOutput(ns("plot_render_ui"))
+                                        plotly::plotlyOutput(ns("generic_chart"))
 
 
 
@@ -125,108 +125,73 @@ mod_generic_charts_ui <- function(id,
 #'
 #' @noRd
 mod_generic_charts_server <- function(id,
+                                      subsetData, # passed from inputVals, bit redundant but clear
+                                      # selectedUnit not needed here !
                                       inputVals,
-                                      subsetData, # filtered data for communes and selected years
-                                      selectedUnit, # unit selected in mod_unit_converter.R
-                                      legend_title, # for legend of barplot (either secteur/technologies)
-                                      target_year, # which current year for the sunburst
-                                      var_year, # 'annee'
-                                      var_commune, # 'commune'
-                                      var_rank_2, # categorical var ('secteur'/'categorie', NULL, ...)
-                                      var_values, # prod/consumption kwh
-                                      color_palette, # utils_helpers.R
-                                      fct_table_dt_type, # table function to pass (data specific)
-                                      dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
-                                      doc_vars){ # the non-reactive documentation file for variables description
-  moduleServer(id, function(input, output, session){
-
+                                      dl_prefix = dl_prefix,
+                                      doc_vars = doc_vars
+                                      ){ # the non-reactive documentation file for variables description
+  moduleServer( id, function(input, output, session){
     ns <- session$ns
-
-
-    # Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-
 
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
-      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
-
-    # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({
-      length(inputVals_communes_d()) > 0 # Returns TRUE if at least one commune is selected, else FALSE
+      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
-    outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Plot logic ----
 
-    # Render plot selectively based on radioButton above
-    # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
+    ## Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
 
-    output$plot_render_ui <- renderUI({
+    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
 
-      # Update the initialized FALSE toggle_status with the input$toggle_status
-      # PLOTLY BAR PLOT
+      output$generic_chart <- plotly::renderPlotly({
 
-      output$chart_1 <- plotly::renderPlotly({
-
-        # fct is defined in fct_helpers.R
-        create_bar_plotly(data = subsetData_d(),
-                          n_communes = length(inputVals_communes_d()),
-                          var_year = var_year,
-                          var_commune = var_commune,
-                          # unit = inputVals$selectedUnit,
-                          var_rank_2 = var_rank_2,
-                          var_values = var_values,
-                          color_palette = color_palette, # defined in utils_helpers.R
-                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
-                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                          legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
-                          web_width = inputVals$web_width, # px width of browser when app starts
-                          web_height = inputVals$web_height # px height of browser when app starts
-        )
-
-      })# End renderPlotly
-
-
-      # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
-
-      tags$div(
-        plotly::plotlyOutput(ns("chart_1")) |>
-          shinycssloaders::withSpinner(type = 6,
-                                       color= main_color) # color defined in utils_helpers.R
-      )
-
-    })# End renderUI
+        subsetData_d() |>
+          create_bar_plotly(n_communes = length(inputVals_communes_d()),
+                            var_year = "annee",
+                            var_commune = "commune",
+                            var_values = "generic_value",
+                            var_rank_2 = NULL,
+                            unit = "unité à saisir",
+                            legend_title = "Titre de légende générique",
+                            color_palette = NULL,
+                            dodge = FALSE, # we don't allow user to dodge w/ toggle button
+                            free_y = input$toggle_status, # reactive(input$toggle_status)
+                            web_width = inputVals$web_width, # px width of browser when app starts
+                            web_height = inputVals$web_height # px height of browser when app starts
+          )# End create_bar_plotly
+      })# End renderPlot
 
     # Table logic ----
-    # Renders the DT table
+
+    # DT table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
-      fct_table_dt_type(data = subsetData(),
-                        #unit = inputVals$selectedUnit,
-                        DT_dom = "frtip" # no buttons extension for DT table
+      create_generic_table_dt(data = subsetData(),
+                              var_year = "annee",
+                              #var_rank_2, to be added further in dev,
+                              DT_dom = "frtip" # remove default button in DT extensions
       )
-
-    })# End renderDT
+    })
 
     # Download logic ----
-    # store the data in a reactive (not sure why we can't pass subsetData_d() it directly, but otherwise this won't work)
+
+    # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
 
     download_data <- reactive({
 
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_fr_colnames()  #|>  # fct_helpers.R
-        # NO COLNAME UNITS FOR THIS
-        # add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
+        rename_misc_colnames() |>  # fct_helpers.R
+        rename_fr_colnames()       # fct_helpers.R
+
 
     })
 
@@ -235,8 +200,10 @@ mod_generic_charts_server <- function(id,
                              inputVals = inputVals,
                              data = download_data,
                              dl_prefix = dl_prefix,
-                             doc_vars = doc_vars) # dl prefix for file name, passed into app_server.R
-  }) # End ModuleServer
+                             doc_vars = doc_vars) # dl prefix for file name, passed from app_server.R
+
+
+  })
 } # End server
 
 

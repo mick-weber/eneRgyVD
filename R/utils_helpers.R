@@ -31,6 +31,11 @@ load("./data/subsidies_by_building.rda")
 load("./data/subsidies_by_measure.rda")
 load("./data/subsidies_doc.rda")
 
+## profil-climat dummy data (generic_data)----
+
+load("./data/dummy_climat.rda")
+
+
 ## glossary ----
 
 load("./data/glossary.rda")

@@ -8,12 +8,14 @@ source("./R/mod_download_data.R")
 ## |---------------------------------------------------------------|
 ##          fake loading data in utils_helpers.R
 ## |---------------------------------------------------------------|
-canop <- readRDS("P:/DIREN/11 POLITIQUE ENERG/11.08 Indicateurs et stat/12 Dashboard/EnergyVD/upgrade_profil_climatique/examples_donnees_climatique/part_canop.rds") |>
+generic_data <- readRDS("P:/DIREN/11 POLITIQUE ENERG/11.08 Indicateurs et stat/12 Dashboard/EnergyVD/upgrade_profil_climatique/examples_donnees_climatique/part_canop.rds") |>
   dplyr::mutate(annee = 2022) |>
   rename(commune = libelle,
-         surface_canopee = surface_de_canopee_3m_dans_espace_bati_percent) |>
-  select(commune, surface_canopee, annee)
+         generic_value = surface_de_canopee_3m_dans_espace_bati_percent) |>
+  select(commune, generic_value, annee)
 
+
+generic_data |> save(file = "dummy_climat.rda")
 
 ## |---------------------------------------------------------------|
 ##          Make fake generic datatable function

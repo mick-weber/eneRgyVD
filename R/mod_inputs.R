@@ -218,6 +218,17 @@ mod_inputs_server <- function(id){
         dplyr::filter(commune %in% input$selected_communes)
     })
 
+    # 5. tabClimat ----
+
+    subset_generic_test_data <- reactive({
+      req(input$selected_communes)
+
+      generic_data |>
+        dplyr::filter(commune %in% input$selected_communes)
+
+    })
+
+
 
     # Uploaded communes ----
     ## '_timed' because we have a timestamp as the first element to force reactivity
@@ -249,9 +260,10 @@ mod_inputs_server <- function(id){
       inputVals$selectedUnit <- input$selected_unit
     })
 
-# [inputVals datasets & subsets] ----
+# inputVals datasets & min/max/year values ----
     # Other inputs not influenced by selectInputs() else than commune
 
+    ## datasets ----
     observe({
 
       # store the commune cons dataset already filtered
@@ -273,7 +285,12 @@ mod_inputs_server <- function(id){
       inputVals$subsidies_building <- subset_subsidies_building()
       inputVals$subsidies_measure <- subset_subsidies_measure()
 
-      # store min & max !available! years from consumption data to feed sliderInput()
+      # store generic data already filtered
+
+      inputVals$generic_test_data <- subset_generic_test_data()
+
+
+    ## min/max/year available values ----
 
       inputVals$min_avail_elec_cons <- min(subset_elec_cons()$annee)
       inputVals$max_avail_elec_cons <- max(subset_elec_cons()$annee)
@@ -329,6 +346,8 @@ mod_inputs_server <- function(id){
         dplyr::summarise(consommation=sum(consommation, na.rm = T)) |>
         dplyr::pull(consommation)
 
+
+      # Statbox value for current selection's aggregated sum of M01 measures
 
       inputVals$max_year_subsidies_m01 <- subset_subsidies_measure() |>
         dplyr::filter(annee == last_year_subsidies) |>

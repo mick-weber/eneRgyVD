@@ -863,6 +863,30 @@ create_subsidies_table_dt <- function(data,
     ) # End DT
 }
 
+#' create_generic_table_dt
+#' Creates datatable for generic datasets. Flexible enough to handle all datasets, but loses in
+#'  customizability compared to other energy-specific datatable functions.
+#' @param data the generic dataset
+#' @param var_year the name of the year variable to sort from
+#' @param DT_dom the datatable domain options to provide (e.g. 'Bfrtip')
+#' @return a DT object
+#' @export
+
+create_generic_table_dt <- function(data,
+                                    var_year,
+                                    #var_rank_2, to be added further in dev
+                                    DT_dom = "Bfrtip" # we set default with Buttons
+){
+
+  data |>
+    # Basic clean up for table output
+    dplyr::arrange(desc(.data[[var_year]])) |>
+    dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
+    # DT
+    DT::datatable(options = list(dom = DT_dom))
+
+}
+
 
 
 # Palette fns ----

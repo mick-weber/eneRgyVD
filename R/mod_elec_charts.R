@@ -194,7 +194,7 @@ mod_elec_charts_server <- function(id,
         })# End renderPlotly
 
 
-      # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
+      # We create a div so that we can optionnaly pass a class
 
       tags$div(
                plotly::plotlyOutput(ns("chart_1")) |>

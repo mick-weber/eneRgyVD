@@ -275,6 +275,21 @@ app_server <- function(input, output, session) {
       inputVals$subsidies_measure
    })
 
+   ## Subset generic data ----
+
+   subset_generic_test_data <- reactive({
+
+     # explicitly require communes to be selected
+     validate(
+       need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
+     )
+
+     inputVals$generic_test_data
+
+   })
+
+
+
    # Upload communes ----
 
    observeEvent(inputVals$uploadedCommunesTimed,{
@@ -382,7 +397,7 @@ app_server <- function(input, output, session) {
 
    # Output modules ----
 
-   ## tabCons: chart server logic ----
+   ## mod_elec_charts (cons) ----
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
                           subsetData = subset_elec_cons_data,
@@ -401,7 +416,7 @@ app_server <- function(input, output, session) {
                           doc_vars = elec_cons_doc)
 
 
-   ## tabProd: chart server logic ----
+   ## mod_elec_charts (prod) ----
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
                           subsetData = subset_elec_prod_data,
@@ -418,10 +433,8 @@ app_server <- function(input, output, session) {
                           dl_prefix = "profil_energie_elec_prod_",
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
-  #
-  #  ## tabRegener: chart server logic ----
-  #  ### mod regener_cons ----
-  #
+
+   ## mod regener_cons_charts ----
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
                              subset_rgr_cons_1 = subset_rgr_cons_1,
@@ -431,7 +444,7 @@ app_server <- function(input, output, session) {
                              )
 
 
-  #  ### mod regener_needs ----
+    ## mod regener_needs_charts ----
    mod_regener_needs_charts_server("regener_needs",
                                    inputVals = inputVals,
                                    subsetData = subset_rgr_needs, # filtered data for communes and selected years
@@ -446,7 +459,7 @@ app_server <- function(input, output, session) {
                                    doc_vars = regener_doc # utils_helpers.R
                                    )
 
-   ### mod regener_misc ----
+   ## mod regener_misc_charts ----
    mod_regener_misc_charts_server("regener_misc",
                                   inputVals = inputVals,
                                   subsetData = subset_rgr_misc,
@@ -455,9 +468,7 @@ app_server <- function(input, output, session) {
                                   doc_vars = regener_doc)
 
 
-  ## tabSubsidies: chart server logic ----
-
-   ## mod tabSubsidiesBuilding ----
+   ## mod_subsidies_building_charts ----
    mod_subsidies_building_charts_server("subsidies_building",
                                subsetData = subset_subsidies_building,
                                inputVals = inputVals,
@@ -465,13 +476,23 @@ app_server <- function(input, output, session) {
                                doc_vars = NULL # for now
                                )
 
-   ###  mod tabSubsidiesMeasure ----
+   ##  mod_subsidies_measure_charts ----
    mod_subsidies_measure_charts_server("subsidies_measure",
                                subsetData = subset_subsidies_measure,
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_mesure_",
                                doc_vars = NULL # for now
    )
+
+
+   ## mod_generic_charts ----
+
+   mod_generic_charts_server("test_generic",
+                             subsetData = subset_generic_test_data,
+                             inputVals = inputVals,
+                             dl_prefix = "generic_data_",
+                             doc_vars = NULL # for now
+                             )
 
 
 

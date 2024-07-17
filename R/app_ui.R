@@ -171,6 +171,20 @@ app_ui <- function(request) {
 
       ),#End nav_menu() 'Subventions'
 
+      ## Climat (générique) ----
+      bslib::nav_menu("Climat", icon = icon("earth"),
+
+                      bslib::nav_panel("Exemple générique",
+
+                                       mod_generic_charts_ui("test_generic",
+                                                            title = "Titre générique",
+                                                            title_complement = HTML("<i>Complément de titre générique</i>")
+                                       )
+
+                      )
+
+      ), # End nav_menu() 'Climat'
+
       ## Misc ----
       bslib::nav_menu("Divers",
         ### Report ----

@@ -6,7 +6,7 @@
 
 ## Suivi des modifications du profil énergétique
 
-### Mise à jour janvier 2024 (à venir)
+### Mise à jour 2024
 
 #### Chaleur des bâtiments 
 
@@ -31,6 +31,8 @@ change rétroactivement avec la nouvelle méthode.
 * Onglet `Autres` : ajout de la distinction entre rénovation légère et lourde
 
 #### Production d'électricité
+
+* Ajout données 2023 (juillet 2024)
 
 * Ajustement mineur de la méthodologie impliquant des modifications rétroactives 
 de l'estimation de production d'électricité photovoltaïque, ainsi que des modifications

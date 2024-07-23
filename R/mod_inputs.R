@@ -37,30 +37,35 @@ mod_inputs_ui <- function(id){
         )
       ),# End div
 
-    # uiOutput for tabCons ----
+
+    ## |---------------------------------------------------------------|
+    ##          This section is source of many sorrows !!
+    ## |---------------------------------------------------------------|
+    # we must remember to update these conditionalPanel conditions when we change the names of each nav_panel() and navset_card_pill() !!
+    # otherwise the plots etc. fail to render because they can't access the required conditional input values ! (selected year, etc.)
+
+
+    # uiOutput for elec consumption ----
 
     shiny::conditionalPanel(
-      condition="input.nav == 'Distribution'",
+      condition="input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
 
       shiny::uiOutput(ns("elec_cons_year"))
 
     ), # End conditionalPanel
 
-    # uiOutput() for tabProd ----
-    # IF tabProd : 2 widgets in a single uiOutput call for years and technologies
-    # --> uiOutput/renderUI because its parameters are reactive
+    # uiOutput() for elec production ----
 
     shiny::conditionalPanel(
-      condition="input.nav == 'Production'",
+      condition="input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
 
       shiny::uiOutput(ns("prod_year_n_techs"))
 
     ), # End conditionalPanel
 
-    # uiOutput() for tabRegener ----
-    # Use js array for all tabs because we can't target the overarching 'tabRegener' it does not work
+    # uiOutput() for regener ----
     shiny::conditionalPanel(
-      condition="['Besoins', 'Consommations', 'Autres'].includes(input.nav)",
+      condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
       shiny::uiOutput(ns("regener_year_selector"))
 
     ), # End conditionalPanel
@@ -74,20 +79,38 @@ mod_inputs_ui <- function(id){
                               class = "fs-sidebar-header rotatedSVG",
                               bslib::accordion_panel(title = "Changer d'unité",
                                                      icon = bsicons::bs_icon("calculator-fill"),
-                                                           shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
-                                                                                            label = NULL,
-                                                                                            choices = c("kWh", "MWh", "GWh", "TJ"),
-                                                                                            selected = "MWh",
-                                                                                            inline = FALSE,
-                                                                                            status =  "default",
-                                                                                            icon = icon("check"),
-                                                                                            animation = "jelly")
-             )),
+
+                                                     bslib::navset_tab(
+                                                       bslib::nav_panel(title = "Energie",
+
+                                                                        div(style = "padding-left:2vh;padding-top:1vh;",
+                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
+                                                                                                             label = NULL,
+                                                                                                             choices = c("kWh", "MWh", "GWh", "TJ"),
+                                                                                                             selected = "MWh",
+                                                                                                             inline = FALSE,
+                                                                                                             status =  "default",
+                                                                                                             icon = icon("check"),
+                                                                                                             animation = "jelly")
+                                                                        )# End div
+
+                                                       ),# End nav_panel
+                                                       bslib::nav_panel(title = "CO2",
+
+                                                                        div(style = "padding-left:2vh;padding-top:1vh;",
+                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit_co2"),
+                                                                                                             label = NULL,
+                                                                                                             choices = c("kgCO2", "tCO2", "MtCO2"),
+                                                                                                             selected = "tCO2",
+                                                                                                             inline = FALSE,
+                                                                                                             status =  "default",
+                                                                                                             icon = icon("check"),
+                                                                                                             animation = "jelly")
+                                                                        )# End div
+                                                       )# End nav_panel
+                                                     )# End navset_tab
+             )),# End accordion
              ),# End div()
-
-
-
-
   ) # End tagList
 } # End UI
 

@@ -45,7 +45,8 @@ mod_generic_charts_ui <- function(id,
 
     # Pills ----
 
-    bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
+    bslib::navset_pill(
+      header = br(), # blank line to space content (alternative would be to add padding)
 
                        ### Graph ----
                        bslib::nav_panel(title = "Graphique",
@@ -131,7 +132,7 @@ mod_generic_charts_server <- function(id,
                                       dl_prefix = dl_prefix,
                                       doc_vars = doc_vars
                                       ){ # the non-reactive documentation file for variables description
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
 
     # Initialize toggle free_y condition for conditionalPanel in ui

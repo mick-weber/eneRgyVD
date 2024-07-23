@@ -45,7 +45,9 @@ mod_elec_charts_ui <- function(id,
 
     # Pills ----
 
-    bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
+    bslib::navset_pill(
+      id = ns("tabset_elec"),
+      header = br(), # blank line to space content (alternative would be to add padding)
 
                        ### Graph ----
                        bslib::nav_panel(title = "Graphique",

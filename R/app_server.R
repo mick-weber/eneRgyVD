@@ -495,6 +495,15 @@ app_server <- function(input, output, session) {
                              )
 
 
+   ## mod_generic_charts ----
+
+   mod_generic_charts_server("test_generic_2",
+                             subsetData = subset_generic_test_data,
+                             inputVals = inputVals,
+                             dl_prefix = "generic_data_",
+                             doc_vars = NULL # for now
+   )
+
 
   #  ## tabMap: boxes for statistics ----
 

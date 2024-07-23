@@ -34,6 +34,13 @@ load("./data/subsidies_doc.rda")
 ## profil-climat dummy data (generic_data)----
 
 load("./data/dummy_climat.rda")
+generic_data <- canop |>
+  dplyr::rename("generic_value" = surface_canopee)
+
+generic_data_vd <- generic_data |> dplyr::summarise(commune = "Canton de Vaud", generic_value = sum(generic_value, na.rm = T), annee = dplyr::first(annee))
+
+generic_data <- generic_data |>
+  dplyr::bind_rows(generic_data_vd)
 
 
 ## glossary ----

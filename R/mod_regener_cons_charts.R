@@ -42,7 +42,9 @@ mod_regener_cons_charts_ui <- function(id){
            "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
-    bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
+    bslib::navset_pill(
+      id = ns("tabset_rgr_cons"),
+      #header = br(), # blank line to space content (alternative would be to add padding)
 
     # nav_panel for better readability of plot / table
 

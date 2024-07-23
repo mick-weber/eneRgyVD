@@ -98,7 +98,6 @@ app_ui <- function(request) {
                          tagList(
 
                            mod_stats_box_ui("vd_box"),
-
                            mod_stats_box_ui("communes_box")
 
                          )
@@ -106,82 +105,119 @@ app_ui <- function(request) {
 
       ),# End nav_panel('Carte')
 
-      ## cons/prod elec----
-      bslib::nav_menu("Electricité", icon = icon("bolt"),
 
+
+      ## cons/prod elec----
+      bslib::nav_menu("Energie",
+                      icon = icon("bolt"),
 
                       # cons elec ----
-                      bslib::nav_panel("Distribution",
+                      bslib::nav_panel("Electricité",
+                                       icon = icon("bolt"),
+
+                                       bslib::navset_card_pill(id = "navset_elec",
+
+                                                               bslib::nav_panel(title = "Distribution d'électricité",
+                                                                                icon = icon("bolt"),
 
 
-                                       # Module for producing cons elec charts
-                                       mod_elec_charts_ui("consumption_charts",
-                                                          title = "Distribution d'électricité par commune",
-                                                          title_complement = HTML("La <strong>distribution</strong> ne doit pas être confondue à la <strong>consommation finale</strong> car il manque l'autoconsommation (notamment photovoltaïque) ou encore l'électricité du réseau des CFF.
+                                                                                # Module for producing cons elec charts
+                                                                                mod_elec_charts_ui("consumption_charts",
+                                                                                                   title = "Distribution d'électricité par commune",
+                                                                                                   title_complement = HTML("La <strong>distribution</strong> ne doit pas être confondue à la <strong>consommation finale</strong> car il manque l'autoconsommation (notamment photovoltaïque) ou encore l'électricité du réseau des CFF.
                                                                                    L'autoconsommation estimée est disponible dans la <strong>table des données de production d'électricité</strong>.")
-                                                          )
+                                                                                )
 
-                      ),
+                                                               ),# End nav_panel
 
-                      # prod elec ----
-                      bslib::nav_panel("Production",
+                                                               # prod elec ----
+                                                               bslib::nav_panel("Production d'électricité",
+                                                                                icon = icon("bolt"),
 
-                                       # Module for producing prod elec charts
-                                       mod_elec_charts_ui("production_charts",
-                                                          title = "Production d'électricité par commune",
-                                                          title_complement = NULL # not needed
-                                                          )
+                                                                                # Module for producing prod elec charts
+                                                                                mod_elec_charts_ui("production_charts",
+                                                                                                   title = "Production d'électricité par commune",
+                                                                                                   title_complement = NULL # not needed
+                                                                                )
 
-                      )
+                                                               )# End nav_panel
+                                       ),# End navset_card_pill
+                      ),# End nav_panel 'Electricite'
 
-      ),# End nav_menu Electricité
+                      bslib::nav_panel("Chaleur des bâtiments",
+                                       icon = icon("fire"),
 
-
-      ## Buildings heat ----
-      bslib::nav_menu("Chaleur des bâtiments", icon = icon("fire"),
-                      bslib::nav_panel("Besoins",
-
-                                       mod_regener_needs_charts_ui("regener_needs")
-
-                                       ),
-                      bslib::nav_panel("Consommations",
-
-                                       mod_regener_cons_charts_ui("regener_cons")
-                                       ),
-                      bslib::nav_panel("Informations bâtiments",
-
-                                       mod_regener_misc_charts_ui("regener_misc")
-                      )
-
-      ),#End nav_menu() 'Chaleur des bâtiments'
+                                       bslib::navset_card_pill(id = "navset_regener",
 
 
-      ## Subsidies ----
-      bslib::nav_menu("Subventions", icon = icon("file-pen"),
+                                                               bslib::nav_panel("Besoins des bâtiments",
 
-                      bslib::nav_panel("Vue par bâtiments",
+                                                                                mod_regener_needs_charts_ui("regener_needs")
 
-                                       mod_subsidies_building_charts_ui("subsidies_building")
-                      ),
-                      bslib::nav_panel("Vue par subventions",
+                                                               ),
+                                                               bslib::nav_panel("Consommation des bâtiments",
 
-                                       mod_subsidies_measure_charts_ui("subsidies_measure")
+                                                                                mod_regener_cons_charts_ui("regener_cons")
+                                                               ),
+                                                               bslib::nav_panel("Informations bâtiments",
 
-                      )
+                                                                                mod_regener_misc_charts_ui("regener_misc")
+                                                               )
+                                       )# End navset_card_pill
+                      ),# End nav_panel 'Chaleur bâtiments'
 
-      ),#End nav_menu() 'Subventions'
+
+                      bslib::nav_panel("Subventions bâtiments",
+                                          icon = icon("house"),
+
+                                          bslib::navset_card_pill(id = "navset_subsidies",
+
+                                            bslib::nav_panel("Vue par bâtiments",
+
+                                                             mod_subsidies_building_charts_ui("subsidies_building")
+                                            ),
+
+                                            bslib::nav_panel("Vue par subventions",
+
+                                                             mod_subsidies_measure_charts_ui("subsidies_measure")
+
+                                            )
+                                          )# End navset_card_pill
+                      )# End nav_panel 'Subventions bâtiments'
+      ),# End nav_menu Energie
+
 
       ## Climat (générique) ----
       bslib::nav_menu("Climat", icon = icon("earth"),
 
                       bslib::nav_panel("Exemple générique",
 
-                                       mod_generic_charts_ui("test_generic",
-                                                            title = "Titre générique",
-                                                            title_complement = HTML("<i>Complément de titre générique</i>")
-                                       )
 
-                      )
+                                       # Nested navset_card_pill()
+                                       bslib::navset_card_pill(
+
+                                         bslib::nav_panel(title = "Première donnée",
+                                                          icon = bsicons::bs_icon("award"),
+
+                                                          mod_generic_charts_ui("test_generic",
+                                                                                title = "Titre générique",
+                                                                                title_complement = HTML("<i>Complément de titre générique</i>")
+                                                          )
+
+                                         ),# end firstnav_panel
+
+                                         bslib::nav_panel(title = "Deuxième donnée", icon = bsicons::bs_icon("cart"),
+
+
+                                                          mod_generic_charts_ui("test_generic_2",
+                                                                                title = "Titre générique 2",
+                                                                                title_complement = HTML("<i>Complément de titre générique 2</i>")
+                                                          )
+                                         )
+
+                                       )# end navset_card_pill
+
+                      )# end main nav_panel
 
       ), # End nav_menu() 'Climat'
 

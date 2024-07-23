@@ -19,7 +19,7 @@ mod_about_the_app_ui <- function(id){
                                                                  # breathing
                                                                  br(),
                                                                  h4(strong("Pourquoi cette application ?")),
-                                                                 tags$p("Le but de ce profil énergétique est de faciliter la planification énergétique des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
+                                                                 tags$p("Le but de ce profil climatique est de faciliter la planification énergie et climat des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
                                                                  # breathing

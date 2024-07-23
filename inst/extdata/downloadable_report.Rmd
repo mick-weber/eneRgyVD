@@ -1,5 +1,5 @@
 ---
-title: "Profil énergétique des communes vaudoises"
+title: "Profil climatique des communes vaudoises"
 subtitle: "Direction générale de l'environnement - Direction de l'énergie (DGE-DIREN)"
 author: "Unité données et indicateurs"
 always_allow_html: yes

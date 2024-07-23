@@ -40,11 +40,11 @@ app_ui <- function(request) {
       # Custom theme
       theme = profil_theme, # utils_helpers.R
       # Title
-      title = strong("Profil énergétique des communes vaudoises",
+      title = strong("Profil climatique des communes vaudoises",
                      class = "adaptiveTitle"
                      ),
       # Browser title
-      window_title = "Profil énergétique VD",
+      window_title = "Profil climatique VD",
       # Sidebar
       sidebar = bslib::sidebar(
 
@@ -188,38 +188,52 @@ app_ui <- function(request) {
 
 
       ## Climat (générique) ----
-      bslib::nav_menu("Climat", icon = icon("earth"),
-
+      bslib::nav_menu("Climat",
+                      icon = icon("earth"),
                       bslib::nav_panel("Exemple générique",
-
-
                                        # Nested navset_card_pill()
                                        bslib::navset_card_pill(
-
                                          bslib::nav_panel(title = "Première donnée",
                                                           icon = bsicons::bs_icon("award"),
 
-                                                          mod_generic_charts_ui("test_generic",
-                                                                                title = "Titre générique",
-                                                                                title_complement = HTML("<i>Complément de titre générique</i>")
+                                                          mod_generic_charts_ui("test_generic_climat",
+                                                                                title = "Titre générique climat",
+                                                                                title_complement = HTML("<i>Complément de titre générique pour climat</i>")
                                                           )
-
                                          ),# end firstnav_panel
 
                                          bslib::nav_panel(title = "Deuxième donnée", icon = bsicons::bs_icon("cart"),
-
-
-                                                          mod_generic_charts_ui("test_generic_2",
-                                                                                title = "Titre générique 2",
-                                                                                title_complement = HTML("<i>Complément de titre générique 2</i>")
+                                                          "A remplir..."
                                                           )
-                                         )
-
                                        )# end navset_card_pill
-
                       )# end main nav_panel
-
       ), # End nav_menu() 'Climat'
+
+
+      ## Mobilité (générique) ----
+      bslib::nav_menu("Mobilité",
+                      icon = icon("car"),
+                      bslib::nav_panel("Exemple générique",
+                                       # Nested navset_card_pill()
+                                       bslib::navset_card_pill(
+                                         bslib::nav_panel(title = "Première donnée",
+                                                          icon = bsicons::bs_icon("award"),
+
+                                                          mod_generic_charts_ui("test_generic_mob",
+                                                                                title = "Titre générique pour mobilité",
+                                                                                title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
+                                                          )
+                                         ),# end firstnav_panel
+
+                                         bslib::nav_panel(title = "Deuxième donnée",
+                                                          icon = bsicons::bs_icon("cart"),
+
+                                                          "A remplir..."
+
+                                                          )
+                                       )# end navset_card_pill
+                      )# end main nav_panel
+      ),# End nav_menu() 'Mobilite'
 
       ## Misc ----
       bslib::nav_menu("Divers",
@@ -296,7 +310,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Profil énergétique VD"
+      app_title = "Profil climatique VD"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

@@ -487,7 +487,7 @@ app_server <- function(input, output, session) {
 
    ## mod_generic_charts ----
 
-   mod_generic_charts_server("test_generic",
+   mod_generic_charts_server("test_generic_climat",
                              subsetData = subset_generic_test_data,
                              inputVals = inputVals,
                              dl_prefix = "generic_data_",
@@ -497,7 +497,7 @@ app_server <- function(input, output, session) {
 
    ## mod_generic_charts ----
 
-   mod_generic_charts_server("test_generic_2",
+   mod_generic_charts_server("test_generic_mob",
                              subsetData = subset_generic_test_data,
                              inputVals = inputVals,
                              dl_prefix = "generic_data_",

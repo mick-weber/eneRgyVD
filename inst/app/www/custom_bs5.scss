@@ -38,17 +38,37 @@
 /*For laptop screens (lg <-> xl): adapt font-size of navbar items (1.15rem is default's h5)*/
 @include media-breakpoint-up(lg){
   .navbar-nav{
-    font-size:calc(min(1.25vw, 1.15rem));
+    font-size:calc(min(1.4vw, 1.15rem));
   }
 }
 
+/*Used for main title resizing*/
 .adaptiveTitle{
   text-wrap: wrap;
   font-family: 'Tahoma', sans-serif;
-  font-size:22px;
+  font-size:18px;
   font-weight:500;
+  @include media-breakpoint-up(xl){
+   font-size:22px;
+  }
 }
 
+
+/* Create contour in all nav-link descendants (direct or not) of nav-pills classes*/
+.nav-pills .nav-link {
+
+  margin-right:5px;
+  border-width:1px;
+  border-style: solid;
+  border-color:#3A862D;
+  padding-top:0.3rem;
+  padding-bottom:0.3rem;
+}
+
+/* Applies to radio buttons : add a little spacing, to be used with radioGroupButtons(individual = TRUE)*/
+.radiobtn {
+  margin-right:5px;
+}
 
 /* Remove SelectizeInput's shadow when .focus is on */
 .selectize-input.focus{
@@ -78,7 +98,7 @@
 }
 
 
-/* Change color of nav's unselected links (and hovering) with full white instead of light grey, more visible */
+/* Change color of nav's unselected navigation links (and hovering) with full white instead of light grey, more visible */
 #nav{
 
   .nav-link{
@@ -86,34 +106,8 @@
 
   &:hover{
     color:white;
-  }
-  }
-
+  }}
 }
-
-/*
-.map-sm{
-
-  	@include media-breakpoint-down(sm){
-	max-height:200px;
-}
-}
-*/
-
-
-/* GRADIENTS COMMENTED OUT FOR NOW
-Gradient for navbar with multibrowser compatibility
-.navbar{
-  /* fallback for old browsers
-    background: #3a3440;
-
-    /* Chrome 10-25, Safari 5.1-6
-    background: -webkit-linear-gradient(90deg, rgba(58,52,64,1) 0%, rgba(58,134,45,1) 50%, rgba(58,134,45,1) 100%);
-
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+
-    background: linear-gradient(90deg, rgba(58,52,64,1) 0%, rgba(58,134,45,1) 50%, rgba(58,134,45,1) 100%);
-}
-*/
 
 
 /*Invert the color of the svg arrow icon when the accordion is open */
@@ -153,6 +147,10 @@ Gradient for navbar with multibrowser compatibility
 
 .fs-sidebar{
   font-size:0.9rem;
+}
+
+.fs-materialSwitch{
+  font-size:1rem;
 }
 
 .fs-sidebar-header{
@@ -220,10 +218,39 @@ Gradient for navbar with multibrowser compatibility
         background-position: center;
 }
 
+
+/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
+.btnCustom{
+  background-color:transparent;
+  color:#3A862D;
+  border-color:#3A862D;
+}
+
+.btnCustom:hover{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+.btnCustom:focus{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+.btnCustom:active{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+
+
+
+
 /*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
 .btnCustomWidth{
   width:50%;
 }
+
+
 
 /*When sidebar is collapsed, make the deploy arrow more visible*/
 .bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{

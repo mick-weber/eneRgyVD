@@ -40,7 +40,7 @@ mod_download_data_server <- function(id,
       req(inputVals$selectedCommunes)
 
       shiny::downloadButton(outputId = ns("download_csv"),
-                          label = "CSV", class = "btn-primary")
+                          label = "CSV", class = "btn-primary btnCustom")
       })
 
     ## Excel button ----
@@ -49,7 +49,7 @@ mod_download_data_server <- function(id,
       req(inputVals$selectedCommunes)
 
       shiny::downloadButton(outputId = ns("download_excel"),
-                          label = "XLSX", class = "btn-primary" ) # class defined in custom.css
+                          label = "XLSX", class = "btn-primary btnCustom" ) # class defined in custom.css
     })
 
 

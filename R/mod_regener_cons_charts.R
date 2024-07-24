@@ -44,14 +44,14 @@ mod_regener_cons_charts_ui <- function(id){
 
     bslib::navset_pill(
       id = ns("tabset_rgr_cons"),
-      #header = br(), # blank line to space content (alternative would be to add padding)
+      header = br(), # blank line to space content (alternative would be to add padding)
 
     # nav_panel for better readability of plot / table
 
     bslib::nav_panel(title = "Graphique",
                      icon = bsicons::bs_icon("bar-chart-fill"),
 
- tags$p(class = "text-muted",
+ tags$p(class = "text-muted justify-content-center pb-2",
    "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
       shiny::textOutput(ns("current_year_txt"), inline = TRUE)),
 
@@ -66,12 +66,12 @@ mod_regener_cons_charts_ui <- function(id){
                         choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                     `<i class='fa fa-house'></i> Par affectation` = "bar"),
                         justified = TRUE,
+                        individual = TRUE,
                         width = "100%")
 
  ),# End layout_column_wrap
 
                       # Alluvial plot ----
-
                       # ggalluvial plot
                       shiny::plotOutput(ns("chart_alluvial"), height = "auto") |>
                         shinycssloaders::withSpinner(type = 6,
@@ -94,9 +94,11 @@ mod_regener_cons_charts_ui <- function(id){
                                choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
                                            `<i class='fa fa-house'></i> Par affectation` = "bar"),
                                justified = TRUE,
+                               individual = TRUE,
                                width = "100%")
                              ),# End layout_column_wrap
 
+                       br(),
                              # Download module
                              mod_download_data_ui(ns("table_download")),
 

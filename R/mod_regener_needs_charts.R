@@ -52,16 +52,14 @@ mod_regener_needs_charts_ui <- function(id){
                        bslib::nav_panel(title = "Graphique",
                                         icon = bsicons::bs_icon("bar-chart-fill"),
 
-                                        tags$p(class = "text-muted",
+                                        tags$p(class = "text-muted justify-content-center pb-2",
                                         "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
                                                shiny::textOutput(ns("current_year_txt"), inline = TRUE)
                                                ),
 
 
-                                        bslib::layout_column_wrap(width = 1/4, # each col = 25% of avail. width
-
-                                                                    class = "d-flex align-items-end",
-
+                                        bslib::layout_columns(col_widths = c(-2, 4, 4, -2),
+                                                                    class = "fs-materialSwitch",
 
                                                                   # materialSwitch 1/2 for bar plot
                                                                   shiny::conditionalPanel(
@@ -70,7 +68,6 @@ mod_regener_needs_charts_ui <- function(id){
                                                                     ns = ns,
 
                                                                              tags$div(
-                                                                               class = "d-flex justify-content-center",
                                                                                shinyWidgets::materialSwitch(
                                                                                  inputId = ns("stacked_status"),
                                                                                  value = FALSE,
@@ -88,7 +85,6 @@ mod_regener_needs_charts_ui <- function(id){
                                                                     ns = ns,
 
                                                                     tags$div(
-                                                                      class = "d-flex justify-content-center",
                                                                       shinyWidgets::materialSwitch(
                                                                         inputId = ns("toggle_status"),
                                                                         value = FALSE,

@@ -409,13 +409,11 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-               shiny::sliderInput(ns("regener_year"),
-                                  label = "Choix des années",
-                                  min = inputVals$min_regener_year,
-                                  max = inputVals$max_regener_year,
-                                  value = c(inputVals$min_regener_year,
-                                            inputVals$max_regener_year),
-                                  step = 1L, sep = "", ticks = T, dragRange = T)
+               shiny::selectInput(ns("regener_year"),
+                                  label = "Année (graphique)",
+                                  choices = c(inputVals$max_regener_year:inputVals$min_regener_year),
+                                  selected = inputVals$max_regener_year,
+                                  multiple = FALSE)
 
     })
 
@@ -478,8 +476,7 @@ mod_inputs_server <- function(id){
 
 
       # RegEner selected inputs
-      inputVals$min_selected_regener <- input$regener_year[1]
-      inputVals$max_selected_regener <- input$regener_year[2]
+      inputVals$max_selected_regener <- input$regener_year
 
     })
 

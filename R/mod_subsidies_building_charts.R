@@ -64,6 +64,7 @@ mod_subsidies_building_charts_ui <- function(id){
                         choices = c(`<i class='fa fa-house'></i> Par nombre de bâtiments` = "n_egid",
                                     `<i class='fa fa-layer-group'></i> Par m<sup>2</sup> de SRE` = "sre"),
                         justified = TRUE,
+                        individual = TRUE,
                         width = "100%"),
 
 
@@ -73,7 +74,7 @@ mod_subsidies_building_charts_ui <- function(id){
                         condition = "output.toggle",
                         ns = ns,
                         tags$div(
-                          class = "d-flex justify-content-center",
+                          class = "fs-materialSwitch",
                           shinyWidgets::materialSwitch(
                             inputId = ns("toggle_status"),
                             value = FALSE,

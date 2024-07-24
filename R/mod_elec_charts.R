@@ -54,8 +54,8 @@ mod_elec_charts_ui <- function(id,
                                  icon = bsicons::bs_icon("bar-chart-fill"),
 
 
-                                bslib::layout_column_wrap(width = 1/4, # each col = 33% of avail. width
-                                                          class = "d-flex align-items-end",
+                                 bslib::layout_columns(col_widths = c(-2, 4, 4, -2),
+                                                          class = "fs-materialSwitch",
 
 
                                    # materialSwitch 1/2 for bar plot
@@ -67,7 +67,6 @@ mod_elec_charts_ui <- function(id,
                                      tags$div(
                                        class = "d-flex justify-content-center",
                                               tags$div(
-                                                class = "align-middle",
                                                 shinyWidgets::materialSwitch(
                                                   inputId = ns("stacked_status"),
                                                   value = FALSE,
@@ -85,7 +84,6 @@ mod_elec_charts_ui <- function(id,
                                      ns = ns,
 
                                      tags$div(
-                                       class = "d-flex justify-content-center",
                                        shinyWidgets::materialSwitch(
                                          inputId = ns("toggle_status"),
                                          value = FALSE,
@@ -94,7 +92,7 @@ mod_elec_charts_ui <- function(id,
                                          inline = TRUE),
                                        tags$span(strong("indépendant", class = "align-middle"))
                                      )# End tags$div
-                                   ),# End 2nd conditionalPanel
+                                   )# End 2nd conditionalPanel
 
                                 ),#End layout_column_wrap() for buttons
 

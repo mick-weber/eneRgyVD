@@ -75,27 +75,44 @@ app_server <- function(input, output, session) {
    # <h6> tags are necessary since the titles of each panels (mod_about_the_app.R) have h6 wrappers
    # would be best to use a robust <id> argument but it's not implemented yet !
 
-   subpanels_tribble <- dplyr::tribble(~observe_input, ~tabpanel_name,
-                  "consumption_charts-elec_data_help",  "<h6>Distribution d'électricité</h6>",
-                  "production_charts-elec_data_help",   "<h6>Production d'électricité</h6>",
-                  "regener_needs-rgr_needs_help",       "<h6>Chaleur bâtiments</h6>",
-                  "regener_cons-rgr_cons_help",         "<h6>Chaleur bâtiments</h6>",
-                  "regener_misc-rgr_misc_help",         "<h6>Chaleur bâtiments</h6>",
-                  "subsidies_building-subsidies_building_help", "<h6>Subventions bâtiments</h6>",
-                  "subsidies_measure-subsidies_measure_help",  "<h6>Subventions bâtiments</h6>")
+   subpanels_tribble <- dplyr::tribble(~observe_input, ~nav_panel_name, ~navset_id,  ~tabpanel_name,
+                  "consumption_charts-elec_data_help","Energie","navset_energie", "<h6>Distribution d'électricité</h6>",
+                  "production_charts-elec_data_help", "Energie","navset_energie", "<h6>Production d'électricité</h6>",
+                  "regener_needs-rgr_needs_help", "Energie","navset_energie", "<h6>Chaleur bâtiments</h6>",
+                  "regener_cons-rgr_cons_help", "Energie", "navset_energie","<h6>Chaleur bâtiments</h6>",
+                  "regener_misc-rgr_misc_help", "Energie","navset_energie", "<h6>Chaleur bâtiments</h6>",
+                  "subsidies_building-subsidies_building_help", "Energie","navset_energie","<h6>Subventions bâtiments</h6>",
+                  "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie","<h6>Subventions bâtiments</h6>",
+
+                  # COMPLETE THESE ONES (and more !) when real data is here
+                  "test_generic_climat-generic_data_help",  "Climat","navset_climat", "<h6>Donnée générique</h6>",
+                  "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "<h6>Donnée générique</h6>",
+
+
+                  )
 
    # Code below is to generate redirections from methodological accordions in each module to mod_about_the_app.R
    # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
    purrr::pwalk(subpanels_tribble,
-                ~ shiny::observeEvent(
-                   input[[.x]], {
+                .f = \(observe_input, nav_panel_name, navset_id, tabpanel_name) shiny::observeEvent(
+                   input[[observe_input]], {
 
-                     # First we redirect to navbar's 'A propos'
-                     bslib::nav_select("nav", "À propos", session)
-                     # Then we update to the first nav_panel 'Données' (in 'about-' ns module)
-                     bslib::nav_select("about-tabset", selected = "Données", session)
-                     # Last we update the nested nav_panel with subpanels_tribble$tabpanel_name
-                     bslib::nav_select(id = "about-nested_tabset", selected = .y, session)
+                     # 1. Redirect to navbar's 'A propos'
+                     bslib::nav_select(id = "nav",
+                                       selected = "À propos", session)
+
+                     # 2. Redirect to 'Données' nav_panel inside tabset_main inside 'about' named mod_about_the_app.R module
+                     bslib::nav_select(id = "about-tabset_main",
+                                       selected = "Données", session)
+
+                     # 3. Redirect to <navset_name> which may vary according to which general theme the button is clicked from (Energie, Climat, ...)
+                     bslib::nav_select(id = "about-navset_donnees",
+                                       selected = nav_panel_name, session)
+
+                     # 4. Redirect to the final nav_panel name inside the dynamic navset_<theme>
+                     bslib::nav_select(id = paste0("about-", navset_id),
+                                       selected = tabpanel_name, session)
+
                    }
                    )) #End pwalk
 

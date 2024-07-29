@@ -62,7 +62,7 @@ mod_stats_box_server <- function(id,
                                               # fct_helpers.R
 
            # 1. Cons elec
-           make_statbox_item(iconBgClass = "iconBgElec",
+           make_statbox_item(iconBgClass = "iconBgElecCons",
                             title = "Distribution<br>électricité", value = elec_cons_value, unit = selectedUnit, year = year_elec_cons),
 
            # 2. RG cons
@@ -74,7 +74,7 @@ mod_stats_box_server <- function(id,
                              title = "Subventions<br>rénovation M01", value = subsidies_value, unit = "dossiers", year = year_subsidies),
 
            # 4. Prod elec
-           make_statbox_item(iconBgClass = "iconBgElec",
+           make_statbox_item(iconBgClass = "iconBgElecProd",
                              title = "Production<br>électricité", value = elec_prod_value, unit = selectedUnit, year = year_elec_prod)
 
 

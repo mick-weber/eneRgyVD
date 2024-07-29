@@ -55,6 +55,10 @@ elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec
 regener_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/regener-doc.md")
 subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subsidies-doc.md")
 
+# DEV for now
+generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
+
+
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 

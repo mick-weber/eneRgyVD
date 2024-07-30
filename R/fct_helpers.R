@@ -884,6 +884,7 @@ create_generic_table_dt <- function(data,
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>
     dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
+    rename_fr_colnames() |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',

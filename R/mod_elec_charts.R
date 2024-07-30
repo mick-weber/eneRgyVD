@@ -127,7 +127,7 @@ mod_elec_charts_ui <- function(id,
 mod_elec_charts_server <- function(id,
                                    inputVals,
                                    subsetData, # filtered data for communes and selected years
-                                   selectedUnit, # unit selected in mod_unit_converter.R
+                                   energyUnit, # unit selected in mod_unit_converter.R
                                    legend_title, # for legend of barplot (either secteur/technologies)
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
@@ -180,7 +180,7 @@ mod_elec_charts_server <- function(id,
                             n_communes = length(inputVals_communes_d()),
                             var_year = var_year,
                             var_commune = var_commune,
-                            unit = inputVals$selectedUnit,
+                            unit = inputVals$energyUnit,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
@@ -209,7 +209,7 @@ mod_elec_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData(),
-                        unit = inputVals$selectedUnit,
+                        unit = inputVals$energyUnit,
                         DT_dom = "frtip" # no buttons extension for DT table
       )
 
@@ -224,7 +224,7 @@ mod_elec_charts_server <- function(id,
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
         rename_fr_colnames()  |>  # fct_helpers.R
-        add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
+        add_colname_energy_units(unit = inputVals$energyUnit)  # fct_helpers.R
 
     })
 

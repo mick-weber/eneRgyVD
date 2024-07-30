@@ -19,7 +19,8 @@ params:
   communes: NULL
   web_width: NULL
   web_height: NULL
-  unit: NULL
+  energy_unit: NULL
+  co2_unit: NULL
   elec_cons_data: NULL
   elec_prod_data: NULL
   regener_data_0: NULL
@@ -94,7 +95,7 @@ Les répartitions sectorielles (ménages, services, etc.) ne sont pas encore dis
 ```{r}
 # Generate the table for electricity consumption and add copy/download buttons
 params$elec_cons_data |>
-    eneRgyVD::create_cons_table_dt(unit = params$unit,
+    eneRgyVD::create_cons_table_dt(unit = params$energy_unit,
                                    DT_dom = "Bfrtip"
                                    )
 
@@ -106,7 +107,7 @@ params$elec_cons_data |>
 ```{r}
 # Generate the barplot for electricity consumption
 params$elec_cons_data |>
-    eneRgyVD::create_bar_plotly(unit = params$unit,
+    eneRgyVD::create_bar_plotly(unit = params$energy_unit,
                                 n_communes = length(params$communes),
                                 # web_width = params$web_width, # manually defined
                                 # web_height = params$web_height, # manually defined
@@ -135,7 +136,7 @@ La mise à jour est faite annuellement après réception et traitement des donn�
 ```{r}
 # Generate the table for electricity production and add copy/download buttons
 params$elec_prod_data |>
-    eneRgyVD::create_prod_table_dt(unit = params$unit,
+    eneRgyVD::create_prod_table_dt(unit = params$energy_unit,
                                    DT_dom = "Bfrtip"
                                    )
 ```
@@ -145,7 +146,7 @@ params$elec_prod_data |>
 ```{r}
 # Generate the barplot for electricity production
 params$elec_prod_data |>
-    eneRgyVD::create_bar_plotly(unit = params$unit,
+    eneRgyVD::create_bar_plotly(unit = params$energy_unit,
                                 n_communes = length(params$communes),
                                 # web_width = params$web_width, # manually defined
                                 # web_height = params$web_height, # manually defined
@@ -173,7 +174,7 @@ Les besoins optimisés traduisent les besoins théoriques si tous les bâtiments
 ```{r}
 # Generate the table for regener needs and add copy/download buttons
 params$regener_data_0 |>
-  eneRgyVD::create_rg_needs_table_dt(unit = params$unit,
+  eneRgyVD::create_rg_needs_table_dt(unit = params$energy_unit,
                                     DT_dom = "Bfrtip"
                                     )
 
@@ -188,7 +189,8 @@ Par usage :
 ```{r}
 # Generate the table for regener consumption by use and add copy/download buttons
 params$regener_data_1 |>
-  eneRgyVD::create_regener_table_dt(unit = params$unit,
+  eneRgyVD::create_regener_table_dt(energy_unit = inputVals$energyUnit,
+                                    co2_unit = inputVals$co2Unit,
                                     DT_dom = "Bfrtip"
                                     )
 
@@ -199,7 +201,8 @@ Par affectation :
 ```{r}
 # Generate the table for regener consumption by aff and add copy/download buttons
 params$regener_data_2 |>
-  eneRgyVD::create_regener_table_dt(unit = params$unit)
+  eneRgyVD::create_regener_table_dt(energy_unit = inputVals$energyUnit,
+                                    co2_unit = inputVals$co2Unit)
 
 ```
 
@@ -233,7 +236,7 @@ D'autres informations relatives aux bâtiments sont également disponibles :
 ```{r}
 # Generate table for misc regener data  
 params$regener_data_3 |> 
-  eneRgyVD::create_rg_misc_table_dt(DT_dom = "Bfrtip") # Don't use params$unit
+  eneRgyVD::create_rg_misc_table_dt(DT_dom = "Bfrtip") # Don't use params$energy_unit
 ```
 
 # Subventions

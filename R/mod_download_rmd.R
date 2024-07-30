@@ -112,7 +112,8 @@ mod_download_rmd_server <- function(id,
         params <- list(communes = inputVals$selectedCommunes,
                        web_width = 1900, # manually set
                        web_height = 1000, # manually set
-                       unit = inputVals$selectedUnit,
+                       energy_unit = inputVals$energyUnit,
+                       co2_unit = inputVals$co2Unit,
                        elec_prod_data = inputVals$elec_prod_dataset,
                        elec_cons_data = inputVals$elec_cons_dataset,
                        regener_data_0 = inputVals$rgr_needs,
@@ -188,27 +189,29 @@ mod_download_rmd_server <- function(id,
         # Cons elec renamed+units
         elec_cons = inputVals$elec_cons_dataset |>
         rename_fr_colnames() |>
-        add_colname_units(unit = inputVals$selectedUnit),
+        add_colname_energy_units(unit = inputVals$energyUnit),
 
         # Prod elec renamed+units
         elec_prod = inputVals$elec_prod_dataset |>
           rename_fr_colnames() |>
-          add_colname_units(unit = inputVals$selectedUnit),
+          add_colname_energy_units(unit = inputVals$energyUnit),
 
         # Regener renamed+units
         regener_besoins = inputVals$rgr_needs |>
           rename_fr_colnames() |>
-          add_colname_units(unit = inputVals$selectedUnit),
+          add_colname_energy_units(unit = inputVals$energyUnit),
 
         # Regener renamed+units
         regener_cons_use = inputVals$rgr_1 |>
           rename_fr_colnames() |>
-          add_colname_units(unit = inputVals$selectedUnit),
+          add_colname_energy_units(unit = inputVals$energyUnit) |>
+          add_colname_co2_units(unit = inputVals$co2Unit),
 
         # Regener renamed+units
         regener_cons_aff = inputVals$rgr_2 |>
           rename_fr_colnames() |>
-          add_colname_units(unit = inputVals$selectedUnit),
+          add_colname_energy_units(unit = inputVals$energyUnit) |>
+          add_colname_co2_units(unit = inputVals$co2Unit),
 
         # Regener misc renamed
         regener_autres = inputVals$rgr_misc |>
@@ -223,6 +226,8 @@ mod_download_rmd_server <- function(id,
         subventions_mesure = inputVals$subsidies_measure|>
           rename_misc_colnames() |>
           rename_fr_colnames()
+
+        # Add other datasets with associated functions here !
 
       )
       })

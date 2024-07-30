@@ -84,7 +84,7 @@ mod_inputs_ui <- function(id){
                                                        bslib::nav_panel(title = "Energie",
 
                                                                         div(style = "padding-left:2vh;padding-top:1vh;",
-                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
+                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("energy_unit"),
                                                                                                              label = NULL,
                                                                                                              choices = c("kWh", "MWh", "GWh", "TJ"),
                                                                                                              selected = "MWh",
@@ -98,9 +98,9 @@ mod_inputs_ui <- function(id){
                                                        bslib::nav_panel(title = "CO2",
 
                                                                         div(style = "padding-left:2vh;padding-top:1vh;",
-                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit_co2"),
+                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("co2_unit"),
                                                                                                              label = NULL,
-                                                                                                             choices = c("kgCO2", "tCO2", "MtCO2"),
+                                                                                                             choices = c("kgCO2", "tCO2", "ktCO2"),
                                                                                                              selected = "tCO2",
                                                                                                              inline = FALSE,
                                                                                                              status =  "default",
@@ -133,8 +133,8 @@ mod_inputs_server <- function(id){
        elec_cons |>
          filter(commune %in% input$selected_communes) |>
          convert_units(colnames = "consommation",
-                       unit_from = "kWh",
-                       unit_to = input$selected_unit)
+                       unit_from = "kWh", # initial value in dataset
+                       unit_to = input$energy_unit)
 
      })
 
@@ -149,13 +149,13 @@ mod_inputs_server <- function(id){
     subset_elec_prod <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
+      req(input$energy_unit)
 
       elec_prod |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
-                      unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_from = "kWh", # initial value in dataset
+                      unit_to = input$energy_unit)
     })
 
 
@@ -168,13 +168,17 @@ mod_inputs_server <- function(id){
     subset_rgr_cons_1 <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
+      req(input$energy_unit)
+      req(input$co2_unit)
 
       regener_cons_ae_use |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
-                      unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_from = "kWh", # initial value in dataset
+                      unit_to = input$energy_unit)  |>
+        convert_units(colnames = contains("co2"),
+                      unit_from = "tCO2", # initial value in dataset
+                      unit_to = input$co2_unit)
 
     })
 
@@ -184,13 +188,17 @@ mod_inputs_server <- function(id){
     subset_rgr_cons_2 <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
+      req(input$energy_unit)
+      req(input$co2_unit)
 
       regener_cons_ae_aff |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
-                      unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_from = "kWh", # initial value in dataset
+                      unit_to = input$energy_unit)  |>
+        convert_units(colnames = contains("co2"),
+                      unit_from = "tCO2", # initial value in dataset
+                      unit_to = input$co2_unit)
 
     })
 
@@ -200,13 +208,13 @@ mod_inputs_server <- function(id){
     subset_rgr_needs <- reactive({
 
       req(input$selected_communes)
-      req(input$selected_unit)
+      req(input$energy_unit)
 
       regener_needs |>
         dplyr::filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains("besoins"),
-                      unit_from = "kWh",
-                      unit_to = input$selected_unit)
+                      unit_from = "kWh", # initial value in dataset
+                      unit_to = input$energy_unit)
 
     })
 
@@ -278,10 +286,15 @@ mod_inputs_server <- function(id){
       inputVals$uploadedCommunesTimed <- uploaded_communes_timed()
       })
 
-    # unit selected
+    # units selected
     observe({
-      inputVals$selectedUnit <- input$selected_unit
+      inputVals$energyUnit <- input$energy_unit
     })
+
+    observe({
+      inputVals$co2Unit <- input$co2_unit
+    })
+
 
 # inputVals datasets & min/max/year values ----
     # Other inputs not influenced by selectInputs() else than commune
@@ -423,7 +436,7 @@ mod_inputs_server <- function(id){
     output$prod_year_n_techs <- shiny::renderUI({
 
         req(input$selected_communes)
-        req(input$selected_unit)
+        req(input$energy_unit)
 
       shiny::tagList(
 

@@ -39,14 +39,14 @@ app_server <- function(input, output, session) {
    # List of authorized inputs for bookmarking
    bookmarkingWhitelist <- c(
       "inputs_1-selected_communes",  # which communes are selected
-      "unit_converter-selected_unit" # which unit is selected
+      "unit_converter-energy_unit" # which unit is selected
    )
 
    # Trigger bookmarking only if communes OR units are modified
    observeEvent({
 
       inputVals$selectedCommunes
-      inputVals$selectedUnit},{
+      inputVals$energyUnit},{
 
       session$doBookmark()
 
@@ -166,9 +166,9 @@ app_server <- function(input, output, session) {
       req(inputVals$min_selected_elec_cons,
           inputVals$max_selected_elec_cons,
           inputVals$elec_cons_dataset,
-          inputVals$selectedUnit)
+          inputVals$energyUnit)
 
-      # further filter cons_dataset with selected min/max values and convert to selectedUnit()
+      # further filter cons_dataset with selected min/max values and convert to energyUnit()
        # CONVERSION TEST IN PROGRESS
       inputVals$elec_cons_dataset |>
         dplyr::filter(annee >= inputVals$min_selected_elec_cons,
@@ -211,7 +211,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(inputVals$energyUnit)
 
       # No filter needed yet for years, only year conversion
       inputVals$rgr_1
@@ -227,7 +227,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(inputVals$energyUnit)
 
       # No filter needed yet for years, only year conversion
       inputVals$rgr_2
@@ -243,7 +243,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(inputVals$energyUnit)
 
       # No filter needed yet for years, only year conversion
       inputVals$rgr_needs
@@ -262,7 +262,7 @@ app_server <- function(input, output, session) {
       )
 
       # waiting on these to get initialized (renderUIs)
-      req(inputVals$selectedUnit)
+      req(inputVals$energyUnit)
 
       inputVals$rgr_misc
 
@@ -418,7 +418,7 @@ app_server <- function(input, output, session) {
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
                           subsetData = subset_elec_cons_data,
-                          selectedUnit = inputVals$selectedUnit,
+                          energyUnit = inputVals$energyUnit,
                           legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
@@ -437,7 +437,7 @@ app_server <- function(input, output, session) {
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
                           subsetData = subset_elec_prod_data,
-                          selectedUnit = inputVals$selectedUnit,
+                          energyUnit = inputVals$energyUnit,
                           legend_title = NULL,
                           var_year = "annee",
                           var_commune = "commune",
@@ -480,7 +480,7 @@ app_server <- function(input, output, session) {
    mod_regener_misc_charts_server("regener_misc",
                                   inputVals = inputVals,
                                   subsetData = subset_rgr_misc,
-                                  selectedUnit = selectedUnit,
+                                  energyUnit = energyUnit,
                                   dl_prefix = "profil_energie_regener_autres_",
                                   doc_vars = regener_doc)
 
@@ -526,28 +526,31 @@ app_server <- function(input, output, session) {
 
 
   ### VD Box ----
-  #  # Must be dynamically rendered because it depends on selectedUnit (reactive)
+  #  # Must be dynamically rendered because it depends on energyUnit (reactive)
 
    observe({
 
 
-     req(inputVals$selectedUnit)
+     req(inputVals$energyUnit)
 
      mod_stats_box_server("vd_box",
                                    title = strong("Synthèse : Canton de Vaud"),
-                                   selectedUnit = inputVals$selectedUnit,
+                                   energyUnit = inputVals$energyUnit,
 
                                    # Computed in utils_helpers.R (using years below) then converted if needed
                                    elec_prod_value = elec_prod_vd_last_year |>
-                                     convert_units(unit_to = inputVals$selectedUnit),
+                                     convert_units(unit_from = "kWh",
+                                                   unit_to = inputVals$energyUnit),
 
                                    cons_rg_value = cons_rg_vd_last_year |>
-                                     convert_units(unit_to = inputVals$selectedUnit),
+                                     convert_units(unit_from = "kWh",
+                                                   unit_to = inputVals$energyUnit),
 
                                    subsidies_value = subsidies_m01_vd_last_year,
 
                                    elec_cons_value = elec_cons_vd_last_year |>
-                                     convert_units(unit_to = inputVals$selectedUnit),
+                                     convert_units(unit_from = "kWh",
+                                                   unit_to = inputVals$energyUnit),
 
                                    # Computed in utils_helpers.R for both statboxes
                                    year_elec_prod = last_year_elec_prod,
@@ -566,14 +569,14 @@ app_server <- function(input, output, session) {
 
    observe({
 
-     req(inputVals$selectedUnit)
+     req(inputVals$energyUnit)
 
      check_selected_communes <- !is.null(inputVals$selectedCommunes)
 
 
      mod_stats_box_server("communes_box",
                                    title = strong("Synthèse : Commune(s) sélectionnée(s)"),
-                                   selectedUnit = inputVals$selectedUnit,
+                                   energyUnit = inputVals$energyUnit,
 
                                    # Computed in utils_helpers.R (using years below) then converted if needed
                                    elec_prod_value = ifelse(

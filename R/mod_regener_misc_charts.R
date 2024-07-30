@@ -60,7 +60,7 @@ mod_regener_misc_charts_ui <- function(id){
 mod_regener_misc_charts_server <- function(id,
                                            inputVals,
                                            subsetData,
-                                           selectedUnit, # quite irrelevant but might be useful later
+                                           energyUnit, # quite irrelevant but might be useful later
                                            dl_prefix,
                                            doc_vars){
   moduleServer(id, function(input, output, session){

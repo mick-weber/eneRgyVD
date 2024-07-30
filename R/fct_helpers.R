@@ -224,7 +224,7 @@ create_bar_plotly <- function(data,
                                   n_communes,
                                   var_year,
                                   var_commune,
-                                  unit, # input$selected_unit value retrieved in app_server
+                                  unit, # input$energy_unit, or other unit value retrieved in app_server
                                   var_rank_2, # one of secteur, categorie...
                                   var_values, # one of consommation, production_totale...
                                   color_palette, # 'colors_categories',
@@ -500,7 +500,7 @@ create_prod_table_dt <- function(data,
     dplyr::relocate(icon, .before = categorie) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_units(unit = unit) |>  # fct_helpers.R
+    add_colname_energy_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -569,7 +569,7 @@ create_cons_table_dt <- function(data,
     dplyr::relocate(icon, .before = secteur) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_units(unit = unit) |>  # fct_helpers.R
+    add_colname_energy_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -624,7 +624,7 @@ create_rg_needs_table_dt <- function(data,
     dplyr::relocate(commune, etat, icon, type) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_units(unit = unit) |>  # fct_helpers.R
+    add_colname_energy_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -659,7 +659,8 @@ create_rg_needs_table_dt <- function(data,
 #' @export
 
 create_regener_table_dt <- function(data,
-                                    unit,
+                                    energy_unit,
+                                    co2_unit,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
@@ -686,7 +687,8 @@ create_regener_table_dt <- function(data,
     dplyr::rename(" " = "icon") |> # empty colname for icons
     #turn to DT
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_units(unit = unit) |>  # fct_helpers.R
+    add_colname_energy_units(unit = energy_unit) |>  # fct_helpers.R
+    add_colname_co2_units(unit = co2_unit) |> # fct_helpers.R
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
@@ -738,7 +740,7 @@ create_rg_misc_table_dt <- function(data,
                                                scientific = FALSE))) |>
     dplyr::relocate(commune, etat) |>
     rename_misc_colnames() |>
-    # add_colname_units(unit = unit) |>  # fct_helpers.R
+    # add_colname_energy_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -882,8 +884,31 @@ create_generic_table_dt <- function(data,
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>
     dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
-    # DT
-    DT::datatable(options = list(dom = DT_dom))
+    #turn to DT
+    DT::datatable(escape = F, # rendering the icons instead of text
+                  extensions = 'Buttons',
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom,
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
+                                 ),
+                                 columnDefs = list(list(
+                                   targets = "_all",
+                                   className = 'dt-center'
+                                 )),
+
+
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R !
+                  ),
+                  selection = 'single', # enable selection of a single row
+                  rownames = FALSE      # don't show row numbers/names
+    ) # End DT
 
 }
 
@@ -972,13 +997,24 @@ return_icons_subsidies <- function(which){
 
 convert_units <- function(data,
                           colnames, # to be defined how it should be passed
-                          unit_from = "kWh",
+                          unit_from, # default value from dataset
                           unit_to){ # check if it's worth saving the widget selected unit in a specific variable before (in mod_inputs.R)
 
   # Retrieves the right conversion factor unit_table in utils_helpers.R according to unit_to
-  conversion_factor <- units_table |>
+  conversion_factor <- if(unit_from %in% c("kWh", "MWh", "GWh", "TJ")){
+
+    energy_units_table |>
     dplyr::filter(unit == unit_to) |>
-    dplyr::pull(kWh)
+    dplyr::pull(factor)
+
+  }else if(unit_from %in% c("kgCO2", "tCO2", "ktCO2")){
+
+    co2_units_table |>
+      dplyr::filter(unit == unit_to) |>
+      dplyr::pull(factor)
+  }else{
+    message("Unité `unit_from` non reconnue !")
+  }
 
   # If we have a dataframe we call mutate
   if(is.data.frame(data)){
@@ -992,7 +1028,7 @@ convert_units <- function(data,
   }
 }
 
-#' add_colnames_units()
+#' add_colname_energy_units()
 #' returns unit extension in target columns according to the currently selected unit
 #' of the app for power and energy related colnames. Should be called before making
 #' nicely formatted columns with rename_fr_colnames()
@@ -1003,10 +1039,11 @@ convert_units <- function(data,
 #' @return dataframe with renamed columns
 #' @export
 
-add_colname_units <- function(data, unit){
+add_colname_energy_units <- function(data, unit){
 
-  # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way
-  #  I found to work. Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
+
+  # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way I found to work.
+  # Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
 
   # Step 1 : rename nrg vars if contains energy related keywords and add the power unit in brackets
   if(any(stringr::str_detect(string = colnames(data),
@@ -1042,19 +1079,40 @@ add_colname_units <- function(data, unit){
 
   }else data
 
+}
+
+#' add_colname_co2_units
+#' returns unit extension in target columns according to the currently selected unit
+#' of the app for co2 related colnames. Should be called before making
+#' nicely formatted columns with rename_fr_colnames()
+#' @param data the dataframe
+#' @param unit the unit selected in the app
+#'
+#' @return dataframe with renamed columns
+#' @export
+
+add_colname_co2_units <- function(data, unit){
+
+
   # Step 3 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
   if(any(stringr::str_detect(string = colnames(data),
-                             pattern = stringr::regex(paste0(co2_keywords, collapse = "|"), ignore_case = TRUE)))){
+                             pattern = stringr::regex(paste0(co2_keywords,
+                                                             collapse = "|"),
+                                                      ignore_case = TRUE)))){
 
     data <- data |>
       # For all energy-related units
       dplyr::rename_with(.cols = contains(co2_keywords, # utils_helpers.R
                                           ignore.case = TRUE),
-                         ~paste0(.x, " [", "tCO2", "]"))
+                         ~paste0(.x, " [", unit, "]")) # should be dynamic at some point (w/r to input$co2_unit)
 
   }else data
 
+
+
 }
+
+
 
 # Colnames fns ----
 

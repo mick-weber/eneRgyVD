@@ -107,7 +107,7 @@ mod_subsidies_measure_charts_ui <- function(id){
 #' @noRd
 mod_subsidies_measure_charts_server <- function(id,
                                                 subsetData, # passed from inputVals, bit redundant but clear
-                                                # selectedUnit not needed here !
+                                                # energyUnit not needed here !
                                                 inputVals,
                                                 dl_prefix = dl_prefix,
                                                 doc_vars = doc_vars

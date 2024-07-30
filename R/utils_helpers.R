@@ -71,7 +71,7 @@ file.copy("./inst/extdata/downloadable_report.Rmd", report_path, overwrite = TRU
 # Tab-specific items at the end (see outline : `Objects specific to...`) !
 
 ## Debounce time ----
-# Usef in app_server.R + plotting modules to avoid loop errors and flickering
+# Usef in app_server.R + plotting modules to avoid flickering and error loops with leaflet map
 
 debounce_plot_time <- 400 # ms, empirically defined as ideal
 
@@ -149,12 +149,21 @@ DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 # Must match the choices in header's widget
 # Linked to fct_helpers.R convert_units()'s function
 
-units_table <- dplyr::tribble(
-  ~unit, ~kWh,
+# Datasets come as 'kWh' values
+energy_units_table <- dplyr::tribble(
+  ~unit, ~factor,
   "kWh", 1,
   "MWh", 1e3,
   "GWh", 1e6,
   "TJ", 1/3.6*1e6
+)
+
+# Datasets come as 'tCO2' values
+co2_units_table <- dplyr::tribble(
+  ~unit, ~factor,
+  "kgCO2", 1e-3,
+  "tCO2", 1,
+  "ktCO2", 1e3
 )
 
 ## Column replacement ----

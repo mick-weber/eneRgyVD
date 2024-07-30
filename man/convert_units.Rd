@@ -6,7 +6,7 @@
 Converts units either from dataframe (in target columns) or directly from a numeric value
 according to which current unit is selected in the application}
 \usage{
-convert_units(data, colnames, unit_from = "kWh", unit_to)
+convert_units(data, colnames, unit_from, unit_to)
 }
 \arguments{
 \item{data}{the dataframe containing the columns where to convert units}

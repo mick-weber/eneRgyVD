@@ -210,7 +210,7 @@ mod_regener_needs_charts_server <- function(id,
     output$plot_render_ui <- renderUI({
 
       # Update the initialized FALSE toggle_status with the input$toggle_status
-        # WIP with inputVals$selectedUnit
+        # WIP with inputVals$energyUnit
 
         # ...PLOTLY BAR PLOT ----
         output$chart_1 <- plotly::renderPlotly({
@@ -220,7 +220,7 @@ mod_regener_needs_charts_server <- function(id,
                             n_communes = length(inputVals_communes_d()),
                             var_year = var_year,
                             var_commune = var_commune,
-                            unit = inputVals$selectedUnit,
+                            unit = inputVals$energyUnit,
                             var_rank_2 = var_rank_2,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
@@ -245,7 +245,7 @@ mod_regener_needs_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
-                        unit = inputVals$selectedUnit,
+                        unit = inputVals$energyUnit,
                         DT_dom = "frtip" # remove default button in DT extensions
                         )
 
@@ -259,7 +259,7 @@ mod_regener_needs_charts_server <- function(id,
         # Add the currently selected unit in the colnames (conversion is already done)
         rename_fr_colnames() |>  # fct_helpers.R
         # Add energy units in brackets for energy/power related columns
-        add_colname_units(unit = inputVals$selectedUnit) # fct_helpers.R
+        add_colname_energy_units(unit = inputVals$energyUnit) # fct_helpers.R
 
     })
 

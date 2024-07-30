@@ -230,7 +230,8 @@ mod_regener_cons_charts_server <- function(id,
         output$table_1 <- DT::renderDataTable({
 
             create_regener_table_dt(data = subset_rgr_cons_1(),
-                                    unit = inputVals$selectedUnit,
+                                    energy_unit = inputVals$energyUnit,
+                                    co2_unit = inputVals$co2Unit,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
 
@@ -244,7 +245,8 @@ mod_regener_cons_charts_server <- function(id,
         output$table_1 <- DT::renderDataTable({
 
             create_regener_table_dt(data = subset_rgr_cons_2(),
-                                    unit = inputVals$selectedUnit,
+                                    energy_unit = inputVals$energyUnit,
+                                    co2_unit = inputVals$co2Unit,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
         })
@@ -261,14 +263,16 @@ mod_regener_cons_charts_server <- function(id,
         subset_rgr_cons_1() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           rename_fr_colnames() |> # fct_helpers.R
-          add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
+          add_colname_energy_units(unit = inputVals$energyUnit) |>
+          add_colname_co2_units(unit = inputVals$co2Unit) # fct_helpers.R
 
           } else if(input$tab_table_type == "bar"){
 
         subset_rgr_cons_2() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           rename_fr_colnames() |>  # fct_helpers.R
-          add_colname_units(unit = inputVals$selectedUnit) # fct_helpers.R
+          add_colname_energy_units(unit = inputVals$energyUnit) |>
+          add_colname_co2_units(unit = inputVals$co2Unit) # fct_helpers.R
 
       }
 

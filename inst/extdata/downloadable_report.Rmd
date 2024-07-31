@@ -113,7 +113,7 @@ params$elec_cons_data |>
                                 # web_height = params$web_height, # manually defined
                                 var_year = "annee",
                                 var_commune = "commune",
-                                var_rank_2 = 'secteur',
+                                var_cat = 'secteur',
                                 var_values = "consommation",
                                 color_palette = eneRgyVD::return_palette_elec_cons(),
                                 dodge = F,
@@ -152,7 +152,7 @@ params$elec_prod_data |>
                                 # web_height = params$web_height, # manually defined
                                 var_year = "annee",
                                 var_commune = "commune",
-                                var_rank_2 = "categorie",
+                                var_cat = "categorie",
                                 var_values = "production",
                                 color_palette = eneRgyVD::return_palette_elec_prod(),
                                 dodge = F,
@@ -246,7 +246,7 @@ params$regener_data_3 |>
 ```{r}
 eneRgyVD::create_subsidies_table_dt(data = params$subsidies_building_data,
                                 var_year = "etat",
-                                var_rank_2 = "subv_type",
+                                var_cat = "subv_type",
                                 icon_list = eneRgyVD::return_icons_subsidies(which = "building"),
                                 DT_dom = "Bfrtip"
       )
@@ -257,7 +257,7 @@ eneRgyVD::create_subsidies_table_dt(data = params$subsidies_building_data,
 ```{r}
 eneRgyVD::create_subsidies_table_dt(data = params$subsidies_measure_data,
                                 var_year = "annee",
-                                var_rank_2 = "mesure",
+                                var_cat = "mesure",
                                 icon_list = eneRgyVD::return_icons_subsidies(which = "measure"),
                                 DT_dom = "Bfrtip" 
       )

@@ -146,7 +146,7 @@ mod_subsidies_measure_charts_server <- function(id,
                           var_year = "annee",
                           var_commune = "commune",
                           var_values = "nombre",
-                          var_rank_2 = "mesure_simplifiee",
+                          var_cat = "mesure_simplifiee",
                           unit = "subventions",
                           legend_title = NULL,
                           color_palette = subsidies_measure_simplifiee_colors,
@@ -164,7 +164,7 @@ mod_subsidies_measure_charts_server <- function(id,
 
       create_subsidies_table_dt(data = subsetData(),
                                 var_year = "annee",
-                                var_rank_2 = "mesure",
+                                var_cat = "mesure",
                                 icon_list = return_icons_subsidies(which = "measure"),
                                 DT_dom = "frtip" # remove default button in DT extensions
       )

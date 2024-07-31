@@ -127,6 +127,11 @@ mod_generic_charts_server <- function(id,
                                       subsetData, # passed from inputVals, bit redundant but clear
                                       # energyUnit not needed here !
                                       inputVals,
+                                      var_commune,
+                                      var_year,
+                                      var_cat,
+                                      var_values,
+                                      color_palette,
                                       dl_prefix = dl_prefix,
                                       doc_vars = doc_vars
                                       ){ # the non-reactive documentation file for variables description
@@ -153,13 +158,13 @@ mod_generic_charts_server <- function(id,
 
         subsetData_d() |>
           create_bar_plotly(n_communes = length(inputVals_communes_d()),
-                            var_year = "annee",
-                            var_commune = "commune",
-                            var_values = "generic_value",
-                            var_rank_2 = NULL,
+                            var_commune = var_commune,
+                            var_year = var_year,
+                            var_values = var_values,
+                            var_cat = var_cat,
                             unit = "unité à saisir",
                             legend_title = "Titre de légende générique",
-                            color_palette = NULL,
+                            color_palette = color_palette,
                             dodge = FALSE, # we don't allow user to dodge w/ toggle button
                             free_y = input$toggle_status, # reactive(input$toggle_status)
                             web_width = inputVals$web_width, # px width of browser when app starts
@@ -173,8 +178,9 @@ mod_generic_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       create_generic_table_dt(data = subsetData(),
-                              var_year = "annee",
-                              #var_rank_2, to be added further in dev,
+                              var_commune = var_commune,
+                              var_year = var_year,
+                              var_cat = var_cat,
                               DT_dom = "frtip" # remove default button in DT extensions
       )
     })

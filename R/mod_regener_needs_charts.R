@@ -137,7 +137,7 @@ mod_regener_needs_charts_server <- function(id,
                                             target_year, # which current year for the sunburst
                                             var_year, # 'annee'
                                             var_commune, # 'commune'
-                                            var_rank_2, # categorical var ('secteur'/'categorie', ...)
+                                            var_cat, # categorical var ('secteur'/'categorie', ...)
                                             var_values, # prod/consumption kwh
                                             color_palette, # utils_helpers.R
                                             fct_table_dt_type, # table function to pass (data specific)
@@ -221,7 +221,7 @@ mod_regener_needs_charts_server <- function(id,
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = inputVals$energyUnit,
-                            var_rank_2 = var_rank_2,
+                            var_cat = var_cat,
                             var_values = var_values,
                             color_palette = color_palette, # defined in utils_helpers.R
                             dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'

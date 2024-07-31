@@ -30,9 +30,17 @@ mod_inputs_ui <- function(id){
         # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
         tags$div(
           br(),
-          # Label as for selectizeInput for esthetics (form-label bs5 class)
+          # Label as for selectizeInput for esthetics (form-label bs5 class) + add tooltip
           tags$p("Importer des communes",
+
+                 bslib::tooltip(
+                   id = "tooltip_import_communes",
+                   placement = "right",
+                   options = list(customClass = "customTooltips"), # custom.scss
+                   trigger = bsicons::bs_icon("info-circle"),
+                   "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes."),
                  style = "margin-bottom:0.5rem !important;"),
+
           mod_upload_communes_ui(ns("uploaded_communes"))
         )
       ),# End div

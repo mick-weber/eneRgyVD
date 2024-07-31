@@ -6,7 +6,13 @@
 Creates datatable for generic datasets. Flexible enough to handle all datasets, but loses in
  customizability compared to other energy-specific datatable functions.}
 \usage{
-create_generic_table_dt(data, var_year, DT_dom = "Bfrtip")
+create_generic_table_dt(
+  data,
+  var_commune,
+  var_year,
+  var_cat = NULL,
+  DT_dom = "Bfrtip"
+)
 }
 \arguments{
 \item{data}{the generic dataset}

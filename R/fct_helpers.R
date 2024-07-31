@@ -225,9 +225,9 @@ create_bar_plotly <- function(data,
                                   var_year,
                                   var_commune,
                                   unit, # input$energy_unit, or other unit value retrieved in app_server
-                                  var_rank_2, # one of secteur, categorie...
+                                  var_cat, # one of secteur, categorie...
                                   var_values, # one of consommation, production_totale...
-                                  color_palette, # 'colors_categories',
+                                  color_palette, # utils_helpers.R,
                                   dodge = FALSE, # stacked by default
                                   free_y = FALSE,
                                   legend_title = NULL,
@@ -236,16 +236,17 @@ create_bar_plotly <- function(data,
                                   ... # free
 ){
 
+
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data |>
     ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
                                  y = .data[[var_values]],
-                                 fill = if (!is.null(var_rank_2)){.data[[var_rank_2]]},
+                                 fill = if (!is.null(var_cat)){.data[[var_cat]]},
                                  # Text is reused in ggplotly(tooltip = 'text')
                                  text = paste0(
 
-                                   if(!is.null(var_rank_2)){paste0(.data[[var_rank_2]], "\n")},
+                                   if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
                                    format(round(.data[[var_values]], digits = 0), big.mark = "'"),
                                    paste("", unit, "en "), .data[[var_year]]))
     )+
@@ -257,7 +258,8 @@ create_bar_plotly <- function(data,
                                                 scales::label_number(big.mark = "'", accuracy = 1))
     )+
     ggplot2::scale_fill_manual(name = legend_title, # passed from arg
-                               values = color_palette)+ # palette defined in utils_helpers.R
+                               values = color_palette # palette defined in utils_helpers.R
+                               )+
     ggplot2::labs(x = "", y = unit)+
     ggplot2::facet_wrap(facets = ggplot2::vars(.data[[var_commune]]),
                         ncol = 2,
@@ -470,7 +472,7 @@ return_dynamic_size <- function(which,
 #' @export
 
 create_prod_table_dt <- function(data,
-                                 unit,
+                                 energy_unit,
                                  DT_dom = "Bfrtip" # we set default with Buttons
                                  ){
 
@@ -500,7 +502,7 @@ create_prod_table_dt <- function(data,
     dplyr::relocate(icon, .before = categorie) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_energy_units(unit = unit) |>  # fct_helpers.R
+    add_colname_energy_units(unit = energy_unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -546,7 +548,7 @@ create_prod_table_dt <- function(data,
 #' @export
 
 create_cons_table_dt <- function(data,
-                                 unit,
+                                 energy_unit,
                                  DT_dom = "Bfrtip" # we set default with Buttons
                                  ){
 
@@ -569,7 +571,7 @@ create_cons_table_dt <- function(data,
     dplyr::relocate(icon, .before = secteur) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_energy_units(unit = unit) |>  # fct_helpers.R
+    add_colname_energy_units(unit = energy_unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -813,7 +815,7 @@ create_doc_table_dt <- function(data,
 
 create_subsidies_table_dt <- function(data,
                                       var_year,
-                                      var_rank_2,
+                                      var_cat,
                                       icon_list,
                                       DT_dom = "Bfrtip" # we set default with Buttons
 ){
@@ -833,8 +835,8 @@ create_subsidies_table_dt <- function(data,
                                          scientific = FALSE))
       )|>
     # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(icon_list, by = var_rank_2) |>
-    dplyr::relocate(icon, .before = any_of(var_rank_2)) |>
+    dplyr::left_join(icon_list, by = var_cat) |>
+    dplyr::relocate(icon, .before = any_of(var_cat)) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_misc_colnames() |> # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R
@@ -875,10 +877,13 @@ create_subsidies_table_dt <- function(data,
 #' @export
 
 create_generic_table_dt <- function(data,
+                                    var_commune,
                                     var_year,
-                                    #var_rank_2, to be added further in dev
+                                    var_cat = NULL,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
+
+  var_cat_supplied <- ifelse(is.null(var_cat), FALSE, TRUE)
 
   data |>
     # Basic clean up for table output

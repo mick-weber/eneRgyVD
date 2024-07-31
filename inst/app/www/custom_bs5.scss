@@ -18,7 +18,7 @@
 }
 
 /* shiny::fileInput() generates a progress bar once the file is uploaded with 'Upload complete' text */
-/* we can't easily overwrite the text so we turn it to transparent so nobody can see it ;) */
+/* we make it transparent to avoid english to show up and avoid complex JS insertion to change it  */
 .progress-bar {
   color: transparent!important
 }

@@ -9,7 +9,7 @@ Creates datatable for subsidies dataset. Flexible enough to handle both datasets
 create_subsidies_table_dt(
   data,
   var_year,
-  var_rank_2,
+  var_cat,
   icon_list,
   DT_dom = "Bfrtip"
 )

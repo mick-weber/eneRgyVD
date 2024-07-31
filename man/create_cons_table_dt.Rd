@@ -4,15 +4,15 @@
 \alias{create_cons_table_dt}
 \title{create_cons_table_dt()}
 \usage{
-create_cons_table_dt(data, unit, DT_dom = "Bfrtip")
+create_cons_table_dt(data, energy_unit, DT_dom = "Bfrtip")
 }
 \arguments{
 \item{data}{Specific electricity consumption, DGE-DIREN data to transform to datatable
 Must follow specific data format which can be found in /data}
 
-\item{unit}{Unit currently selected inside the app}
-
 \item{DT_dom}{datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip}
+
+\item{unit}{Unit currently selected inside the app}
 }
 \value{
 A DT table with export functionalities

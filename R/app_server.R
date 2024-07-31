@@ -422,9 +422,9 @@ app_server <- function(input, output, session) {
                           legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
-                          var_rank_2 = "secteur", # might be NULL if needed
+                          var_cat = "secteur", # might be NULL if needed
                           var_values = "consommation",
-                          color_palette = colors_sectors, # app's defaults is blue if no var_rank_2 supplied
+                          color_palette = colors_sectors, # app's defaults is blue if no var_cat supplied
                           # name of fct to create dt table
                           fct_table_dt_type = create_cons_table_dt,
                           # name of dl prefix to supply to download module
@@ -441,7 +441,7 @@ app_server <- function(input, output, session) {
                           legend_title = NULL,
                           var_year = "annee",
                           var_commune = "commune",
-                          var_rank_2 = "categorie",
+                          var_cat = "categorie",
                           var_values = "production",
                           color_palette = colors_categories,
                           # name of fct to create dt table
@@ -468,7 +468,7 @@ app_server <- function(input, output, session) {
                                    legend_title = "Usage", # for legend of barplot (either secteur/technologies)
                                    var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
                                    var_commune = "commune", # 'commune'
-                                   var_rank_2 = "type", # categorical var ('secteur'/'categorie', ...)
+                                   var_cat = "type", # categorical var ('secteur'/'categorie', ...)
                                    var_values = "besoins", # prod/consumption/besoins
                                    color_palette = colors_rg_type, # utils_helpers.R
                                    fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
@@ -507,6 +507,11 @@ app_server <- function(input, output, session) {
    mod_generic_charts_server("test_generic_climat",
                              subsetData = subset_generic_test_data,
                              inputVals = inputVals,
+                             var_commune = "commune",
+                             var_year = "annee",
+                             var_values = "generic_value",
+                             var_cat = "category",
+                             color_palette = default_palette,
                              dl_prefix = "generic_data_",
                              doc_vars = NULL # for now
                              )
@@ -517,6 +522,11 @@ app_server <- function(input, output, session) {
    mod_generic_charts_server("test_generic_mob",
                              subsetData = subset_generic_test_data,
                              inputVals = inputVals,
+                             var_commune = "commune",
+                             var_year = "annee",
+                             var_values = "generic_value",
+                             var_cat = "category",
+                             color_palette = default_palette,
                              dl_prefix = "generic_data_",
                              doc_vars = NULL # for now
    )

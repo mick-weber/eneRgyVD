@@ -37,7 +37,8 @@ load("./data/dummy_climat.rda")
 generic_data <- canop |>
   dplyr::rename("generic_value" = surface_canopee)
 
-generic_data_vd <- generic_data |> dplyr::summarise(commune = "Canton de Vaud", generic_value = sum(generic_value, na.rm = T), annee = dplyr::first(annee))
+generic_data_vd <- generic_data |>
+  dplyr::summarise(commune = "Canton de Vaud", generic_value = sum(generic_value, na.rm = T), annee = dplyr::first(annee))
 
 generic_data <- generic_data |>
   dplyr::bind_rows(generic_data_vd)
@@ -206,8 +207,11 @@ co2_keywords <- c("CO2")
 
 ## Default ggplot2 colors ----
 
-# Avoids darkgrey for geom_cols when 'var_rank_2' is NULL
+# Avoids darkgrey for geom_cols when 'var_cat' is NULL
 ggplot2::update_geom_defaults("col", ggplot2::aes(fill = "#90b0ee"))
+
+## Default palette if not supplied
+default_palette <- RColorBrewer::brewer.pal(name = "Set3", n = 12)
 
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color

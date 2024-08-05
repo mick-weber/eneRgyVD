@@ -198,8 +198,12 @@ app_ui <- function(request) {
 
                                                           mod_generic_charts_ui("test_generic_climat",
                                                                                 title = "Titre générique climat",
-                                                                                title_complement = HTML("<i>Complément de titre générique pour climat</i>")
-                                                          )
+                                                                                title_complement = HTML(glue::glue(.open = "{{", .close = "}}",
+                                                                                                        "<i>Complément de titre générique pour climat</i>
+                                                                                                        <br>
+                                                                                                        Ces données sont spatialisées :
+                                                                                                        <a target='_blank' href= {{link_dummy_generic_data}} >lien vers la géodonnée correspondante</a>")
+                                                                                ))
                                          ),# end firstnav_panel
 
                                          bslib::nav_panel(title = "Deuxième donnée", icon = bsicons::bs_icon("cart"),

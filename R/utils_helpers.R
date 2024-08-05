@@ -139,6 +139,8 @@ link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-
 link_pecc <- "https://www.vd.ch/pecc" # shortcut link redirecting to https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc
 link_github <- "https://github.com/mick-weber/eneRgyVD"
 
+link_dummy_generic_data <- 'https://www.geo.vd.ch/?mapresources=GEOVD_ENERGIE&visiblelayers={%22GEOVD_ENERGIE%22:[%22Eoliennes%20du%20site%22,%22Site%20%C3%A9olien%22]}'
+
 ## DT language file ----
 ### RUN ONCE : Store JSON french language items file for DT library. May require rjson library (not in DESCRIPTION)
 

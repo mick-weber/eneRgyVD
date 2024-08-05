@@ -259,7 +259,7 @@ mod_regener_needs_charts_server <- function(id,
         # Add the currently selected unit in the colnames (conversion is already done)
         rename_fr_colnames() |>  # fct_helpers.R
         # Add energy units in brackets for energy/power related columns
-        add_colname_energy_units(unit = inputVals$energyUnit) # fct_helpers.R
+        add_colname_units(unit = inputVals$energyUnit) # fct_helpers.R
 
     })
 

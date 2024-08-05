@@ -189,29 +189,29 @@ mod_download_rmd_server <- function(id,
         # Cons elec renamed+units
         elec_cons = inputVals$elec_cons_dataset |>
         rename_fr_colnames() |>
-        add_colname_energy_units(unit = inputVals$energyUnit),
+        add_colname_units(unit = inputVals$energyUnit),
 
         # Prod elec renamed+units
         elec_prod = inputVals$elec_prod_dataset |>
           rename_fr_colnames() |>
-          add_colname_energy_units(unit = inputVals$energyUnit),
+          add_colname_units(unit = inputVals$energyUnit),
 
         # Regener renamed+units
         regener_besoins = inputVals$rgr_needs |>
           rename_fr_colnames() |>
-          add_colname_energy_units(unit = inputVals$energyUnit),
+          add_colname_units(unit = inputVals$energyUnit),
 
         # Regener renamed+units
         regener_cons_use = inputVals$rgr_1 |>
           rename_fr_colnames() |>
-          add_colname_energy_units(unit = inputVals$energyUnit) |>
-          add_colname_co2_units(unit = inputVals$co2Unit),
+          add_colname_units(unit = inputVals$energyUnit) |>
+          add_colname_units(unit = inputVals$co2Unit),
 
         # Regener renamed+units
         regener_cons_aff = inputVals$rgr_2 |>
           rename_fr_colnames() |>
-          add_colname_energy_units(unit = inputVals$energyUnit) |>
-          add_colname_co2_units(unit = inputVals$co2Unit),
+          add_colname_units(unit = inputVals$energyUnit) |>
+          add_colname_units(unit = inputVals$co2Unit),
 
         # Regener misc renamed
         regener_autres = inputVals$rgr_misc |>

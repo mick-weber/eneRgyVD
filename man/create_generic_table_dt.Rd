@@ -11,6 +11,7 @@ create_generic_table_dt(
   var_commune,
   var_year,
   var_cat = NULL,
+  unit = unit,
   DT_dom = "Bfrtip"
 )
 }

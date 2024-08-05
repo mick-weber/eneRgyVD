@@ -3,8 +3,8 @@
 \name{convert_units}
 \alias{convert_units}
 \title{convert_units()
-Converts units either from dataframe (in target columns) or directly from a numeric value
-according to which current unit is selected in the application}
+Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
+conversion tables are defined in utils_helpers.R}
 \usage{
 convert_units(data, colnames, unit_from, unit_to)
 }
@@ -22,6 +22,6 @@ the same dataframe with updated units on target colnames
 }
 \description{
 convert_units()
-Converts units either from dataframe (in target columns) or directly from a numeric value
-according to which current unit is selected in the application
+Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
+conversion tables are defined in utils_helpers.R
 }

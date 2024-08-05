@@ -150,7 +150,7 @@ DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 # Must match the choices in header's widget
 # Linked to fct_helpers.R convert_units()'s function
 
-# Datasets come as 'kWh' values
+# all datasets should come as 'kWh' values so we index based on kWh
 energy_units_table <- dplyr::tribble(
   ~unit, ~factor,
   "kWh", 1,
@@ -159,7 +159,7 @@ energy_units_table <- dplyr::tribble(
   "TJ", 1/3.6*1e6
 )
 
-# Datasets come as 'tCO2' values
+# all datasets come as 'tCO2' values so we index based on tCO2
 co2_units_table <- dplyr::tribble(
   ~unit, ~factor,
   "kgCO2", 1e-3,

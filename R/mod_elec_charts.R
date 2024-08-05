@@ -209,7 +209,7 @@ mod_elec_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       fct_table_dt_type(data = subsetData(),
-                        unit = inputVals$energyUnit,
+                        energy_unit = inputVals$energyUnit,
                         DT_dom = "frtip" # no buttons extension for DT table
       )
 
@@ -224,7 +224,7 @@ mod_elec_charts_server <- function(id,
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
         rename_fr_colnames()  |>  # fct_helpers.R
-        add_colname_energy_units(unit = inputVals$energyUnit)  # fct_helpers.R
+        add_colname_units(unit = inputVals$energyUnit)  # fct_helpers.R
 
     })
 

@@ -485,6 +485,7 @@ create_prod_table_dt <- function(data,
       # format numeric cols
       #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
       #  to keep NAs alive with an if_else statement (only needed for this fn)
+
       across(where(is.numeric), ~ if_else(condition = !is.na(.x),
                                           true = format(.x,
                                                         big.mark = "'",
@@ -492,7 +493,9 @@ create_prod_table_dt <- function(data,
                                                         drop0trailing = TRUE,
                                                         scientific = FALSE),
                                           false = NA_character_ )
-             )) |>
+            )
+  ) |>
+
     dplyr::select(-c(numero_de_la_commune)) |>
     dplyr::relocate(commune, annee, categorie,
                     production, injection, autoconsommation,
@@ -502,7 +505,7 @@ create_prod_table_dt <- function(data,
     dplyr::relocate(icon, .before = categorie) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_energy_units(unit = energy_unit) |>  # fct_helpers.R
+    add_colname_units(unit = energy_unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -571,7 +574,7 @@ create_cons_table_dt <- function(data,
     dplyr::relocate(icon, .before = secteur) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_energy_units(unit = energy_unit) |>  # fct_helpers.R
+    add_colname_units(unit = energy_unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -626,7 +629,7 @@ create_rg_needs_table_dt <- function(data,
     dplyr::relocate(commune, etat, icon, type) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_energy_units(unit = unit) |>  # fct_helpers.R
+    add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -689,8 +692,9 @@ create_regener_table_dt <- function(data,
     dplyr::rename(" " = "icon") |> # empty colname for icons
     #turn to DT
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_energy_units(unit = energy_unit) |>  # fct_helpers.R
-    add_colname_co2_units(unit = co2_unit) |> # fct_helpers.R
+    add_colname_units(unit = energy_unit) |>  # fct_helpers.R
+    add_colname_units(unit = co2_unit) |> # fct_helpers.R
+    add_colname_units(unit = "pct") |>
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
@@ -742,7 +746,7 @@ create_rg_misc_table_dt <- function(data,
                                                scientific = FALSE))) |>
     dplyr::relocate(commune, etat) |>
     rename_misc_colnames() |>
-    # add_colname_energy_units(unit = unit) |>  # fct_helpers.R
+    # add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -880,6 +884,7 @@ create_generic_table_dt <- function(data,
                                     var_commune,
                                     var_year,
                                     var_cat = NULL,
+                                    unit = unit,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
@@ -889,7 +894,16 @@ create_generic_table_dt <- function(data,
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>
     dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
+    dplyr::mutate(
+      # limit decimals for <num> variables (note var_year is converted to factor before)
+      dplyr::across(where(is.numeric), ~format(.x,
+                                               big.mark = "'",
+                                               digits = 3,
+                                               drop0trailing = TRUE,
+                                               scientific = FALSE))) |>
+    dplyr::relocate(.data[[var_commune]], .data[[var_year]]) |>
     rename_fr_colnames() |>  # fct_helpers.R
+    add_colname_units(unit = unit) |>
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -988,11 +1002,11 @@ return_icons_subsidies <- function(which){
 }
 
 
-# Unit fns ----
+# Unit conversion & suffix fns ----
 
 #' convert_units()
-#' Converts units either from dataframe (in target columns) or directly from a numeric value
-#' according to which current unit is selected in the application
+#' Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
+#' conversion tables are defined in utils_helpers.R
 #' @param data the dataframe containing the columns where to convert units
 #' @param colnames the colnames where to convert units
 #' @param unit_from the unit to convert from
@@ -1007,13 +1021,13 @@ convert_units <- function(data,
                           unit_to){ # check if it's worth saving the widget selected unit in a specific variable before (in mod_inputs.R)
 
   # Retrieves the right conversion factor unit_table in utils_helpers.R according to unit_to
-  conversion_factor <- if(unit_from %in% c("kWh", "MWh", "GWh", "TJ")){
+  conversion_factor <- if(unit_from %in% energy_units_table$unit){
 
     energy_units_table |>
     dplyr::filter(unit == unit_to) |>
     dplyr::pull(factor)
 
-  }else if(unit_from %in% c("kgCO2", "tCO2", "ktCO2")){
+  }else if(unit_from %in% co2_units_table$unit){
 
     co2_units_table |>
       dplyr::filter(unit == unit_to) |>
@@ -1034,93 +1048,123 @@ convert_units <- function(data,
   }
 }
 
-#' add_colname_energy_units()
+#' add_colname_units()
 #' returns unit extension in target columns according to the currently selected unit
 #' of the app for power and energy related colnames. Should be called before making
 #' nicely formatted columns with rename_fr_colnames()
 #'
 #' @param data the dataframe
-#' @param unit the unit selected in the app
+#' @param unit the unit selected in the app or other options available ("pct")
 #'
 #' @return dataframe with renamed columns
 #' @export
 
-add_colname_energy_units <- function(data, unit){
+add_colname_units <- function(data, unit){
+
+  ## |---------------------------------------------------------------|
+  ##          Energy section
+  ## |---------------------------------------------------------------|
+  if(unit %in% energy_units_table$unit){
+
+    # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way I found to work.
+    # Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
+
+    # Step 1 : rename nrg vars if contains energy related keywords and add the power unit in brackets
+    if(any(stringr::str_detect(string = colnames(data),
+                               pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
+
+      data <- data |>
+        # For all energy-related units
+        dplyr::rename_with(.cols = contains(energy_col_keywords, # utils_helpers.R
+                                            ignore.case = TRUE),
+                           ~paste0(.x, " [", unit, "]"))
+
+    }else {
+      # If no column name is targeted with keyword, then simply return the data
+
+      return(data)
+    }
 
 
-  # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way I found to work.
-  # Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
+    # Step 2 : rename power vars if contains power related keywords and add the power unit in brackets
+    # This step works if related after Step 1
+    if(any(stringr::str_detect(string = colnames(data),
+                               pattern = stringr::regex(paste0(power_col_keywords,
+                                                               collapse = "|"),
+                                                        ignore_case = TRUE)))){
 
-  # Step 1 : rename nrg vars if contains energy related keywords and add the power unit in brackets
-  if(any(stringr::str_detect(string = colnames(data),
-                             pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
+      data <- data |>
+        # For all power-related units
+        dplyr::rename_with(.cols = contains(power_col_keywords, # utils_helpers.R
+                                            ignore.case = TRUE),
+                           ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
+                                   ifelse(
+                                     test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
+                                     yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
+                                     no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
+                                   ), "]") # closing bracket for unit
+        )
 
-    data <- data |>
-      # For all energy-related units
-      dplyr::rename_with(.cols = contains(energy_col_keywords, # utils_helpers.R
-                                          ignore.case = TRUE),
-                         ~paste0(.x, " [", unit, "]"))
+      # if no detection of either energy_col/power_col keywords, then just return the data. worst case : no unit is added...
+    }else {
+      # If no column name is targeted with keyword, then simply return the data
 
-  }else data
+      return(data)
+    }
+
+    ## |---------------------------------------------------------------|
+    ##          CO2 section
+    ## |---------------------------------------------------------------|
+  }else if(unit %in% co2_units_table$unit){
+    # Step 3 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
+    if(any(stringr::str_detect(string = colnames(data),
+                               pattern = stringr::regex(paste0(co2_keywords,
+                                                               collapse = "|"),
+                                                        ignore_case = TRUE)))){
+
+      data <- data |>
+        # For all energy-related units
+        dplyr::rename_with(.cols = contains(co2_keywords, # utils_helpers.R
+                                            ignore.case = TRUE),
+                           ~paste0(.x, " [", unit, "]"))
 
 
-  # Step 2 : rename power vars if contains power related keywords and add the power unit in brackets
-  # This step works if related after Step 1
-  if(any(stringr::str_detect(string = colnames(data),
-                             pattern = stringr::regex(paste0(power_col_keywords,
-                                                             collapse = "|"),
-                                                      ignore_case = TRUE)))){
+    }else {
+      # If no column name is targeted with keyword, then simply return the data
 
-    data <- data |>
-      # For all power-related units
-      dplyr::rename_with(.cols = contains(power_col_keywords, # utils_helpers.R
-                                          ignore.case = TRUE),
-                         ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
-                                 ifelse(
-                                   test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
-                                   yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
-                                   no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
-                                 ), "]") # closing bracket for unit
-      )
+      return(data)
+    }
 
-  }else data
+  }else if(unit == "pct"){
 
+    if(any(stringr::str_detect(string = colnames(data),
+                               pattern = stringr::regex(paste0(percent_keywords,
+                                                               collapse = "|"),
+                                                        ignore_case = TRUE)))){
+
+      data <- data |>
+        # For all energy-related units
+        dplyr::rename_with(.cols = contains(percent_keywords, # utils_helpers.R
+                                            ignore.case = TRUE),
+                           ~paste0(.x, " [%]"))
+
+    }else {
+
+      # If no column name is targeted with keyword, then simply return the data
+      return(data)
+
+    }
+  }else {
+    # If the unit is not recognized then simply return the data...
+
+    return(data)
+
+    }
 }
 
-#' add_colname_co2_units
-#' returns unit extension in target columns according to the currently selected unit
-#' of the app for co2 related colnames. Should be called before making
-#' nicely formatted columns with rename_fr_colnames()
-#' @param data the dataframe
-#' @param unit the unit selected in the app
-#'
-#' @return dataframe with renamed columns
-#' @export
-
-add_colname_co2_units <- function(data, unit){
 
 
-  # Step 3 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
-  if(any(stringr::str_detect(string = colnames(data),
-                             pattern = stringr::regex(paste0(co2_keywords,
-                                                             collapse = "|"),
-                                                      ignore_case = TRUE)))){
-
-    data <- data |>
-      # For all energy-related units
-      dplyr::rename_with(.cols = contains(co2_keywords, # utils_helpers.R
-                                          ignore.case = TRUE),
-                         ~paste0(.x, " [", unit, "]")) # should be dynamic at some point (w/r to input$co2_unit)
-
-  }else data
-
-
-
-}
-
-
-
-# Colnames fns ----
+# Colname renaming fns ----
 
 #' rename_fr_colnames()
 #' A generic function that aims at adding correct french accents inside the create_x_table_dt functions

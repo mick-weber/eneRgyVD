@@ -694,7 +694,7 @@ create_regener_table_dt <- function(data,
     rename_fr_colnames() |> # fct_helpers.R
     add_colname_units(unit = energy_unit) |>  # fct_helpers.R
     add_colname_units(unit = co2_unit) |> # fct_helpers.R
-    add_colname_units(unit = "pct") |>
+    add_colname_units(unit = "%") |>
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
@@ -888,6 +888,7 @@ create_generic_table_dt <- function(data,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
+
   data |>
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>
@@ -901,6 +902,7 @@ create_generic_table_dt <- function(data,
                                                scientific = FALSE))) |>
     # any_of() allows to pass var_car even if it does not exist
     dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
+    rename_misc_colnames() |>
     rename_fr_colnames() |>  # fct_helpers.R
     add_colname_units(unit = unit) |>
     #turn to DT
@@ -1134,7 +1136,7 @@ add_colname_units <- function(data, unit){
       return(data)
     }
 
-  }else if(unit == "pct"){
+  }else if(unit == "%"){
 
     if(any(stringr::str_detect(string = colnames(data),
                                pattern = stringr::regex(paste0(percent_keywords,

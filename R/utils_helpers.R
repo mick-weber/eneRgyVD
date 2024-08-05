@@ -34,20 +34,26 @@ load("./data/subsidies_doc.rda")
 ## profil-climat dummy data (generic_data)----
 
 load("./data/dummy_climat.rda")
-generic_data <- canop |>
-  dplyr::rename("generic_value" = surface_canopee)
 
-generic_data_vd <- generic_data |>
-  dplyr::summarise(commune = "Canton de Vaud", generic_value = sum(generic_value, na.rm = T), annee = dplyr::first(annee))
-
-generic_data <- generic_data |>
-  dplyr::bind_rows(generic_data_vd)
+## |------------------------------------------------------------------|
+##          PICK one of <canop> or <part_ve> as generic_data prototype
+## |------------------------------------------------------------------|
+# generic_data <- canop |>
+#   dplyr::rename("generic_value" = surface_canopee)
+#
+# generic_data_vd <- generic_data |>
+#   dplyr::summarise(commune = "Canton de Vaud", generic_value = sum(generic_value, na.rm = T), annee = dplyr::first(annee))
+#
+# generic_data <- generic_data |>
+#   dplyr::bind_rows(generic_data_vd)
 
 
 ## profil-climat dummy data 2 (generic data) ----
 # note : data prep is done before as opposed to dummy_climat.rda
 
 load("./data/dummy_mobilite.rda")
+
+generic_data <- part_ve
 
 
 ## glossary ----
@@ -188,8 +194,12 @@ cols_renaming_vector <- c(
   "Bâtiments rénovés lourdement (2001+)" = "N_RENOV_H_POST_2000",
   "Bâtiments sans rénovation récente" = "N_NO_RENOV",
   "Bâtiments sans année de construction" = "N_NO_GBAUJ",
+
   # subsidies
-  "Type de subvention" = "subv_type"
+  "Type de subvention" = "subv_type",
+
+  # part_ve
+  "Part véhicules électriques (hybrides compris)" = "part_ve"
 )
 
 
@@ -209,7 +219,7 @@ replace_fr_accents <- c("electricite" = "électricité",
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
 power_col_keywords <- c("Puissance", "installé")
 co2_keywords <- c("CO2")
-percent_keywords <- c("Pct")
+percent_keywords <- c("Pct", "Part")
 
 
 # Colors and icons ----

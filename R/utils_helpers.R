@@ -44,6 +44,12 @@ generic_data <- generic_data |>
   dplyr::bind_rows(generic_data_vd)
 
 
+## profil-climat dummy data 2 (generic data) ----
+# note : data prep is done before as opposed to dummy_climat.rda
+
+load("./data/dummy_mobilite.rda")
+
+
 ## glossary ----
 
 load("./data/glossary.rda")
@@ -197,10 +203,11 @@ replace_fr_accents <- c("electricite" = "électricité",
                         "optimises" = "optimisés",
                         "Detail" = "Détail")
 
-## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
+## These are used to dynamically target columns renaming in add_colname_units() and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
 power_col_keywords <- c("Puissance", "installé")
 co2_keywords <- c("CO2")
+percent_keywords <- c("Pct")
 
 
 # Colors and icons ----

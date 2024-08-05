@@ -182,6 +182,7 @@ mod_generic_charts_server <- function(id,
                               var_commune = var_commune,
                               var_year = var_year,
                               var_cat = var_cat,
+                              unit = unit,
                               DT_dom = "frtip" # remove default button in DT extensions
       )
     })

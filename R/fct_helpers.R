@@ -888,8 +888,6 @@ create_generic_table_dt <- function(data,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
-  var_cat_supplied <- ifelse(is.null(var_cat), FALSE, TRUE)
-
   data |>
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>
@@ -901,7 +899,8 @@ create_generic_table_dt <- function(data,
                                                digits = 3,
                                                drop0trailing = TRUE,
                                                scientific = FALSE))) |>
-    dplyr::relocate(.data[[var_commune]], .data[[var_year]]) |>
+    # any_of() allows to pass var_car even if it does not exist
+    dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
     rename_fr_colnames() |>  # fct_helpers.R
     add_colname_units(unit = unit) |>
     #turn to DT

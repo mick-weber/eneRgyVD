@@ -150,7 +150,7 @@ mod_inputs_server <- function(id){
       regener_cons_ae_use |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
-                      unit_from = "kWh",
+                      unit_from = "kWh", # must be data's original unit
                       unit_to = input$selected_unit)
 
     })
@@ -166,7 +166,7 @@ mod_inputs_server <- function(id){
       regener_cons_ae_aff |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
-                      unit_from = "kWh",
+                      unit_from = "kWh", # must be data's original unit
                       unit_to = input$selected_unit)
 
     })
@@ -182,7 +182,7 @@ mod_inputs_server <- function(id){
       regener_needs |>
         dplyr::filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains("besoins"),
-                      unit_from = "kWh",
+                      unit_from = "kWh",  # must be data's original unit
                       unit_to = input$selected_unit)
 
     })

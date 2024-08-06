@@ -133,6 +133,11 @@ mod_subsidies_measure_charts_server <- function(id,
 
     output$plot_subsidies <- plotly::renderPlotly({
 
+      # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
+      validate(
+        need(nrow(subsetData_d()) > 0, message = req_communes_not_available)
+      )
+
       # Plotly but factor lumped for clarity :
       subsetData_d() |>
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,

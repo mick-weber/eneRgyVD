@@ -165,6 +165,11 @@ mod_subsidies_building_charts_server <- function(id,
     # Plot accordingly to which radioGroupButton (sre/n_egid) is selected
         output$plot_subsidies <- plotly::renderPlotly({
 
+          # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
+          validate(
+            need(nrow(subsetData_agg_d()) > 0, message = req_communes_not_available)
+          )
+
           if(input$tab_plot_type == "sre"){
 
             # Then plot aggregated data :

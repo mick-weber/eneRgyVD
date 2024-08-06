@@ -175,6 +175,11 @@ mod_elec_charts_server <- function(id,
 
         output$chart_1 <- plotly::renderPlotly({
 
+          # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
+          validate(
+            need(nrow(subsetData_d()) > 0, message = req_communes_not_available)
+          )
+
           # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData_d(),
                             n_communes = length(inputVals_communes_d()),

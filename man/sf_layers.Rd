@@ -9,7 +9,7 @@
 \alias{sf_lacs}
 \title{Limits for Canton de Vaud}
 \format{
-Each is a tibble with various rows and cols which are not detailed yet
+Each is a tibble with various rows and cols which are not detailed yet.
 
 An object of class \code{sf} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 300 rows and 8 columns.
 

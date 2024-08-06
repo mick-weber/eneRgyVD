@@ -67,7 +67,7 @@ app_ui <- function(request) {
 
       # Navigation panels ----
       ## Carte ----
-      bslib::nav_panel("Carte",
+      bslib::nav_panel("Accueil",
                        icon = icon("map"),
                        bslib::layout_column_wrap(
                          height_mobile = "200vh", # when mobile we allow 2x scren height of scrollable area (map+2statboxes)
@@ -103,20 +103,21 @@ app_ui <- function(request) {
                          )
                        )# End layout_column_wrap
 
-      ),# End nav_panel('Carte')
+      ),# End nav_panel('Accueil')
 
 
 
-      ## cons/prod elec----
+      ## Energie ----
       bslib::nav_menu("Energie",
                       icon = icon("bolt"),
 
-                      # cons elec ----
+                      ### Electricite ----
                       bslib::nav_panel("Electricité",
                                        icon = icon("bolt"),
 
                                        bslib::navset_card_pill(id = "navset_elec",
 
+                                                               #### cons elec ----
                                                                bslib::nav_panel(title = "Distribution d'électricité",
                                                                                 icon = icon("bolt"),
 
@@ -130,7 +131,7 @@ app_ui <- function(request) {
 
                                                                ),# End nav_panel
 
-                                                               # prod elec ----
+                                                               #### prod elec ----
                                                                bslib::nav_panel("Production d'électricité",
                                                                                 icon = icon("bolt"),
 
@@ -144,21 +145,25 @@ app_ui <- function(request) {
                                        ),# End navset_card_pill
                       ),# End nav_panel 'Electricite'
 
+
+                      ### Chaleur batiments ----
                       bslib::nav_panel("Chaleur des bâtiments",
                                        icon = icon("fire"),
 
                                        bslib::navset_card_pill(id = "navset_regener",
 
-
+                                                               #### besoins ----
                                                                bslib::nav_panel("Besoins des bâtiments",
 
                                                                                 mod_regener_needs_charts_ui("regener_needs")
 
                                                                ),
+                                                               #### consommation ----
                                                                bslib::nav_panel("Consommation des bâtiments",
 
                                                                                 mod_regener_cons_charts_ui("regener_cons")
                                                                ),
+                                                               #### misc ----
                                                                bslib::nav_panel("Informations bâtiments",
 
                                                                                 mod_regener_misc_charts_ui("regener_misc")
@@ -167,16 +172,19 @@ app_ui <- function(request) {
                       ),# End nav_panel 'Chaleur bâtiments'
 
 
+                      ### Subventions ----
                       bslib::nav_panel("Subventions bâtiments",
                                           icon = icon("house"),
 
                                           bslib::navset_card_pill(id = "navset_subsidies",
 
+                                            #### Par batiments ----
                                             bslib::nav_panel("Vue par bâtiments",
 
                                                              mod_subsidies_building_charts_ui("subsidies_building")
                                             ),
 
+                                            #### Par mesures ----
                                             bslib::nav_panel("Vue par subventions",
 
                                                              mod_subsidies_measure_charts_ui("subsidies_measure")

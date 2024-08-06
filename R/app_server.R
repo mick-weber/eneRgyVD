@@ -117,8 +117,9 @@ app_server <- function(input, output, session) {
                    )) #End pwalk
 
 
-   # When redirected to input$nav from a nav_select(), the dropdown remains open
-   # We add this code to wait 2s before closing it so the user knows where it comes from
+   # When redirected to input$nav from a nav_select(), the dropdown remains open... annoying.
+   # Case 1) if redirected from data tabs to 'A propos' (from redirections above) --> keep the dropdown open 2 sec to inform the user
+   # Case 2) if redirect from statboxes clicks to datatabs (mod_stats_box.R) --> simply remove the dropdown display because Sys.Sleep() delays display of plots, etc.
 
    observe({
      if (input$nav %in% "À propos") {
@@ -126,9 +127,13 @@ app_server <- function(input, output, session) {
        session$sendCustomMessage(
          type = "toggleDropdown",
          message = list(msg = "hide dropdown"))
+     }else{
+       session$sendCustomMessage(
+         type = "toggleDropdown",
+         message = list(msg = "hide dropdown"))
+
      }
    })
-
 
 
    # Inputs module ----
@@ -546,33 +551,34 @@ app_server <- function(input, output, session) {
      req(inputVals$energyUnit)
 
      mod_stats_box_server("vd_box",
-                                   title = strong("Synthèse : Canton de Vaud"),
-                                   energyUnit = inputVals$energyUnit,
+                          parent = session,
+                          title = strong("Synthèse : Canton de Vaud"),
+                          energyUnit = inputVals$energyUnit,
 
-                                   # Computed in utils_helpers.R (using years below) then converted if needed
-                                   elec_prod_value = elec_prod_vd_last_year |>
-                                     convert_units(unit_from = "kWh",
-                                                   unit_to = inputVals$energyUnit),
+                          # Computed in utils_helpers.R (using years below) then converted if needed
+                          elec_prod_value = elec_prod_vd_last_year |>
+                            convert_units(unit_from = "kWh",
+                                          unit_to = inputVals$energyUnit),
 
-                                   cons_rg_value = cons_rg_vd_last_year |>
-                                     convert_units(unit_from = "kWh",
-                                                   unit_to = inputVals$energyUnit),
+                          cons_rg_value = cons_rg_vd_last_year |>
+                            convert_units(unit_from = "kWh",
+                                          unit_to = inputVals$energyUnit),
 
-                                   subsidies_value = subsidies_m01_vd_last_year,
+                          subsidies_value = subsidies_m01_vd_last_year,
 
-                                   elec_cons_value = elec_cons_vd_last_year |>
-                                     convert_units(unit_from = "kWh",
-                                                   unit_to = inputVals$energyUnit),
+                          elec_cons_value = elec_cons_vd_last_year |>
+                            convert_units(unit_from = "kWh",
+                                          unit_to = inputVals$energyUnit),
 
-                                   # Computed in utils_helpers.R for both statboxes
-                                   year_elec_prod = last_year_elec_prod,
-                                   year_elec_cons = last_year_elec_cons,
-                                   year_rgr = last_year_rgr,
-                                   year_subsidies = last_year_subsidies
+                          # Computed in utils_helpers.R for both statboxes
+                          year_elec_prod = last_year_elec_prod,
+                          year_elec_cons = last_year_elec_cons,
+                          year_rgr = last_year_rgr,
+                          year_subsidies = last_year_subsidies
 
-                                   )
+     )
 
-  })
+   })
 
 
   ### Communes box ----
@@ -587,33 +593,34 @@ app_server <- function(input, output, session) {
 
 
      mod_stats_box_server("communes_box",
-                                   title = strong("Synthèse : Commune(s) sélectionnée(s)"),
-                                   energyUnit = inputVals$energyUnit,
+                          parent = session,
+                          title = strong("Synthèse : Commune(s) sélectionnée(s)"),
+                          energyUnit = inputVals$energyUnit,
 
-                                   # Computed in utils_helpers.R (using years below) then converted if needed
-                                   elec_prod_value = ifelse(
-                                     check_selected_communes,
-                                     inputVals$elec_prod_last_year,
-                                     0),
-                                   cons_rg_value = ifelse(
-                                     check_selected_communes,
-                                     inputVals$max_year_rg_cons,
-                                     0),
-                                   subsidies_value = ifelse(
-                                     check_selected_communes,
-                                     inputVals$max_year_subsidies_m01,
-                                     0),
-                                   elec_cons_value = ifelse(
-                                     check_selected_communes,
-                                     inputVals$elec_cons_last_year,
-                                     0),
+                          # Computed in utils_helpers.R (using years below) then converted if needed
+                          elec_prod_value = ifelse(
+                            check_selected_communes,
+                            inputVals$elec_prod_last_year,
+                            0),
+                          cons_rg_value = ifelse(
+                            check_selected_communes,
+                            inputVals$max_year_rg_cons,
+                            0),
+                          subsidies_value = ifelse(
+                            check_selected_communes,
+                            inputVals$max_year_subsidies_m01,
+                            0),
+                          elec_cons_value = ifelse(
+                            check_selected_communes,
+                            inputVals$elec_cons_last_year,
+                            0),
 
-                                   # Computed in utils_helpers.R for both statboxes
-                                   year_elec_prod = last_year_elec_prod,
-                                   year_elec_cons = last_year_elec_cons,
-                                   year_rgr = last_year_rgr,
-                                   year_subsidies = last_year_subsidies
-                                   )
+                          # Computed in utils_helpers.R for both statboxes
+                          year_elec_prod = last_year_elec_prod,
+                          year_elec_cons = last_year_elec_cons,
+                          year_rgr = last_year_rgr,
+                          year_subsidies = last_year_subsidies
+     )
    })
 
 

@@ -507,7 +507,7 @@ regener_current_year <- max_regener_year
 # mesures_pb |> dplyr::select(MESURE, MESURE_TRAD, MESURE_SIMPLIFIEE2)
 
 
-## Objects specific 'Carte' (Statbox)  ----
+## Objects specific 'Accueil' (Statbox)  ----
 
 #last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
 

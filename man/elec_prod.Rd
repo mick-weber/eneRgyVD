@@ -25,5 +25,6 @@ category of installation (i.e. photovoltaïcs, wind turbines, etc.). The data
 results in a fairly complex methodology where DGE-DIREN provides some estimates
 for some type of installation which production is not recorded, or for self-consumption.
 The data is accompanied with a separate dictionnary dataset `elec_prod_doc`.
+Energy-units should be expressed in kWh, and CO2 in tons.
 }
 \keyword{datasets}

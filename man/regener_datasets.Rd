@@ -42,6 +42,7 @@ the energy consumed for heating and hot water of all heated VD buildings.
 `regener_cons_ae_aff` and `regener_cons_ae_use` show consumption by energy source
 and affectation (respectively final use) by commune. `regener_needs` show
 heating needs, `regener_misc` show non-energetic data (surface, number of buildings, etc.)
-and finally `regener_doc` documents the important variables
+and finally `regener_doc` documents the important variables.
+Energy-units should be expressed in kWh, and CO2 in tons.
 }
 \keyword{datasets}

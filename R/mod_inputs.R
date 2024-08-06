@@ -23,9 +23,9 @@ mod_inputs_ui <- function(id){
     ),
       # conditionalPanel uploadCommunes widget ----
 
-      # IF tab Carte
+      # IF tab Accueil
       shiny::conditionalPanel(
-        condition="input.nav == 'Carte'",
+        condition="input.nav == 'Accueil'",
 
         # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
         tags$div(

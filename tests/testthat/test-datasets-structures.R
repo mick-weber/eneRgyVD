@@ -1,6 +1,44 @@
 # These tests aim at checking that supplied datasets have the expected structure
 #  both in terms of variable names and lengths. Variable names order does not matter.
 
+
+test_that("Check structure of sf_layers for leaflet map",{
+
+
+  ## |------------------------------------------------------------------------------|
+  ##     1) Check that all used variables in fct_helpers.R / app_server.R exist
+  ## |------------------------------------------------------------------------------|
+
+  vars_canton <- c("geometry")
+  vars_communes <- c("geometry", "NOM_MIN", "NO_COM_FED")
+  vars_districts <- c("geometry", "NOM_MAJ")
+  vars_lacs <- c("geometry")
+
+
+  invisible( # avoid console printing
+    mapply(function(actual_colnames, vars_required)
+    expect_contains(object = actual_colnames, expected = vars_required),
+    # pass colnames of each sf layer as the object arg for expect_contains
+         sapply(list(sf_canton, sf_communes, sf_districts, sf_lacs), FUN = colnames),
+    # pass expected colnames as the expected arg for expect contains
+         list(vars_canton, vars_communes, vars_districts, vars_lacs)
+         )
+  )
+
+
+  ## |---------------------------------------------------------------|
+  ##      2) Check all sf layers have the same 'EPSG:4326' CRS
+  ## |---------------------------------------------------------------|
+
+  expect_equal(
+    sapply(X = list(sf_canton, sf_communes, sf_districts, sf_lacs),
+               FUN = \(sf_object) sf::st_crs(sf_object)$input) |> unique(),
+    expected = "EPSG:4326"
+  )
+
+})
+
+
 test_that("Check all REGENER related datasets", {
 
   # Prepare ordered expected colnames
@@ -57,7 +95,7 @@ test_that("Check all ELEC_CONS related datasets", {
 })
 
 
-test_that("Check all PRONOVO related datasets", {
+test_that("Check all ELEC_PROD related datasets", {
 
   # Prepare ordered expected colnames
 

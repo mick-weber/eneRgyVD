@@ -1,7 +1,7 @@
 # These tests aim at checking that supplied communes are valid,
 #  and that the sum of all communes equals the `Canton de Vaud` entry.
 
-test_that("Check `commune` variable from datasets are valid choices from input$selected_communes (choices_canton_communes in utils_helpers.R)",
+test_that("Check `commune` variable from each dataset are valid choices from input$selected_communes (choices_canton_communes in utils_helpers.R)",
           {
             # Define vector of clean choices (requires unlisting)
             values_canton_communes <- unlist(choices_canton_communes, use.names = FALSE)
@@ -42,7 +42,7 @@ test_that("Check for each dataset that the value for 'Canton de Vaud' equals the
             # Define vector of clean choices (requires unlisting)
 
             # elec_prod datasets ----
-            # Will yield error as long as there's a specific NA placeholder for commmunes having n<3 installations by category
+            # ! Will yield error as long as there's a specific NA placeholder for commmunes having n<3 installations by category
 
             # expect_equal(label = "The sum of 'Canton de Vaud' (GWh)",
             #              expected.label = "the sum of all communes. This is expected as long as there's filter for N<3 installations in the raw-data -> .rda script",

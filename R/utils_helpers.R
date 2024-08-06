@@ -59,10 +59,13 @@ file.copy("./inst/extdata/downloadable_report.Rmd", report_path, overwrite = TRU
 
 debounce_plot_time <- 400 # ms, empirically defined as ideal
 
-## Sentence for required communes ----
-# To avoid multiple repetitions troughout the app we store it once here
+## Sentence related to communes selection ----
 
-req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat."
+# when 0 commune is selected for an output display request :
+req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat"
+
+# when 1+ commune is selected but not available in the dataset :
+req_communes_not_available <- "Aucune donnée n'est disponible pour la sélection actuelle"
 
 ## Sentence methodological changes ----
 # Used in ui.r to avoid repetition

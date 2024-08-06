@@ -7,7 +7,7 @@
 #' These layers must be updated when some merging between communes happens
 #' @name sf_layers
 #' @keywords datasets
-#' @format Each is a tibble with various rows and cols which are not detailed yet
+#' @format Each is a tibble with various rows and cols which are not detailed yet.
 #' @source <https://viageo.ch/md/5be7ce8a-62b8-4031-8caa-5dfe7c0ef089>
 
 
@@ -32,13 +32,14 @@
 #' IWF's platform used to process the subsidies. Data is acquired
 #' through a authentified API by DGE-DIREN, and data is pre-processed locally
 #' before making it available to the application.
+#' Energy-units should be expressed in kWh, and CO2 in tons.
 #' @name subsidies_by_building
 #' @keywords datasets
-#' @format A tibble with various rows and cols which are not detailed yet
+#' @format A tibble with various rows and cols which are not detailed yet.
 #' @source <https://www.leprogrammebatiments.ch/fr>
 
 
-"subsidies_by_measure"
+"subsidies_by_building"
 
 #' Measure subsidies by commune for Canton de Vaud
 #'
@@ -48,6 +49,7 @@
 #' IWF's platform used to process the subsidies. Data is acquired
 #' through a authentified API by DGE-DIREN, and data is pre-processed locally
 #' before making it available to the application.
+#' Energy-units should be expressed in kWh, and CO2 in tons.
 #' @name subsidies_by_measure
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
@@ -55,6 +57,7 @@
 
 
 "subsidies_by_measure"
+
 
 #' Electricity consumption by commune for Canton de Vaud
 #'
@@ -81,6 +84,7 @@
 #' results in a fairly complex methodology where DGE-DIREN provides some estimates
 #' for some type of installation which production is not recorded, or for self-consumption.
 #' The data is accompanied with a separate dictionnary dataset `elec_prod_doc`.
+#' Energy-units should be expressed in kWh, and CO2 in tons.
 #' @name elec_prod
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
@@ -101,7 +105,8 @@
 #' `regener_cons_ae_aff` and `regener_cons_ae_use` show consumption by energy source
 #' and affectation (respectively final use) by commune. `regener_needs` show
 #' heating needs, `regener_misc` show non-energetic data (surface, number of buildings, etc.)
-#' and finally `regener_doc` documents the important variables
+#' and finally `regener_doc` documents the important variables.
+#' Energy-units should be expressed in kWh, and CO2 in tons.
 #' @name regener_datasets
 #' @keywords datasets
 #' @format A tibble with various rows and cols which are not detailed yet
@@ -122,3 +127,13 @@
 
 #' @rdname regener_datasets
 "regener_doc"
+
+
+#' Glossary
+#'
+#' This dataset retrieves some specific terms which may not be obvious for lay people and provides explanations
+#' @name glossary
+#' @keywords datasets
+#' @format A tibble with one column for the term, and one for the explanation.
+
+"glossary"

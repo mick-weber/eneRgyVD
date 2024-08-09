@@ -72,6 +72,31 @@ subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subs
 generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
 
 
+
+# REDIRECTIONS ----
+
+# This is used by app_server.R/ and methodological accordions in specific modules to redirect user in 'mod_about_the_app.R' module
+# This is also ulsed by mod_table_content.R to redirect users towards tabpanels
+
+subpanels_tribble <- dplyr::tribble(
+  ~observe_input, ~about_nav_panel, ~navset_id,  ~about_tabpanel_name, ~data_id, ~nav_panel, ~navset_name, ~nav_name,
+  "consumption_charts-elec_data_help","Energie","navset_energie", "Distribution d'électricité", "data_1", "Electricité", "navset_elec", "Distribution d'électricité",
+  "production_charts-elec_data_help", "Energie","navset_energie", "Production d'électricité", "data_2", "Electricité", "navset_elec", "Production d'électricité",
+  "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
+  "regener_cons-rgr_cons_help", "Energie", "navset_energie","Chaleur bâtiments", "data_4", "Chaleur des bâtiments","navset_regener", "Consommation des bâtiments",
+  "regener_misc-rgr_misc_help", "Energie","navset_energie", "Chaleur bâtiments", "data_5", "Chaleur des bâtiments","navset_regener", "Informations bâtiments",
+  "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue par bâtiments",
+  "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
+
+  # COMPLETE THESE ONES (and more !) when real data is here
+  "test_generic_climat-generic_data_help",  "Climat","navset_climat", "Donnée générique", "data_8", "Exemple générique 1", "navset_climat", "Première donnée",
+  "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "Donnée générique", "data_9", "Exemple générique 2", "navset_mobilite","Première donnée"
+
+
+)
+
+
+
 # Store .Rmd in temp dir ----
 # https://mastering-shiny.org/action-transfer.html#downloading-reports
 

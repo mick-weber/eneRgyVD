@@ -62,13 +62,12 @@ mod_about_the_app_ui <- function(id){
                                                                  ## nav_panel 'Energie' ----
                                                                  bslib::nav_panel("Energie",
 
-
                                                                                   ### Données subtabs ----
                                                                                   bslib::navset_tab(id = ns("navset_energie"),
 
                                                                                                     ### 1. Cons elec ----
                                                                                                     # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel(h6("Distribution d'électricité"),
+                                                                                                    bslib::nav_panel("Distribution d'électricité",
                                                                                                                      tags$div(
                                                                                                                        br(),
                                                                                                                        h4(strong("Détails méthodologiques : distribution d'électricité")),
@@ -85,7 +84,7 @@ mod_about_the_app_ui <- function(id){
 
                                                                                                     ### 2. Prod élec ----
                                                                                                     # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel(h6("Production d'électricité"),
+                                                                                                    bslib::nav_panel("Production d'électricité",
                                                                                                                      # create div to apply class
                                                                                                                      tags$div(
                                                                                                                        br(),
@@ -103,7 +102,7 @@ mod_about_the_app_ui <- function(id){
 
                                                                                                     ### 3. Regener ----
                                                                                                     # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel(h6("Chaleur bâtiments"),
+                                                                                                    bslib::nav_panel("Chaleur bâtiments",
                                                                                                                      # create div to apply class
                                                                                                                      tags$div(
                                                                                                                        br(),
@@ -121,7 +120,7 @@ mod_about_the_app_ui <- function(id){
 
                                                                                                     ### 4. Subsidies ----
                                                                                                     # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel(h6("Subventions bâtiments"),
+                                                                                                    bslib::nav_panel("Subventions bâtiments",
                                                                                                                      # create div to apply class
                                                                                                                      tags$div(
                                                                                                                        br(),
@@ -145,7 +144,7 @@ mod_about_the_app_ui <- function(id){
                                                                  bslib::nav_panel("Climat",
                                                                                   bslib::navset_tab(id = ns("navset_climat"),
 
-                                                                                                    bslib::nav_panel(h6("Donnée générique"),
+                                                                                                    bslib::nav_panel("Donnée générique",
 
                                                                                                                      tags$div(
                                                                                                                        br(),
@@ -169,7 +168,7 @@ mod_about_the_app_ui <- function(id){
                                                                  bslib::nav_panel("Mobilité",
                                                                                   bslib::navset_tab(id = ns("navset_mobilite"),
 
-                                                                                                    bslib::nav_panel(h6("Donnée générique"),
+                                                                                                    bslib::nav_panel("Donnée générique",
 
                                                                                                                      tags$div(
                                                                                                                        br(),

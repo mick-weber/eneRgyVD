@@ -191,6 +191,18 @@
   }
 }
 
+/* Redirects buttons formatting for mod_table_content.R */
+
+.disabledTocButtons{
+
+  cursor: not-allowed;
+  pointer-events: none;
+  text-align:left;
+
+
+
+}
+
 
 /* Div backgrounds with icons used in mod_stats_box.R for each type of make_statbox_item() call*/
 /* For a new icon : go to https://icons.getbootstrap.com/, paste the desired icon 'Copy HTML' text, paste it in the <svg> balises */

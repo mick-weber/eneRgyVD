@@ -57,13 +57,17 @@ mod_stats_box_server <- function(id,
                     ),
                                        class = "bg-secondary"),
 
+                    bslib::card_body(
+
+                      class = "align-middle",
+                      style = "flex:none;",
+
                     bslib::layout_column_wrap(width = "140px",
                                               fixed_width = TRUE,
                                               heights_equal = "all",
                                               fill = FALSE,
                                               fillable = TRUE,
                                               class = "justify-content-center",
-
                                               # fct_helpers.R
 
            # 1. Cons elec
@@ -103,6 +107,7 @@ mod_stats_box_server <- function(id,
                                                                     "Shiny.setInputValue(id = '{{id}}-elec_prod_statbox_click', value = '{{id}}-elec_prod_statbox_click', {priority : 'event'})")
              )
                     )# End layout_column_wrap
+        )# End card body
         )# End card
     })# End RenderUI
 

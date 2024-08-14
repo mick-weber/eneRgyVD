@@ -39,7 +39,7 @@ mod_regener_cons_charts_ui <- function(id){
     tags$p("Ces données illustrent comment la consommation de différents agents énergétiques
  se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
            strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
-           "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
+           "Il s'agit d'estimations théoriques fondées sur des données empiriques et corrigées climatiquement. Les communes jouent notamment un rôle central
  pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
 
     bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)

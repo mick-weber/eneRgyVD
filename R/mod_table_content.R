@@ -18,13 +18,13 @@ mod_table_content_ui <- function(id){
         # Section Energie ----
         actionButton(ns("test"), label = "Energie", class = "disabledTocButtons"),
 
-          actionLink(ns("data_1"), class = "mx-3", "Distribution d'électricité", icon = icon("bolt")),
-          actionLink(ns("data_2"), class = "mx-3", "Production d'électricité",  icon = icon("bolt")),
-          actionLink(ns("data_3"), class = "mx-3", "Besoins théoriques des bâtiments", icon = icon("fire")),
-          actionLink(ns("data_4"), class = "mx-3", "Consommations théoriques des bâtiments", icon = icon("fire")),
-          actionLink(ns("data_5"), class = "mx-3", "Informations parc des bâtiments", icon = icon("fire")),
-          actionLink(ns("data_6"), class = "mx-3", "Subventions (vue par bâtiments)", icon = icon("house")),
-          actionLink(ns("data_7"), class = "mx-3", "Subventions (vue par mesures)", icon = icon("house")),
+          actionLink(ns("data_1"), class = "mx-3", "Electricité (distribution)", icon = icon("bolt")),
+          actionLink(ns("data_2"), class = "mx-3", "Electricité (production)",  icon = icon("bolt")),
+          actionLink(ns("data_3"), class = "mx-3", "Chaleur des bâtiments (besoins théoriques)", icon = icon("fire")),
+          actionLink(ns("data_4"), class = "mx-3", "Chaleur des bâtiments (consommations théoriques)", icon = icon("fire")),
+          actionLink(ns("data_5"), class = "mx-3", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
+          actionLink(ns("data_6"), class = "mx-3", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
+          actionLink(ns("data_7"), class = "mx-3", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
 
         # Section Climat ----
         actionButton(ns("test"), "Climat", class = "disabledTocButtons"),

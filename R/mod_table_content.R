@@ -12,8 +12,20 @@ mod_table_content_ui <- function(id){
   tagList(
 
     bslib::card(
-      bslib::card_header(strong("Données disponibles"), class = "bg-secondary"),
+      bslib::card_header(strong("Données disponibles",
+                                bslib::tooltip(
+                                  id = "tooltip_map_card",
+                                  placement = "right",
+                                  options = list(customClass = "customTooltips"), # custom.scss
+                                  trigger = bsicons::bs_icon("info-circle"),
+
+                                  "L'accès à ces données peut se faire par la barre de navigation ou directement en cliquant sur les liens")),
+
+                         class = "bg-secondary"),
       bslib::card_body(
+
+        # Add spacing between underline and text in actionLink elements
+        style = "text-underline-offset:5px;",
 
         # Section Energie ----
         actionButton(ns("test"), label = "Energie", class = "disabledTocButtons"),

@@ -19,7 +19,7 @@ mod_table_content_ui <- function(id){
                                   options = list(customClass = "customTooltips"), # custom.scss
                                   trigger = bsicons::bs_icon("info-circle"),
 
-                                  "L'accès à ces données peut se faire par la barre de navigation ou directement en cliquant sur les liens")),
+                                  "L'accès aux données peut se faire via la barre de navigation ou directement en cliquant sur les liens ci-dessous")),
 
                          class = "bg-secondary"),
       bslib::card_body(

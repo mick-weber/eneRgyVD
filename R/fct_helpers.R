@@ -1000,6 +1000,25 @@ return_icons_subsidies <- function(which){
 }
 
 
+#' create_geoportail_tag
+#' Creates a icon+link combination (tag) which redirects towards a specified geoportail link where geodata
+#' can be viewed for Canton de Vaud
+#' @param link
+#'
+#' @return a span tag with icon and an html <a> tag with the redirect link
+#' @export
+#'
+#' @examples create_geoportail_tag(link = "https://google.com")
+create_geoportail_tag <- function(link){
+
+  tags$span(
+    shiny::icon("map"), strong("Géodonnées disponibles sur", tags$a(href = link, 'geo.vd.ch', target = '_blank'))
+  )
+
+}
+
+
+
 # Unit conversion & suffix fns ----
 
 #' convert_units()

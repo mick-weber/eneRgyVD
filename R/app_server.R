@@ -85,7 +85,7 @@ app_server <- function(input, output, session) {
                   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie","<h6>Subventions bâtiments</h6>",
 
                   # COMPLETE THESE ONES (and more !) when real data is here
-                  "test_generic_climat-generic_data_help",  "Climat","navset_climat", "<h6>Donnée générique</h6>",
+                  "test_generic_climat-generic_data_help",  "Adaptation","navset_climat", "<h6>Donnée générique</h6>",
                   "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "<h6>Donnée générique</h6>",
 
 

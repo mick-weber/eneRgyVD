@@ -257,7 +257,7 @@ mod_inputs_server <- function(id){
         dplyr::filter(commune %in% input$selected_communes)
     })
 
-    # 5. tabClimat ----
+    # 5. tabAdaptation ----
 
     subset_generic_test_data <- reactive({
       req(input$selected_communes)

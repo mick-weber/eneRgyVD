@@ -40,7 +40,7 @@ mod_regener_cons_charts_ui <- function(id){
  se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
            strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
            "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
- pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur."),
+ pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.", create_geoportail_tag(link = "https://google.com")),
 
     bslib::navset_pill(
       id = ns("tabset_rgr_cons"),

@@ -141,8 +141,8 @@ mod_about_the_app_ui <- function(id){
                                                                  ),# End nav_panel Energie
 
 
-                                                                 ## nav_panel 'Climat' ----
-                                                                 bslib::nav_panel("Climat",
+                                                                 ## nav_panel 'Adaptation' ----
+                                                                 bslib::nav_panel("Adaptation",
                                                                                   bslib::navset_tab(id = ns("navset_climat"),
 
                                                                                                     bslib::nav_panel(h6("Donnée générique"),
@@ -161,8 +161,8 @@ mod_about_the_app_ui <- function(id){
 
                                                                                                                      )# End div)
                                                                                   )# End nav_panel
-                                                                 )# End navset_tab 'Climat'
-                                                                 ),# End nav_panel 'Climat'
+                                                                 )# End navset_tab 'Adaptation'
+                                                                 ),# End nav_panel 'Adaptation'
 
 
                                                                  ## nav_panel 'Mobilité' ----

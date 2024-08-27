@@ -195,9 +195,9 @@ app_ui <- function(request) {
       ),# End nav_menu Energie
 
 
-      ## Climat (générique) ----
-      bslib::nav_menu("Climat",
-                      icon = icon("earth"),
+      ## Adaptation (générique) ----
+      bslib::nav_menu("Adaptation",
+                      icon = shiny::icon("temperature-half"),
                       bslib::nav_panel("Exemple générique",
                                        # Nested navset_card_pill()
                                        bslib::navset_card_pill(
@@ -205,9 +205,9 @@ app_ui <- function(request) {
                                                           icon = bsicons::bs_icon("award"),
 
                                                           mod_generic_charts_ui("test_generic_climat",
-                                                                                title = "Titre générique climat",
+                                                                                title = "Titre générique adaptation",
                                                                                 title_complement = HTML(glue::glue(.open = "{{", .close = "}}",
-                                                                                                        "<i>Complément de titre générique pour climat</i>
+                                                                                                        "<i>Complément de titre générique pour adaptation</i>
                                                                                                         <br>
                                                                                                         Ces données sont spatialisées :
                                                                                                         <a target='_blank' href= {{link_dummy_generic_data}} >lien vers la géodonnée correspondante</a>")
@@ -219,7 +219,7 @@ app_ui <- function(request) {
                                                           )
                                        )# end navset_card_pill
                       )# end main nav_panel
-      ), # End nav_menu() 'Climat'
+      ), # End nav_menu() 'Adaptation'
 
 
       ## Mobilité (générique) ----

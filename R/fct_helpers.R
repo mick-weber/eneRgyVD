@@ -1012,7 +1012,7 @@ return_icons_subsidies <- function(which){
 create_geoportail_tag <- function(link){
 
   tags$span(
-    shiny::icon("map"), strong("Géodonnées disponibles sur", tags$a(href = link, 'geo.vd.ch', target = '_blank'))
+    shiny::icon("map"), strong("Géodonnées détaillées disponibles sur", tags$a(href = link, 'geo.vd.ch', target = '_blank'))
   )
 
 }

@@ -35,7 +35,7 @@ mod_regener_misc_charts_ui <- function(id){
     ),# End div
 
 
-    tags$p("Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune."),
+    tags$p("Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune.", create_geoportail_tag(link = regener_geovd_link)),
 
 
     bslib::navset_pill(header = br(),

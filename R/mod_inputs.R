@@ -86,41 +86,7 @@ mod_inputs_ui <- function(id){
              mod_download_all_data_ui(ns("download_all_data")),
 
              ##  2. Unit converter widget ----
-             bslib::accordion(open = FALSE,
-                              class = "fs-sidebar-header rotatedSVG",
-                              bslib::accordion_panel(title = "Changer d'unité",
-                                                     icon = bsicons::bs_icon("calculator-fill"),
-
-                                                     bslib::navset_tab(
-                                                       bslib::nav_panel(title = "Energie",
-
-                                                                        div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
-                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("energy_unit"),
-                                                                                                             label = NULL,
-                                                                                                             choices = c("kWh", "MWh", "GWh", "TJ"),
-                                                                                                             selected = "MWh",
-                                                                                                             inline = FALSE,
-                                                                                                             status =  "default",
-                                                                                                             icon = icon("check"),
-                                                                                                             animation = "jelly")
-                                                                        )# End div
-
-                                                       ),# End nav_panel
-                                                       bslib::nav_panel(title = "CO2",
-
-                                                                        div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
-                                                                            shinyWidgets::prettyRadioButtons(inputId = ns("co2_unit"),
-                                                                                                             label = NULL,
-                                                                                                             choices = c("kgCO2", "tCO2", "ktCO2"),
-                                                                                                             selected = "tCO2",
-                                                                                                             inline = FALSE,
-                                                                                                             status =  "default",
-                                                                                                             icon = icon("check"),
-                                                                                                             animation = "jelly")
-                                                                        )# End div
-                                                       )# End nav_panel
-                                                     )# End navset_tab
-             ))# End accordion
+             mod_unit_converter_ui(ns("unit_converter"))
              )# End div()
   ) # End tagList
 } # End UI
@@ -132,9 +98,11 @@ mod_inputs_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Important note ----
-    ## Unit conversion is made here, at the root of inputVals, for each dataset
+    # Retrieve units ----
+    selectedUnits <- mod_unit_converter_server("unit_converter")
 
+
+    ## Subset datasets + convert units
     # 1. tabCons inputs ----
 
      subset_elec_cons <- reactive({
@@ -145,7 +113,7 @@ mod_inputs_server <- function(id){
          filter(commune %in% input$selected_communes) |>
          convert_units(colnames = "consommation",
                        unit_from = "kWh", # initial value in dataset
-                       unit_to = input$energy_unit)
+                       unit_to = selectedUnits$energy_unit)
 
      })
 
@@ -160,13 +128,13 @@ mod_inputs_server <- function(id){
     subset_elec_prod <- reactive({
 
       req(input$selected_communes)
-      req(input$energy_unit)
+      req(selectedUnits$energy_unit)
 
       elec_prod |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
                       unit_from = "kWh", # initial value in dataset
-                      unit_to = input$energy_unit)
+                      unit_to = selectedUnits$energy_unit)
     })
 
 
@@ -179,17 +147,17 @@ mod_inputs_server <- function(id){
     subset_rgr_cons_1 <- reactive({
 
       req(input$selected_communes)
-      req(input$energy_unit)
-      req(input$co2_unit)
+      req(selectedUnits$energy_unit)
+      req(selectedUnits$co2_unit)
 
       regener_cons_ae_use |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
                       unit_from = "kWh", # initial value in dataset
-                      unit_to = input$energy_unit)  |>
+                      unit_to = selectedUnits$energy_unit)  |>
         convert_units(colnames = contains("co2"),
                       unit_from = "tCO2", # initial value in dataset
-                      unit_to = input$co2_unit)
+                      unit_to = selectedUnits$co2_unit)
 
     })
 
@@ -199,17 +167,17 @@ mod_inputs_server <- function(id){
     subset_rgr_cons_2 <- reactive({
 
       req(input$selected_communes)
-      req(input$energy_unit)
-      req(input$co2_unit)
+      req(selectedUnits$energy_unit)
+      req(selectedUnits$co2_unit)
 
       regener_cons_ae_aff |>
         filter(commune %in% input$selected_communes) |>
         convert_units(colnames = "consommation",
                       unit_from = "kWh", # initial value in dataset
-                      unit_to = input$energy_unit)  |>
+                      unit_to = selectedUnits$energy_unit)  |>
         convert_units(colnames = contains("co2"),
                       unit_from = "tCO2", # initial value in dataset
-                      unit_to = input$co2_unit)
+                      unit_to = selectedUnits$co2_unit)
 
     })
 
@@ -219,13 +187,13 @@ mod_inputs_server <- function(id){
     subset_rgr_needs <- reactive({
 
       req(input$selected_communes)
-      req(input$energy_unit)
+      req(selectedUnits$energy_unit)
 
       regener_needs |>
         dplyr::filter(commune %in% input$selected_communes) |>
         convert_units(colnames = contains("besoins"),
                       unit_from = "kWh", # initial value in dataset
-                      unit_to = input$energy_unit)
+                      unit_to = selectedUnits$energy_unit)
 
     })
 
@@ -278,12 +246,12 @@ mod_inputs_server <- function(id){
 
     uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
-    # Storing in inputVals : ----
+    # Initiate & populate inputVals : ----
     # Initializing the inputVals items
 
     inputVals <- reactiveValues()
 
-# [inputVals communes & unit] ----
+# inputVals communes & unit ----
 
     # communes
     observe({
@@ -299,11 +267,10 @@ mod_inputs_server <- function(id){
 
     # units selected
     observe({
-      inputVals$energyUnit <- input$energy_unit
+      inputVals$energyUnit <- selectedUnits$energy_unit
     })
-
     observe({
-      inputVals$co2Unit <- input$co2_unit
+      inputVals$co2Unit <- selectedUnits$co2_unit
     })
 
 
@@ -447,7 +414,7 @@ mod_inputs_server <- function(id){
     output$prod_year_n_techs <- shiny::renderUI({
 
         req(input$selected_communes)
-        req(input$energy_unit)
+        req(selectedUnits$energy_unit)
 
       shiny::tagList(
 
@@ -504,11 +471,11 @@ mod_inputs_server <- function(id){
 
     })
 
-    # Test download all
+    # mod_download_all_data ----
     mod_download_all_data_server("download_all_data", inputVals = inputVals)
 
 
-    # Returning all the input values ----
+    # Returning inputVals ----
     return(inputVals)
 
 

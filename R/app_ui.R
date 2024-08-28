@@ -97,8 +97,7 @@ app_ui <- function(request) {
 
                          tagList(
 
-                           mod_stats_box_ui("vd_box"),
-                           mod_stats_box_ui("communes_box")
+                           mod_table_content_ui("toc")
 
                          )
                        )# End layout_column_wrap
@@ -194,13 +193,12 @@ app_ui <- function(request) {
                       )# End nav_panel 'Subventions bâtiments'
       ),# End nav_menu Energie
 
-
       ## Adaptation (générique) ----
       bslib::nav_menu("Adaptation",
                       icon = shiny::icon("temperature-half"),
-                      bslib::nav_panel("Exemple générique",
+                      bslib::nav_panel("Exemple générique 1",
                                        # Nested navset_card_pill()
-                                       bslib::navset_card_pill(
+                                       bslib::navset_card_pill(id = "navset_climat",
                                          bslib::nav_panel(title = "Première donnée",
                                                           icon = bsicons::bs_icon("award"),
 
@@ -225,9 +223,9 @@ app_ui <- function(request) {
       ## Mobilité (générique) ----
       bslib::nav_menu("Mobilité",
                       icon = icon("car"),
-                      bslib::nav_panel("Exemple générique",
+                      bslib::nav_panel("Exemple générique 2",
                                        # Nested navset_card_pill()
-                                       bslib::navset_card_pill(
+                                       bslib::navset_card_pill(id = "navset_mobilite",
                                          bslib::nav_panel(title = "Première donnée",
                                                           icon = bsicons::bs_icon("award"),
 
@@ -249,6 +247,19 @@ app_ui <- function(request) {
 
       ## Misc ----
       bslib::nav_menu("Divers",
+
+        ### Chiffres-clés
+
+        bslib::nav_panel("Chiffres-clés", icon = icon("list-ol"),
+
+        bslib::layout_columns(col_widths = c(-1, 9, -2),
+
+          mod_stats_box_ui("vd_box"),
+          mod_stats_box_ui("communes_box")
+
+        )
+          ),
+
         ### Report ----
         bslib::nav_panel("Rapport", icon = icon("file-code"),
 

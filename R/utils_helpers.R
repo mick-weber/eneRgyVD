@@ -265,8 +265,6 @@ ggplot2::update_geom_defaults("col", ggplot2::aes(fill = "#90b0ee"))
 ## Default palette if not supplied
 default_palette <- RColorBrewer::brewer.pal(name = "Set3", n = 12)
 
-
-length(default_palette)
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
 prod_colors <- dplyr::tribble(~icon, ~categorie, ~color,

@@ -79,6 +79,7 @@ golem::add_module(name = "upload_communes", with_test = FALSE)
 golem::add_module(name = "news", with_test = FALSE)
 golem::add_module(name = "generic_charts", with_test = TRUE)
 golem::add_module(name = "table_content", with_test = FALSE)
+golem::add_module(name = "download_all_data", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

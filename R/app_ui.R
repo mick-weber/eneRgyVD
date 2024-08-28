@@ -260,13 +260,6 @@ app_ui <- function(request) {
         )
           ),
 
-        ### Report ----
-        bslib::nav_panel("Rapport", icon = icon("file-code"),
-
-                         mod_download_rmd_ui("report")
-
-                         ),
-
         ## News ----
 
         bslib::nav_panel("Nouveautés",

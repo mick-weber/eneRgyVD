@@ -13,7 +13,6 @@ mod_inputs_ui <- function(id){
   shiny::tagList(
 
     # selectizeInput() for municipalities ----
-
     shiny::selectizeInput(inputId = ns("selected_communes"),
                           label = "Sélection des communes",
                           choices = choices_canton_communes,
@@ -79,14 +78,14 @@ mod_inputs_ui <- function(id){
     ), # End conditionalPanel
 
 
-    # Unit converter ----
+    # Sidebar bottom ----
 
     tags$div(style = "margin-top: auto;",
 
-             # test
-             shiny::downloadButton(ns("test"), label = "Tout télécharger", class = "btnCustomTEST"),
+             ## 1. Downoad all widget ----
+             mod_download_all_data_ui(ns("download_all_data")),
 
-             # Unit converter widget
+             ##  2. Unit converter widget ----
              bslib::accordion(open = FALSE,
                               class = "fs-sidebar-header rotatedSVG",
                               bslib::accordion_panel(title = "Changer d'unité",
@@ -95,7 +94,7 @@ mod_inputs_ui <- function(id){
                                                      bslib::navset_tab(
                                                        bslib::nav_panel(title = "Energie",
 
-                                                                        div(style = "padding-left:2vh;padding-top:1vh;",
+                                                                        div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
                                                                             shinyWidgets::prettyRadioButtons(inputId = ns("energy_unit"),
                                                                                                              label = NULL,
                                                                                                              choices = c("kWh", "MWh", "GWh", "TJ"),
@@ -109,7 +108,7 @@ mod_inputs_ui <- function(id){
                                                        ),# End nav_panel
                                                        bslib::nav_panel(title = "CO2",
 
-                                                                        div(style = "padding-left:2vh;padding-top:1vh;",
+                                                                        div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
                                                                             shinyWidgets::prettyRadioButtons(inputId = ns("co2_unit"),
                                                                                                              label = NULL,
                                                                                                              choices = c("kgCO2", "tCO2", "ktCO2"),
@@ -121,8 +120,8 @@ mod_inputs_ui <- function(id){
                                                                         )# End div
                                                        )# End nav_panel
                                                      )# End navset_tab
-             )),# End accordion
-             ),# End div()
+             ))# End accordion
+             )# End div()
   ) # End tagList
 } # End UI
 
@@ -505,9 +504,13 @@ mod_inputs_server <- function(id){
 
     })
 
-    # Returning all the input values ----
+    # Test download all
+    mod_download_all_data_server("download_all_data", inputVals = inputVals)
 
+
+    # Returning all the input values ----
     return(inputVals)
+
 
 
   }) # End moduleServer

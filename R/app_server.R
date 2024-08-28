@@ -67,34 +67,11 @@ app_server <- function(input, output, session) {
    })
 
    ## Tabs redirecting ----
-   # in app_ui.R we have actionButtons to redirect in 'mode_about_the_app.R' data tabs
-
-   # To avoid repetitive coding, we make a tribble of module-input events and target tabpanels
-   #  only the last tabpanel is required, the others can be hard-coded in the purrr::walk
-   #  since all redirect buttons end up in 'À propos' > 'about-tabset' area
-   # <h6> tags are necessary since the titles of each panels (mod_about_the_app.R) have h6 wrappers
-   # would be best to use a robust <id> argument but it's not implemented yet !
-
-   subpanels_tribble <- dplyr::tribble(~observe_input, ~nav_panel_name, ~navset_id,  ~tabpanel_name,
-                  "consumption_charts-elec_data_help","Energie","navset_energie", "<h6>Distribution d'électricité</h6>",
-                  "production_charts-elec_data_help", "Energie","navset_energie", "<h6>Production d'électricité</h6>",
-                  "regener_needs-rgr_needs_help", "Energie","navset_energie", "<h6>Chaleur bâtiments</h6>",
-                  "regener_cons-rgr_cons_help", "Energie", "navset_energie","<h6>Chaleur bâtiments</h6>",
-                  "regener_misc-rgr_misc_help", "Energie","navset_energie", "<h6>Chaleur bâtiments</h6>",
-                  "subsidies_building-subsidies_building_help", "Energie","navset_energie","<h6>Subventions bâtiments</h6>",
-                  "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie","<h6>Subventions bâtiments</h6>",
-
-                  # COMPLETE THESE ONES (and more !) when real data is here
-                  "test_generic_climat-generic_data_help",  "Adaptation","navset_climat", "<h6>Donnée générique</h6>",
-                  "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "<h6>Donnée générique</h6>",
-
-
-                  )
-
    # Code below is to generate redirections from methodological accordions in each module to mod_about_the_app.R
    # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
-   purrr::pwalk(subpanels_tribble,
-                .f = \(observe_input, nav_panel_name, navset_id, tabpanel_name) shiny::observeEvent(
+
+   purrr::pwalk(subset(subpanels_tribble, select = c("observe_input", "about_nav_panel", "navset_id", "about_tabpanel_name")), # selecting all cols result in unnused arguments
+                .f = \(observe_input, about_nav_panel, navset_id, about_tabpanel_name) shiny::observeEvent(
                    input[[observe_input]], {
 
                      # 1. Redirect to navbar's 'A propos'
@@ -105,13 +82,13 @@ app_server <- function(input, output, session) {
                      bslib::nav_select(id = "about-tabset_main",
                                        selected = "Données", session)
 
-                     # 3. Redirect to <navset_name> which may vary according to which general theme the button is clicked from (Energie, Climat, ...)
+                     # # 3. Redirect to <navset_name> which may vary according to which general theme the button is clicked from (Energie, Climat, ...)
                      bslib::nav_select(id = "about-navset_donnees",
-                                       selected = nav_panel_name, session)
+                                       selected = about_nav_panel, session)
 
                      # 4. Redirect to the final nav_panel name inside the dynamic navset_<theme>
                      bslib::nav_select(id = paste0("about-", navset_id),
-                                       selected = tabpanel_name, session)
+                                       selected = about_tabpanel_name, session)
 
                    }
                    )) #End pwalk
@@ -542,7 +519,17 @@ app_server <- function(input, output, session) {
   #  ## tabMap: boxes for statistics ----
 
 
-  ### VD Box ----
+   ## |---------------------------------------------------------------|
+   ##          TEST
+   ## |---------------------------------------------------------------|
+
+    mod_table_content_server("toc", parent = session)
+
+   ## |---------------------------------------------------------------|
+   ##          /TEST
+   ## |---------------------------------------------------------------|
+
+   ### VD Box ----
   #  # Must be dynamically rendered because it depends on energyUnit (reactive)
 
    observe({

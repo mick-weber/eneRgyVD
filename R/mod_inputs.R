@@ -82,6 +82,10 @@ mod_inputs_ui <- function(id){
     # Unit converter ----
 
     tags$div(style = "margin-top: auto;",
+
+             # test
+             shiny::downloadButton(ns("test"), label = "Tout télécharger", class = "btnCustomTEST"),
+
              # Unit converter widget
              bslib::accordion(open = FALSE,
                               class = "fs-sidebar-header rotatedSVG",

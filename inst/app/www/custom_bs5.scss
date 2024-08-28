@@ -260,6 +260,36 @@
   width:50%;
 }
 
+/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
+.btnCustomTEST{
+  background-color:white;
+  color:black;
+  width:100%;
+  margin-bottom:1vh;
+
+}
+
+.btnCustomTEST:hover{
+  background-color:#3A862D;
+  color:white;
+  border-color:black;
+}
+.btnCustomTEST:focus{
+  background-color:#3A862D;
+  color:white;
+  border-color:black;
+}
+.btnCustomTEST:active{
+  background-color:#3A862D;
+  color:white;
+  border-color:black;
+}
+
+
+
+
+
+
 
 /*When sidebar is collapsed, make the deploy arrow more visible*/
 .bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{

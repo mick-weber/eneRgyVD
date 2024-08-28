@@ -38,13 +38,14 @@ mod_table_content_ui <- function(id){
           actionLink(ns("data_6"), class = "mx-3", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
           actionLink(ns("data_7"), class = "mx-3", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
 
-        # Section Climat ----
+        # Section Adaptation ----
         actionButton(ns("test"), "Adaptation", class = "disabledTocButtons"),
 
           actionLink(ns("data_8"), class = "mx-3", "Adaptation (exemple générique)", icon = icon("earth")),
 
         # Section Mobilité ----
         actionButton(ns("test"), "Mobilité", class = "disabledTocButtons"),
+
           actionLink(ns("data_9"), class = "mx-3", "Mobilité (exemple générique)", icon = icon("car")),
 
       )

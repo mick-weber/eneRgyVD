@@ -95,7 +95,7 @@ mod_stats_box_server <- function(id,
              # We assign an input on click, which is used below to redirect to the correct nav_panel
              tags$a(style = "cursor:zoom-in;", onclick = glue::glue(.open = '{{',.close = '}}',
                                                                     # reload the input to trigger observeEvent below
-                                                                    "Shiny.setInputValue(id = '{{id}}-subsidies_meausre_statbox_click', value = '{{id}}-subsidies_meausre_statbox_click', {priority : 'event'})")
+                                                                    "Shiny.setInputValue(id = '{{id}}-subsidies_measure_statbox_click', value = '{{id}}-subsidies_meausre_statbox_click', {priority : 'event'})")
              ),
 
            # 4. Prod elec

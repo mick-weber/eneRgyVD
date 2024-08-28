@@ -88,6 +88,7 @@ mod_inputs_ui <- function(id){
              ##  2. Unit converter widget ----
              mod_unit_converter_ui(ns("unit_converter"))
              )# End div()
+
   ) # End tagList
 } # End UI
 
@@ -98,9 +99,8 @@ mod_inputs_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Retrieve units ----
+    # 0. Retrieve units ----
     selectedUnits <- mod_unit_converter_server("unit_converter")
-
 
     ## Subset datasets + convert units
     # 1. tabCons inputs ----

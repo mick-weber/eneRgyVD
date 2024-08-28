@@ -16,7 +16,7 @@ mod_download_all_data_ui <- function(id){
                      bslib::accordion_panel(title = "Tout télécharger",
                                             icon = bsicons::bs_icon("file-earmark-spreadsheet-fill"),
 
-                                            div(style = "font-size:1rem;", "Exporter toutes les données du profil climatique au format Excel"),
+                                            tags$p(style = "font-size:1rem;", "Exporter toutes les données du profil climatique au format Excel"),
 
                                             shiny::uiOutput(ns("render_ui_button") )#, fill = TRUE)  # explicitly take 100% avail width
 
@@ -43,11 +43,8 @@ mod_download_all_data_server <- function(id,
       if(isTruthy(inputVals$selectedCommunes)){
 
         # Real download button
-        tagList(
-          br(),
           shiny::downloadButton(outputId = ns("download_all_excel"),
                                 label = "Télécharger",  class = "btn-sm") # class defined in custom.css
-        )
       }else{
 
         # Dummy download button + warning text

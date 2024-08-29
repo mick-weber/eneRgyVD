@@ -244,17 +244,34 @@ create_bar_plotly <- function(data,
                                    if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
                                    format(round(.data[[var_values]], digits = 0), big.mark = "'"),
                                    paste("", unit, "en "), .data[[var_year]]))
-    )+
-    ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
-                                                true = "dodge",
-                                                false = "stack"))+
+    )
+
+  # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
+  # If one color is supplied : we must pass it to 'fill' of geom_col(), scale_fill_manual would not accept it
+  if(length(color_palette) == 1){
+    ggplot <- ggplot +
+      ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
+                                                  true = "dodge",
+                                                  false = "stack"),
+                        fill = color_palette)
+  }else{
+    # If a palette is passed : we must pass it fo 'scale_fill_manual' with a legend name
+    ggplot <- ggplot +
+      ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
+                                                  true = "dodge",
+                                                  false = "stack"))+
+      ggplot2::scale_fill_manual(name = legend_title, # passed from arg
+                                 values = color_palette # palette defined in utils_helpers.R
+      )
+  }
+
+
+  # Scales, facts, theme options etc.
+  ggplot <- ggplot+
     ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
                                                 scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3),
                                                 scales::label_number(big.mark = "'", accuracy = 1))
     )+
-    ggplot2::scale_fill_manual(name = legend_title, # passed from arg
-                               values = color_palette # palette defined in utils_helpers.R
-                               )+
     ggplot2::labs(x = "", y = unit)+
     ggplot2::facet_wrap(facets = ggplot2::vars(.data[[var_commune]]),
                         ncol = 2,

@@ -494,7 +494,7 @@ app_server <- function(input, output, session) {
                              var_values = "part_ve",
                              unit = "%",
                              var_cat = NULL,
-                             color_palette = "lightgreen", # default_palette, dedicated one, or one color
+                             color_palette = "olivedrab3", # default_palette, dedicated one, or one color
                              dl_prefix = "generic_data_",
                              doc_vars = NULL # for now
                              )

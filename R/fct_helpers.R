@@ -233,12 +233,6 @@ create_bar_plotly <- function(data,
                                   ... # free
 ){
 
-  # If one value is supplied to color_palette, override ggplots'2 default from utils_helpers.R
-  if(length(color_palette)==1){
-    ggplot2::update_geom_defaults("col", ggplot2::aes(fill = color_palette))
-  }
-
-
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
   ggplot <- data |>
@@ -247,7 +241,6 @@ create_bar_plotly <- function(data,
                                  fill = if (!is.null(var_cat)){.data[[var_cat]]},
                                  # Text is reused in ggplotly(tooltip = 'text')
                                  text = paste0(
-
                                    if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
                                    format(round(.data[[var_values]], digits = 0), big.mark = "'"),
                                    paste("", unit, "en "), .data[[var_year]]))

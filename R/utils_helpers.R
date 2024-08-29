@@ -259,7 +259,7 @@ percent_keywords <- c("Pct", "Part")
 
 ## Default ggplot2 colors ----
 
-# Avoids darkgrey for geom_cols when 'var_cat' is NULL
+# Avoids darkgrey for geom_cols when 'var_cat' is NULL and if no palette/color is supplied
 ggplot2::update_geom_defaults("col", ggplot2::aes(fill = "#90b0ee"))
 
 ## Default palette if not supplied

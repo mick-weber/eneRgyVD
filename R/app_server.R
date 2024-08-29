@@ -534,7 +534,6 @@ app_server <- function(input, output, session) {
 
    observe({
 
-
      req(inputVals$energyUnit)
 
      mod_stats_box_server("vd_box",

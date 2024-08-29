@@ -19,7 +19,7 @@ mod_unit_converter_ui <- function(id){
                                                    "Modifier les unités affichées dans les graphique, tables et exportations"),
 
                                             bslib::navset_tab(
-                                              bslib::nav_panel(title = "Energie",
+                                              bslib::nav_panel(title = tags$div(style = "font-size:1rem;", "Energie"),
 
                                                                div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
                                                                    shinyWidgets::prettyRadioButtons(inputId = ns("energy_unit"),
@@ -33,7 +33,7 @@ mod_unit_converter_ui <- function(id){
                                                                )# End div
 
                                               ),# End nav_panel
-                                              bslib::nav_panel(title = "CO2",
+                                              bslib::nav_panel(title = tags$div(style = "font-size:1rem;", "CO2"),
 
                                                                div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
                                                                    shinyWidgets::prettyRadioButtons(inputId = ns("co2_unit"),

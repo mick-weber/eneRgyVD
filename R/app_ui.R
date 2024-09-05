@@ -204,11 +204,9 @@ app_ui <- function(request) {
 
                                                           mod_generic_charts_ui("test_generic_climat",
                                                                                 title = "Titre générique adaptation",
-                                                                                title_complement = HTML(glue::glue(.open = "{{", .close = "}}",
-                                                                                                        "<i>Complément de titre générique pour adaptation</i>
-                                                                                                        <br>
-                                                                                                        Ces données sont spatialisées :
-                                                                                                        <a target='_blank' href= {{link_dummy_generic_data}} >lien vers la géodonnée correspondante</a>")
+                                                                                title_complement = tags$div(tags$p("Complément de titre (...)"),
+                                                                                                            tags$p(create_geoportail_tag(link = regener_geovd_link)
+                                                                                                          )
                                                                                 ))
                                          ),# end firstnav_panel
 

@@ -6,7 +6,13 @@
 
 ## Suivi des modifications du profil énergétique
 
-### Mise à jour 2024
+### MàJ 2024-10-10
+
+#### Distribution d'électricité
+
+* Ajout données 2018-2022 (résultats de l'enquête 2024 au 2024-10-10)
+
+### MàJ 2024-04-30
 
 #### Chaleur des bâtiments 
 

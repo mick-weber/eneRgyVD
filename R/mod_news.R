@@ -17,7 +17,7 @@ mod_news_ui <- function(id){
                           h4(strong("Historique des versions")),
                           br(),
 
-                          bslib::accordion(open = c("tocome", "july24"), # refers to 'value' of accordion_panel. update when needed
+                          bslib::accordion(open = c("tocome", "oct24"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,
 
                                            # Next updates ----
@@ -28,6 +28,13 @@ mod_news_ui <- function(id){
                                                                   HTML(bsicons::bs_icon("database-fill-add", size = "1.5rem"),
                                                                        "Ajout des données de distribution de gaz 2018-2022"),
                                                                   br(),br(),
+                                                                  HTML(bsicons::bs_icon("star", size = "1.5rem"),
+                                                                       "Migration vers un profil climatique (décembre 2024-janvier 2025)")
+                                           ),
+
+                                           bslib::accordion_panel(title = HTML("<strong>Octobre 2024</strong>"),
+                                                                  value = "oct24",
+                                                                  icon = bsicons::bs_icon("calendar-check", size = "1.5rem"),
                                                                   HTML(bsicons::bs_icon("arrow-clockwise", size = "1.5rem"),
                                                                        "Mise à jour des données de distribution d'électricité 2022")
                                            ),

@@ -145,6 +145,27 @@ app_ui <- function(request) {
                       ),# End nav_panel 'Electricite'
 
 
+                      ### Gaz naturel ----
+
+                      bslib::nav_panel("Gaz naturel",
+                                       icon = icon("fire-flame-simple"),
+
+                                       bslib::navset_card_pill(id = "navset_ng",
+
+                                                               ### cons_ng ----
+                                                               bslib::nav_panel(title = "Distribution de gaz naturel",
+                                                                                icon = icon("fire-flame-simple"),
+
+                                                                                mod_ng_charts_ui("ng_cons_charts",
+                                                                                                 title = "Distribution de gaz naturel par commune",
+                                                                                                 title_complement = NULL # not needed
+                                                                                                 )
+                                                                                )
+                                                               )
+                                       ),# End nav_panel 'Gaz naturel'
+
+
+
                       ### Chaleur batiments ----
                       bslib::nav_panel("Chaleur des bâtiments",
                                        icon = icon("fire"),

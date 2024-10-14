@@ -31,6 +31,9 @@ load("./data/subsidies_by_building.rda")
 load("./data/subsidies_by_measure.rda")
 load("./data/subsidies_doc.rda")
 
+## ng_cons data ----
+load("./data/ng_cons.rda")
+
 ## profil-climat dummy data (generic_data)----
 
 load("./data/dummy_climat.rda")
@@ -67,6 +70,7 @@ elec_prod_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec
 elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_cons-doc.md")
 regener_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/regener-doc.md")
 subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subsidies-doc.md")
+ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_cons-doc.md")
 
 # DEV for now
 generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
@@ -80,6 +84,7 @@ generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/gener
 
 subpanels_tribble <- dplyr::tribble(
   ~observe_input, ~about_nav_panel, ~navset_id,  ~about_tabpanel_name, ~data_id, ~nav_panel, ~navset_name, ~nav_name,
+  # ENERGIE
   "consumption_charts-elec_data_help","Energie","navset_energie", "Distribution d'électricité", "data_1", "Electricité", "navset_elec", "Distribution d'électricité",
   "production_charts-elec_data_help", "Energie","navset_energie", "Production d'électricité", "data_2", "Electricité", "navset_elec", "Production d'électricité",
   "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
@@ -87,23 +92,14 @@ subpanels_tribble <- dplyr::tribble(
   "regener_misc-rgr_misc_help", "Energie","navset_energie", "Chaleur bâtiments", "data_5", "Chaleur des bâtiments","navset_regener", "Informations bâtiments",
   "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue par bâtiments",
   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
+  "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
   # COMPLETE THESE ONES (and more !) when real data is here
-  "test_generic_climat-generic_data_help",  "Adaptation","navset_climat", "Donnée générique", "data_8", "Exemple générique 1", "navset_climat", "Première donnée",
-  "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "Donnée générique", "data_9", "Exemple générique 2", "navset_mobilite","Première donnée"
+  "test_generic_climat-generic_data_help",  "Adaptation","navset_climat", "Donnée générique", "data_10", "Exemple générique 1", "navset_climat", "Première donnée",
+  "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "Donnée générique", "data_11", "Exemple générique 2", "navset_mobilite","Première donnée"
 
 
 )
-
-
-
-# Store .Rmd in temp dir ----
-# https://mastering-shiny.org/action-transfer.html#downloading-reports
-
-report_path <- tempfile(fileext = ".Rmd")
-
-# Files others than .Rd are in ./inst/extdata/
-file.copy("./inst/extdata/downloadable_report.Rmd", report_path, overwrite = TRUE)
 
 # Generic utils ----
 # Tab-specific items at the end (see outline : `Objects specific to...`) !
@@ -127,7 +123,8 @@ req_communes_not_available <- "Aucune donnée n'est disponible pour la sélectio
 generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
                                                        Les grands principes de chaque méthode ainsi que les principales modifications sont documentés dans l'onglet 'À propos'."
 
-specific_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite."
+specific_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite.
+Les données par secteurs sont spécialement dépendantes de la qualité des données fournies par les distributeurs."
 
 specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'information qui figure dans les registres cantonal et fédéral des bâtiments, en particulier pour les agents énergétiques.
 La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
@@ -135,7 +132,8 @@ La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient
 specific_subsidies_warning <- "Ces données sont issues d'un traitement des données du Programme bâtiments et concernent exclusivement les subventions versées (avec achèvement de travaux).
 Les subventions promises pour lesquels les travaux n'ont pas été effectués ne sont donc pas comptabilisées."
 
-
+specific_ng_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite.
+Les données par secteurs sont spécialement dépendantes de la qualité des données fournies par les distributeurs."
 
 ## NEWS notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R

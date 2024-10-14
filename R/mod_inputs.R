@@ -78,6 +78,14 @@ mod_inputs_ui <- function(id){
     ), # End conditionalPanel
 
 
+    # uiOutput() for ng_cons ----
+    shiny::conditionalPanel(
+      condition = "input.nav == 'Gaz naturel'", # 1 condition !
+      shiny::uiOutput(ns("ng_cons_year_selector"))
+
+    ), # End conditionalPanel
+
+
     # Sidebar bottom ----
 
     tags$div(style = "margin-top: auto;",
@@ -210,7 +218,7 @@ mod_inputs_server <- function(id){
     })
 
 
-    # 4. tabSubsidies inputs ----
+    # 4. Subsidies inputs ----
 
     # 1/2
     subset_subsidies_building <- reactive({
@@ -228,7 +236,24 @@ mod_inputs_server <- function(id){
         dplyr::filter(commune %in% input$selected_communes)
     })
 
-    # 5. tabAdaptation ----
+    # 5. NG distribution inputs ----
+
+    subset_ng_cons <- reactive({
+
+      req(input$selected_communes)
+      req(selectedUnits$energy_unit)
+
+      ng_cons |>
+        dplyr::filter(commune %in% input$selected_communes) |>
+        convert_units(colnames = "consommation",
+                      unit_from = "kWh", # initial value in dataset
+                      unit_to = selectedUnits$energy_unit)
+
+    })
+
+
+
+    # 10. tabAdaptation ----
 
     subset_generic_test_data <- reactive({
       req(input$selected_communes)
@@ -299,6 +324,8 @@ mod_inputs_server <- function(id){
       inputVals$subsidies_building <- subset_subsidies_building()
       inputVals$subsidies_measure <- subset_subsidies_measure()
 
+      inputVals$ng_cons_dataset <- subset_ng_cons()
+
       # store generic data already filtered
 
       inputVals$generic_test_data <- subset_generic_test_data()
@@ -322,9 +349,14 @@ mod_inputs_server <- function(id){
       inputVals$min_regener_year <- min_regener_year # utils_helpers.R
       inputVals$max_regener_year <- max_regener_year # utils_helpers.R
 
+      # store min & max years from ng_cons dataset
+      # since missing vars are possible for a selection, set a fallback value outside the subset selected
+      # remove annoying warnings saying that Inf/+Inf is returned for the first min/max term
+      inputVals$min_avail_ng_cons <- min(min(subset_ng_cons()$annee), min(ng_cons$annee)) |> suppressWarnings()
+      inputVals$max_avail_ng_cons <- max(max(subset_ng_cons()$annee), max(ng_cons$annee)) |> suppressWarnings()
+
 
     })# End observe
-
 
     ### Statbox subsets, communes only (!) ----
     # --> we exclude Cantonal row which value is separated inside a dedicated statbox
@@ -383,7 +415,8 @@ mod_inputs_server <- function(id){
 
        shiny::tagList(
 
-         shiny::sliderInput(ns("elec_cons_year"), label = "Choix des années",
+         shiny::sliderInput(ns("elec_cons_year"),
+                            label = "Choix des années",
                             min = inputVals$min_avail_elec_cons,
                             max = inputVals$max_avail_elec_cons,
                             value = c(inputVals$min_avail_elec_cons,
@@ -450,13 +483,27 @@ mod_inputs_server <- function(id){
       )# End tagList
     }) # End renderUI
 
+    ### ng_cons dynamic select ----
+
+    output$ng_cons_year_selector <- shiny::renderUI({
+
+      req(input$selected_communes)
+
+      shiny::sliderInput(ns("ng_cons_year"),
+                         label = "Choix des années",
+                         min = inputVals$min_avail_ng_cons,
+                         max = inputVals$max_avail_ng_cons,
+                         value = c(inputVals$min_avail_ng_cons,
+                                   inputVals$max_avail_ng_cons),
+                         step = 1L, sep = "", ticks = T, dragRange = T)
+    })
 
 # [inputVals 3/3] -----
 
     # We eventually complete inputVals with the values from renderUI() above
     observe({
 
-                        # Cons elec selected inputs
+      # Cons elec selected inputs
       inputVals$min_selected_elec_cons <- input$elec_cons_year[1] # current min year selected for elec consumption
       inputVals$max_selected_elec_cons <- input$elec_cons_year[2] # current max year selected for elec consumption
 
@@ -465,15 +512,16 @@ mod_inputs_server <- function(id){
       inputVals$max_selected_elec_prod <- input$elec_prod_year[2] # current max year selected for elec production
       inputVals$techs_selected <- input$prod_techs      # current selected technologies for elec production
 
-
       # RegEner selected inputs
-      inputVals$max_selected_regener <- input$regener_year
+      inputVals$max_selected_regener <- input$regener_year # current (unique) year selected for regener data
 
+      # NG cons selected inputs
+      inputVals$min_selected_ng_cons <- input$ng_cons_year[1] # current min year selected for ng consumption
+      inputVals$max_selected_ng_cons <- input$ng_cons_year[2] # current max year selected for ng consumption
     })
 
     # mod_download_all_data ----
     mod_download_all_data_server("download_all_data", inputVals = inputVals)
-
 
     # Returning inputVals ----
     return(inputVals)

@@ -135,7 +135,24 @@ mod_about_the_app_ui <- function(id){
 
 
                                                                                                                      )# End tags$div
-                                                                                                    )# End tabPanel 4/4
+                                                                                                    ),# End tabPanel 4
+
+                                                                                                    bslib::nav_panel("Distribution de gaz naturel",
+                                                                                                                     # create div to apply class
+                                                                                                                     tags$div(
+                                                                                                                       br(),
+                                                                                                                       h4(strong("Détails méthodologiques : distribution de gaz naturel")),
+                                                                                                                       br(),
+                                                                                                                       bslib::accordion(!!!ng_cons_doc_panels, open = FALSE),
+                                                                                                                       br(),
+                                                                                                                       h5(strong("Descriptif des variables")),
+                                                                                                                       br(),
+                                                                                                                       # Documentation table for both subsidies datasets
+                                                                                                                       #DT::dataTableOutput(ns("ng_cons_doc"))
+
+
+                                                                                                                     )# End tags$div
+                                                                                                    )# End tabPanel 5
                                                                                   )# End nested tabsetPanel within 'Données'
                                                                  ),# End nav_panel Energie
 

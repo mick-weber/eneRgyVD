@@ -1,6 +1,6 @@
 #' table_content UI Function
 #'
-#' @description A shiny Module.
+#' @description A shiny Module used to display the table of contents in the home page with redirection links
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -37,16 +37,17 @@ mod_table_content_ui <- function(id){
           actionLink(ns("data_5"), class = "mx-3", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
           actionLink(ns("data_6"), class = "mx-3", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
           actionLink(ns("data_7"), class = "mx-3", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
+          actionLink(ns("data_8"), class = "mx-3", "Distribution de gaz naturel", icon = icon("fire-flame-simple")),
 
         # Section Adaptation ----
         actionButton(ns("test"), "Adaptation", class = "disabledTocButtons"),
 
-          actionLink(ns("data_8"), class = "mx-3", "Adaptation (exemple générique)", icon = icon("earth")),
+          actionLink(ns("data_10"), class = "mx-3", "Adaptation (exemple générique)", icon = icon("earth")),
 
         # Section Mobilité ----
         actionButton(ns("test"), "Mobilité", class = "disabledTocButtons"),
 
-          actionLink(ns("data_9"), class = "mx-3", "Mobilité (exemple générique)", icon = icon("car")),
+          actionLink(ns("data_11"), class = "mx-3", "Mobilité (exemple générique)", icon = icon("car")),
 
       )
     )
@@ -59,6 +60,8 @@ mod_table_content_ui <- function(id){
 mod_table_content_server <- function(id, parent){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # This function allows to flexibly redirect TOC items clicks to corresponding nav_panels in utils_helpers.R
 
     purrr::pwalk(subset(subpanels_tribble, select = c("data_id", "nav_panel","navset_name","nav_name")), # selecting all cols result in unnused arguments
                  .f = \(data_id, nav_panel, navset_name, nav_name) shiny::observeEvent(

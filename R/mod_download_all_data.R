@@ -103,9 +103,16 @@ mod_download_all_data_server <- function(id,
         # Subsidies measure
         subventions_mesure = inputVals$subsidies_measure|>
           rename_misc_colnames() |>
-          rename_fr_colnames()
+          rename_fr_colnames(),
+
+        # NG consumption
+        gaz_cons = inputVals$ng_cons_dataset |>
+          rename_fr_colnames() |>
+          add_colname_units(unit = inputVals$energyUnit)
+
 
         # Add other datasets with associated functions here !
+
 
       )
     })

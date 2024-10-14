@@ -250,7 +250,6 @@ app_server <- function(input, output, session) {
 
    })
 
-
   ## Subset subsidies data (x2) ----
 
    subset_subsidies_building <- reactive({
@@ -273,6 +272,28 @@ app_server <- function(input, output, session) {
 
       inputVals$subsidies_measure
    })
+
+   ## Subset_ng_cons_data ----
+   ## Subset data for ng consumption
+   subset_ng_cons_data <- reactive({
+
+     # explicitly require communes to be selected
+     validate(
+       need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
+     )
+     # waiting on these to get initialized (renderUIs)
+     req(inputVals$min_selected_ng_cons,
+         inputVals$max_selected_ng_cons,
+         inputVals$ng_cons_dataset,
+         inputVals$energyUnit)
+
+     # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
+
+     inputVals$ng_cons_dataset |>
+       dplyr::filter(annee >= inputVals$min_selected_ng_cons,
+                     annee <= inputVals$max_selected_ng_cons)
+
+   }) # End reactive()
 
    ## Subset generic data ----
 
@@ -433,6 +454,7 @@ app_server <- function(input, output, session) {
                           # documentation file from utils_helpers.R
                           doc_vars = elec_prod_doc)
 
+
    ## mod regener_cons_charts ----
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
@@ -481,6 +503,20 @@ app_server <- function(input, output, session) {
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_mesure_",
                                doc_vars = NULL # for now
+   )
+
+   ## mod ng_charts ----
+   mod_ng_charts_server("ng_cons_charts",
+                        inputVals = inputVals,
+                        subsetData = subset_ng_cons_data,
+                        energyUnit = inputVals$energyUnit,
+                        var_commune = "commune",
+                        var_year = "annee",
+                        var_cat = "secteur",
+                        var_values = "consommation",
+                        color_palette = colors_sectors,
+                        dl_prefix = "profil_energie_gaz_conso_",
+                        doc_vars = NULL # later
    )
 
 

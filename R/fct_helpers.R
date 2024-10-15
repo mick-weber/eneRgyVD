@@ -883,67 +883,6 @@ create_subsidies_table_dt <- function(data,
     ) # End DT
 }
 
-#' create_ng_cons_table_dt
-#' Creates datatable for ng_cons dataset
-#' @param data ng_cons dataset
-#' @param var_year the name of the year variable to sort from
-#' @param DT_dom the datatable domain options to provide (e.g. 'Bfrtip')
-#' @return a DT object
-#' @export
-
-create_ng_cons_table_dt <- function(data,
-                                    var_commune,
-                                    var_year,
-                                    var_cat = NULL,
-                                    energy_unit,
-                                    DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  data |>
-    # Basic clean up for table output
-    dplyr::arrange(desc(.data[[var_year]])) |>
-    dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
-    dplyr::mutate(
-      # limit decimals for <num> variables (note var_year is converted to factor before)
-      dplyr::across(where(is.numeric), ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) |>
-    # any_of() allows to pass var_car even if it does not exist
-    dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
-    rename_misc_colnames() |>
-    rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_units(unit = energy_unit) |>
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom,
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(
-                                   targets = "_all",
-                                   className = 'dt-center'
-                                 )),
-
-
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', # enable selection of a single row
-                  rownames = FALSE      # don't show row numbers/names
-    ) # End DT
-
-}
-
-
 #' create_generic_table_dt
 #' Creates datatable for generic datasets. Flexible enough to handle all datasets, but loses in
 #'  customizability compared to other energy-specific datatable functions.

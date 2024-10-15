@@ -182,10 +182,8 @@ mod_ng_charts_server <- function(id,
     # DT table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
-      create_ng_cons_table_dt(data = subsetData(),
-                              var_commune = var_commune,
-                              var_year = var_year,
-                              var_cat = var_cat,
+      # ng needs are the same as electricity consumption
+      create_cons_table_dt(data = subsetData(),
                               energy_unit = inputVals$energyUnit,
                               DT_dom = "frtip" # remove default button in DT extensions
       )

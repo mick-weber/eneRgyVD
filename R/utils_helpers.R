@@ -84,6 +84,7 @@ generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/gener
 # This is also ulsed by mod_table_content.R to redirect users towards tabpanels
 
 subpanels_tribble <- dplyr::tribble(
+  # <about_*> = item names in mod_about_the_app.R   //  <nav_*> = item names in app_ui.R
   ~observe_input, ~about_nav_panel, ~navset_id,  ~about_tabpanel_name, ~data_id, ~nav_panel, ~navset_name, ~nav_name,
   # ENERGIE
   "consumption_charts-elec_data_help","Energie","navset_energie", "Distribution d'électricité", "data_1", "Electricité", "navset_elec", "Distribution d'électricité",

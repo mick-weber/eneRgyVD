@@ -129,6 +129,23 @@
 "regener_doc"
 
 
+#' Natural gas distribution by commune for Canton de Vaud
+#'
+#' The dataset is an agregation and simplification of all natural gas delivery datapoints
+#' which are yearly transmitted to DGE-DIREN by the distribution network managers.
+#' Data is cleaned, affiliated to municipalities then aggregated and sent to the app.
+#' @name ng_cons
+#' @keywords datasets
+#' @format A tibble with various rows and cols which are not detailed yet
+#' @source DGE-DIREN(<https://www.vd.ch/>)
+
+
+"ng_cons"
+
+#' @rdname ng_cons
+"ng_cons_doc"
+
+
 #' Glossary
 #'
 #' This dataset retrieves some specific terms which may not be obvious for lay people and provides explanations

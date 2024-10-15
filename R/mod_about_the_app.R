@@ -137,6 +137,7 @@ mod_about_the_app_ui <- function(id){
                                                                                                                      )# End tags$div
                                                                                                     ),# End tabPanel 4
 
+                                                                                                    ### 5. Conso gaz ----
                                                                                                     bslib::nav_panel("Distribution de gaz naturel",
                                                                                                                      # create div to apply class
                                                                                                                      tags$div(
@@ -148,7 +149,7 @@ mod_about_the_app_ui <- function(id){
                                                                                                                        h5(strong("Descriptif des variables")),
                                                                                                                        br(),
                                                                                                                        # Documentation table for both subsidies datasets
-                                                                                                                       #DT::dataTableOutput(ns("ng_cons_doc"))
+                                                                                                                       DT::dataTableOutput(ns("ng_cons_doc"))
 
 
                                                                                                                      )# End tags$div
@@ -311,6 +312,13 @@ mod_about_the_app_server <- function(id){
     output$subsidies_doc <- DT::renderDataTable({
       subsidies_doc |>
         create_doc_table_dt(doc_prefix = "doc_subventions_") # fct_helpers.R
+    })
+
+    # 5. Conso gaz ----
+
+    output$ng_cons_doc <- DT::renderDataTable({
+      ng_cons_doc |>
+        create_doc_table_dt(doc_prefix = "doc_conso_gaz_") # fct_helpers.R
     })
 
 

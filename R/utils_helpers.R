@@ -33,6 +33,7 @@ load("./data/subsidies_doc.rda")
 
 ## ng_cons data ----
 load("./data/ng_cons.rda")
+load("./data/ng_cons_doc.rda")
 
 ## profil-climat dummy data (generic_data)----
 

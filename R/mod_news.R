@@ -80,7 +80,7 @@ mod_news_ui <- function(id){
                                                                   HTML(bsicons::bs_icon("database-fill-add", size = "1.5rem"),
                                                                        "Ajout des données de production d'électricité 2015-2022"),
                                                                   br(),br(),
-                                                                  HTML(bsicons::bs_icon("database-fill-add", size = "1.5rem"),
+                                                                  HTML(bsicons::bs_icon("star", size = "1.5rem"),
                                                                        "Mise en ligne du profil énergétique")
                                            )
                           )

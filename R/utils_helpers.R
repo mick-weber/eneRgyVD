@@ -77,7 +77,6 @@ ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_con
 generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
 
 
-
 # REDIRECTIONS ----
 
 # This is used by app_server.R/ and methodological accordions in specific modules to redirect user in 'mod_about_the_app.R' module
@@ -119,23 +118,6 @@ req_communes_phrase <- "Sélectionner au moins une commune pour générer un ré
 # when 1+ commune is selected but not available in the dataset :
 req_communes_not_available <- "Aucune donnée n'est disponible pour la sélection actuelle"
 
-## Sentence methodological changes ----
-# Used in ui.r to avoid repetition
-
-generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
-                                                       Les grands principes de chaque méthode ainsi que les principales modifications sont documentés dans l'onglet 'À propos'."
-
-specific_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite.
-Les données par secteurs sont spécialement dépendantes de la qualité des données fournies par les distributeurs."
-
-specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'information qui figure dans les registres cantonal et fédéral des bâtiments, en particulier pour les agents énergétiques.
-La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
-
-specific_subsidies_warning <- "Ces données sont issues d'un traitement des données du Programme bâtiments et concernent exclusivement les subventions versées (avec achèvement de travaux).
-Les subventions promises pour lesquels les travaux n'ont pas été effectués ne sont donc pas comptabilisées."
-
-specific_ng_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite.
-Les données par secteurs sont spécialement dépendantes de la qualité des données fournies par les distributeurs."
 
 ## NEWS notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R
@@ -162,23 +144,6 @@ height_facet_under_limit <- 400
 
 # Height of facet plot's above limit
 height_facet_above_limit <- 700
-
-
-## Links and mail ----
-# Used for mod_about_the_app.R and/or contact notificationMenu in ui.R
-
-mail_address <- "stat.energie@vd.ch"
-link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
-link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
-link_pecc <- "https://www.vd.ch/pecc" # shortcut link redirecting to https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc
-link_github <- "https://github.com/mick-weber/eneRgyVD"
-
-link_dummy_generic_data <- 'https://www.geo.vd.ch/?mapresources=GEOVD_ENERGIE&visiblelayers={%22GEOVD_ENERGIE%22:[%22Eoliennes%20du%20site%22,%22Site%20%C3%A9olien%22]}'
-
-### geoportail links ----
-
-regener_geovd_link <- 'https://www.geo.vd.ch' # temporary
-
 
 ## DT language file ----
 ### RUN ONCE : Store JSON french language items file for DT library. May require rjson library (not in DESCRIPTION)
@@ -406,11 +371,6 @@ subsidies_building_colors <- subsidies_building_palette$color |>
 # It's flexible enough if new/removed subsidies appear
 # Thanks https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
 
-## |---------------------------------------------------------------|
-##          REVIEW START
-## |---------------------------------------------------------------|
-
-# NEW CODE
 subsidies_measure_palette_plot <- dplyr::tribble(~mesure_simplifiee, ~ color,
                                                  "Isolation partielle", "#ffdb0f",
                                                  "Isolation globale", "#FF870F",
@@ -421,11 +381,6 @@ subsidies_measure_palette_plot <- dplyr::tribble(~mesure_simplifiee, ~ color,
                                                  "Autres", "#cccccc",
                                                  "Autres mesures (voir table)", "#cccccc"
                                                  )
-
-
-## |---------------------------------------------------------------|
-##          REVIEW END
-## |---------------------------------------------------------------|
 
 # Prepare palette for create_bar_plotly()
 subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color |>
@@ -538,6 +493,7 @@ elec_cons_vd_last_year <- elec_cons |>
 
 #### VD heat consumption for last common year
 # !`annee` -> `etat`
+
 last_year_rgr <- max(regener_needs$etat)
 
 cons_rg_vd_last_year <- regener_cons_ae_aff |>
@@ -555,19 +511,4 @@ subsidies_m01_vd_last_year <- subsidies_by_measure |>
   dplyr::filter(mesure == "M01") |>
   dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
   dplyr::pull()
-
-
-### Map-specific ----
-# We retrieve the coordinates
-# With a nested list ; each district name has 4 coordinates (xmin,ymin,xmax,ymax)
-# These coordinates represent the boundaries for the leaflet map zoom adjustments (through widget)
-
-# bboxes <- districts_names |>
-#   purrr::map(.f = ~ sf::st_bbox(sf_districts |> dplyr::filter(NOM_MIN == .x))) |>
-#   purrr::set_names(districts_names)
-#
-# ## Add & fill the Canton bbox in our bboxes using the whole districts borders
-#
-# bboxes$Canton <- sf_districts |> sf::st_bbox()
-
 

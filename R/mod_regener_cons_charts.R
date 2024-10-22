@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_regener_cons_charts_ui <- function(id){
+mod_regener_cons_charts_ui <- function(id,
+                                       title,
+                                       title_complement){
   ns <- NS(id)
   tagList(
 
@@ -18,7 +20,7 @@ mod_regener_cons_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4("Consommations théoriques des bâtiments"),
+      h4(title, style = "padding-right:10px;"),
 
 
       # Methodology accordion
@@ -35,12 +37,8 @@ mod_regener_cons_charts_ui <- function(id){
 
     ),#End div
 
-    # Disclaimer for regener cons data (in a column for better display)
-    tags$p("Ces données illustrent comment la consommation de différents agents énergétiques
- se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
-           strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
-           "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central
- pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.", create_geoportail_tag(link = regener_geovd_link)),
+    # utils_text_and_links.R
+    title_complement,
 
     bslib::navset_pill(
       id = ns("tabset_rgr_cons"),

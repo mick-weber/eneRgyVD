@@ -124,8 +124,7 @@ app_ui <- function(request) {
                                                                                 # Module for producing cons elec charts
                                                                                 mod_elec_charts_ui("consumption_charts",
                                                                                                    title = "Distribution d'électricité par commune",
-                                                                                                   title_complement = HTML("La <strong>distribution</strong> ne doit pas être confondue à la <strong>consommation finale</strong> car il manque l'autoconsommation (notamment photovoltaïque) ou encore l'électricité du réseau des CFF.
-                                                                                   L'autoconsommation estimée est disponible dans la <strong>table des données de production d'électricité</strong>.")
+                                                                                                   title_complement = title_complement_elec_cons # utils_text_and_links.R
                                                                                 )
 
                                                                ),# End nav_panel
@@ -137,7 +136,7 @@ app_ui <- function(request) {
                                                                                 # Module for producing prod elec charts
                                                                                 mod_elec_charts_ui("production_charts",
                                                                                                    title = "Production d'électricité par commune",
-                                                                                                   title_complement = NULL # not needed
+                                                                                                   title_complement = title_complement_elec_prod # utils_text_and_links.R
                                                                                 )
 
                                                                )# End nav_panel
@@ -158,7 +157,7 @@ app_ui <- function(request) {
 
                                                                                 mod_ng_charts_ui("ng_cons_charts",
                                                                                                  title = "Distribution de gaz naturel par commune",
-                                                                                                 title_complement = NULL # not needed
+                                                                                                 title_complement = title_complement_ng_cons # utils_text_and_links.R
                                                                                                  )
                                                                                 )
                                                                )
@@ -175,18 +174,27 @@ app_ui <- function(request) {
                                                                #### besoins ----
                                                                bslib::nav_panel("Besoins des bâtiments",
 
-                                                                                mod_regener_needs_charts_ui("regener_needs")
+                                                                                mod_regener_needs_charts_ui("regener_needs",
+                                                                                                            title = "Besoins théoriques des bâtiments",
+                                                                                                            title_complement = title_complement_regener_needs # utils_text_and_links.R
+                                                                                                            )
 
                                                                ),
                                                                #### consommation ----
                                                                bslib::nav_panel("Consommation des bâtiments",
 
-                                                                                mod_regener_cons_charts_ui("regener_cons")
+                                                                                mod_regener_cons_charts_ui("regener_cons",
+                                                                                                           title = "Consommations théoriques des bâtiments",
+                                                                                                           title_complement = title_complement_regener_cons # utils_text_and_links.R
+                                                                                                             )
                                                                ),
                                                                #### misc ----
                                                                bslib::nav_panel("Informations bâtiments",
 
-                                                                                mod_regener_misc_charts_ui("regener_misc")
+                                                                                mod_regener_misc_charts_ui("regener_misc",
+                                                                                                           title = "Autres informations des bâtiments",
+                                                                                                           title_complement = title_complement_regener_misc # utils_text_and_links.R
+                                                                                                             )
                                                                )
                                        )# End navset_card_pill
                       ),# End nav_panel 'Chaleur bâtiments'
@@ -201,13 +209,19 @@ app_ui <- function(request) {
                                             #### Par batiments ----
                                             bslib::nav_panel("Vue par bâtiments",
 
-                                                             mod_subsidies_building_charts_ui("subsidies_building")
+                                                             mod_subsidies_building_charts_ui("subsidies_building",
+                                                                                              title = HTML("Subventions Programme bâtiments<br>(vue par bâtiment)"),
+                                                                                              title_complement = title_complement_subsidies_building # utils_text_and_links.R
+                                                                                              )
                                             ),
 
                                             #### Par mesures ----
                                             bslib::nav_panel("Vue par subventions",
 
-                                                             mod_subsidies_measure_charts_ui("subsidies_measure")
+                                                             mod_subsidies_measure_charts_ui("subsidies_measure",
+                                                                                             title = HTML("Subventions Programme bâtiments<br>(vue par mesures)"),
+                                                                                             title_complement = title_complement_subsidies_measure # utils_text_and_links.R
+                                                                                             )
 
                                             )
                                           )# End navset_card_pill

@@ -40,8 +40,8 @@ mod_elec_charts_ui <- function(id,
         open = FALSE)
     ),#End div
 
-    # If any : pass title_complement at 70% width of container
-      tags$p(title_complement, style = "width:70vw;"),
+    # utils_text_and_links.R
+      title_complement,
 
     # Pills ----
 

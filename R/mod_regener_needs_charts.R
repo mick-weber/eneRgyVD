@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_regener_needs_charts_ui <- function(id){
+mod_regener_needs_charts_ui <- function(id,
+                                        title,
+                                        title_complement){
   ns <- NS(id)
 
 
@@ -20,7 +22,7 @@ mod_regener_needs_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4("Besoins théoriques des bâtiments"),
+      h4(title, style = "padding-right:10px;"),
 
 
       # Methodology accordion
@@ -37,12 +39,8 @@ mod_regener_needs_charts_ui <- function(id){
 
     ),#End div
 
-
-    tags$p(
-      "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit
-                                          l'eau chaude sanitaire et chauffage des locaux.",
-      strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
-      "Plus d'informations, notamment sur les besoins optimisés, en cliquant sur 'Méthodologie' ci-dessus.", create_geoportail_tag(link = regener_geovd_link)),
+    # utils_text_and_links.R
+    title_complement,
 
     # Pills ----
 

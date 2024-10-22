@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_subsidies_building_charts_ui <- function(id){
+mod_subsidies_building_charts_ui <- function(id,
+                                             title,
+                                             title_complement){
   ns <- NS(id)
   tagList(
 
@@ -17,7 +19,7 @@ mod_subsidies_building_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4(HTML("Subventions Programme bâtiments<br>(vue par bâtiment)")),
+      h4(title, style = "padding-right:10px;"),
 
 
       # Methodology accordion
@@ -33,15 +35,8 @@ mod_subsidies_building_charts_ui <- function(id){
         open = FALSE)
     ),
 
-
-    # Disclaimer for regener cons data (in a column for better display)
-    tags$p("Ces données illustrent le nombre de bâtiments ayant reçu certaines subventions du Programme Bâtiment vaudois depuis 2017
-    (voir détails dans la méthodologie complète).
-    Les données précédant 2017 ne sont pas inclues mais représentent une minorité des subventions versées.",
-    strong("L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes."),
-    "Le total des subventions versées d'une année ne peut donc pas être inférieur au total de l'année précédente.
-    La SRE correspond à la surface de référence énergétique estimée des bâtiments ayant reçu une subvention.
-    Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD)."),
+    # utils_text_and_links.R
+    title_complement,
 
     # TABSETS for better readability of plot / table
     bslib::navset_pill(

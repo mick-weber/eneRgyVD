@@ -40,8 +40,8 @@ mod_ng_charts_ui <- function(id,
         open = FALSE)
     ),#End div
 
-    # If any : pass title_complement at 70% width of container
-    tags$p(title_complement, style = "width:70vw;"),
+    # utils_text_and_links.R
+    title_complement,
 
     # Pills ----
 
@@ -144,8 +144,14 @@ mod_ng_charts_server <- function(id,
       length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
 
+    # Initialize toggle stacked condition for conditionalPanel in ui
+    output$commune <- reactive({
+      length(inputVals_communes_d()) > 0 # Returns TRUE if at least one commune is selected, else FALSE
+    })
+
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
+    outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Plot logic ----
 
@@ -168,9 +174,9 @@ mod_ng_charts_server <- function(id,
                           var_values = var_values,
                           var_cat = var_cat,
                           unit = inputVals$energyUnit,
-                          legend_title = "Titre de légende générique",
+                          legend_title = "Secteur",
                           color_palette = color_palette,
-                          dodge = FALSE, # we don't allow user to dodge w/ toggle button
+                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
                           free_y = input$toggle_status, # reactive(input$toggle_status)
                           web_width = inputVals$web_width, # px width of browser when app starts
                           web_height = inputVals$web_height # px height of browser when app starts

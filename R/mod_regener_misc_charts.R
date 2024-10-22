@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_regener_misc_charts_ui <- function(id){
+mod_regener_misc_charts_ui <- function(id,
+                                       title,
+                                       title_complement){
   ns <- NS(id)
   tagList(
 
@@ -17,7 +19,7 @@ mod_regener_misc_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4("Autres informations des bâtiments"),
+      h4(title, style = "padding-right:10px;"),
 
 
       # Methodology accordion
@@ -34,9 +36,8 @@ mod_regener_misc_charts_ui <- function(id){
 
     ),# End div
 
-
-    tags$p("Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune.", create_geoportail_tag(link = regener_geovd_link)),
-
+    # utils_text_and_links.R
+    title_complement,
 
     bslib::navset_pill(header = br(),
 

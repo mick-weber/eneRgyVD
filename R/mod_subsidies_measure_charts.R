@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_subsidies_measure_charts_ui <- function(id){
+mod_subsidies_measure_charts_ui <- function(id,
+                                            title,
+                                            title_complement){
   ns <- NS(id)
   tagList(
 
@@ -17,7 +19,7 @@ mod_subsidies_measure_charts_ui <- function(id){
       #  smaller screens : row by row (default layout without fill)
       class = "d-lg-flex justify-content-between",
       # Title
-      h4(HTML("Subventions Programme bâtiments<br>(vue par mesures)")),
+      h4(title, style = "padding-right:10px;"),
 
 
       # Methodology accordion
@@ -33,11 +35,8 @@ mod_subsidies_measure_charts_ui <- function(id){
         open = FALSE)
     ),
 
-    # Disclaimer for regener cons data (in a column for better display)
-    tags$p("Ces données illustrent le nombre de subventions versées par type et année depuis 2017
-           (voir détails dans la méthodologie complète). Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,",
-           strong("il ne faut pas interpréter une subvention comme un bâtiment nouvellement subventionné."),
-                  "Une vision agrégée par bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments."),
+    # utils_text_and_links.R
+    title_complement,
 
     # TABSETS for better readability of plot / table
     bslib::navset_pill(

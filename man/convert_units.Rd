@@ -11,7 +11,7 @@ convert_units(data, colnames, unit_from, unit_to)
 \arguments{
 \item{data}{the dataframe containing the columns where to convert units}
 
-\item{colnames}{the colnames where to convert units}
+\item{colnames}{the colnames where to convert units. If multiple are provided they will all be converted the same}
 
 \item{unit_from}{the unit to convert from}
 

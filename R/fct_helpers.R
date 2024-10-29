@@ -108,7 +108,7 @@ generate_doc_accordion_panels <- function(md_file){
     bslib::accordion_panel(
       titles,
       icon = bsicons::bs_icon("question-circle", class = "text-secondary"),
-      tags$div(class = "customPanel",
+      shiny::tags$div(class = "customPanel",
                shiny::markdown(paragraphs))
       )
 
@@ -1040,7 +1040,7 @@ create_geoportail_tag <- function(link){
 #' Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
 #' conversion tables are defined in utils_helpers.R
 #' @param data the dataframe containing the columns where to convert units
-#' @param colnames the colnames where to convert units
+#' @param colnames the colnames where to convert units. If multiple are provided they will all be converted the same
 #' @param unit_from the unit to convert from
 #' @param unit_to the unit to convert to. Choice between "kWh", "MWh", "GWh", "TJ"
 #'
@@ -1051,6 +1051,11 @@ convert_units <- function(data,
                           colnames, # to be defined how it should be passed
                           unit_from, # default value from dataset
                           unit_to){ # check if it's worth saving the widget selected unit in a specific variable before (in mod_inputs.R)
+
+  if(is.null(colnames)){
+    message("Aucune colonne spécifiée dans `colnames`. Aucune conversion effectuée.")
+    return(data)
+  }
 
   # Retrieves the right conversion factor unit_table in utils_helpers.R according to unit_to
   conversion_factor <- if(unit_from %in% energy_units_table$unit){
@@ -1064,7 +1069,7 @@ convert_units <- function(data,
     co2_units_table |>
       dplyr::filter(unit == unit_to) |>
       dplyr::pull(factor)
-  }else{
+  }else {
     message("Unité `unit_from` non reconnue !")
   }
 
@@ -1072,7 +1077,7 @@ convert_units <- function(data,
   if(is.data.frame(data)){
   # Applies the conversion factor to the target colnames of the dataframe (division)
   data |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(colnames), ~.x / conversion_factor))
+    dplyr::mutate(dplyr::across(dplyr::any_of(colnames), ~.x / conversion_factor))
   }else{
     # if numeric value (not df) we directly apply the conversion factor
     data/conversion_factor

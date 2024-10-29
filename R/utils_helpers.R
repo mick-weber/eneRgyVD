@@ -2,67 +2,59 @@
 # Loading .rda objects ----
 ## sf data ----
 
-load("./data/sf_canton.rda")
-load("./data/sf_communes.rda")
-load("./data/sf_districts.rda")
-load("./data/sf_lacs.rda")
-
-## elec_prod data ----
-
-load("./data/elec_prod.rda")
-load("./data/elec_prod_doc.rda")
-
-## elec_cons data ----
-
-load("./data/elec_cons.rda")
-load("./data/elec_cons_doc.rda")
-
-## regener data ----
-
-load("./data/regener_cons_ae_use.rda")
-load("./data/regener_cons_ae_aff.rda")
-load("./data/regener_needs.rda")
-load("./data/regener_misc.rda")
-load("./data/regener_doc.rda")
-
-## subsidies data ----
-
-load("./data/subsidies_by_building.rda")
-load("./data/subsidies_by_measure.rda")
-load("./data/subsidies_doc.rda")
-
-## ng_cons data ----
-load("./data/ng_cons.rda")
-load("./data/ng_cons_doc.rda")
-
-## profil-climat dummy data (generic_data)----
-
-load("./data/dummy_climat.rda")
-
-## |------------------------------------------------------------------|
-##          PICK one of <canop> or <part_ve> as generic_data prototype
-## |------------------------------------------------------------------|
-# generic_data <- canop |>
-#   dplyr::rename("generic_value" = surface_canopee)
-#
-# generic_data_vd <- generic_data |>
-#   dplyr::summarise(commune = "Canton de Vaud", generic_value = sum(generic_value, na.rm = T), annee = dplyr::first(annee))
-#
-# generic_data <- generic_data |>
-#   dplyr::bind_rows(generic_data_vd)
+sf_canton <- readRDS("./data/sf_canton.rds")
+sf_communes <- readRDS("./data/sf_communes.rds")
+sf_districts <- readRDS("./data/sf_districts.rds")
+sf_lacs <- readRDS("./data/sf_lacs.rds")
 
 
-## profil-climat dummy data 2 (generic data) ----
-# note : data prep is done before as opposed to dummy_climat.rda
+## energy datasets ----
 
-load("./data/dummy_mobilite.rda")
+# <ADD NEW ENERGY DATASETS HERE>
+energy_datasets_rds_files <- c("elec_prod.rds",
+                           "elec_cons.rds",
+                           "ng_cons.rds",
+                           "regener_needs.rds",
+                           "regener_cons_ae_use.rds",
+                           "regener_cons_ae_aff.rds",
+                           "regener_misc.rds",
+                           "subsidies_by_measure.rds",
+                           "subsidies_by_building.rds")
 
-generic_data <- part_ve
+
+energy_datasets <- purrr::map(energy_datasets_rds_files,
+                              \(rds) readRDS(file = paste0("./data/", rds))) |>
+  purrr::set_names(energy_datasets_rds_files |>
+                     stringr::str_remove("\\.rds$"))
+
+## mobility datasets ----
+
+# <ADD NEW MOBILITY DATASETS HERE>
+mobility_datasets_rds_files <- c("part_ve.rds")
+
+mobility_datasets <- purrr::map(mobility_datasets_rds_files,
+                                \(rds) readRDS(file = paste0("./data/", rds))) |>
+  purrr::set_names(mobility_datasets_rds_files |>
+                     stringr::str_remove("\\.rds$"))
 
 
-## glossary ----
+## adaptation dtasets ----
 
-load("./data/glossary.rda")
+# <ADD NEW ADAPTATION DATASETS HERE>
+adaptation_datasets_rds_files <- c("canop.rds")
+
+adaptation_datasets <- purrr::map(adaptation_datasets_rds_files,
+                                  \(rds) readRDS(file = paste0("./data/", rds))) |>
+  purrr::set_names(adaptation_datasets_rds_files |>
+                     stringr::str_remove("\\.rds$"))
+
+
+
+## |---------------------------------------------------------------|
+##          END REWORK OF RDA/RDS FILES
+## |---------------------------------------------------------------|
+
+
 
 ## doc panels for accordions ----
 # see fct_helpers.R
@@ -388,7 +380,7 @@ subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color |>
 
 
 # This palette is only supplying colors for the table. The p
-subsidies_measure_palette_table <- subsidies_by_measure |>
+subsidies_measure_palette_table <- energy_datasets$subsidies_by_measure |>
   dplyr::distinct(mesure) |>
   dplyr::mutate(icon = dplyr::case_when(
     mesure %in% c("M01", "M12", "M13", "M14") ~ as.character(shiny::icon("house")),
@@ -443,7 +435,7 @@ choices_canton_communes <- list(
 
 ### Colors for categorie
 
-categories_diren <- elec_prod |>
+categories_diren <- energy_datasets$elec_prod |>
   dplyr::distinct(categorie) |>
   dplyr::arrange(categorie) |>
   dplyr::pull()
@@ -455,8 +447,8 @@ categories_diren <- elec_prod |>
 ## Objects specific 'Chaleur bâtiments'  ----
 # used for fct_helpers.R -> mod_regener_cons_charts.R + mod_stats_box.R
 
-min_regener_year <- min(regener_cons_ae_use$etat)
-max_regener_year <- max(regener_cons_ae_use$etat)
+min_regener_year <- min(energy_datasets$regener_cons_ae_use$etat)
+max_regener_year <- max(energy_datasets$regener_cons_ae_use$etat)
 
 regener_current_year <- max_regener_year
 
@@ -473,9 +465,9 @@ regener_current_year <- max_regener_year
 
 #### VD electricity production for last available year
 
-last_year_elec_prod <- max(elec_prod$annee) # When prod elec alone
+last_year_elec_prod <- max(energy_datasets$elec_prod$annee) # When prod elec alone
 
-elec_prod_vd_last_year <- elec_prod |>
+elec_prod_vd_last_year <- energy_datasets$elec_prod |>
   dplyr::filter(commune == "Canton de Vaud") |>
   dplyr::filter(annee == last_year_elec_prod) |>
   dplyr::summarise(production = sum(production, na.rm = TRUE)) |>
@@ -483,9 +475,9 @@ elec_prod_vd_last_year <- elec_prod |>
 
 #### VD electricity consumption for last available year
 
-last_year_elec_cons <- max(elec_cons$annee) # When prod elec alone
+last_year_elec_cons <- max(energy_datasets$elec_cons$annee) # When prod elec alone
 
-elec_cons_vd_last_year <- elec_cons |>
+elec_cons_vd_last_year <- energy_datasets$elec_cons |>
   dplyr::filter(commune == "Canton de Vaud") |>
   dplyr::filter(annee == last_year_elec_cons) |>
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
@@ -494,18 +486,18 @@ elec_cons_vd_last_year <- elec_cons |>
 #### VD heat consumption for last common year
 # !`annee` -> `etat`
 
-last_year_rgr <- max(regener_needs$etat)
+last_year_rgr <- max(energy_datasets$regener_needs$etat)
 
-cons_rg_vd_last_year <- regener_cons_ae_aff |>
+cons_rg_vd_last_year <- energy_datasets$regener_cons_ae_aff |>
   dplyr::filter(commune == "Canton de Vaud") |>
   dplyr::filter(etat == last_year_rgr) |>
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
   dplyr::pull()
 
 #### VD subsidies M01 for last common year
-last_year_subsidies <- max(subsidies_by_measure$annee)
+last_year_subsidies <- max(energy_datasets$subsidies_by_measure$annee)
 
-subsidies_m01_vd_last_year <- subsidies_by_measure |>
+subsidies_m01_vd_last_year <- energy_datasets$subsidies_by_measure |>
   dplyr::filter(commune == "Canton de Vaud") |>
   dplyr::filter(annee == last_year_subsidies) |>
   dplyr::filter(mesure == "M01") |>

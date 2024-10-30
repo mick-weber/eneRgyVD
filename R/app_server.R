@@ -332,10 +332,27 @@ app_server <- function(input, output, session) {
 
    ## mod ng_charts ----
 
+   observe({
+     message("inputVals$selectedCommunes")
+     print(inputVals$selectedCommunes)
+   })
+
+   observe({
+     message("inputvals$energyDatasets$ng_cons : ")
+     print(inputVals$energyDatasets$ng_cons)
+   })
+
+   observe({
+     message("test_ng_dataset : ")
+     print(test_ng_dataset())
+   })
+
+
+
+
    test_ng_dataset <- reactive({
 
      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-     req(inputVals$energyDatasets$ng_cons)
 
      inputVals$energyDatasets$ng_cons
 
@@ -343,7 +360,7 @@ app_server <- function(input, output, session) {
 
    mod_ng_charts_server("ng_cons_charts",
                         inputVals = inputVals,
-                        subsetData = test_ng_dataset(), #inputVals$energyDatasets$ng_cons,
+                        subsetData = test_ng_dataset, #inputVals$energyDatasets$ng_cons,
                         energyUnit = inputVals$energyUnit,
                         var_commune = "commune",
                         var_year = "annee",

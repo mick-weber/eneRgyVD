@@ -146,6 +146,11 @@ mod_inputs_server <- function(id){
     # 0. Retrieve units ----
     selectedUnits <- mod_unit_converter_server("unit_converter")
 
+    # Uploaded communes ----
+    ## '_timed' because we have a timestamp as the first element to force reactivity
+    ##    when reuploading the same file (see mod_upload_communes.R)
+
+    uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
     ## |---------------------------------------------------------------|
     ##          REWRITE DATASETS AND INPUTVALS
@@ -234,12 +239,6 @@ mod_inputs_server <- function(id){
           # no input widgets filter here neither
         })
     })
-
-     # Uploaded communes ----
-     ## '_timed' because we have a timestamp as the first element to force reactivity
-     ##    when reuploading the same file (see mod_upload_communes.R)
-
-    uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
 
 #

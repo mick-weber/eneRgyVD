@@ -7,11 +7,17 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  # Print test area if needed ----
+ ## |---------------------------------------------------------------|
+ ##          PRINT AREA FOR TESTING
+ ## |---------------------------------------------------------------|
 
   # observe({
-  #   print(inputVals$elec_cons_dataset)
+  #   print(inputVals$energyDatasets$ng_cons)
   # })
+
+  ## |---------------------------------------------------------------|
+  ##          /PRINT AREA
+  ## |---------------------------------------------------------------|
 
    # Record logs ----
    ## We record session and errors (no inputs/outputs)
@@ -129,187 +135,6 @@ app_server <- function(input, output, session) {
 
    })
 
-# Data retrievals ----
-#  These next steps take the mod_inputs.R data (unit converted!) and creates objects
-   # that may be further changed (subset_prod_data gets additionnal filtering if selected)
-   # or that may be unchanged (e.g. regener data).
-
-  ## Subset_elec_cons_data ----
-   ## Subset data for consumption data (fed into mod_elec_charts_server("consumption_charts", ...))
-
-    subset_elec_cons_data <- reactive({
-
-      # explicitely require communes to be selected
-      validate(
-        need(inputVals$selectedCommunes, "Sélectionner au moins une commune pour générer un résultat.")
-      )
-
-      # waiting on these to get initialized (renderUIs)
-      req(inputVals$min_selected_elec_cons,
-          inputVals$max_selected_elec_cons,
-          inputVals$elec_cons_dataset,
-          inputVals$energyUnit)
-
-      # further filter cons_dataset with selected min/max values and convert to energyUnit()
-       # CONVERSION TEST IN PROGRESS
-      inputVals$elec_cons_dataset |>
-        dplyr::filter(annee >= inputVals$min_selected_elec_cons,
-                      annee <= inputVals$max_selected_elec_cons)
-
-    })
-
-
-   ## Subset_elec_prod_data ----
-   ## Subset data for production data (fed into mod_elec_charts_server("production_charts", ...))
-   subset_elec_prod_data <- reactive({
-
-     # explicitly require communes to be selected
-     validate(
-       need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
-     )
-     # waiting on these to get initialized (renderUIs)
-     req(inputVals$min_selected_elec_prod,
-         inputVals$max_selected_elec_prod,
-         inputVals$techs_selected,
-         inputVals$elec_prod_dataset)
-
-     # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
-
-     inputVals$elec_prod_dataset |>
-       dplyr::filter(annee >= inputVals$min_selected_elec_prod,
-                     annee <= inputVals$max_selected_elec_prod) |>
-       dplyr::filter(categorie %in% inputVals$techs_selected)
-
-   }) # End reactive()
-
-   ## Subset regener (x3)----
-   # subset_rgr1 : regener by commune, cons, ae, use
-
-   subset_rgr_cons_1 <- reactive({
-
-      # explicitly require communes to be selected
-      validate(
-         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
-      )
-
-      # waiting on these to get initialized (renderUIs)
-      req(inputVals$energyUnit)
-
-      # No filter needed yet for years, only year conversion
-      inputVals$rgr_1
-   })
-
-   # subset_rgr1 : regener by commune, cons, ae, aff
-
-   subset_rgr_cons_2 <- reactive({
-
-      # explicitly require communes to be selected
-      validate(
-         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
-      )
-
-      # waiting on these to get initialized (renderUIs)
-      req(inputVals$energyUnit)
-
-      # No filter needed yet for years, only year conversion
-      inputVals$rgr_2
-
-   })
-
-      # subset_rgr_needs : regener by commune, needs, use
-   subset_rgr_needs <- reactive({
-
-      # explicitly require communes to be selected
-      validate(
-         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
-      )
-
-      # waiting on these to get initialized (renderUIs)
-      req(inputVals$energyUnit)
-
-      # No filter needed yet for years, only year conversion
-      inputVals$rgr_needs
-
-   })
-
-
-      # subset_rgr_misc : regener by commune and misc columns
-      # Note : we don't need to apply conver_units() so we would not need the
-      # code below here, but this code is for consistency with other data imports
-   subset_rgr_misc <- reactive({
-
-      # explicitly require communes to be selected
-      validate(
-         need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
-      )
-
-      # waiting on these to get initialized (renderUIs)
-      req(inputVals$energyUnit)
-
-      inputVals$rgr_misc
-
-   })
-
-  ## Subset subsidies data (x2) ----
-
-   subset_subsidies_building <- reactive({
-
-      # explicitly require communes to be selected
-      validate(
-         need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
-      )
-
-      inputVals$subsidies_building
-   })
-
-
-   subset_subsidies_measure <- reactive({
-
-      # explicitly require communes to be selected
-      validate(
-         need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
-      )
-
-      inputVals$subsidies_measure
-   })
-
-   ## Subset_ng_cons_data ----
-   ## Subset data for ng consumption
-   subset_ng_cons_data <- reactive({
-
-     # explicitly require communes to be selected
-     validate(
-       need(inputVals$selectedCommunes,req_communes_phrase) # utils_helpers.R
-     )
-     # waiting on these to get initialized (renderUIs)
-     req(inputVals$min_selected_ng_cons,
-         inputVals$max_selected_ng_cons,
-         inputVals$ng_cons_dataset,
-         inputVals$energyUnit)
-
-     # prod by commune filtered with commune pickerInput(), years from sliderInput(), techs from pickerInput()
-
-     inputVals$ng_cons_dataset |>
-       dplyr::filter(annee >= inputVals$min_selected_ng_cons,
-                     annee <= inputVals$max_selected_ng_cons)
-
-   }) # End reactive()
-
-   ## Subset generic data ----
-
-   subset_generic_test_data <- reactive({
-
-     # explicitly require communes to be selected
-     validate(
-       need(inputVals$selectedCommunes, req_communes_phrase) # utils_helpers.R
-     )
-
-     inputVals$generic_test_data
-
-   })
-
-
-
    # Upload communes ----
 
    observeEvent(inputVals$uploadedCommunesTimed,{
@@ -420,7 +245,7 @@ app_server <- function(input, output, session) {
    ## mod_elec_charts (cons) ----
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
-                          subsetData = subset_elec_cons_data,
+                          subsetData = inputVals$energyDatasets$elec_cons,
                           energyUnit = inputVals$energyUnit,
                           legend_title = "Secteur",
                           var_year = "annee",
@@ -439,7 +264,7 @@ app_server <- function(input, output, session) {
    ## mod_elec_charts (prod) ----
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
-                          subsetData = subset_elec_prod_data,
+                          subsetData = inputVals$energyDatasets$elec_prod,
                           energyUnit = inputVals$energyUnit,
                           legend_title = NULL,
                           var_year = "annee",
@@ -458,8 +283,8 @@ app_server <- function(input, output, session) {
    ## mod regener_cons_charts ----
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
-                             subset_rgr_cons_1 = subset_rgr_cons_1,
-                             subset_rgr_cons_2 = subset_rgr_cons_2,
+                             subset_rgr_cons_1 = inputVals$energyDatasets$regener_cons_ae_use,
+                             subset_rgr_cons_2 = inputVals$energyDatasets$regener_cons_ae_aff,
                              dl_prefix = "profil_energie_conso_bat_",
                              doc_vars = regener_doc # utils_helpers.R
                              )
@@ -468,7 +293,7 @@ app_server <- function(input, output, session) {
     ## mod regener_needs_charts ----
    mod_regener_needs_charts_server("regener_needs",
                                    inputVals = inputVals,
-                                   subsetData = subset_rgr_needs, # filtered data for communes and selected years
+                                   subsetData = inputVals$energyDatasets$regener_needs, # filtered data for communes and selected years
                                    legend_title = "Usage", # for legend of barplot (either secteur/technologies)
                                    var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
                                    var_commune = "commune", # 'commune'
@@ -483,7 +308,7 @@ app_server <- function(input, output, session) {
    ## mod regener_misc_charts ----
    mod_regener_misc_charts_server("regener_misc",
                                   inputVals = inputVals,
-                                  subsetData = subset_rgr_misc,
+                                  subsetData = inputVals$energyDatasets$regener_misc,
                                   energyUnit = energyUnit,
                                   dl_prefix = "profil_energie_regener_autres_",
                                   doc_vars = regener_doc)
@@ -491,7 +316,7 @@ app_server <- function(input, output, session) {
 
    ## mod_subsidies_building_charts ----
    mod_subsidies_building_charts_server("subsidies_building",
-                               subsetData = subset_subsidies_building,
+                               subsetData = inputVals$energyDatasets$subsidies_by_building,
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_bat_",
                                doc_vars = NULL # for now
@@ -499,16 +324,17 @@ app_server <- function(input, output, session) {
 
    ##  mod_subsidies_measure_charts ----
    mod_subsidies_measure_charts_server("subsidies_measure",
-                               subsetData = subset_subsidies_measure,
+                               subsetData = inputVals$energyDatasets$subsidies_by_measure,
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_mesure_",
                                doc_vars = NULL # for now
    )
 
    ## mod ng_charts ----
+
    mod_ng_charts_server("ng_cons_charts",
                         inputVals = inputVals,
-                        subsetData = subset_ng_cons_data,
+                        subsetData = inputVals$energyDatasets$ng_cons,
                         energyUnit = inputVals$energyUnit,
                         var_commune = "commune",
                         var_year = "annee",
@@ -523,7 +349,7 @@ app_server <- function(input, output, session) {
    ## mod_generic_charts ----
 
    mod_generic_charts_server("test_generic_climat",
-                             subsetData = subset_generic_test_data,
+                             subsetData = inputVals$adaptationDatasets$canop,
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
@@ -539,7 +365,7 @@ app_server <- function(input, output, session) {
    ## mod_generic_charts ----
 
    mod_generic_charts_server("test_generic_mob",
-                             subsetData = subset_generic_test_data,
+                             subsetData = inputVals$mobilityDatasets$part_ve,
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",

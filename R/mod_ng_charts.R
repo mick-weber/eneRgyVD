@@ -158,7 +158,7 @@ mod_ng_charts_server <- function(id,
     ## Make debounced inputs ----
     # For barplot functions only, this avoids flickering plots when many items are selected/removed
 
-    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
+    subsetData_d <- reactive({subsetData}) |> shiny::debounce(debounce_plot_time)
     inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
 
     output$chart_1 <- plotly::renderPlotly({
@@ -189,7 +189,7 @@ mod_ng_charts_server <- function(id,
     output$table_1 <- DT::renderDataTable({
 
       # ng needs are the same as electricity consumption
-      create_cons_table_dt(data = subsetData(),
+      create_cons_table_dt(data = subsetData,
                               energy_unit = inputVals$energyUnit,
                               DT_dom = "frtip" # remove default button in DT extensions
       )
@@ -197,13 +197,13 @@ mod_ng_charts_server <- function(id,
 
     # Download logic ----
 
-    # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
+    # store the data in a reactive (not sure why we can't pass subsetData it directly, but otherwise this won't work)
 
     download_data <- reactive({
 
 
       # Make colnames nicelly formatted and add the current unit
-      subsetData() |>
+      subsetData |>
         rename_misc_colnames() |>  # fct_helpers.R
         rename_fr_colnames()       # fct_helpers.R
 

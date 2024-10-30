@@ -125,13 +125,11 @@ mod_ng_charts_ui <- function(id,
 #' @noRd
 mod_ng_charts_server <- function(id,
                                  subsetData, # passed from inputVals, bit redundant but clear
-                                 # energyUnit not needed here !
                                  inputVals,
                                  var_commune,
                                  var_year,
                                  var_cat,
                                  var_values,
-                                 energyUnit,
                                  color_palette,
                                  dl_prefix = dl_prefix,
                                  doc_vars = doc_vars
@@ -154,7 +152,6 @@ mod_ng_charts_server <- function(id,
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Plot logic ----
-
     ## Make debounced inputs ----
     # For barplot functions only, this avoids flickering plots when many items are selected/removed
 
@@ -163,9 +160,8 @@ mod_ng_charts_server <- function(id,
 
     output$chart_1 <- plotly::renderPlotly({
 
-      validate(
-        need(nrow(subsetData_d()) > 0, message = req_communes_not_available)
-      )
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      validate(need(nrow(subsetData_d()) > 0, message = req_communes_not_available))
 
       subsetData_d() |>
         create_bar_plotly(n_communes = length(inputVals_communes_d()),
@@ -185,8 +181,10 @@ mod_ng_charts_server <- function(id,
 
     # Table logic ----
 
-    # DT table, detailed (plot is aggregated) with both N_EGID & SRE
+    # DT table
     output$table_1 <- DT::renderDataTable({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       # ng needs are the same as electricity consumption
       create_cons_table_dt(data = subsetData(),
@@ -201,12 +199,10 @@ mod_ng_charts_server <- function(id,
 
     download_data <- reactive({
 
-
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_misc_colnames() |>  # fct_helpers.R
-        rename_fr_colnames()       # fct_helpers.R
-
+        rename_fr_colnames() |>        # fct_helpers.R
+        add_colname_units(unit = inputVals$energyUnit)
 
     })
 

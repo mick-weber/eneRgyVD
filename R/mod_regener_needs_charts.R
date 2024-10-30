@@ -213,6 +213,8 @@ mod_regener_needs_charts_server <- function(id,
         # ...PLOTLY BAR PLOT ----
         output$chart_1 <- plotly::renderPlotly({
 
+          validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
           # fct_helpers.R
           create_bar_plotly(data = subsetData_barplot_d(),
                             n_communes = length(inputVals_communes_d()),
@@ -241,6 +243,8 @@ mod_regener_needs_charts_server <- function(id,
 
     # Renders DT table ----
     output$table_1 <- DT::renderDataTable({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
                         unit = inputVals$energyUnit,

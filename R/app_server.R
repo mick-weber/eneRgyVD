@@ -245,8 +245,7 @@ app_server <- function(input, output, session) {
    ## mod_elec_charts (cons) ----
    mod_elec_charts_server("consumption_charts",
                           inputVals = inputVals,
-                          subsetData = inputVals$energyDatasets$elec_cons,
-                          energyUnit = inputVals$energyUnit,
+                          subsetData = reactive({inputVals$energyDatasets$elec_cons}),
                           legend_title = "Secteur",
                           var_year = "annee",
                           var_commune = "commune",
@@ -264,8 +263,7 @@ app_server <- function(input, output, session) {
    ## mod_elec_charts (prod) ----
    mod_elec_charts_server("production_charts",
                           inputVals = inputVals,
-                          subsetData = inputVals$energyDatasets$elec_prod,
-                          energyUnit = inputVals$energyUnit,
+                          subsetData = reactive({inputVals$energyDatasets$elec_prod}),
                           legend_title = NULL,
                           var_year = "annee",
                           var_commune = "commune",
@@ -283,8 +281,8 @@ app_server <- function(input, output, session) {
    ## mod regener_cons_charts ----
    mod_regener_cons_charts_server("regener_cons",
                              inputVals = inputVals,
-                             subset_rgr_cons_1 = inputVals$energyDatasets$regener_cons_ae_use,
-                             subset_rgr_cons_2 = inputVals$energyDatasets$regener_cons_ae_aff,
+                             subset_rgr_cons_1 = reactive({inputVals$energyDatasets$regener_cons_ae_use}),
+                             subset_rgr_cons_2 = reactive({inputVals$energyDatasets$regener_cons_ae_aff}),
                              dl_prefix = "profil_energie_conso_bat_",
                              doc_vars = regener_doc # utils_helpers.R
                              )
@@ -293,7 +291,7 @@ app_server <- function(input, output, session) {
     ## mod regener_needs_charts ----
    mod_regener_needs_charts_server("regener_needs",
                                    inputVals = inputVals,
-                                   subsetData = inputVals$energyDatasets$regener_needs, # filtered data for communes and selected years
+                                   subsetData = reactive({inputVals$energyDatasets$regener_needs}), # filtered data for communes and selected years
                                    legend_title = "Usage", # for legend of barplot (either secteur/technologies)
                                    var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
                                    var_commune = "commune", # 'commune'
@@ -308,15 +306,14 @@ app_server <- function(input, output, session) {
    ## mod regener_misc_charts ----
    mod_regener_misc_charts_server("regener_misc",
                                   inputVals = inputVals,
-                                  subsetData = inputVals$energyDatasets$regener_misc,
-                                  energyUnit = energyUnit,
+                                  subsetData = reactive({inputVals$energyDatasets$regener_misc}),
                                   dl_prefix = "profil_energie_regener_autres_",
                                   doc_vars = regener_doc)
 
 
    ## mod_subsidies_building_charts ----
    mod_subsidies_building_charts_server("subsidies_building",
-                               subsetData = inputVals$energyDatasets$subsidies_by_building,
+                               subsetData = reactive({inputVals$energyDatasets$subsidies_by_building}),
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_bat_",
                                doc_vars = NULL # for now
@@ -324,7 +321,7 @@ app_server <- function(input, output, session) {
 
    ##  mod_subsidies_measure_charts ----
    mod_subsidies_measure_charts_server("subsidies_measure",
-                               subsetData = inputVals$energyDatasets$subsidies_by_measure,
+                               subsetData = reactive({inputVals$energyDatasets$subsidies_by_measure}),
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_mesure_",
                                doc_vars = NULL # for now
@@ -332,36 +329,9 @@ app_server <- function(input, output, session) {
 
    ## mod ng_charts ----
 
-   observe({
-     message("inputVals$selectedCommunes")
-     print(inputVals$selectedCommunes)
-   })
-
-   observe({
-     message("inputvals$energyDatasets$ng_cons : ")
-     print(inputVals$energyDatasets$ng_cons)
-   })
-
-   observe({
-     message("test_ng_dataset : ")
-     print(test_ng_dataset())
-   })
-
-
-
-
-   test_ng_dataset <- reactive({
-
-     validate(need(inputVals$selectedCommunes, req_communes_phrase))
-
-     inputVals$energyDatasets$ng_cons
-
-   })
-
    mod_ng_charts_server("ng_cons_charts",
                         inputVals = inputVals,
-                        subsetData = test_ng_dataset, #inputVals$energyDatasets$ng_cons,
-                        energyUnit = inputVals$energyUnit,
+                        subsetData = reactive({inputVals$energyDatasets$ng_cons}),
                         var_commune = "commune",
                         var_year = "annee",
                         var_cat = "secteur",
@@ -375,7 +345,7 @@ app_server <- function(input, output, session) {
    ## mod_generic_charts ----
 
    mod_generic_charts_server("test_generic_climat",
-                             subsetData = inputVals$adaptationDatasets$canop,
+                             subsetData = reactive({inputVals$adaptationDatasets$canop}),
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
@@ -391,7 +361,7 @@ app_server <- function(input, output, session) {
    ## mod_generic_charts ----
 
    mod_generic_charts_server("test_generic_mob",
-                             subsetData = inputVals$mobilityDatasets$part_ve,
+                             subsetData = reactive({nputVals$mobilityDatasets$part_ve}),
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",

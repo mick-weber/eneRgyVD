@@ -127,7 +127,6 @@ mod_elec_charts_ui <- function(id,
 mod_elec_charts_server <- function(id,
                                    inputVals,
                                    subsetData, # filtered data for communes and selected years
-                                   energyUnit, # unit selected in mod_unit_converter.R
                                    legend_title, # for legend of barplot (either secteur/technologies)
                                    var_year, # 'annee'
                                    var_commune, # 'commune'
@@ -175,10 +174,8 @@ mod_elec_charts_server <- function(id,
 
         output$chart_1 <- plotly::renderPlotly({
 
-          # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
-          validate(
-            need(nrow(subsetData_d()) > 0, message = req_communes_not_available)
-          )
+          validate(need(inputVals$selectedCommunes, req_communes_phrase))
+          validate(need(nrow(subsetData_d()) > 0, message = req_communes_not_available))
 
           # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData_d(),
@@ -212,6 +209,8 @@ mod_elec_charts_server <- function(id,
     # Table logic ----
     # Renders the DT table
     output$table_1 <- DT::renderDataTable({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       fct_table_dt_type(data = subsetData(),
                         energy_unit = inputVals$energyUnit,

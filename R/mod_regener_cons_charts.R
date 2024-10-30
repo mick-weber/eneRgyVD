@@ -166,6 +166,8 @@ mod_regener_cons_charts_server <- function(id,
 
     observe({
 
+      validate(need(inputVals$selectedCommunes, req_communes_phrase)) # right place or inside renderPlots() ?
+
       if(input$tab_plot_type == "flow"){
 
         # Alluvial plot 1 : conso -> usage
@@ -221,6 +223,8 @@ mod_regener_cons_charts_server <- function(id,
 
     # tabs and renderTable ----
     observe({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase)) # right place or inside renderDataTable() ?
 
       if(input$tab_table_type == "flow"){
 

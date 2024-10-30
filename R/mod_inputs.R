@@ -98,9 +98,9 @@ mod_inputs_ui <- function(id){
       shiny::selectInput(ns("regener_needs_year"),
                          label = "Année (graphique)",
                          # static choices from utils_helpers.R -> no reactivity needed
-                         choices = c(min(energy_datasets$regener_needs$etat):max(energy_datasets$regener_needs$etat),
+                         choices = c(min(energy_datasets$regener_needs$etat):max(energy_datasets$regener_needs$etat)),
                          selected = max(energy_datasets$regener_needs$etat),
-                         multiple = FALSE))
+                         multiple = FALSE)
 
     ), # End conditionalPanel
 
@@ -178,9 +178,15 @@ mod_inputs_server <- function(id){
     # Note : we do it here and not in app_server.R so we don't have to pass all inputs in inputVals, retrieve them in app_server.R and filter there...
 
     ## 1. energyDatasets ----
+
+    # Special treatment for regener : we want to store the slider value so it's available only for the plot code (not made for multiple years)
+    observe({
+      inputVals$max_selected_regener <- input$regener_needs_year
+    })
+
     observe({
 
-      validate(need(input$selected_communes, req_communes_phrase)) # utils_helpers.R
+      req(input$selected_communes)
       req(selectedUnits$energy_unit)
       req(selectedUnits$co2_unit)
 
@@ -205,8 +211,8 @@ mod_inputs_server <- function(id){
                       if(name_df == "elec_prod"){df |> dplyr::filter(dplyr::between(annee, input$elec_prod_year[1], input$elec_prod_year[2]))}else
                         if(name_df == "elec_cons"){df |> dplyr::filter(dplyr::between(annee, input$elec_cons_year[1], input$elec_cons_year[2]))}else
                           if(name_df == "ng_cons"){df |> dplyr::filter(dplyr::between(annee, input$ng_cons_year[1], input$ng_cons_year[2]))}else
-                            if(grepl(name_df, pattern = "regener")){df |> dplyr::filter(etat == input$regener_needs_year)}else
-                              # else just return the df unfiltered
+                            #if(grepl(name_df, pattern = "regener")){df |> dplyr::filter(etat == input$regener_needs_year)}else
+                            # else (regener, others dfs, just return the df unfiltered
                               {df}
                     })
     })
@@ -214,7 +220,7 @@ mod_inputs_server <- function(id){
     ## 2. mobilityDatasets ----
     observe({
 
-      validate(need(input$selected_communes, req_communes_phrase)) # utils_helpers.R
+      req(input$selected_communes)
 
       inputVals$mobilityDatasets <- mobility_datasets |>
         purrr::map(\(mobility_df){
@@ -228,7 +234,7 @@ mod_inputs_server <- function(id){
     ## 3. adaptationDatasets----
     observe({
 
-      validate(need(input$selected_communes, req_communes_phrase)) # utils_helpers.R
+      req(input$selected_communes)
       req(selectedUnits$co2_unit)
 
       inputVals$adaptationDatasets <- adaptation_datasets |>
@@ -295,127 +301,6 @@ mod_inputs_server <- function(id){
 #     })# End observe
 #
 #
-    ## Render dynamic UI for renderUIs ----
-
-    ### tabCons dynamic select ----
-
-     # output$elec_cons_year <- shiny::renderUI({
-     #
-     #   req(input$selected_communes)
-     #
-     #   shiny::tagList(
-     #
-     #     shiny::sliderInput(ns("elec_cons_year"),
-     #                        label = "Choix des années",
-     #                        min = min(inputVals$energyDatasets$elec_prod$annee),
-     #                        max = max(inputVals$energyDatasets$elec_prod$annee),
-     #                        value = c(min(inputVals$energyDatasets$elec_prod$annee),
-     #                                  max(inputVals$energyDatasets$elec_prod$annee)),
-     #                        step = 1L, sep = "", ticks = T, dragRange = T
-     #                        )
-     #
-     #     )# End tagList
-     # })# End renderUi
-
-    ### tabRegener dynamic select ----
-
-    # output$regener_year_selector <- shiny::renderUI({
-    #
-    #   req(input$selected_communes)
-    #
-    #            shiny::selectInput(ns("regener_year"),
-    #                               label = "Année (graphique)",
-    #                               # static choices from utils_helpers.R -> no reactivity needed
-    #                               choices = c(min_regener_year:max_regener_year),
-    #                               selected = max_regener_year,
-    #                               multiple = FALSE)
-    #
-    # })
-
-
-    # ### tabProd dynamic select ----
-    #
-    # output$prod_year_n_techs <- shiny::renderUI({
-    #
-    #     req(input$selected_communes)
-    #     req(selectedUnits$energy_unit)
-    #     req(inputVals$energyDatasets)
-    #
-    #   shiny::tagList(
-    #
-    #     shiny::sliderInput(ns("elec_prod_year"),
-    #                        label = "Choix des années",
-    #                        # reactive choices from current subset
-    #                        min = min(inputVals$energyDatasets$elec_prod$annee),
-    #                        max = max(inputVals$energyDatasets$elec_prod$annee),
-    #                        value = c(min(inputVals$energyDatasets$elec_prod$annee),
-    #                                  max(inputVals$energyDatasets$elec_prod$annee)),
-    #                        step = 1L, sep = "", ticks = TRUE, dragRange = TRUE),
-#
-#
-#         # For SELECTABLE technologies : these checkboxes are linked to other server parts
-#         tags$div(class = "fs-sidebar",
-#         shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs"),
-#                                           label = "Choix des technologies",
-#                                           # reactive choices from current subset
-#                                           choices = unique(inputVals$energyDatasets$elec_prod$categorie),
-#                                           selected = unique(inputVals$energyDatasets$elec_prod$categorie),
-#                                           inline = FALSE,
-#                                           bigger = FALSE,
-#                                           shape = "round",
-#                                           status =  "default",
-#                                           icon = icon("check"),
-#                                           animation = "jelly"),
-#         # For NON-SELECTABLE technologies : a title with a unordered list (see custom.css classes)
-#         tags$p(#class = "sidebar_na_title",
-#                "Non représentées :"),
-#         tags$ul(class = "sidebar_na_list",
-#                 setdiff(categories_diren, unique(inputVals$energyDatasets$elec_prod$categorie)) |> # unavailable techs
-#                   purrr::map(tags$li) # map into list items of ul()
-#         )# End tags$ul
-#       )# End tags$div
-#       )# End tagList
-#     }) # End renderUI
-
-    ### ng_cons dynamic select ----
-
-#     output$ng_cons_year_selector <- shiny::renderUI({
-#
-#       req(input$selected_communes)
-#
-#       shiny::sliderInput(ns("ng_cons_year"),
-#                          label = "Choix des années",
-#                          # reactive choices from current subset
-#                          min = min(inputVals$energyDatasets$ng_cons$annee),
-#                          max = max(inputVals$energyDatasets$ng_cons$annee),
-#                          value = c(min(inputVals$energyDatasets$ng_cons$annee),
-#                                    max(inputVals$energyDatasets$ng_cons$annee)),
-#                          step = 1L, sep = "", ticks = T, dragRange = T)
-#     })
-# #
-# # [inputVals 3/3] -----
-#
-#     # We eventually complete inputVals with the values from renderUI() above
-#     observe({
-#
-#       # Cons elec selected inputs
-#       inputVals$min_selected_elec_cons <- input$elec_cons_year[1] # current min year selected for elec consumption
-#       inputVals$max_selected_elec_cons <- input$elec_cons_year[2] # current max year selected for elec consumption
-#
-#       # Prod elec selected inputs
-#       inputVals$min_selected_elec_prod <- input$elec_prod_year[1] # current min year selected for elec production
-#       inputVals$max_selected_elec_prod <- input$elec_prod_year[2] # current max year selected for elec production
-#       inputVals$techs_selected <- input$prod_techs      # current selected technologies for elec production
-#
-#       # RegEner selected inputs
-#       inputVals$max_selected_regener <- input$regener_year # current (unique) year selected for regener data
-#
-#       # NG cons selected inputs
-#       inputVals$min_selected_ng_cons <- input$ng_cons_year[1] # current min year selected for ng consumption
-#       inputVals$max_selected_ng_cons <- input$ng_cons_year[2] # current max year selected for ng consumption
-#     })
-#
-
 
     # mod_download_all_data ----
     mod_download_all_data_server("download_all_data", inputVals = inputVals)

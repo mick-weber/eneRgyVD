@@ -332,9 +332,18 @@ app_server <- function(input, output, session) {
 
    ## mod ng_charts ----
 
+   test_ng_dataset <- reactive({
+
+     validate(need(inputVals$selectedCommunes, req_communes_phrase))
+     req(inputVals$energyDatasets$ng_cons)
+
+     inputVals$energyDatasets$ng_cons
+
+   })
+
    mod_ng_charts_server("ng_cons_charts",
                         inputVals = inputVals,
-                        subsetData = inputVals$energyDatasets$ng_cons,
+                        subsetData = test_ng_dataset(), #inputVals$energyDatasets$ng_cons,
                         energyUnit = inputVals$energyUnit,
                         var_commune = "commune",
                         var_year = "annee",

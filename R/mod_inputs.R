@@ -159,8 +159,17 @@ mod_inputs_server <- function(id){
       adaptationDatasets = reactiveValues()
     )
 
+    ## Store communes & unit ----
+    # communes
+    observe({inputVals$selectedCommunes <- input$selected_communes})
+    # uploaded communes (we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval)
+    observe({inputVals$uploadedCommunesTimed <- uploaded_communes_timed()})
+    # units selected
+    observe({inputVals$energyUnit <- selectedUnits$energy_unit})
+    observe({inputVals$co2Unit <- selectedUnits$co2_unit})
 
-    # Store filtered datasets in inputVals ----
+
+    ## Store filtered datasets in inputVals ----
     # Note : we do it here and not in app_server.R so we don't have to pass all inputs in inputVals, retrieve them in app_server.R and filter there...
 
     ## 1. energyDatasets ----
@@ -232,26 +241,7 @@ mod_inputs_server <- function(id){
 
     uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
-# inputVals communes & unit ----
 
-    # communes
-    observe({
-      inputVals$selectedCommunes <- input$selected_communes
-    })
-
-    # uploaded communes
-    ## we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval
-
-    observe({
-      inputVals$uploadedCommunesTimed <- uploaded_communes_timed()
-      })
-    # units selected
-    observe({
-      inputVals$energyUnit <- selectedUnits$energy_unit
-    })
-    observe({
-      inputVals$co2Unit <- selectedUnits$co2_unit
-    })
 #
 
 

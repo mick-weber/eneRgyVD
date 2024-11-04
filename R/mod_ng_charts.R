@@ -97,7 +97,9 @@ mod_ng_charts_ui <- function(id,
 
 
                        # renderPlotly
-                       plotly::plotlyOutput(ns("chart_1"))
+                       plotly::plotlyOutput(ns("chart_1")) |>
+                         shinycssloaders::withSpinner(type = 6,
+                                                      color= main_color) # color defined in utils_helpers.R
 
 
 

@@ -1099,10 +1099,11 @@ convert_units <- function(data,
 add_colname_units <- function(data, unit){
 
   ## |---------------------------------------------------------------|
-  ##          Energy section
+  ##          Energy section : refer dynamically to widget's unit
   ## |---------------------------------------------------------------|
   if(unit %in% energy_units_table$unit){
 
+    # Step 1 : rename energy vars if they match expected units
     # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way I found to work.
     # Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
 
@@ -1118,8 +1119,9 @@ add_colname_units <- function(data, unit){
 
     }else {
       # If no column name is targeted with keyword, then simply return the data
-
+      message("`add_colname_units()` : an energy unit was passed but no variable was matched with `energy_col_keywords`, data is returned unmodified...")
       return(data)
+
     }
 
 
@@ -1145,15 +1147,16 @@ add_colname_units <- function(data, unit){
       # if no detection of either energy_col/power_col keywords, then just return the data. worst case : no unit is added...
     }else {
       # If no column name is targeted with keyword, then simply return the data
-
+      # since it's optional step we don't message the user if no power variable is found (e.g. regener)
       return(data)
     }
 
     ## |---------------------------------------------------------------|
-    ##          CO2 section
+    ##          CO2 section : refer dynamically to widget's unit
     ## |---------------------------------------------------------------|
   }else if(unit %in% co2_units_table$unit){
-    # Step 3 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
+
+    # Step 1 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
     if(any(stringr::str_detect(string = colnames(data),
                                pattern = stringr::regex(paste0(co2_keywords,
                                                                collapse = "|"),
@@ -1168,10 +1171,13 @@ add_colname_units <- function(data, unit){
 
     }else {
       # If no column name is targeted with keyword, then simply return the data
-
+      message("`add_colname_units()` : a co2 unit was passed but no variable was matched with `co2_keywords`, data is returned unmodified...")
       return(data)
     }
 
+    ## |---------------------------------------------------------------|
+    ##          Fixed % unit section :
+    ## |---------------------------------------------------------------|
   }else if(unit == "%"){
 
     if(any(stringr::str_detect(string = colnames(data),
@@ -1188,12 +1194,12 @@ add_colname_units <- function(data, unit){
     }else {
 
       # If no column name is targeted with keyword, then simply return the data
+      message("`add_colname_units()` a percent unit was passed but no variable was matched with `percent_keywords`, data is returned unmodified.")
       return(data)
 
     }
   }else {
     # If the unit is not recognized then simply return the data...
-
     return(data)
 
     }

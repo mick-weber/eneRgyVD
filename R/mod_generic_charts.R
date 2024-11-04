@@ -97,7 +97,9 @@ mod_generic_charts_ui <- function(id,
 
 
                                         # !! Since sunburst is removed we can directly use renderPlotly
-                                        plotly::plotlyOutput(ns("generic_chart"))
+                                        plotly::plotlyOutput(ns("generic_chart"))|>
+                                          shinycssloaders::withSpinner(type = 6,
+                                                                       color= main_color) # color defined in utils_helpers.R
 
 
 
@@ -157,6 +159,9 @@ mod_generic_charts_server <- function(id,
 
       output$generic_chart <- plotly::renderPlotly({
 
+        validate(need(inputVals$selectedCommunes, req_communes_phrase))
+        validate(need(nrow(subsetData_d()) > 0, message = req_communes_not_available))
+
         subsetData_d() |>
           create_bar_plotly(n_communes = length(inputVals_communes_d()),
                             var_commune = var_commune,
@@ -177,6 +182,8 @@ mod_generic_charts_server <- function(id,
 
     # DT table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       create_generic_table_dt(data = subsetData(),
                               var_commune = var_commune,

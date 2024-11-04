@@ -199,7 +199,7 @@ replace_fr_accents <- c("electricite" = "électricité",
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
 power_col_keywords <- c("Puissance", "installé")
 co2_keywords <- c("CO2")
-percent_keywords <- c("Pct", "Part")
+percent_keywords <- c("Pct", "Part", "canopee")
 
 
 # Colors and icons ----

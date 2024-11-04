@@ -44,19 +44,15 @@ app_server <- function(input, output, session) {
 
    # List of authorized inputs for bookmarking
    bookmarkingWhitelist <- c(
-      "inputs_1-selected_communes",  # which communes are selected
-      "unit_converter-energy_unit" # which unit is selected
+      "nav",      # which main nav_panel is selected
+      "inputs_1-selected_communes"      # which communes are selected
    )
 
    # Trigger bookmarking only if communes OR units are modified
    observeEvent({
-
-      inputVals$selectedCommunes
-      inputVals$energyUnit},{
-
-      session$doBookmark()
-
-   })
+     input$nav
+     inputVals$selectedCommunes
+     },{session$doBookmark()})
 
    # Exclude everything but bookmarkingWhitelist above
    ExcludedIDs <- reactiveVal(value = NULL)

@@ -2,6 +2,17 @@
 # This makes utils_helpers.R easier to navigate (these were initially stored in it)
 # !RULE! : these objects should NOT be used in utils_helpers.R since they are not sourced there !
 
+## Require disclaimers ----
+
+### Sentence related to communes selection ----
+
+# when 0 commune is selected for an output display request :
+req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat"
+
+# when 1+ commune is selected but not available in the dataset :
+req_communes_not_available <- "Aucune donnée n'est disponible pour la sélection actuelle"
+
+
 ## Methodological disclaimers ----
 # Used in all methodological accordions in each thematic module
 
@@ -55,7 +66,7 @@ title_complement_elec_prod <- tags$p(style = "width:70vw;",
 title_complement_ng_cons <- tags$p(style = "width:70vw",
                                    HTML("Ces données sont issues des données de relevés des compteurs fournis par les gestionnaires de réseau de distribution.
                                         <br>
-                                        L'exactitude des distinctions sectorielles ainsi que certaines variations interannuelles peuvent s'expliquer par la qualité des données fournies. (voir détails méthodologiques)"))
+                                        L'exactitude des distinctions sectorielles ainsi que certaines variations interannuelles peuvent s'expliquer par la qualité des données fournies (voir détails méthodologiques)."))
 
 title_complement_regener_needs <- tags$p(style = "width:70vw;",
                                          "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",

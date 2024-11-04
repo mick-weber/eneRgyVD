@@ -49,7 +49,6 @@ adaptation_datasets <- purrr::map(adaptation_datasets_rds_files,
                      stringr::str_remove("\\.rds$"))
 
 
-
 ## |---------------------------------------------------------------|
 ##          END REWORK OF RDA/RDS FILES
 ## |---------------------------------------------------------------|
@@ -101,15 +100,6 @@ subpanels_tribble <- dplyr::tribble(
 # Usef in app_server.R + plotting modules to avoid flickering and error loops with leaflet map
 
 debounce_plot_time <- 400 # ms, empirically defined as ideal
-
-## Sentence related to communes selection ----
-
-# when 0 commune is selected for an output display request :
-req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat"
-
-# when 1+ commune is selected but not available in the dataset :
-req_communes_not_available <- "Aucune donnée n'est disponible pour la sélection actuelle"
-
 
 ## NEWS notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R

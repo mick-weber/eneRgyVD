@@ -349,11 +349,11 @@ app_server <- function(input, output, session) {
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = "part_ve",
+                             var_values = "surface_canopee",
                              unit = "%",
-                             var_cat = NULL,
+                             var_cat = "category", # ask OCDC to change dataset var name...
                              color_palette = "olivedrab3", # default_palette, dedicated one, or one color
-                             dl_prefix = "generic_data_",
+                             dl_prefix = "canopee_",
                              doc_vars = NULL # for now
                              )
 
@@ -361,7 +361,7 @@ app_server <- function(input, output, session) {
    ## mod_generic_charts ----
 
    mod_generic_charts_server("test_generic_mob",
-                             subsetData = reactive({nputVals$mobilityDatasets$part_ve}),
+                             subsetData = reactive({inputVals$mobilityDatasets$part_ve}),
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
@@ -369,7 +369,7 @@ app_server <- function(input, output, session) {
                              unit = "%",
                              var_cat = NULL,
                              color_palette = default_palette, # default_palette, dedicated one, or one color
-                             dl_prefix = "generic_data_",
+                             dl_prefix = "part_ve_",
                              doc_vars = NULL # for now
    )
 

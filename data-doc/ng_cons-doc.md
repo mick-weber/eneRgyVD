@@ -16,4 +16,4 @@ Pour qu'une année puisse être disponible, il faut que l'ensemble des compteurs
 
 ## À quoi faut-il faire attention ?
 
-Le lissage des données est imparfait car effectué au prorata du nombre de jours, sans correctif pour les températures (degrés-jours). Ainsi certaines variations interannuelles peuvent ne pas représenter précisément la réalité.
+Le lissage des données est imparfait car effectué au prorata du nombre de jours, sans correctif pour les températures (degrés-jours). Ainsi certaines variations interannuelles peuvent ne pas représenter précisément la réalité. Dans les données reçues, certains compteurs ont des valeurs négatives suite à des équilibrages du surplus de facturation des années précédentes. Pour cette raison il n'est pas impossible que certains secteurs de consommation d'une commune (résultant de la somme des compteurs de la commune) présentent une valeur de consommation négative.

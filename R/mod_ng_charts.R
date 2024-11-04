@@ -139,9 +139,13 @@ mod_ng_charts_server <- function(id,
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+
+    subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
-      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
+      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
 
     # Initialize toggle stacked condition for conditionalPanel in ui
@@ -157,28 +161,25 @@ mod_ng_charts_server <- function(id,
     ## Make debounced inputs ----
     # For barplot functions only, this avoids flickering plots when many items are selected/removed
 
-    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-
     output$chart_1 <- plotly::renderPlotly({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
       validate(need(nrow(subsetData_d()) > 0, message = req_communes_not_available))
 
-      subsetData_d() |>
-        create_bar_plotly(n_communes = length(inputVals_communes_d()),
-                          var_commune = var_commune,
-                          var_year = var_year,
-                          var_values = var_values,
-                          var_cat = var_cat,
-                          unit = inputVals$energyUnit,
-                          legend_title = "Secteur",
-                          color_palette = color_palette,
-                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
-                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                          web_width = inputVals$web_width, # px width of browser when app starts
-                          web_height = inputVals$web_height # px height of browser when app starts
-        )# End create_bar_plotly
+      create_bar_plotly(data = subsetData_d(),
+                        n_communes = length(inputVals_communes_d()),
+                        var_commune = var_commune,
+                        var_year = var_year,
+                        var_values = var_values,
+                        var_cat = var_cat,
+                        unit = inputVals$energyUnit,
+                        legend_title = "Secteur",
+                        color_palette = color_palette,
+                        dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
+                        free_y = input$toggle_status, # reactive(input$toggle_status)
+                        web_width = inputVals$web_width, # px width of browser when app starts
+                        web_height = inputVals$web_height # px height of browser when app starts
+      )# End create_bar_plotly
     })# End renderPlot
 
     # Table logic ----

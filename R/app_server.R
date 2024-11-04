@@ -11,9 +11,9 @@ app_server <- function(input, output, session) {
  ##          PRINT AREA FOR TESTING
  ## |---------------------------------------------------------------|
 
-  # observe({
-  #   print(inputVals$energyDatasets$ng_cons)
-  # })
+    # observe({
+    #   print(inputVals$selectedCommunes_d())
+    # })
 
   ## |---------------------------------------------------------------|
   ##          /PRINT AREA

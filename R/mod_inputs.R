@@ -159,10 +159,14 @@ mod_inputs_server <- function(id){
 
     # Initialize inputVals ----
     inputVals <- reactiveValues(
+      #selectedCommunes_d = NULL, # initialize de debounced value
       energyDatasets = reactiveValues(),
       mobilityDatasets = reactiveValues(),
       adaptationDatasets = reactiveValues()
     )
+
+    # Debounced communes
+    #inputVals$selectedCommunes_d <- debounce(reactive({input$selected_communes}), 5000)
 
     ## Store communes & unit ----
     # communes

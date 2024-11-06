@@ -65,48 +65,48 @@ mod_download_all_data_server <- function(id,
       # List all pertinent inputVals$<datasets> from mod_inputs.R
       list(
         # Cons elec renamed+units
-        elec_cons = inputVals$elec_cons_dataset |>
+        elec_cons = inputVals$energyDatasets$elec_cons |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit),
 
         # Prod elec renamed+units
-        elec_prod = inputVals$elec_prod_dataset |>
+        elec_prod = inputVals$energyDatasets$elec_prod |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit),
 
         # Regener renamed+units
-        regener_besoins = inputVals$rgr_needs |>
+        regener_besoins = inputVals$energyDatasets$regener_needs |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit),
 
         # Regener renamed+units
-        regener_cons_use = inputVals$rgr_1 |>
+        regener_cons_use = inputVals$energyDatasets$regener_cons_ae_use |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit) |>
           add_colname_units(unit = inputVals$co2Unit),
 
         # Regener renamed+units
-        regener_cons_aff = inputVals$rgr_2 |>
+        regener_cons_aff = inputVals$energyDatasets$regener_cons_ae_aff |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit) |>
           add_colname_units(unit = inputVals$co2Unit),
 
         # Regener misc renamed
-        regener_autres = inputVals$rgr_misc |>
+        regener_autres = inputVals$energyDatasets$regener_misc |>
           rename_misc_colnames(),
 
         # Subsidies building
-        subventions_bat = inputVals$subsidies_building |>
+        subventions_bat = inputVals$energyDatasets$subsidies_by_building |>
           rename_misc_colnames() |>
           rename_fr_colnames(),
 
         # Subsidies measure
-        subventions_mesure = inputVals$subsidies_measure|>
+        subventions_mesure = inputVals$energyDatasets$subsidies_by_measure|>
           rename_misc_colnames() |>
           rename_fr_colnames(),
 
         # NG consumption
-        gaz_cons = inputVals$ng_cons_dataset |>
+        gaz_cons = inputVals$energyDatasets$ng_cons |>
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit)
 

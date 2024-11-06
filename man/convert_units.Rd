@@ -6,7 +6,7 @@
 Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
 conversion tables are defined in utils_helpers.R}
 \usage{
-convert_units(data, colnames, unit_from, unit_to)
+convert_units(data, colnames = NULL, unit_from, unit_to)
 }
 \arguments{
 \item{data}{the dataframe containing the columns where to convert units}

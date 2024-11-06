@@ -114,28 +114,24 @@ mod_subsidies_measure_charts_server <- function(id,
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+
+    ## Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+
+    subsetData_d <- reactive({
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      subsetData()}) |>
+      shiny::debounce(debounce_plot_time)
+
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({
-      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
+    output$toggle <- reactive({length(unique(subsetData_d()$commune)) > 1})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
 
     # Plot logic ----
 
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-
     output$plot_subsidies <- plotly::renderPlotly({
-
-      # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
-      validate(
-        need(nrow(subsetData_d()) > 0, message = req_communes_not_available)
-      )
 
       # Plotly but factor lumped for clarity :
       subsetData_d() |>
@@ -146,7 +142,7 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_plotly(n_communes = length(inputVals_communes_d()),
+        create_bar_plotly(n_communes = dplyr::n_distinct(subsetData_agg_d()$commune),
                           var_year = "annee",
                           var_commune = "commune",
                           var_values = "nombre",

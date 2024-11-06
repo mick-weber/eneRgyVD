@@ -143,6 +143,13 @@ mod_inputs_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    # # # TEST PRINT #
+    # observe({
+    #   print(input$selected_communes)
+    #   print(inputVals$selectedCommunes)
+    # })
+    # # /TEST PRINT
+
     # 0. Retrieve units ----
     selectedUnits <- mod_unit_converter_server("unit_converter")
 
@@ -159,14 +166,17 @@ mod_inputs_server <- function(id){
 
     # Initialize inputVals ----
     inputVals <- reactiveValues(
-      #selectedCommunes_d = NULL, # initialize de debounced value
+
+      uploadedCommunesTimed = NULL,
+      energyUnit = NULL,
+      co2Unit = NULL,
+      max_selected_regener = NULL,
+
+      # nested reactiveValues to avoid triggering everything when one dataset changes (see 'stratégie du petit r' from ThinkR)
       energyDatasets = reactiveValues(),
       mobilityDatasets = reactiveValues(),
       adaptationDatasets = reactiveValues()
     )
-
-    # Debounced communes
-    #inputVals$selectedCommunes_d <- debounce(reactive({input$selected_communes}), 5000)
 
     ## Store communes & unit ----
     # communes
@@ -187,6 +197,7 @@ mod_inputs_server <- function(id){
     observe({
       inputVals$max_selected_regener <- input$regener_needs_year
     })
+
 
     observe({
 
@@ -250,69 +261,54 @@ mod_inputs_server <- function(id){
         })
     })
 
+    ### Statbox subsets, communes only (!) ----
+    # --> we exclude Cantonal row which value is separated inside a dedicated statbox
 
-#
+    observe({
 
+      req(inputVals$energyDatasets$elec_prod,
+          inputVals$energyDatasets$elec_cons,
+          inputVals$energyDatasets$elec_prod,
+          inputVals$energyDatasets$regener_cons_ae_use,
+          inputVals$energyDatasets$subsidies_by_measure
+          )
 
-#
-#
-#     })# End observe
-#
-#     ### Statbox subsets, communes only (!) ----
-#     # --> we exclude Cantonal row which value is separated inside a dedicated statbox
-#
-#     observe({
-#
-#       req(subset_elec_prod(),
-#           subset_elec_cons(),
-#           subset_rgr_cons_1(),
-#           subset_subsidies_measure()
-#           )
-#
-#       # Statbox value for current selection's aggregated electricity production
-#       inputVals$elec_prod_last_year <- subset_elec_prod() |>
-#         dplyr::filter(annee == last_year_elec_prod) |>
-#         dplyr::filter(!commune == "Canton de Vaud") |> # remove cantonal row
-#         dplyr::summarise(production = sum(production, na.rm = T)) |>
-#         dplyr::pull(production)
-#
-#       # Statbox value for current selection's aggregated electricity consumption
-#
-#       inputVals$elec_cons_last_year <- subset_elec_cons() |>
-#         dplyr::filter(annee == last_year_elec_cons) |>
-#         dplyr::filter(!commune == "Canton de Vaud")|>
-#         dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
-#         dplyr::pull(consommation)
-#
-#       # Statbox value for current selection's aggregated buildings thermal consumption
-#
-#       inputVals$max_year_rg_cons <- subset_rgr_cons_1() |>
-#         dplyr::filter(etat == last_year_rgr) |>
-#         dplyr::filter(!commune == "Canton de Vaud") |>
-#         dplyr::summarise(consommation=sum(consommation, na.rm = T)) |>
-#         dplyr::pull(consommation)
-#
-#
-#       # Statbox value for current selection's aggregated sum of M01 measures
-#
-#       inputVals$max_year_subsidies_m01 <- subset_subsidies_measure() |>
-#         dplyr::filter(annee == last_year_subsidies) |>
-#         dplyr::filter(!commune == "Canton de Vaud") |>
-#         dplyr::filter(mesure == "M01") |>
-#         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-#         dplyr::pull(nombre)
-#
-#     })# End observe
-#
-#
+      # Statbox value for current selection's aggregated electricity production
+      inputVals$elec_prod_last_year <- inputVals$energyDatasets$elec_prod |>
+        dplyr::filter(annee == last_year_elec_prod) |>
+        dplyr::filter(!commune == "Canton de Vaud") |> # remove cantonal row
+        dplyr::summarise(production = sum(production, na.rm = T)) |>
+        dplyr::pull(production)
+
+      # Statbox value for current selection's aggregated electricity consumption
+      inputVals$elec_cons_last_year <- inputVals$energyDatasets$elec_cons |>
+        dplyr::filter(annee == last_year_elec_cons) |>
+        dplyr::filter(!commune == "Canton de Vaud")|>
+        dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
+        dplyr::pull(consommation)
+
+      # Statbox value for current selection's aggregated buildings thermal consumption
+      inputVals$max_year_rg_cons <- inputVals$energyDatasets$regener_cons_ae_use |>
+        dplyr::filter(etat == last_year_rgr) |>
+        dplyr::filter(!commune == "Canton de Vaud") |>
+        dplyr::summarise(consommation=sum(consommation, na.rm = T)) |>
+        dplyr::pull(consommation)
+
+      # Statbox value for current selection's aggregated sum of M01 measures
+      inputVals$max_year_subsidies_m01 <- inputVals$energyDatasets$subsidies_by_measure |>
+        dplyr::filter(annee == last_year_subsidies) |>
+        dplyr::filter(!commune == "Canton de Vaud") |>
+        dplyr::filter(mesure == "M01") |>
+        dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
+        dplyr::pull(nombre)
+
+    })# End observe
 
     # mod_download_all_data ----
     mod_download_all_data_server("download_all_data", inputVals = inputVals)
 
     # Returning inputVals ----
     return(inputVals)
-
-
 
   }) # End moduleServer
 } # End server

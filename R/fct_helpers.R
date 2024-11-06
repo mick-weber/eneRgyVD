@@ -1048,39 +1048,50 @@ create_geoportail_tag <- function(link){
 #' @export
 
 convert_units <- function(data,
-                          colnames, # to be defined how it should be passed
-                          unit_from, # default value from dataset
+                          colnames = NULL, # to be defined how it should be passed
+                          unit_from, # kind of value from dataset ; energy must be kWh and co2 must be tCO2
                           unit_to){ # check if it's worth saving the widget selected unit in a specific variable before (in mod_inputs.R)
 
-  if(is.null(colnames)){
-    message("Aucune colonne spécifiée dans `colnames`. Aucune conversion effectuée.")
-    return(data)
-  }
-
+  ## |---------------------------------------------------------------|
+  ##          Identify conversion factor
+  ## |---------------------------------------------------------------|
   # Retrieves the right conversion factor unit_table in utils_helpers.R according to unit_to
   conversion_factor <- if(unit_from %in% energy_units_table$unit){
 
+    # datasets must be suppied in kWh if energy-related !
     energy_units_table |>
-    dplyr::filter(unit == unit_to) |>
-    dplyr::pull(factor)
+      dplyr::filter(unit == unit_to) |>
+      dplyr::pull(factor)
 
   }else if(unit_from %in% co2_units_table$unit){
 
+    # datasets must be suppied in tCO2 if co2-related !
     co2_units_table |>
       dplyr::filter(unit == unit_to) |>
       dplyr::pull(factor)
+
   }else {
     message("Unité `unit_from` non reconnue !")
   }
 
-  # If we have a dataframe we call mutate
+  ## |-------------------------------------------------------------------------------------|
+  ##          Apply conversion factor either in <colnames> or in <data> directly if numeric
+  ## |-------------------------------------------------------------------------------------|
+
   if(is.data.frame(data)){
-  # Applies the conversion factor to the target colnames of the dataframe (division)
-  data |>
-    dplyr::mutate(dplyr::across(dplyr::any_of(colnames), ~.x / conversion_factor))
-  }else{
+
+    # Applies the conversion factor to the target colnames of the dataframe (division)
+    data |>
+      dplyr::mutate(dplyr::across(dplyr::any_of(colnames), ~.x / conversion_factor))
+
+  }else if(is.numeric(data)){
+
     # if numeric value (not df) we directly apply the conversion factor
     data/conversion_factor
+
+  }else{
+
+    stop("`data` is neither dataframe nor numeric ! No conversion can be made.")
 
   }
 }

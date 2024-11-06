@@ -71,6 +71,8 @@ mod_regener_misc_charts_server <- function(id,
     # Renders the DT table ----
     output$table_1 <- DT::renderDataTable({
 
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
       create_rg_misc_table_dt(data = subsetData(),
                               DT_dom = "frtip" # remove default button in DT extensions
                               )
@@ -90,8 +92,6 @@ mod_regener_misc_charts_server <- function(id,
                              data = download_data,
                              dl_prefix = dl_prefix,
                              doc_vars = doc_vars) # dl prefix for file name, passed into app_server.R
-
-
 
   })
 }

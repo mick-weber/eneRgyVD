@@ -140,23 +140,17 @@ mod_elec_charts_server <- function(id,
 
     ns <- session$ns
 
-
-    # Make debounced inputs ----
+    ## Make debounced inputs ----
     # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-
+    subsetData_d <- reactive({
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      subsetData()}) |> debounce(debounce_plot_time)
 
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({
-      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
+    output$toggle <- reactive({length(unique(subsetData_d()$commune)) > 1})
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({
-      length(inputVals_communes_d()) > 0 # Returns TRUE if at least one commune is selected, else FALSE
-    })
+    output$commune <- reactive({length(unique(subsetData_d()$commune)) > 0})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
@@ -174,12 +168,9 @@ mod_elec_charts_server <- function(id,
 
         output$chart_1 <- plotly::renderPlotly({
 
-          validate(need(inputVals$selectedCommunes, req_communes_phrase))
-          validate(need(nrow(subsetData_d()) > 0, message = req_communes_not_available))
-
           # fct is defined in fct_helpers.R
           create_bar_plotly(data = subsetData_d(),
-                            n_communes = length(inputVals_communes_d()),
+                            n_communes = dplyr::n_distinct(subsetData_d()$commune),
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = inputVals$energyUnit,
@@ -197,7 +188,6 @@ mod_elec_charts_server <- function(id,
 
 
       # We create a div so that we can optionnaly pass a class
-
       tags$div(
                plotly::plotlyOutput(ns("chart_1")) |>
                  shinycssloaders::withSpinner(type = 6,
@@ -223,7 +213,6 @@ mod_elec_charts_server <- function(id,
     # store the data in a reactive (not sure why we can't pass subsetData_d() it directly, but otherwise this won't work)
 
     download_data <- reactive({
-
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>

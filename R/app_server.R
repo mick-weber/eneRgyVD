@@ -12,7 +12,9 @@ app_server <- function(input, output, session) {
  ## |---------------------------------------------------------------|
 
     # observe({
-    #   print(inputVals$selectedCommunes_d())
+    #   print(inputVals$selectedCommunes)
+    #   print(inputVals$energyDatasets$ng_cons)
+    #
     # })
 
   ## |---------------------------------------------------------------|
@@ -144,6 +146,9 @@ app_server <- function(input, output, session) {
 
    })
 
+   ### Table of content ('Accueil') ----
+
+   mod_table_content_server("toc", parent = session)
 
    # Leaflet select map ----
 
@@ -369,19 +374,7 @@ app_server <- function(input, output, session) {
                              doc_vars = NULL # for now
    )
 
-
-  #  ## tabMap: boxes for statistics ----
-
-
-   ## |---------------------------------------------------------------|
-   ##          TEST
-   ## |---------------------------------------------------------------|
-
-    mod_table_content_server("toc", parent = session)
-
-   ## |---------------------------------------------------------------|
-   ##          /TEST
-   ## |---------------------------------------------------------------|
+  #  ## Statboxes ----
 
    ### VD Box ----
   #  # Must be dynamically rendered because it depends on energyUnit (reactive)
@@ -398,16 +391,19 @@ app_server <- function(input, output, session) {
                           # Computed in utils_helpers.R (using years below) then converted if needed
                           elec_prod_value = elec_prod_vd_last_year |>
                             convert_units(unit_from = "kWh",
+                                          colnames = NULL,
                                           unit_to = inputVals$energyUnit),
 
                           cons_rg_value = cons_rg_vd_last_year |>
                             convert_units(unit_from = "kWh",
+                                          colnames = NULL,
                                           unit_to = inputVals$energyUnit),
 
                           subsidies_value = subsidies_m01_vd_last_year,
 
                           elec_cons_value = elec_cons_vd_last_year |>
                             convert_units(unit_from = "kWh",
+                                          colnames = NULL,
                                           unit_to = inputVals$energyUnit),
 
                           # Computed in utils_helpers.R for both statboxes
@@ -430,7 +426,6 @@ app_server <- function(input, output, session) {
      req(inputVals$energyUnit)
 
      check_selected_communes <- !is.null(inputVals$selectedCommunes)
-
 
      mod_stats_box_server("communes_box",
                           parent = session,

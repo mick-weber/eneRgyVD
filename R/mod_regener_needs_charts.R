@@ -156,7 +156,7 @@ mod_regener_needs_charts_server <- function(id,
     })
 
     # Preparing data ----
-    # We process subsetData() in a nice, wide format for the TABLE and SUNBURST
+    # We process subsetData() in a nice, wide format for the TABLE
     subsetData_wide <- reactive({
 
       subsetData() |>
@@ -178,26 +178,21 @@ mod_regener_needs_charts_server <- function(id,
 
     })
 
-
     # Make debounced inputs ----
     # For barplot functions only, this avoids flickering plots when many items are selected/removed
 
-    subsetData_barplot_d <- reactive({subsetData_barplot()}) |> shiny::debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+    subsetData_barplot_d <- reactive({
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      subsetData_barplot()}) |> debounce(debounce_plot_time)
 
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({
-      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
+    output$toggle <- reactive({length(unique(subsetData_barplot_d()$commune)) > 1})
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({
-      length(inputVals$selectedCommunes) > 0 # Returns TRUE if at least one commune is selected, else FALSE
-    })
+    output$commune <- reactive({length(unique(subsetData_barplot_d()$commune)) > 0})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
-
     outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Render plot selectively based on radioButton above
@@ -213,11 +208,9 @@ mod_regener_needs_charts_server <- function(id,
         # ...PLOTLY BAR PLOT ----
         output$chart_1 <- plotly::renderPlotly({
 
-          validate(need(inputVals$selectedCommunes, req_communes_phrase))
-
           # fct_helpers.R
           create_bar_plotly(data = subsetData_barplot_d(),
-                            n_communes = length(inputVals_communes_d()),
+                            n_communes = dplyr::n_distinct(subsetData_barplot_d()$commune),
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = inputVals$energyUnit,

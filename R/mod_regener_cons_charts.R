@@ -22,7 +22,6 @@ mod_regener_cons_charts_ui <- function(id,
       # Title
       h4(title, style = "padding-right:10px;"),
 
-
       # Methodology accordion
       bslib::accordion(
         class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
@@ -61,8 +60,8 @@ mod_regener_cons_charts_ui <- function(id,
                       shinyWidgets::radioGroupButtons(
                         inputId = ns("tab_plot_type"),
                         label = h6(strong("Affichage de la consommation")),
-                        choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
-                                    `<i class='fa fa-house'></i> Par affectation` = "bar"),
+                        choices = c(`<i class='fa fa-fire'></i> Par usage` = "use",
+                                    `<i class='fa fa-house'></i> Par affectation` = "aff"),
                         justified = TRUE,
                         individual = TRUE,
                         width = "100%")
@@ -71,14 +70,15 @@ mod_regener_cons_charts_ui <- function(id,
 
                       # Alluvial plot ----
                       # ggalluvial plot
-                      shiny::plotOutput(ns("chart_alluvial"), height = "auto") |>
-                        shinycssloaders::withSpinner(type = 6,
-                                                     color= main_color) # color defined in utils_helpers.R
+                        uiOutput(ns("plot_render_ui")) |>
+                              shinycssloaders::withSpinner(type = 6, color= main_color)
+
+                      # shiny::plotOutput(ns("chart_alluvial"), height = "auto") |>
+                         # shinycssloaders::withSpinner(type = 6,
+                         #                              color= main_color) # color defined in utils_helpers.R
 
 
       ),# End nav_panel 'Graphique'
-
-
 
       bslib::nav_panel(title = "Table",
                        icon = bsicons::bs_icon("table"),
@@ -89,8 +89,8 @@ mod_regener_cons_charts_ui <- function(id,
                              shinyWidgets::radioGroupButtons(
                                inputId = ns("tab_table_type"),
                                label = h6(strong("Affichage de la consommation")),
-                               choices = c(`<i class='fa fa-fire'></i> Par usage` = "flow",
-                                           `<i class='fa fa-house'></i> Par affectation` = "bar"),
+                               choices = c(`<i class='fa fa-fire'></i> Par usage` = "use",
+                                           `<i class='fa fa-house'></i> Par affectation` = "aff"),
                                justified = TRUE,
                                individual = TRUE,
                                width = "100%")
@@ -101,7 +101,9 @@ mod_regener_cons_charts_ui <- function(id,
                              mod_download_data_ui(ns("table_download")),
 
                              # DT table
-                             DT::dataTableOutput(ns("table_1"))
+                       DT::dataTableOutput(ns("table_1")) |>
+                         shinycssloaders::withSpinner(type = 6,
+                                                      color= main_color) # color defined in utils_helpers.R
       )# End nav_panel 'Table'
     )# End navset_pill
   )# End tagList
@@ -124,83 +126,66 @@ mod_regener_cons_charts_server <- function(id,
 
     output$current_year_txt <- renderText({
 
-      req(inputVals$max_selected_regener)
-
+      validate(need(inputVals$max_selected_regener, req_communes_phrase))
       inputVals$max_selected_regener
 
     })
 
-
-    # filter for the latest year for the plots (not the table) ----
-
+    # debounce + filter for the latest year for the plots (not the table) ----
     # subset_rgr_cons_1 -> subset_rgr_cons_1_last_year
 
-    subset_rgr_cons_1_last_year <- reactive({
+    subset_rgr_cons_1_last_year_d <- reactive({
 
       req(inputVals$max_selected_regener)
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       subset_rgr_cons_1() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
-    })
+    }) |> debounce(debounce_plot_time)
 
     # subset_rgr_cons_2 -> subset_rgr_cons_2_last_year
 
-    subset_rgr_cons_2_last_year <- reactive({
+    subset_rgr_cons_2_last_year_d <- reactive({
 
       req(inputVals$max_selected_regener)
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       subset_rgr_cons_2() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
-    })
+    }) |> debounce(debounce_plot_time)
 
-    # Make debounced inputs ----
-    # For alluvial plots functions only, this avoids flickering plots when many items are selected/removed
-
-    subset_rgr_cons_2_last_year_d <- reactive({subset_rgr_cons_2_last_year()}) |> debounce(debounce_plot_time)
-    subset_rgr_cons_1_last_year_d <- reactive({subset_rgr_cons_1_last_year()}) |> debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
 
     # tabs and renderPlot() ----
 
-    observe({
-
-      validate(need(inputVals$selectedCommunes, req_communes_phrase)) # right place or inside renderPlots() ?
-
-      if(input$tab_plot_type == "flow"){
-
-        # Alluvial plot 1 : conso -> usage
-
-      output$chart_alluvial <- shiny::renderPlot({
+    output$plot_render_ui <- renderUI({
 
 
-        subset_rgr_cons_1_last_year_d()  |>
-          lump_alluvial_factors(var_commune = "commune",
-                                var_flow = "consommation",
-                                var_from = "ae",
-                                var_to = "usage") |>
-          create_alluvial_chart(var_commune = "commune",
-                                var_flow = "consommation",
-                                var_from = "ae",
-                                label_from = "Consommation",
-                                var_to = "usage",
-                                label_to = "Usage")
+      if(input$tab_plot_type == "use"){
+      output$chart_1 <- renderPlot({
+
+            subset_rgr_cons_1_last_year_d()  |>
+              lump_alluvial_factors(var_commune = "commune",
+                                    var_flow = "consommation",
+                                    var_from = "ae",
+                                    var_to = "usage") |>
+              create_alluvial_chart(var_commune = "commune",
+                                    var_flow = "consommation",
+                                    var_from = "ae",
+                                    label_from = "Consommation",
+                                    var_to = "usage",
+                                    label_to = "Usage")
+
+      }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_1_last_year_d()$commune)),
+                         yes = 400, # if no commune selected, default width = 400
+                         no = ceiling(dplyr::n_distinct(subset_rgr_cons_1_last_year_d()$commune)/2)*400))
+
+      }else if(input$tab_plot_type == "aff"){
 
 
-
-      },height = ifelse(test = is.null(inputVals_communes_d()),
-                        yes = 400, # if no commune selected, default width = 400
-                        no = ceiling(length(inputVals_communes_d())/2)*400)) # change height every two facets+
-
-
-      }# End if tab...
-      else if(input$tab_plot_type == "bar"){
-
-        # Alluvial plot 2 : conso -> aff
-        output$chart_alluvial <- shiny::renderPlot({
-
-          subset_rgr_cons_2_last_year_d() |>
+        output$chart_1 <- renderPlot({
+          subset_rgr_cons_2_last_year_d()  |>
             lump_alluvial_factors(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
@@ -211,46 +196,53 @@ mod_regener_cons_charts_server <- function(id,
                                   label_from = "Consommation",
                                   var_to = "affectation",
                                   label_to = "Affectation")
-
-
-        }, height = ifelse(test = is.null(inputVals_communes_d()),
+        }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_2_last_year_d()$commune)),
                            yes = 400, # if no commune selected, default width = 400
-                           no = ceiling(length(inputVals_communes_d())/2)*400))
+                           no = ceiling(dplyr::n_distinct(subset_rgr_cons_2_last_year_d()$commune)/2)*400))
 
-      }# End elseif
+      }
 
-      })# End observe
+      # We create a div so that we can optionnaly pass a class
+      tags$div(
+        style = "margin-top:2vh;", # otherwise alluvial plots are too close to input$tab_plot_type
+        plotOutput(ns("chart_1")) |>
+          shinycssloaders::withSpinner(type = 6,
+                                       color= main_color) # color defined in utils_helpers.R
+      )
+
+      })# End renderUI
+
 
     # tabs and renderTable ----
     observe({
 
-      validate(need(inputVals$selectedCommunes, req_communes_phrase)) # right place or inside renderDataTable() ?
-
-      if(input$tab_table_type == "flow"){
+      if(input$tab_table_type == "use"){
 
         # Alluvial table 1 : conso -> usage
         output$table_1 <- DT::renderDataTable({
+
+            validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
             create_regener_table_dt(data = subset_rgr_cons_1(),
                                     energy_unit = inputVals$energyUnit,
                                     co2_unit = inputVals$co2Unit,
                                     DT_dom = "frtip" # remove default button in DT extensions
                                     )
-
         })
 
-
       }# End if tab...
-      else if(input$tab_table_type == "bar"){
+      else if(input$tab_table_type == "aff"){
 
         # Alluvial table 2 : conso -> aff
         output$table_1 <- DT::renderDataTable({
 
-            create_regener_table_dt(data = subset_rgr_cons_2(),
-                                    energy_unit = inputVals$energyUnit,
-                                    co2_unit = inputVals$co2Unit,
-                                    DT_dom = "frtip" # remove default button in DT extensions
-                                    )
+          validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+          create_regener_table_dt(data = subset_rgr_cons_2(),
+                                  energy_unit = inputVals$energyUnit,
+                                  co2_unit = inputVals$co2Unit,
+                                  DT_dom = "frtip" # remove default button in DT extensions
+          )
         })
       }# End elseif
 
@@ -260,7 +252,7 @@ mod_regener_cons_charts_server <- function(id,
 
     download_data <- reactive({
 
-      if(input$tab_table_type == "flow"){
+      if(input$tab_table_type == "use"){
 
         subset_rgr_cons_1() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
@@ -268,7 +260,7 @@ mod_regener_cons_charts_server <- function(id,
           add_colname_units(unit = inputVals$energyUnit) |>
           add_colname_units(unit = inputVals$co2Unit) # fct_helpers.R
 
-          } else if(input$tab_table_type == "bar"){
+          } else if(input$tab_table_type == "aff"){
 
         subset_rgr_cons_2() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)

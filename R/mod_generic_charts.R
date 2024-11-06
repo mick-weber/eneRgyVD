@@ -141,9 +141,14 @@ mod_generic_charts_server <- function(id,
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    ## Make debounced inputs ----
+    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+    subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
+    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
-      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
+      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
 
     # We don't suspend output$toggle when hidden (default is TRUE)
@@ -151,19 +156,13 @@ mod_generic_charts_server <- function(id,
 
     # Plot logic ----
 
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-
       output$generic_chart <- plotly::renderPlotly({
 
-        validate(need(inputVals$selectedCommunes, req_communes_phrase))
+        validate(need(subsetData_d(), req_communes_phrase))
         validate(need(nrow(subsetData_d()) > 0, message = req_communes_not_available))
 
         subsetData_d() |>
-          create_bar_plotly(n_communes = length(inputVals_communes_d()),
+          create_bar_plotly(n_communes = dplyr::n_distinct(subsetData_d()$commune),
                             var_commune = var_commune,
                             var_year = var_year,
                             var_values = var_values,

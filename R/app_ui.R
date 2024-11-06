@@ -57,7 +57,7 @@ app_ui <- function(request) {
         tags$img(src="www/vd-logo-black.svg",
                  class = "customLogo"),
         br(),
-        tags$span(HTML("Direction de l'énergie<br>Office de la durabilité et du climat"), style = "font-size:1.1rem;"),
+        HTML("DIREN - OCDC"),
         hr()
         ),# End div brand,
 

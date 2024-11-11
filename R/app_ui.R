@@ -323,7 +323,7 @@ app_ui <- function(request) {
         bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
 
                                # add objet to mail manually, better UX
-                               href = paste0("mailto:", mail_address, "?subject=Question profil énergétique"), target = "_blank")),
+                               href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank")),
         ### DGE-DIREN ----
         bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
                                href = link_diren, target = "_blank")),

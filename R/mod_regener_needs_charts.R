@@ -51,47 +51,47 @@ mod_regener_needs_charts_ui <- function(id,
                                         icon = bsicons::bs_icon("bar-chart-fill"),
 
                                         tags$p(class = "text-muted justify-content-center pb-2",
-                                        "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
+                                               "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
                                                shiny::textOutput(ns("current_year_txt"), inline = TRUE)
-                                               ),
+                                        ),
 
 
                                         bslib::layout_columns(col_widths = c(-2, 4, 4, -2),
-                                                                    class = "fs-materialSwitch",
+                                                              class = "fs-materialSwitch",
 
-                                                                  # materialSwitch 1/2 for bar plot
-                                                                  shiny::conditionalPanel(
-                                                                    # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                                                    condition = "output.commune",
-                                                                    ns = ns,
+                                                              # materialSwitch 1/2 for bar plot
+                                                              shiny::conditionalPanel(
+                                                                # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                                                condition = "output.commune",
+                                                                ns = ns,
 
-                                                                             tags$div(
-                                                                               shinyWidgets::materialSwitch(
-                                                                                 inputId = ns("stacked_status"),
-                                                                                 value = FALSE,
-                                                                                 status = "success",
-                                                                                 label = strong("Barres empilées", class = "align-middle"),
-                                                                                 inline = TRUE),
-                                                                               tags$span(strong("adjacentes", class = "align-middle"))
-                                                                             )
-                                                                  ),# End conditionalPanel 1/2
+                                                                tags$div(
+                                                                  shinyWidgets::materialSwitch(
+                                                                    inputId = ns("stacked_status"),
+                                                                    value = FALSE,
+                                                                    status = "success",
+                                                                    label = strong("Barres empilées", class = "align-middle"),
+                                                                    inline = TRUE),
+                                                                  tags$span(strong("adjacentes", class = "align-middle"))
+                                                                )
+                                                              ),# End conditionalPanel 1/2
 
-                                                                  # materialSwitch 2/2 for bar plot
-                                                                  shiny::conditionalPanel(
-                                                                    # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                                                                    condition = "output.toggle",
-                                                                    ns = ns,
+                                                              # materialSwitch 2/2 for bar plot
+                                                              shiny::conditionalPanel(
+                                                                # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                                                condition = "output.toggle",
+                                                                ns = ns,
 
-                                                                    tags$div(
-                                                                      shinyWidgets::materialSwitch(
-                                                                        inputId = ns("toggle_status"),
-                                                                        value = FALSE,
-                                                                        label = strong("Axe vertical commun", class = "align-middle"),
-                                                                        status = "success",
-                                                                        inline = TRUE),
-                                                                      tags$span(strong("indépendant", class = "align-middle"))
-                                                                    )# End tags$div
-                                                                  ),# End 2nd conditionalPanel
+                                                                tags$div(
+                                                                  shinyWidgets::materialSwitch(
+                                                                    inputId = ns("toggle_status"),
+                                                                    value = FALSE,
+                                                                    label = strong("Axe vertical commun", class = "align-middle"),
+                                                                    status = "success",
+                                                                    inline = TRUE),
+                                                                  tags$span(strong("indépendant", class = "align-middle"))
+                                                                )# End tags$div
+                                                              ),# End 2nd conditionalPanel
 
 
 
@@ -203,27 +203,27 @@ mod_regener_needs_charts_server <- function(id,
     output$plot_render_ui <- renderUI({
 
       # Update the initialized FALSE toggle_status with the input$toggle_status
-        # WIP with inputVals$energyUnit
+      # WIP with inputVals$energyUnit
 
-        # ...PLOTLY BAR PLOT ----
-        output$chart_1 <- plotly::renderPlotly({
+      # ...PLOTLY BAR PLOT ----
+      output$chart_1 <- plotly::renderPlotly({
 
-          # fct_helpers.R
-          create_bar_plotly(data = subsetData_barplot_d(),
-                            n_communes = dplyr::n_distinct(subsetData_barplot_d()$commune),
-                            var_year = var_year,
-                            var_commune = var_commune,
-                            unit = inputVals$energyUnit,
-                            var_cat = var_cat,
-                            var_values = var_values,
-                            color_palette = color_palette, # defined in utils_helpers.R
-                            dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
-                            free_y = input$toggle_status, # reactive(input$toggle_status)
-                            legend_title = legend_title,  # links to ifelse in facet_wrap(scales = ...)
-                            web_width = inputVals$web_width, # px width of browser when app starts
-                            web_height = inputVals$web_height # px height of browser when app starts
-                            )
-        })# End renderPlotly
+        # fct_helpers.R
+        create_bar_plotly(data = subsetData_barplot_d(),
+                          n_communes = dplyr::n_distinct(subsetData_barplot_d()$commune),
+                          var_year = var_year,
+                          var_commune = var_commune,
+                          unit = inputVals$energyUnit,
+                          var_cat = var_cat,
+                          var_values = var_values,
+                          color_palette = color_palette, # defined in utils_helpers.R
+                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
+                          free_y = input$toggle_status, # reactive(input$toggle_status)
+                          legend_title = legend_title,  # links to ifelse in facet_wrap(scales = ...)
+                          web_width = inputVals$web_width, # px width of browser when app starts
+                          web_height = inputVals$web_height # px height of browser when app starts
+        )
+      })# End renderPlotly
 
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
       tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
@@ -242,7 +242,7 @@ mod_regener_needs_charts_server <- function(id,
       fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
                         unit = inputVals$energyUnit,
                         DT_dom = "frtip" # remove default button in DT extensions
-                        )
+      )
 
     })# End renderDT
 

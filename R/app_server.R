@@ -258,7 +258,7 @@ app_server <- function(input, output, session) {
                           # name of dl prefix to supply to download module
                           dl_prefix = "profil_energie_elec_cons_",
                           # documentation file from utils_helpers.R
-                          doc_vars = elec_cons_doc)
+                          doc_vars = doc_datasets$elec_cons)
 
 
    ## mod_elec_charts (prod) ----
@@ -276,7 +276,7 @@ app_server <- function(input, output, session) {
                           # name of dl prefix to supply to download module
                           dl_prefix = "profil_energie_elec_prod_",
                           # documentation file from utils_helpers.R
-                          doc_vars = elec_prod_doc)
+                          doc_vars = doc_datasets$elec_prod)
 
 
    ## mod regener_cons_charts ----
@@ -285,7 +285,7 @@ app_server <- function(input, output, session) {
                              subset_rgr_cons_1 = reactive({inputVals$energyDatasets$regener_cons_ae_use}),
                              subset_rgr_cons_2 = reactive({inputVals$energyDatasets$regener_cons_ae_aff}),
                              dl_prefix = "profil_energie_conso_bat_",
-                             doc_vars = regener_doc # utils_helpers.R
+                             doc_vars = doc_datasets$regener # utils_helpers.R
                              )
 
 
@@ -301,7 +301,7 @@ app_server <- function(input, output, session) {
                                    color_palette = colors_rg_type, # utils_helpers.R
                                    fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
                                    dl_prefix = "profil_energie_besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
-                                   doc_vars = regener_doc # utils_helpers.R
+                                   doc_vars = doc_datasets$regener # utils_helpers.R
                                    )
 
    ## mod regener_misc_charts ----
@@ -309,7 +309,8 @@ app_server <- function(input, output, session) {
                                   inputVals = inputVals,
                                   subsetData = reactive({inputVals$energyDatasets$regener_misc}),
                                   dl_prefix = "profil_energie_regener_autres_",
-                                  doc_vars = regener_doc)
+                                  doc_vars = doc_datasets$regener # utils_helpers.R
+                                  )
 
 
    ## mod_subsidies_building_charts ----
@@ -317,7 +318,7 @@ app_server <- function(input, output, session) {
                                subsetData = reactive({inputVals$energyDatasets$subsidies_by_building}),
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_bat_",
-                               doc_vars = NULL # for now
+                               doc_vars = doc_datasets$subsidies # utils_helpers.R
                                )
 
    ##  mod_subsidies_measure_charts ----
@@ -325,7 +326,7 @@ app_server <- function(input, output, session) {
                                subsetData = reactive({inputVals$energyDatasets$subsidies_by_measure}),
                                inputVals = inputVals,
                                dl_prefix = "profil_energie_subventions_mesure_",
-                               doc_vars = NULL # for now
+                               doc_vars = doc_datasets$subsidies # utils_helpers.R
    )
 
    ## mod ng_charts ----
@@ -339,7 +340,7 @@ app_server <- function(input, output, session) {
                         var_values = "consommation",
                         color_palette = colors_sectors,
                         dl_prefix = "profil_energie_gaz_conso_",
-                        doc_vars = NULL # later
+                        doc_vars = doc_datasets$ng_cons # utils_helpers.R
    )
 
 
@@ -406,11 +407,17 @@ app_server <- function(input, output, session) {
                                           colnames = NULL,
                                           unit_to = inputVals$energyUnit),
 
+                          ng_cons_value = ng_cons_vd_last_year |>
+                            convert_units(unit_from = "kWh",
+                                          colnames = NULL,
+                                          unit_to = inputVals$energyUnit),
+
                           # Computed in utils_helpers.R for both statboxes
                           year_elec_prod = last_year_elec_prod,
                           year_elec_cons = last_year_elec_cons,
                           year_rgr = last_year_rgr,
-                          year_subsidies = last_year_subsidies
+                          year_subsidies = last_year_subsidies,
+                          year_ng_cons = last_year_ng_cons
 
      )
 
@@ -423,7 +430,14 @@ app_server <- function(input, output, session) {
 
    observe({
 
+     # Make sure everything is available before sending values
      req(inputVals$energyUnit)
+     req(inputVals$elec_cons_last_year)
+     req(inputVals$elec_prod_last_year)
+     req(inputVals$max_year_rg_cons)
+     req(inputVals$max_year_subsidies_m01)
+     req(inputVals$elec_cons_last_year)
+     req(inputVals$ng_cons_last_year)
 
      check_selected_communes <- !is.null(inputVals$selectedCommunes)
 
@@ -450,11 +464,17 @@ app_server <- function(input, output, session) {
                             inputVals$elec_cons_last_year,
                             0),
 
+                          ng_cons_value = ifelse(
+                            check_selected_communes,
+                            inputVals$ng_cons_last_year,
+                            0),
+
                           # Computed in utils_helpers.R for both statboxes
                           year_elec_prod = last_year_elec_prod,
                           year_elec_cons = last_year_elec_cons,
                           year_rgr = last_year_rgr,
-                          year_subsidies = last_year_subsidies
+                          year_subsidies = last_year_subsidies,
+                          year_ng_cons = last_year_ng_cons
      )
    })
 

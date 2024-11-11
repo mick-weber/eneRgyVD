@@ -62,7 +62,8 @@ mod_download_all_data_server <- function(id,
     download_all_sheets <- reactive({
 
 
-      # List all pertinent inputVals$<datasets> from mod_inputs.R
+      # List all pertinent inputVals$<datasets>$... from mod_inputs.R
+      # <sheet_name> = inputVals$dataset$...
       list(
         # Cons elec renamed+units
         elec_cons = inputVals$energyDatasets$elec_cons |>
@@ -110,9 +111,7 @@ mod_download_all_data_server <- function(id,
           rename_fr_colnames() |>
           add_colname_units(unit = inputVals$energyUnit)
 
-
         # Add other datasets with associated functions here !
-
 
       )
     })

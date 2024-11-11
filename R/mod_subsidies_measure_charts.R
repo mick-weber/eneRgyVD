@@ -90,6 +90,8 @@ mod_subsidies_measure_charts_ui <- function(id,
 
                        p(shiny::HTML("Note : les données sont plus détaillées que celles affichées dans l'onglet <strong>Graphique</strong>.")),
 
+                       br(),
+
                        # Download module
                        mod_download_data_ui(ns("table_download")),
 
@@ -142,7 +144,7 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_plotly(n_communes = dplyr::n_distinct(subsetData_agg_d()$commune),
+        create_bar_plotly(n_communes = dplyr::n_distinct(subsetData_d()$commune),
                           var_year = "annee",
                           var_commune = "commune",
                           var_values = "nombre",
@@ -162,6 +164,8 @@ mod_subsidies_measure_charts_server <- function(id,
     # DT table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
       create_subsidies_table_dt(data = subsetData(),
                                 var_year = "annee",
                                 var_cat = "mesure",
@@ -176,13 +180,10 @@ mod_subsidies_measure_charts_server <- function(id,
 
     download_data <- reactive({
 
-
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
         rename_misc_colnames() |>  # fct_helpers.R
         rename_fr_colnames()       # fct_helpers.R
-
-
     })
 
     # Module to download DT table data

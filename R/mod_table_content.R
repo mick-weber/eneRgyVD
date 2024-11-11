@@ -14,7 +14,7 @@ mod_table_content_ui <- function(id){
     bslib::card(
       bslib::card_header(strong("Données disponibles",
                                 bslib::tooltip(
-                                  id = "tooltip_map_card",
+                                  id = "tooltip_toc_card",
                                   placement = "right",
                                   options = list(customClass = "customTooltips"), # custom.scss
                                   trigger = bsicons::bs_icon("info-circle"),
@@ -28,26 +28,26 @@ mod_table_content_ui <- function(id){
         style = "text-underline-offset:5px;",
 
         # Section Energie ----
-        actionButton(ns("test"), label = "Energie", class = "disabledTocButtons"),
+        actionButton(ns("header_energie"), label = "Energie", class = "disabledTocButtons"),
 
-          actionLink(ns("data_1"), class = "mx-3", "Electricité (distribution)", icon = icon("bolt")),
-          actionLink(ns("data_2"), class = "mx-3", "Electricité (production)",  icon = icon("bolt")),
-          actionLink(ns("data_3"), class = "mx-3", "Chaleur des bâtiments (besoins théoriques)", icon = icon("fire")),
-          actionLink(ns("data_4"), class = "mx-3", "Chaleur des bâtiments (consommations théoriques)", icon = icon("fire")),
-          actionLink(ns("data_5"), class = "mx-3", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
-          actionLink(ns("data_6"), class = "mx-3", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
-          actionLink(ns("data_7"), class = "mx-3", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
-          actionLink(ns("data_8"), class = "mx-3", "Distribution de gaz naturel", icon = icon("fire-flame-simple")),
+        actionLink(ns("data_1"), class = "mx-3", "Electricité (distribution)", icon = icon("bolt")),
+        actionLink(ns("data_2"), class = "mx-3", "Electricité (production)",  icon = icon("bolt")),
+        actionLink(ns("data_8"), class = "mx-3", "Distribution de gaz naturel", icon = icon("fire-flame-simple")),
+        actionLink(ns("data_3"), class = "mx-3", "Chaleur des bâtiments (besoins théoriques)", icon = icon("fire")),
+        actionLink(ns("data_4"), class = "mx-3", "Chaleur des bâtiments (consommations théoriques)", icon = icon("fire")),
+        actionLink(ns("data_5"), class = "mx-3", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
+        actionLink(ns("data_6"), class = "mx-3", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
+        actionLink(ns("data_7"), class = "mx-3", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
 
         # Section Adaptation ----
-        actionButton(ns("test"), "Adaptation", class = "disabledTocButtons"),
+        actionButton(ns("header_adapt"), "Adaptation", class = "disabledTocButtons"),
 
-          actionLink(ns("data_10"), class = "mx-3", "Adaptation (exemple générique)", icon = icon("earth")),
+        actionLink(ns("data_10"), class = "mx-3", "Adaptation (exemple générique)", icon = icon("earth")),
 
         # Section Mobilité ----
-        actionButton(ns("test"), "Mobilité", class = "disabledTocButtons"),
+        actionButton(ns("header_mob"), "Mobilité", class = "disabledTocButtons"),
 
-          actionLink(ns("data_11"), class = "mx-3", "Mobilité (exemple générique)", icon = icon("car")),
+        actionLink(ns("data_11"), class = "mx-3", "Mobilité (exemple générique)", icon = icon("car")),
 
       )
     )

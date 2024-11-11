@@ -98,20 +98,22 @@ mod_subsidies_building_charts_ui <- function(id,
       ## Table tabPanel ----
 
       bslib::nav_panel(title = "Table",
-                      icon = bsicons::bs_icon("table"),
+                       icon = bsicons::bs_icon("table"),
 
-                             # breathing
-                             br(),
+                       # breathing
+                       br(),
 
-                             tags$p("Les données sont davantage détaillées que pour les graphiques ce qui permet
-                                    de discerner quel type de chauffage est subventionné avec la colonne `Détail chauffage`.
-                                    La colonne `Type de subvention` permet de retrouver les données des graphiques."),
+                       tags$p(HTML("Les données sont davantage détaillées que pour les graphiques ce qui permet
+                                    de discerner quel type de chauffage est subventionné avec la colonne <i>Détail chauffage</i>.
+                                    La colonne <i>Type de subvention</i> permet de retrouver les données des graphiques.")),
 
-                             # Download module
-                             mod_download_data_ui(ns("table_download")),
+                       br(),
 
-                             # DT table
-                             DT::dataTableOutput(ns("table_1"))
+                       # Download module
+                       mod_download_data_ui(ns("table_download")),
+
+                       # DT table
+                       DT::dataTableOutput(ns("table_1"))
 
       )# End nav_panel 'Table'
     )# End nav_menu
@@ -205,6 +207,8 @@ mod_subsidies_building_charts_server <- function(id,
 
     # DT table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       create_subsidies_table_dt(data = subsetData(),
                                 var_year = "etat",

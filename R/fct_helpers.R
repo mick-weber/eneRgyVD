@@ -12,6 +12,8 @@ info_dev_message <- function(){
     title = "Bienvenue sur le profil climatique des communes !",
                          text = paste0("Cette application est mise à disposition par la ",
                                        tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
+                                       " et l'",
+                                       tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat (OCDC)"),
                                        " afin de diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises.",
                                        tags$br(),
                                        "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",

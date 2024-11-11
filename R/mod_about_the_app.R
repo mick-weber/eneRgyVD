@@ -27,12 +27,19 @@ mod_about_the_app_ui <- function(id){
                                                                  # breathing
                                                                  br(),
                                                                  h4(strong("Contact")),
-                                                                 tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer via ",
-                                                                        tags$a (href = paste0("mailto:", mail_address),mail_address,target = "_blank"), # open in new tab. address defined in utils_helpers.R
-                                                                        " à l'unité chargée des données énergétiques (unité données, indicateurs et politique UDIP) de la",
-                                                                        tags$a (href = link_diren, # utils_helpers.R
-                                                                                "Direction de l'énergie du Canton de Vaud (DGE-DIREN).",
-                                                                                target = "_blank"))
+                                                                 tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à ",
+                                                                        tags$a(href = paste0("mailto:", mail_address),paste0(mail_address, "."), target = "_blank"), # open in new tab. address defined in utils_helpers.R
+                                                                        tags$br(),
+                                                                        "Le profil énergétique a été initialement développée par la DIREN en 2023.
+                                                                        En 2024, l’OCDC a souhaité mettre à disposition des communes d’autres données et l’application est devenue le profil climatique dès janvier 2025.
+                                                                        De ce fait, le point de contact pour la gestion de cette application est désormais l’OCDC qui collabore toujours étroitement avec la DIREN.
+                                                                        D’autres services ont également participé à la valorisation des données comme DGE-Biodiv, DGE-UDN et la DGMR.",
+                                                                        tags$br(),
+                                                                        tags$br(),
+                                                                        tags$li("Mail de contact : ",
+                                                                        tags$a(href = paste0("mailto:", mail_address), # utils_helpers.R
+                                                                               mail_address,
+                                                                                target = "_blank")))
 
                                        )# End 1st layout_columns'
                                        ),# End nav_panel' Général

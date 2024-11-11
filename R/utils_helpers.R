@@ -38,7 +38,7 @@ mobility_datasets <- purrr::map(mobility_datasets_rds_files,
                      stringr::str_remove("\\.rds$"))
 
 
-## adaptation dtasets ----
+## adaptation datasets ----
 
 # <ADD NEW ADAPTATION DATASETS HERE>
 adaptation_datasets_rds_files <- c("canop.rds")
@@ -49,10 +49,18 @@ adaptation_datasets <- purrr::map(adaptation_datasets_rds_files,
                      stringr::str_remove("\\.rds$"))
 
 
-## |---------------------------------------------------------------|
-##          END REWORK OF RDA/RDS FILES
-## |---------------------------------------------------------------|
+## documentation datasets (all thematics included) ----
 
+doc_rds_files <- c("elec_prod_doc.rds",
+                   "elec_cons_doc.rds",
+                   "ng_cons_doc.rds",
+                   "regener_doc.rds",
+                   "subsidies_doc.rds")
+
+doc_datasets <- purrr::map(doc_rds_files,
+                                  \(rds) readRDS(file = paste0("./data/", rds))) |>
+  purrr::set_names(doc_rds_files |>
+                     stringr::str_remove("_doc\\.rds$"))
 
 
 ## doc panels for accordions ----
@@ -185,6 +193,7 @@ cols_renaming_vector <- c(
 
 ## List of non-ASCII words that should replace internal colnames
 # Note that colnames are already in a 'sentence' format (i.e. Ae and not ae)
+# They are used in `rename_fr_colnames()` for a nicer print/export of data tables
 replace_fr_accents <- c("electricite" = "électricité",
                         "electrique" = "électrique",
                         "energetique" = "énergétique",
@@ -193,7 +202,8 @@ replace_fr_accents <- c("electricite" = "électricité",
                         "Annee" = "Année",
                         "Ae" = "Agent énergétique",
                         "optimises" = "optimisés",
-                        "Detail" = "Détail")
+                        "Detail" = "Détail",
+                        "canopee" = "canopée")
 
 ## These are used to dynamically target columns renaming in add_colname_units() and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
@@ -494,3 +504,12 @@ subsidies_m01_vd_last_year <- energy_datasets$subsidies_by_measure |>
   dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
   dplyr::pull()
 
+#### VD ng cons for last available year
+
+last_year_ng_cons <- max(energy_datasets$ng_cons$annee) # When prod ng alone
+
+ng_cons_vd_last_year <- energy_datasets$ng_cons |>
+  dplyr::filter(commune == "Canton de Vaud") |>
+  dplyr::filter(annee == last_year_ng_cons) |>
+  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
+  dplyr::pull()

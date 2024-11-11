@@ -29,10 +29,12 @@ mod_stats_box_server <- function(id,
                                  elec_cons_value,
                                  cons_rg_value,
                                  subsidies_value,
+                                 ng_cons_value,
                                  year_elec_cons,
                                  year_elec_prod,
                                  year_rgr,
-                                 year_subsidies){
+                                 year_subsidies,
+                                 year_ng_cons){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -76,7 +78,8 @@ mod_stats_box_server <- function(id,
              # We assign an input on click, which is used below to redirect to the correct nav_panel
              tags$a(style = "cursor:zoom-in;", onclick = glue::glue(.open = '{{',.close = '}}',
                                                                     # reload the input to trigger observeEvent below
-                                         "Shiny.setInputValue(id = '{{id}}-elec_cons_statbox_click', value = '{{id}}-elec_cons_statbox_click', {priority : 'event'})")
+                                         "Shiny.setInputValue(id = '{{id}}-elec_cons_statbox_click', value = '{{id}}-elec_cons_statbox_click', {priority : 'event'})"
+                                         )
                     ),
 
 
@@ -86,7 +89,8 @@ mod_stats_box_server <- function(id,
              # We assign an input on click, which is used below to redirect to the correct nav_panel
              tags$a(style = "cursor:zoom-in;", onclick = glue::glue(.open = '{{',.close = '}}',
                                                                     # reload the input to trigger observeEvent below
-                                                                    "Shiny.setInputValue(id = '{{id}}-rgr_cons_statbox_click', value = '{{id}}-rgr_cons_statbox_click', {priority : 'event'})")
+                                                                    "Shiny.setInputValue(id = '{{id}}-rgr_cons_statbox_click', value = '{{id}}-rgr_cons_statbox_click', {priority : 'event'})"
+                                                                    )
              ),
 
            # 3. Subsidies M01
@@ -95,7 +99,9 @@ mod_stats_box_server <- function(id,
              # We assign an input on click, which is used below to redirect to the correct nav_panel
              tags$a(style = "cursor:zoom-in;", onclick = glue::glue(.open = '{{',.close = '}}',
                                                                     # reload the input to trigger observeEvent below
-                                                                    "Shiny.setInputValue(id = '{{id}}-subsidies_measure_statbox_click', value = '{{id}}-subsidies_meausre_statbox_click', {priority : 'event'})")
+                                                                    "Shiny.setInputValue(id = '{{id}}-subsidies_measure_statbox_click', value = '{{id}}-subsidies_meausre_statbox_click', {priority : 'event'})"
+
+             )
              ),
 
            # 4. Prod elec
@@ -104,7 +110,18 @@ mod_stats_box_server <- function(id,
              # We assign an input on click, which is used below to redirect to the correct nav_panel
              tags$a(style = "cursor:zoom-in;", onclick = glue::glue(.open = '{{',.close = '}}',
                                                                     # reload the input to trigger observeEvent below
-                                                                    "Shiny.setInputValue(id = '{{id}}-elec_prod_statbox_click', value = '{{id}}-elec_prod_statbox_click', {priority : 'event'})")
+                                                                    "Shiny.setInputValue(id = '{{id}}-elec_prod_statbox_click', value = '{{id}}-elec_prod_statbox_click', {priority : 'event'})"
+             )
+             ),
+
+           # 5. NG cons
+           make_statbox_item(iconBgClass = "iconBgNGcons",
+                             title = "Distribution<br>gaz", value = ng_cons_value, unit = energyUnit, year = year_ng_cons) |>
+             # We assign an input on click, which is used below to redirect to the correct nav_panel
+             tags$a(style = "cursor:zoom-in;", onclick = glue::glue(.open = '{{',.close = '}}',
+                                                                    # reload the input to trigger observeEvent below
+                                                                    "Shiny.setInputValue(id = '{{id}}-ng_cons_statbox_click', value = '{{id}}-ng_cons_statbox_click', {priority : 'event'})"
+             )
              )
                     )# End layout_column_wrap
         )# End card body
@@ -129,7 +146,7 @@ mod_stats_box_server <- function(id,
       bslib::nav_select(id = "navset_elec", selected = "Production d'électricité", session = parent)
     })
 
-    observeEvent(input$subsidies_meausre_statbox_click, {
+    observeEvent(input$subsidies_measure_statbox_click, {
       bslib::nav_select(id = "nav", selected = "Subventions bâtiments", session = parent)
       bslib::nav_select(id = "navset_subsidies", selected = "Vue par subventions", session = parent)
     })
@@ -139,7 +156,10 @@ mod_stats_box_server <- function(id,
       bslib::nav_select(id = "navset_regener", selected = "Consommation des bâtiments", session = parent)
     })
 
-
+    observeEvent(input$ng_cons_statbox_click, {
+      bslib::nav_select(id = "nav", selected = "Gaz naturel", session = parent)
+      bslib::nav_select(id = "navset_ng", selected = "Distribution de gaz naturel", session = parent)
+    })
 
 
   })# End moduleServer

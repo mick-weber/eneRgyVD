@@ -54,73 +54,17 @@ mod_inputs_ui <- function(id){
 
     # uiOutput for elec consumption ----
 
-    shiny::conditionalPanel(
-      condition="input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
-
-      #shiny::uiOutput(ns("elec_cons_year"))
-      shiny::sliderInput(ns("elec_cons_year"),
-                         label = "Choix des années",
-                         min = min(energy_datasets$elec_prod$annee),
-                         max = max(energy_datasets$elec_prod$annee),
-                         value = c(min(energy_datasets$elec_prod$annee),
-                                  max(energy_datasets$elec_prod$annee)),
-                         step = 1L, sep = "", ticks = T, dragRange = T
-      )
-
-
-
-    ), # End conditionalPanel
+    uiOutput(ns("elec_cons_widget")), # End conditionalPanel
 
     # uiOutput() for elec production ----
-
-    shiny::conditionalPanel(
-      condition="input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
-
-      #shiny::uiOutput(ns("prod_year_n_techs"))
-
-      shiny::sliderInput(ns("elec_prod_year"),
-                         label = "Choix des années",
-                         # reactive choices from current subset
-                         min = min(energy_datasets$elec_prod$annee),
-                         max = max(energy_datasets$elec_prod$annee),
-                         value = c(min(energy_datasets$elec_prod$annee),
-                                   max(energy_datasets$elec_prod$annee)),
-                         step = 1L, sep = "", ticks = TRUE, dragRange = TRUE)
-
-
-    ), # End conditionalPanel
+    uiOutput(ns("elec_prod_widget")),
 
     # uiOutput() for regener ----
-    shiny::conditionalPanel(
-      condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
-
-      #shiny::uiOutput(ns("regener_year_selector"))
-      shiny::selectInput(ns("regener_needs_year"),
-                         label = "Année (graphique)",
-                         # static choices from utils_helpers.R -> no reactivity needed
-                         choices = c(min(energy_datasets$regener_needs$etat):max(energy_datasets$regener_needs$etat)),
-                         selected = max(energy_datasets$regener_needs$etat),
-                         multiple = FALSE)
-
-    ), # End conditionalPanel
+    uiOutput(ns("regener_widget")),
 
 
     # uiOutput() for ng_cons ----
-    shiny::conditionalPanel(
-      condition = "input.nav == 'Gaz naturel'", # 1 condition !
-
-      #shiny::uiOutput(ns("ng_cons_year_selector"))
-      shiny::sliderInput(ns("ng_cons_year"),
-                         label = "Choix des années",
-                         # reactive choices from current subset
-                         min = min(energy_datasets$ng_cons$annee),
-                         max = max(energy_datasets$ng_cons$annee),
-                         value = c(min(energy_datasets$ng_cons$annee),
-                                   max(energy_datasets$ng_cons$annee)),
-                         step = 1L, sep = "", ticks = T, dragRange = T)
-
-
-    ), # End conditionalPanel
+    uiOutput(ns("ng_cons_widget")),
 
     # Sidebar bottom ----
 
@@ -159,9 +103,93 @@ mod_inputs_server <- function(id){
 
     uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
-    ## |---------------------------------------------------------------|
-    ##          REWRITE DATASETS AND INPUTVALS
-    ## |---------------------------------------------------------------|
+
+
+    # Render UI sidebar widgets ----
+    # They must be rendered dynamically (and not in UI directly) so that we can pass req(input$selected_communes)
+    # Additional display conditions are stored in conditionalPanel()
+
+    output$elec_cons_widget <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition="input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
+
+        shiny::sliderInput(ns("elec_cons_year"),
+                           label = "Choix des années",
+                           min = min(energy_datasets$elec_cons$annee),
+                           max = max(energy_datasets$elec_cons$annee),
+                           value = c(min(energy_datasets$elec_cons$annee),
+                                     max(energy_datasets$elec_cons$annee)),
+                           step = 1L, sep = "", ticks = T, dragRange = T
+        )
+      )
+    })
+
+
+    output$elec_prod_widget <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition="input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
+
+        shiny::sliderInput(ns("elec_prod_year"),
+                           label = "Choix des années",
+                           # reactive choices from current subset
+                           min = min(energy_datasets$elec_prod$annee),
+                           max = max(energy_datasets$elec_prod$annee),
+                           value = c(min(energy_datasets$elec_prod$annee),
+                                     max(energy_datasets$elec_prod$annee)),
+                           step = 1L, sep = "", ticks = TRUE, dragRange = TRUE)
+
+
+      ) # End conditionalPanel
+
+    })
+
+
+    output$regener_widget <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
+
+        #shiny::uiOutput(ns("regener_year_selector"))
+        shiny::selectInput(ns("regener_needs_year"),
+                           label = "Année (graphique)",
+                           # static choices from utils_helpers.R -> no reactivity needed
+                           choices = c(min(energy_datasets$regener_needs$etat):max(energy_datasets$regener_needs$etat)),
+                           selected = max(energy_datasets$regener_needs$etat),
+                           multiple = FALSE)
+
+      ) # End conditionalPanel
+
+    })
+
+
+    output$ng_cons_widget <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition = "input.nav == 'Gaz naturel'", # 1 condition !
+
+        shiny::sliderInput(ns("ng_cons_year"),
+                           label = "Choix des années",
+                           # reactive choices from current subset
+                           min = min(energy_datasets$ng_cons$annee),
+                           max = max(energy_datasets$ng_cons$annee),
+                           value = c(min(energy_datasets$ng_cons$annee),
+                                     max(energy_datasets$ng_cons$annee)),
+                           step = 1L, sep = "", ticks = T, dragRange = T)
+
+
+      ) # End conditionalPanel
+
+    })
 
 
     # Initialize inputVals ----
@@ -201,9 +229,14 @@ mod_inputs_server <- function(id){
 
     observe({
 
+      # req all inputs needed to filter & convert the datasets
       req(input$selected_communes)
       req(selectedUnits$energy_unit)
       req(selectedUnits$co2_unit)
+
+      req(input$elec_prod_year)
+      req(input$elec_cons_year)
+      req(input$ng_cons_year)
 
       inputVals$energyDatasets <- energy_datasets |>
         # Filter communes and convert units as needed
@@ -235,6 +268,7 @@ mod_inputs_server <- function(id){
     ## 2. mobilityDatasets ----
     observe({
 
+      # req all inputs needed to filter & convert the datasets
       req(input$selected_communes)
 
       inputVals$mobilityDatasets <- mobility_datasets |>
@@ -249,6 +283,7 @@ mod_inputs_server <- function(id){
     ## 3. adaptationDatasets----
     observe({
 
+      # req all inputs needed to filter & convert the datasets
       req(input$selected_communes)
       req(selectedUnits$co2_unit)
 
@@ -301,6 +336,13 @@ mod_inputs_server <- function(id){
         dplyr::filter(mesure == "M01") |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
         dplyr::pull(nombre)
+
+      # Statbox value for current selection's aggregated NG consumption
+      inputVals$ng_cons_last_year <- inputVals$energyDatasets$ng_cons |>
+        dplyr::filter(annee == last_year_ng_cons) |>
+        dplyr::filter(!commune == "Canton de Vaud")|>
+        dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
+        dplyr::pull(consommation)
 
     })# End observe
 

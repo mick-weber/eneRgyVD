@@ -36,10 +36,11 @@ Les subventions promises pour lesquels les travaux n'ont pas été effectués ne
 ## Links and mail ----
 # Used for mod_about_the_app.R and/or contact notificationMenu in ui.R
 
-mail_address <- "stat.energie@vd.ch"
-link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
+mail_address <- "pecc@vd.ch"
+link_diren <- "https://www.vd.ch/djes/dge/dge-diren"
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
 link_pecc <- "https://www.vd.ch/pecc" # shortcut link redirecting to https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc
+link_ocdc <- "https://www.vd.ch/dfa/office-cantonal-de-la-durabilite-et-du-climat-ocdc"
 link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ### Geoportail links ----
@@ -71,7 +72,7 @@ title_complement_ng_cons <- tags$p(style = "width:70vw",
 title_complement_regener_needs <- tags$p(style = "width:70vw;",
                                          "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",
                                          strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
-                                         "Plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques",
+                                         "Plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques. ",
                                          create_geoportail_tag(link = regener_geovd_link))
 
 title_complement_regener_cons <-  tags$p(style = "width:70vw;",
@@ -96,7 +97,7 @@ title_complement_subsidies_measure <- tags$p(style = "width:70vw;",
                                              "Ces données illustrent le nombre de subventions versées par type et année depuis 2017
                                         (voir détails dans la méthodologie complète). Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,",
                                              strong("il ne faut pas interpréter une subvention comme un bâtiment nouvellement subventionné."),
-                                             "Une vision agrégée par bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments.")
+                                             "Une vision agrégée par bâtiments subventionnés est disponible dans l'onglet adjacent.")
 
 
 

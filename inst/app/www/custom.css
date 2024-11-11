@@ -1,0 +1,290 @@
+/* import components ; the full bs path is provided in theme.R */
+/* info_dev_message() custom class*/
+.sweet-alert > p {
+  font-size: 1.2rem !important;
+}
+
+/* position sweet alert slightly more on top */
+.sweet-alert {
+  top: 45% !important;
+}
+
+.shiny-notification {
+  position: fixed;
+  top: calc(50%);
+  left: calc(40%);
+  width: 20vw;
+  text-align: center;
+}
+
+/* shiny::fileInput() generates a progress bar once the file is uploaded with 'Upload complete' text */
+/* we make it transparent to avoid english to show up and avoid complex JS insertion to change it  */
+.progress-bar {
+  color: transparent !important;
+}
+
+/* Add bottom margin to avoid overlapping of main content and footer, and override default padding for main container of 1rem*/
+.main {
+  margin-bottom: 20px;
+  padding: 0.75rem !important;
+  padding-bottom: 0.1rem !important;
+}
+
+/* Add left margin to preexisting navbar-nav class (bootstrap) */
+.navbar-nav {
+  margin-left: 3%;
+}
+
+/*For laptop screens (lg <-> xl): adapt font-size of navbar items (1.15rem is default's h5)*/
+@media (min-width: 992px) {
+  .navbar-nav {
+    font-size: calc(min(1.4vw, 1.15rem));
+  }
+}
+
+/*Used for main title resizing*/
+.adaptiveTitle {
+  text-wrap: wrap;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+@media (min-width: 1200px) {
+  .adaptiveTitle {
+    font-size: 22px;
+  }
+}
+
+/* Create contour in all nav-link descendants (direct or not) of nav-pills classes*/
+.nav-pills .nav-link {
+  margin-right: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #3A862D;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+/* Applies to radio buttons : add a little spacing, to be used with radioGroupButtons(individual = TRUE)*/
+.radiobtn {
+  margin-right: 5px;
+}
+
+/* Remove SelectizeInput's shadow when .focus is on */
+.selectize-input.focus {
+  border-color: black !important;
+  box-shadow: none !important;
+}
+
+/* sliderInputs major ticks color */
+.irs-grid-pol {
+  background: lightgrey !important;
+}
+
+/* sliderInputs minor ticks remove */
+.irs-grid-pol.small {
+  display: none !important;
+}
+
+/* Invert logo color, set height and align left*/
+.customLogo {
+  filter: brightness(0) invert(1);
+  height: 5vh;
+  align: left;
+}
+
+.customTooltips {
+  max-width: none;
+}
+
+/* Change color of nav's unselected navigation links (and hovering) with full white instead of light grey, more visible */
+#nav .nav-link {
+  color: white;
+}
+
+#nav .nav-link:hover {
+  color: white;
+}
+
+/*Invert the color of the svg arrow icon when the accordion is open */
+/* see : https://stackoverflow.com/questions/66335238/changing-the-color-arrow-in-bootstrap */
+.accordion-button:not(.collapsed)::after {
+  filter: invert(50%);
+}
+
+/*Used for mod_inputs.R unit converter widget : we change the orientation since the widget is as bottom of sidebar*/
+.rotatedSVG .accordion-button.collapsed::after {
+  transform: rotate(-180deg) !important;
+}
+
+.rotatedSVG .accordion-button::after {
+  transform: rotate(0deg);
+}
+
+/* add grid property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */
+.sidebar {
+  display: grid;
+}
+
+.sidebar-content {
+  padding-top: 15px !important;
+}
+
+.sidebar_na_list {
+  list-style: none;
+  padding-left: 10%;
+}
+
+.fs-sidebar {
+  font-size: 0.9rem;
+}
+
+.fs-materialSwitch {
+  font-size: 1rem;
+}
+
+.fs-sidebar-header .accordion-title {
+  font-size: 1rem;
+}
+
+/*On large media : 70% width to allow title space ; on smaller media 100% width to maximize screen space*/
+@media (min-width: 992px) {
+  .customAccordion {
+    width: 65% !important;
+    /* Change default's collapsed state border with primary color*/
+  }
+  .customAccordion .collapsed {
+    border-style: solid;
+    border-width: 1px !important;
+    border-color: #3A862D !important;
+  }
+}
+
+/* Remove default's bottom margin for <p> elements. Used in fct_helpers.R (generate_doc_accordion_panels()) */
+.customPanel p {
+  margin-bottom: 0 !important;
+}
+
+.dropdown-menu {
+  background-color: #3A862D;
+}
+
+.dropdown-menu .dropdown-item {
+  color: white;
+}
+
+.dropdown-menu .dropdown-header {
+  color: white;
+}
+
+/* Redirects buttons formatting for mod_table_content.R */
+.disabledTocButtons {
+  cursor: not-allowed;
+  pointer-events: none;
+  text-align: left;
+}
+
+/* Div backgrounds with icons used in mod_stats_box.R for each type of make_statbox_item() call*/
+/* For a new icon : go to https://icons.getbootstrap.com/, paste the desired icon 'Copy HTML' text, paste it in the <svg> balises */
+/* Then modify color/opacity with the 'fill = "rgba(x,y,z,a)"' argument in the <svg> call */
+.iconBgElecCons {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255, 185, 15, 0.2)" class="bi bi-plug-fill" viewBox="0 0 16 16">\a   <path d="M6 0a.5.5 0 0 1 .5.5V3h3V.5a.5.5 0 0 1 1 0V3h1a.5.5 0 0 1 .5.5v3A3.5 3.5 0 0 1 8.5 10c-.002.434-.01.845-.04 1.22-.041.514-.126 1.003-.317 1.424a2.08 2.08 0 0 1-.97 1.028C6.725 13.9 6.169 14 5.5 14c-.998 0-1.61.33-1.974.718A1.92 1.92 0 0 0 3 16H2c0-.616.232-1.367.797-1.968C3.374 13.42 4.261 13 5.5 13c.581 0 .962-.088 1.218-.219.241-.123.4-.3.514-.55.121-.266.193-.621.23-1.09.027-.34.035-.718.037-1.141A3.5 3.5 0 0 1 4 6.5v-3a.5.5 0 0 1 .5-.5h1V.5A.5.5 0 0 1 6 0"/>\a</svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.iconBgElecProd {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255, 185, 15, 0.1)" class="bi bi-lightning-charge-fill" viewBox="0 0 16 16"><path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.iconBgRgr {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(205, 92, 92, 0.1)" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.iconBgSubs {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(11, 156, 49, 0.1)" class="bi bi-house-fill" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1 .5.5 0 0 0-.5.5v1.293z"/><path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.iconBgNGcons {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(62, 160, 246, 0.1)" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
+.btnCustom {
+  background-color: transparent;
+  color: #3A862D;
+  border-color: #3A862D;
+}
+
+.btnCustom:hover {
+  background-color: #3A862D;
+  color: white;
+  border-color: #3A862D;
+}
+
+.btnCustom:focus {
+  background-color: #3A862D;
+  color: white;
+  border-color: #3A862D;
+}
+
+.btnCustom:active {
+  background-color: #3A862D;
+  color: white;
+  border-color: #3A862D;
+}
+
+/*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
+.btnCustomWidth {
+  width: 50%;
+}
+
+/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
+.btnCustomTEST {
+  background-color: white;
+  color: black;
+  width: 100%;
+  margin-bottom: 1vh;
+}
+
+.btnCustomTEST:hover {
+  background-color: #3A862D;
+  color: white;
+  border-color: black;
+}
+
+.btnCustomTEST:focus {
+  background-color: #3A862D;
+  color: white;
+  border-color: black;
+}
+
+.btnCustomTEST:active {
+  background-color: #3A862D;
+  color: white;
+  border-color: black;
+}
+
+/*When sidebar is collapsed, make the deploy arrow more visible*/
+.bslib-sidebar-layout.sidebar-collapsed > .collapse-toggle {
+  background-color: rgba(58, 134, 45, 0.5);
+}
+
+/*Set card header background to transparent*/
+.card-header {
+  background-color: transparent;
+}

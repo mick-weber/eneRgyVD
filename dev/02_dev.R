@@ -92,7 +92,7 @@ golem::add_utils("text", with_test = TRUE)
 ## Creates .js and .css files at inst/app/www
 golem::add_js_file("script")
 golem::add_js_handler("handlers")
-golem::add_sass_file("custom_bs5")
+golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package

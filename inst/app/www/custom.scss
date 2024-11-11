@@ -1,3 +1,7 @@
+/* import components ; the full bs path is provided in theme.R */
+@import "functions";
+@import "variables";
+@import "mixins";
 
 /* info_dev_message() custom class*/
 .sweet-alert > p{

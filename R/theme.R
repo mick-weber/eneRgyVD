@@ -25,5 +25,16 @@ profil_theme <- bslib::bs_theme(version = 5,
     "accordion-button-focus-box-shadow" = "none", # remove shadow when accordion buttons are active ; e.g. "0 0 0 $btn-focus-width rgba($secondary, 0.25)"
 
     .where = "declarations") |>
-  bslib::bs_add_rules(sass::sass_file("./inst/app/www/custom_bs5.scss")) # add complementary sass file
+  # add link to custom.scss + tell where to find bootstrap librairies called in it ('@import' calls)
+  bslib::bs_add_rules(
+    sass::sass_file(
+      sass::sass(input = sass::sass_file("inst/app/www/custom.scss"),
+                 output = "inst/app/www/custom.css",
+                 cache = NULL,
+                 options = sass::sass_options(
+                   # target the bs5 path where all components are stored
+                   include_path = system.file("lib/bs5/scss/", package = "bslib")))
+    )
+  )
+
 

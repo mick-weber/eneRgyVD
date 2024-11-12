@@ -98,9 +98,9 @@ generate_doc_accordion_panels <- function(md_file){
 
   # Extract HTML titles following ## headers (titles for accordion_panel)
   titles <- stringr::str_extract_all(doc_txt, pattern = "(?<=#{2}\\s).*", simplify =  TRUE) |>
-    stringr::str_subset(pattern = "^\\w") # remove empty lines
+    stringr::str_subset(pattern = "[:alpha:]") # remove empty lines without any letter
 
-  # Extract HTML content
+  # Extract HTML content paragraphs (do not start with '#')
   paragraphs <- stringr::str_extract_all(doc_txt, pattern = "^([^#]+)", simplify =  TRUE) |>
     stringr::str_subset(pattern = "^\\w")  # remove empty lines
 

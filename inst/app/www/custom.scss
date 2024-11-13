@@ -1,7 +1,7 @@
 /* import components ; the full bs path is provided in theme.R */
-@import "functions";
-@import "variables";
-@import "mixins";
+/*@import "functions";
+/*@import "variables";
+/*@import "mixins";
 
 /* info_dev_message() custom class*/
 .sweet-alert > p{
@@ -94,7 +94,6 @@
 .customLogo{
     filter: brightness(0) invert(1);
     height:5vh;
-    align:left;
 }
 
 .customTooltips{
@@ -312,11 +311,9 @@
 /*When sidebar is collapsed, make the deploy arrow more visible*/
 .bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{
   background-color: rgba(58, 134, 45, 0.5);
-
 }
 
 /*Set card header background to transparent*/
 .card-header{
   background-color:transparent;
 }
-

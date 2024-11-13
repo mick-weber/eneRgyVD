@@ -1,7 +1,7 @@
 /* import components ; the full bs path is provided in theme.R */
-/*@import "functions";
-/*@import "variables";
-/*@import "mixins";
+@import "functions";
+@import "variables";
+@import "mixins";
 
 /* info_dev_message() custom class*/
 .sweet-alert > p{
@@ -193,6 +193,16 @@
     color:white;
   }
 }
+
+.dropdown-menu > a {
+  color:#FF0000 !important;
+}
+
+
+
+
+
+
 
 /* Redirects buttons formatting for mod_table_content.R */
 

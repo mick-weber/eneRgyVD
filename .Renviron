@@ -1,1 +1,1 @@
-Sys.setenv(RENV_DOWNLOAD_METHOD = getOption("download.file.method"))
+http_proxy=http://127.0.0.1:9000

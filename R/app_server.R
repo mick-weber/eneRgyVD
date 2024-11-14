@@ -241,7 +241,7 @@ app_server <- function(input, output, session) {
    # END PROXY LEAFLET WORK
    # END MAP SELECTOR
 
-   # Output modules ----
+   # Output modules energy ----
 
    ## mod_elec_charts (cons) ----
    mod_elec_charts_server("consumption_charts",
@@ -344,6 +344,8 @@ app_server <- function(input, output, session) {
    )
 
 
+   # Output modules adaptation ----
+
    ## mod_generic_charts ----
 
    mod_generic_charts_server("test_generic_climat",
@@ -351,27 +353,29 @@ app_server <- function(input, output, session) {
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = "surface_canopee",
+                             var_values = "part_voit_elec", # !! wrong data here, waiting new OCDC inputs
                              unit = "%",
-                             var_cat = "category", # ask OCDC to change dataset var name...
+                             var_cat = "categorie", # ask OCDC to change dataset var name...
                              color_palette = "olivedrab3", # default_palette, dedicated one, or one color
                              dl_prefix = "canopee_",
                              doc_vars = NULL # for now
                              )
 
 
+   # Output modules mobility ----
+
    ## mod_generic_charts ----
 
-   mod_generic_charts_server("test_generic_mob",
-                             subsetData = reactive({inputVals$mobilityDatasets$part_ve}),
+   mod_generic_charts_server("public_transports",
+                             subsetData = reactive({inputVals$mobilityDatasets$public_transports}),
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = "part_ve",
-                             unit = "%",
+                             var_values = "part_voit_elec", #!! wrong data here, waiting new OCDC inputs
+                             unit = "[?]",
                              var_cat = NULL,
                              color_palette = default_palette, # default_palette, dedicated one, or one color
-                             dl_prefix = "part_ve_",
+                             dl_prefix = "desserte_tp_",
                              doc_vars = NULL # for now
    )
 

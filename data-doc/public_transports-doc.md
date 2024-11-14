@@ -7,7 +7,6 @@
 
 Les données proviennent des CFF pour les horaires, de l'OFS et de la DGMR.<br> L'évolution de l'indice de qualité de desserte montre l'évolution de la qualité de desserte de la population par les transports publics, autrement dit, un pourcentage par rapport à la desserte optimum de la population en transports publics. Le territoire est qualifié en fonction de la distance aux arrêts, de la fréquence des lignes qui les desservent, ainsi que du type d'arrêt (routier, ferroviaire, grande ligne). La qualité de desserte du territoire est ensuite mise en relation avec la localisation de la population ou/et des emplois. <br>
 
-
 ## Qui traite ces données
 
 La DGMR (Direction de la mobilité et des routes). <br> Source des données https://cartostatdgmr.vd.ch/#c=indicator&i=voitures.voit_1000hab&s=2023&view=map1

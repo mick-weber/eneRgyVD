@@ -256,14 +256,14 @@ app_ui <- function(request) {
       ## Mobilité (générique) ----
       bslib::nav_menu("Mobilité",
                       icon = icon("car"),
-                      bslib::nav_panel("Exemple générique 2",
+                      bslib::nav_panel("Transports publics",
                                        # Nested navset_card_pill()
                                        bslib::navset_card_pill(id = "navset_mobilite",
-                                         bslib::nav_panel(title = "Première donnée",
-                                                          icon = bsicons::bs_icon("award"),
+                                         bslib::nav_panel(title = "Qualité de desserte des transports publics",
+                                                          icon = bsicons::bs_icon("bus-front-fill"),
 
-                                                          mod_generic_charts_ui("test_generic_mob",
-                                                                                title = "Titre générique pour mobilité",
+                                                          mod_generic_charts_ui("public_transports",
+                                                                                title = "Qualité de desserte des transports publics",
                                                                                 title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
                                                           )
                                          ),# end firstnav_panel

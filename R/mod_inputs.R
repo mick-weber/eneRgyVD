@@ -62,7 +62,6 @@ mod_inputs_ui <- function(id){
     # uiOutput() for regener ----
     uiOutput(ns("regener_widget")),
 
-
     # uiOutput() for ng_cons ----
     uiOutput(ns("ng_cons_widget")),
 

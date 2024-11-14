@@ -1,28 +1,38 @@
-#' Limits for Canton de Vaud
+#' Limits for Canton de Vaud - Canton
 #'
-#' The different layers required to map the Canton de Vaud are stored in
-#' `sf_canton`, `sf_communes`, `sf_districts` and `sf_lacs`. These are
-#' simplified polygons (accuracy is not required here) taken from viageo.ch (see source)
-#' and loaded as shapefiles with {sf} library
-#' These layers must be updated when some merging between communes happens
-#' @name sf_layers
+#' A simplified polygon layer for Canton de Vaud, taken from viageo.ch.
 #' @keywords datasets
-#' @format Each is a tibble with various rows and cols which are not detailed yet.
+#' @format A tibble with various rows and columns.
 #' @source <https://viageo.ch/md/5be7ce8a-62b8-4031-8caa-5dfe7c0ef089>
-
-
+#' @export
 "sf_canton"
 
-#' @rdname sf_layers
+#' Limits for Canton de Vaud - Communes
+#'
+#' A simplified polygon layer for communes in Canton de Vaud, taken from viageo.ch.
+#' @keywords datasets
+#' @format A tibble with various rows and columns.
+#' @source <https://viageo.ch/md/5be7ce8a-62b8-4031-8caa-5dfe7c0ef089>
+#' @export
 "sf_communes"
 
-#' @rdname sf_layers
+#' Limits for Canton de Vaud - Districts
+#'
+#' A simplified polygon layer for districts in Canton de Vaud, taken from viageo.ch.
+#' @keywords datasets
+#' @format A tibble with various rows and columns.
+#' @source <https://viageo.ch/md/5be7ce8a-62b8-4031-8caa-5dfe7c0ef089>
+#' @export
 "sf_districts"
 
-#' @rdname sf_layers
+#' Limits for Canton de Vaud - Lakes
+#'
+#' A simplified polygon layer for lakes in Canton de Vaud, taken from viageo.ch.
+#' @keywords datasets
+#' @format A tibble with various rows and columns.
+#' @source <https://viageo.ch/md/5be7ce8a-62b8-4031-8caa-5dfe7c0ef089>
+#' @export
 "sf_lacs"
-
-
 
 #' Building subsidies by commune for Canton de Vaud
 #'
@@ -73,6 +83,7 @@
 "elec_cons"
 
 #' @rdname elec_cons
+#' @export
 "elec_cons_doc"
 
 
@@ -94,6 +105,7 @@
 "elec_prod"
 
 #' @rdname elec_prod
+#' @export
 "elec_prod_doc"
 
 #' RegEner datasets
@@ -114,18 +126,23 @@
 
 
 #' @rdname regener_datasets
+#' @export
 "regener_cons_ae_aff"
 
 #' @rdname regener_datasets
+#' @export
 "regener_cons_ae_use"
 
 #' @rdname regener_datasets
+#' @export
 "regener_needs"
 
 #' @rdname regener_datasets
+#' @export
 "regener_misc"
 
 #' @rdname regener_datasets
+#' @export
 "regener_doc"
 
 
@@ -143,6 +160,7 @@
 "ng_cons"
 
 #' @rdname ng_cons
+#' @export
 "ng_cons_doc"
 
 

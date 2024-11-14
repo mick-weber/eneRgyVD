@@ -193,13 +193,13 @@ mod_about_the_app_ui <- function(id){
                                                                  bslib::nav_panel("Mobilité",
                                                                                   bslib::navset_tab(id = ns("navset_mobilite"),
 
-                                                                                                    bslib::nav_panel("Donnée générique",
+                                                                                                    bslib::nav_panel("Qualité de desserte des transports publics",
 
                                                                                                                      tags$div(
                                                                                                                        br(),
                                                                                                                        # h4(strong("Détails méthodologiques : subventions bâtiments")),
                                                                                                                        # br(),
-                                                                                                                        bslib::accordion(!!!generic_data_panels, open = FALSE)
+                                                                                                                        bslib::accordion(!!!public_transports_doc_panels, open = FALSE)
                                                                                                                        # br(),
                                                                                                                        # h5(strong("Descriptif des variables")),
                                                                                                                        # br(),
@@ -291,7 +291,7 @@ mod_about_the_app_server <- function(id){
 
     output$elec_cons_doc <- DT::renderDataTable({
 
-      elec_cons_doc |>  # loaded in utils_helpers.R
+      doc_datasets$elec_cons |>  # loaded in utils_helpers.R
         create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
 
     })
@@ -301,7 +301,7 @@ mod_about_the_app_server <- function(id){
     # Table for electricity production documentation
     output$elec_prod_doc <- DT::renderDataTable({
 
-      elec_prod_doc |>  # loaded in utils_helpers.R
+      doc_datasets$elec_prod |>  # loaded in utils_helpers.R
         create_doc_table_dt(doc_prefix = "doc_elec_prod_") # fct_helpers.R
 
     })
@@ -309,7 +309,7 @@ mod_about_the_app_server <- function(id){
     # 3. Regener ----
 
     output$regener_doc <- DT::renderDataTable({
-      regener_doc |>
+      doc_datasets$regener |>
         create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
     })
 
@@ -317,14 +317,14 @@ mod_about_the_app_server <- function(id){
     # 4. Subsidies ----
 
     output$subsidies_doc <- DT::renderDataTable({
-      subsidies_doc |>
+      doc_datasets$subsidies |>
         create_doc_table_dt(doc_prefix = "doc_subventions_") # fct_helpers.R
     })
 
     # 5. Conso gaz ----
 
     output$ng_cons_doc <- DT::renderDataTable({
-      ng_cons_doc |>
+      doc_datasets$ng_cons |>
         create_doc_table_dt(doc_prefix = "doc_conso_gaz_") # fct_helpers.R
     })
 

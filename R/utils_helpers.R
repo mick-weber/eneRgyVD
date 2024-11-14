@@ -2,75 +2,103 @@
 # Loading .rda objects ----
 ## sf data ----
 
-sf_canton <- readRDS("./data/sf_canton.rds")
-sf_communes <- readRDS("./data/sf_communes.rds")
-sf_districts <- readRDS("./data/sf_districts.rds")
-sf_lacs <- readRDS("./data/sf_lacs.rds")
+load("./data/sf_canton.rda")
+load("./data/sf_communes.rda")
+load("./data/sf_districts.rda")
+load("./data/sf_lacs.rda")
 
+## energy data ----
+# elec_prod
+load("./data/elec_prod.rda")
+load("./data/elec_prod_doc.rda")
+# elec_cons
+load("./data/elec_cons.rda")
+load("./data/elec_cons_doc.rda")
+# ng_cons
+load("./data/ng_cons.rda")
+load("./data/ng_cons_doc.rda")
+# regener
+load("./data/regener_cons_ae_use.rda")
+load("./data/regener_cons_ae_aff.rda")
+load("./data/regener_needs.rda")
+load("./data/regener_misc.rda")
+load("./data/regener_doc.rda")
+# subsidies
+load("./data/subsidies_by_building.rda")
+load("./data/subsidies_by_measure.rda")
+load("./data/subsidies_doc.rda")
+
+## mobility data ----
+load("./data/public_transports.rda")
+
+## adaptation data ----
+load("./data/canopee.rda")
+
+## dummy data ----
+
+## glossary ----
+
+load("./data/glossary.rda")
 
 ## energy datasets ----
-
 # <ADD NEW ENERGY DATASETS HERE>
-energy_datasets_rds_files <- c("elec_prod.rds",
-                           "elec_cons.rds",
-                           "ng_cons.rds",
-                           "regener_needs.rds",
-                           "regener_cons_ae_use.rds",
-                           "regener_cons_ae_aff.rds",
-                           "regener_misc.rds",
-                           "subsidies_by_measure.rds",
-                           "subsidies_by_building.rds")
 
+energy_datasets_objects <- c("elec_prod",
+                           "elec_cons",
+                           "ng_cons",
+                           "regener_needs",
+                           "regener_cons_ae_use",
+                           "regener_cons_ae_aff",
+                           "regener_misc",
+                           "subsidies_by_measure",
+                           "subsidies_by_building")
 
-energy_datasets <- purrr::map(energy_datasets_rds_files,
-                              \(rds) readRDS(file = paste0("./data/", rds))) |>
-  purrr::set_names(energy_datasets_rds_files |>
-                     stringr::str_remove("\\.rds$"))
+energy_datasets <- setNames(mget(energy_datasets_objects), energy_datasets_objects)
 
 ## mobility datasets ----
 
 # <ADD NEW MOBILITY DATASETS HERE>
-mobility_datasets_rds_files <- c("part_ve.rds")
+mobility_datasets_objects <- c("public_transports")
 
-mobility_datasets <- purrr::map(mobility_datasets_rds_files,
-                                \(rds) readRDS(file = paste0("./data/", rds))) |>
-  purrr::set_names(mobility_datasets_rds_files |>
-                     stringr::str_remove("\\.rds$"))
-
+mobility_datasets <- setNames(mget(mobility_datasets_objects), mobility_datasets_objects)
 
 ## adaptation datasets ----
 
 # <ADD NEW ADAPTATION DATASETS HERE>
-adaptation_datasets_rds_files <- c("canop.rds")
+adaptation_datasets_objects <- c("canopee")
 
-adaptation_datasets <- purrr::map(adaptation_datasets_rds_files,
-                                  \(rds) readRDS(file = paste0("./data/", rds))) |>
-  purrr::set_names(adaptation_datasets_rds_files |>
-                     stringr::str_remove("\\.rds$"))
+adaptation_datasets <- setNames(mget(adaptation_datasets_objects), adaptation_datasets_objects)
 
 
 ## documentation datasets (all thematics included) ----
 
-doc_rds_files <- c("elec_prod_doc.rds",
-                   "elec_cons_doc.rds",
-                   "ng_cons_doc.rds",
-                   "regener_doc.rds",
-                   "subsidies_doc.rds")
+doc_objects <- c("elec_prod_doc",
+                 "elec_cons_doc",
+                 "ng_cons_doc",
+                 "regener_doc",
+                 "subsidies_doc")
 
-doc_datasets <- purrr::map(doc_rds_files,
-                                  \(rds) readRDS(file = paste0("./data/", rds))) |>
-  purrr::set_names(doc_rds_files |>
-                     stringr::str_remove("_doc\\.rds$"))
+doc_datasets <- setNames(mget(doc_objects), doc_objects)
 
+## glossary ----
+
+glossary <- load("data/glossary.rda")
 
 ## doc panels for accordions ----
 # see fct_helpers.R
 
+# energy
 elec_prod_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_prod-doc.md")
 elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_cons-doc.md")
 regener_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/regener-doc.md")
 subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subsidies-doc.md")
 ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_cons-doc.md")
+
+# mobility
+public_transports_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/public_transports-doc.md")
+
+# adaptation
+canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/canopee-doc.md")
 
 # DEV for now
 generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
@@ -84,7 +112,7 @@ generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/gener
 subpanels_tribble <- dplyr::tribble(
   # <about_*> = item names in mod_about_the_app.R   //  <nav_*> = item names in app_ui.R
   ~observe_input, ~about_nav_panel, ~navset_id,  ~about_tabpanel_name, ~data_id, ~nav_panel, ~navset_name, ~nav_name,
-  # ENERGIE
+  # energy
   "consumption_charts-elec_data_help","Energie","navset_energie", "Distribution d'électricité", "data_1", "Electricité", "navset_elec", "Distribution d'électricité",
   "production_charts-elec_data_help", "Energie","navset_energie", "Production d'électricité", "data_2", "Electricité", "navset_elec", "Production d'électricité",
   "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
@@ -93,6 +121,9 @@ subpanels_tribble <- dplyr::tribble(
   "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue par bâtiments",
   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
+
+  # mobility
+  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_9", "Transports publics", "navset_tp", "Qualité de desserte des transports publics",
 
   # COMPLETE THESE ONES (and more !) when real data is here
   "test_generic_climat-generic_data_help",  "Adaptation","navset_climat", "Donnée générique", "data_10", "Exemple générique 1", "navset_climat", "Première donnée",

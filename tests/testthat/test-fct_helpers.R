@@ -4,9 +4,9 @@ test_that("Check that map layers are valid components for a leaflet map",
 
             # Most basic map with the app 3 layers
             map <- create_select_leaflet(
-              sf_districts = eneRgyVD::sf_districts,
-              sf_lacs = eneRgyVD::sf_lacs,
-              sf_communes = eneRgyVD::sf_communes
+              sf_districts = sf_districts,
+              sf_lacs = sf_lacs,
+              sf_communes = sf_communes
             )
             # Check class
             expect_equal(class(map),

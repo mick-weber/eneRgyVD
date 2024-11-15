@@ -194,16 +194,6 @@
   }
 }
 
-.dropdown-menu > a {
-  color:#FF0000 !important;
-}
-
-
-
-
-
-
-
 /* Redirects buttons formatting for mod_table_content.R */
 
 .disabledTocButtons{
@@ -211,11 +201,46 @@
   cursor: not-allowed;
   pointer-events: none;
   text-align:left;
-
-
-
 }
 
+/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
+.btnCustom{
+  background-color:transparent;
+  color:#3A862D;
+  border-color:#3A862D;
+}
+
+.btnCustom:hover{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+.btnCustom:focus{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+.btnCustom:active{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+
+
+/*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
+.btnCustomWidth{
+  width:50%;
+}
+
+/*When sidebar is collapsed, make the deploy arrow more visible*/
+.bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{
+  background-color: rgba(58, 134, 45, 0.5);
+}
+
+/*Set card header background to transparent*/
+.card-header{
+  background-color:transparent;
+}
 
 /* Div backgrounds with icons used in mod_stats_box.R for each type of make_statbox_item() call*/
 /* For a new icon : go to https://icons.getbootstrap.com/, paste the desired icon 'Copy HTML' text, paste it in the <svg> balises */
@@ -259,71 +284,4 @@
         background-repeat: no-repeat;
         background-size: 100%;
         background-position: center;
-}
-
-
-/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
-.btnCustom{
-  background-color:transparent;
-  color:#3A862D;
-  border-color:#3A862D;
-}
-
-.btnCustom:hover{
-  background-color:#3A862D;
-  color:white;
-  border-color:#3A862D;
-}
-.btnCustom:focus{
-  background-color:#3A862D;
-  color:white;
-  border-color:#3A862D;
-}
-.btnCustom:active{
-  background-color:#3A862D;
-  color:white;
-  border-color:#3A862D;
-}
-
-
-
-/*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
-.btnCustomWidth{
-  width:50%;
-}
-
-/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
-.btnCustomTEST{
-  background-color:white;
-  color:black;
-  width:100%;
-  margin-bottom:1vh;
-
-}
-
-.btnCustomTEST:hover{
-  background-color:#3A862D;
-  color:white;
-  border-color:black;
-}
-.btnCustomTEST:focus{
-  background-color:#3A862D;
-  color:white;
-  border-color:black;
-}
-.btnCustomTEST:active{
-  background-color:#3A862D;
-  color:white;
-  border-color:black;
-}
-
-
-/*When sidebar is collapsed, make the deploy arrow more visible*/
-.bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{
-  background-color: rgba(58, 134, 45, 0.5);
-}
-
-/*Set card header background to transparent*/
-.card-header{
-  background-color:transparent;
 }

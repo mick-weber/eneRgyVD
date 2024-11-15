@@ -355,7 +355,7 @@ app_server <- function(input, output, session) {
                              var_year = "annee",
                              var_values = "part_voit_elec", # !! wrong data here, waiting new OCDC inputs
                              unit = "%",
-                             var_cat = "categorie", # ask OCDC to change dataset var name...
+                             var_cat = NULL, # ask OCDC to change dataset var name...
                              color_palette = "olivedrab3", # default_palette, dedicated one, or one color
                              dl_prefix = "canopee_",
                              doc_vars = NULL # for now

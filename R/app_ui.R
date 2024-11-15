@@ -9,11 +9,51 @@ app_ui <- function(request) {
 
   shiny::tagList(
 
+    # This script (see app_server.R too) closes nav_menu's after being redirected by a click (2s delay) It is used for redirects from app_server.R to mod_about_the_app.R
+    # ! This may cause some unexpected behaviour since all dropdown-menu are targeted by the script ! see https://github.com/rstudio/bslib/issues/621
+    tags$script("
+        Shiny.addCustomMessageHandler(
+          'toggleDropdown',
+          function toggleDropdown(msg) {
+            $('.dropdown-menu').removeClass('show')
+          });
+        "
+    ),
+
     # Leave this function for adding external resources
     golem_add_external_resources(),
 
     # Shinybrowser identifies the web browser for use in app_server.R/fct_helpers.R
     shinybrowser::detect(),
+
+    # Custom top navbar
+    tags$nav(
+      class = "navbar navbar-expand-lg bg-primary",
+      style = "color:white;padding: 2px; width: 100%; position: relative; z-index: 1000;",
+
+      tags$p("Profil climatique des communes vaudoises", class = "ps-2 py-0 my-0 fs-5"),
+
+      tags$div(
+        # dropdown with useful links, collapses on small widths
+        class = "collapse navbar-collapse", id = "topNavbar",
+        tags$ul(
+          class = "navbar-nav ms-auto",
+          tags$li(class = "nav-item dropdown",
+                  tags$a(
+                    class = "nav-link text-white dropdown-toggle", href = "#", id = "topNavDropdown",
+                    role = "button", `data-bs-toggle` = "dropdown",
+                    "Liens utiles"
+                  ),
+                  tags$ul(
+                    class = "dropdown-menu",
+                    tags$li(tags$a(class = "dropdown-item", href = "https://link1.com", "Link 1")),
+                    tags$li(tags$a(class = "dropdown-item", href = "https://link2.com", "Link 2")),
+                    tags$li(tags$a(class = "dropdown-item", href = "https://link3.com", "Link 3"))
+                  )
+          )
+        )
+      )
+    ),
 
     # Navbar page
     bslib::page_navbar(
@@ -21,55 +61,36 @@ app_ui <- function(request) {
       id = "nav", # conditionalPanels will refer to this as input.nav == <condition>
       fillable = TRUE,
 
-      # This script (see app_server.R too) closes nav_menu's after being redirected by a click (2s delay)
-      # It is used for redirects from app_server.R to mod_about_the_app.R
-      # ! This may cause some unexpected behaviour since all dropdown-menu are targeted by the script !
-      # see here : https://github.com/rstudio/bslib/issues/621
-      tags$script("
-        Shiny.addCustomMessageHandler(
-          'toggleDropdown',
-          function toggleDropdown(msg) {
-            $('.dropdown-menu').removeClass('show')
-          });
-        "
-      ),
-
       # Footer
       footer = p("DGE-DIREN @ 2024", class = "fw-lighter",
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
       # Custom theme
       theme = profil_theme, # utils_helpers.R
       # Title
-      title = strong("Profil climatique des communes vaudoises",
-                     class = "adaptiveTitle"
-                     ),
+      title = NULL, #strong("Profil climatique des communes vaudoises", class = "adaptiveTitle"),
       # Browser title
       window_title = "Profil climatique VD",
       # Sidebar
       sidebar = bslib::sidebar(
 
         open = "always",
-        class = "shadow", # add some shadow
+        class = "shadow rounded-end-4", # add some shadow + rounded + see custom.scss
         width = "300px",
-          bg =  "#343A40",
-
-        # add brand
-        tags$div(
-        tags$img(src="www/vd-logo-black.svg",
-                 class = "customLogo"),
-        br(),
-        HTML("DIREN - OCDC"),
-        hr()
-        ),# End div brand,
+        bg =  "#343A40",
 
         mod_inputs_ui("inputs_1")
 
       ),# End sidebar()
 
+      # Logo VD left of main sidebar
+      bslib::nav_item(tags$img(src = "www/vd-logo-black.svg", height = "50px", class = "navbar-brand")),
+
+      bslib::nav_spacer(),
+
       # Navigation panels ----
       ## Carte ----
       bslib::nav_panel("Accueil",
-                       icon = icon("map"),
+                       # icon = icon("map"),
                        bslib::layout_column_wrap(
                          height_mobile = "200vh", # when mobile we allow 2x scren height of scrollable area (map+2statboxes)
                          fill = TRUE,
@@ -86,9 +107,8 @@ app_ui <- function(request) {
                                        trigger = bsicons::bs_icon("info-circle"),
 
                                        "En cas de fusions communales, un décalage de quelques semaines peut être nécessaire
-                                        pour mettre à jour les données avec les nouveaux périmètres communaux"),
-
-                                       class = "bg-secondary"),
+                                        pour mettre à jour les données avec les nouveaux périmètres communaux")
+                                       ),
 
                                      bslib::card_body(class = "m-0 p-0",
                                        leafletOutput("map"))
@@ -105,11 +125,9 @@ app_ui <- function(request) {
 
       ),# End nav_panel('Accueil')
 
-
-
       ## Energie ----
       bslib::nav_menu("Energie",
-                      icon = icon("bolt"),
+                      # icon = icon("bolt"),
 
                       ### Electricite ----
                       bslib::nav_panel("Electricité",
@@ -230,8 +248,8 @@ app_ui <- function(request) {
       ),# End nav_menu Energie
 
       ## Adaptation (générique) ----
-      bslib::nav_menu("Adaptation",
-                      icon = shiny::icon("temperature-half"),
+      bslib::nav_menu("Adaptation climat",
+                      # icon = shiny::icon("temperature-half"),
                       bslib::nav_panel("Exemple générique 1",
                                        # Nested navset_card_pill()
                                        bslib::navset_card_pill(id = "navset_climat",
@@ -256,7 +274,7 @@ app_ui <- function(request) {
 
       ## Mobilité (générique) ----
       bslib::nav_menu("Mobilité",
-                      icon = icon("car"),
+                      # icon = icon("car"),
                       bslib::nav_panel("Transports publics",
                                        # Nested navset_card_pill()
                                        bslib::navset_card_pill(id = "navset_mobilite",
@@ -315,29 +333,29 @@ app_ui <- function(request) {
       #### (spacer) ----
       bslib::nav_spacer(),
 
-      ## Useful links ----
-      bslib::nav_menu(
-        align = "right",
-        title = "Liens utiles", # utils_helpers.R for links
-
-        ### Contact ----
-        bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
-
-                               # add objet to mail manually, better UX
-                               href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank")),
-        ### DGE-DIREN ----
-        bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
-                               href = link_diren, target = "_blank")),
-
-        ### PECC ----
-        bslib::nav_item(tags$a(bsicons::bs_icon("link"), "Plan énergie climat",
-                               href = link_pecc, target = "_blank")),
-
-        ### GitHub ----
-        bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
-                               href = link_github, target = "_blank"))
-
-      )
+      # ## Useful links ----
+      # bslib::nav_menu(
+      #   align = "right",
+      #   title = "Liens utiles", # utils_helpers.R for links
+      #
+      #   ### Contact ----
+      #   bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
+      #
+      #                          # add objet to mail manually, better UX
+      #                          href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank")),
+      #   ### DGE-DIREN ----
+      #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
+      #                          href = link_diren, target = "_blank")),
+      #
+      #   ### PECC ----
+      #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "Plan énergie climat",
+      #                          href = link_pecc, target = "_blank")),
+      #
+      #   ### GitHub ----
+      #   bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
+      #                          href = link_github, target = "_blank"))
+      #
+      # )
     )#End page_navbar()
   )# End tagList()
 }# End UI

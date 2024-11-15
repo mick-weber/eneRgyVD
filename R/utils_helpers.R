@@ -126,7 +126,7 @@ subpanels_tribble <- dplyr::tribble(
   "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_9", "Transports publics", "navset_tp", "Qualité de desserte des transports publics",
 
   # COMPLETE THESE ONES (and more !) when real data is here
-  "test_generic_climat-generic_data_help",  "Adaptation","navset_climat", "Donnée générique", "data_10", "Exemple générique 1", "navset_climat", "Première donnée",
+  "test_generic_climat-generic_data_help",  "Adaptation climat","navset_climat", "Donnée générique", "data_10", "Exemple générique 1", "navset_climat", "Première donnée",
   "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "Donnée générique", "data_11", "Exemple générique 2", "navset_mobilite","Première donnée"
 
 

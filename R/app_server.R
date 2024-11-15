@@ -211,8 +211,8 @@ app_server <- function(input, output, session) {
          # Contour for Canton VD, orange + light orange fill
          leaflet::addPolylines(data = sf_canton, # utils_helpers.R ; static
                                layerId = "highlight_canton", # layer id to remove if unselected
-                               color = "#FFB90F",
-                               fill = T, fillColor = "#FFE3A0",
+                               color = "#3A862D",
+                               fill = T, fillColor = "#75AA6C",
                                # Disable clikable events otherwise it will crash (!)
                                options = leaflet::pathOptions(interactive = FALSE)
          )

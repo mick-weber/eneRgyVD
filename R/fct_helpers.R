@@ -172,11 +172,11 @@ create_select_leaflet <- function(sf_districts,
                            weight = 5,
                            fillColor = NULL,
                            fillOpacity = NULL,
-                           color = "#FFB90F",
+                           color = "#3A862D",
                            bringToFront = FALSE)) |>
     # Seconde couche des communes (en rouge, état sélectionné)
     leaflet::addPolygons(data = sf_communes,
-                         fillColor = "#FFB90F",
+                         fillColor = "#3A862D",
                          fillOpacity = 1,
                          weight = 1,
                          color = "black",

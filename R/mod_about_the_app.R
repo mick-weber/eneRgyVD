@@ -166,7 +166,7 @@ mod_about_the_app_ui <- function(id){
 
 
                                                                  ## nav_panel 'Adaptation' ----
-                                                                 bslib::nav_panel("Adaptation",
+                                                                 bslib::nav_panel("Adaptation climat",
                                                                                   bslib::navset_tab(id = ns("navset_climat"),
 
                                                                                                     bslib::nav_panel("Donnée générique",

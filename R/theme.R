@@ -11,7 +11,7 @@ main_color_active <- "#343A40"
 profil_theme <- bslib::bs_theme(version = 5,
                                 preset = "bootstrap",
                                 font_scale = 1.2,
-                                "navbar-bg" = main_color,
+                                "navbar-bg" = "white",
                                 "modal-footer-margin-between" = "0rem",
                                 primary = main_color,
                                 secondary = main_color_active

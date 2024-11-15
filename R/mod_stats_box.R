@@ -56,8 +56,7 @@ mod_stats_box_server <- function(id,
                       options = list(customClass = "customTooltips"), # custom.scss
                       trigger = bsicons::bs_icon("info-circle"),
                       "Les années de référence correspondent aux dernières années pour lesquelles des données sont disponibles"
-                    ),
-                                       class = "bg-secondary"),
+                    )),
 
                     bslib::card_body(
 

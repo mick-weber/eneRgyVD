@@ -34,16 +34,31 @@
   padding-bottom:0.1rem !important;
 }
 
-/* Add left margin to preexisting navbar-nav class (bootstrap) */
-.navbar-nav{
-  margin-left: 3%;
+/* Invert logo color, set height and align left*/
+.customLogo{
+    filter: brightness(0) invert(1);
 }
 
-/*For laptop screens (lg <-> xl): adapt font-size of navbar items (1.15rem is default's h5)*/
-@include media-breakpoint-up(lg){
-  .navbar-nav{
-    font-size:calc(min(1.4vw, 1.15rem));
-  }
+.navbar {
+  padding-bottom:0px !important;
+  margin-bottom:0px !important;
+}
+
+/* Add spacing between items (nav_panel()) */
+/* Change color of nav's unselected navigation links (and hovering) with darkgrey instead of light grey, more visible */
+#nav{
+  .nav-link{
+  color:#343A40;
+  margin-right: 2vw !important;
+
+  &:hover{
+    color:#343A40;
+  }}
+}
+
+.customTOC{
+  text-decoration:none;
+  margin-bottom:5px;
 }
 
 /*Used for main title resizing*/
@@ -51,7 +66,7 @@
   text-wrap: wrap;
   font-family: 'Tahoma', sans-serif;
   font-size:18px;
-  font-weight:500;
+  font-weight:300;
   @include media-breakpoint-up(xl){
    font-size:22px;
   }
@@ -90,28 +105,9 @@
   display: none !important;
 }
 
-/* Invert logo color, set height and align left*/
-.customLogo{
-    filter: brightness(0) invert(1);
-    height:5vh;
-}
-
 .customTooltips{
   max-width:none;
 }
-
-
-/* Change color of nav's unselected navigation links (and hovering) with full white instead of light grey, more visible */
-#nav{
-
-  .nav-link{
-  color:white;
-
-  &:hover{
-    color:white;
-  }}
-}
-
 
 /*Invert the color of the svg arrow icon when the accordion is open */
 /* see : https://stackoverflow.com/questions/66335238/changing-the-color-arrow-in-bootstrap */
@@ -135,6 +131,7 @@
 
 /* add grid property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */
 .sidebar{
+  margin-top:0.75rem; /* align with padding between sidebar and card_headers() */
   display: grid;
 }
 
@@ -230,11 +227,6 @@
 /*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
 .btnCustomWidth{
   width:50%;
-}
-
-/*When sidebar is collapsed, make the deploy arrow more visible*/
-.bslib-sidebar-layout.sidebar-collapsed>.collapse-toggle{
-  background-color: rgba(58, 134, 45, 0.5);
 }
 
 /*Set card header background to transparent*/

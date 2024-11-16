@@ -7,36 +7,76 @@
 
 info_dev_message <- function(){
 
-  shinyalert::shinyalert(
-    inputId = "welcome-msg",
-    title = "Bienvenue sur le profil climatique des communes !",
-                         text = paste0("Cette application est mise à disposition par la ",
-                                       tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
-                                       " et l'",
-                                       tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat (OCDC)"),
-                                       " afin de diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises.",
-                                       tags$br(),
-                                       "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",
-                                       tags$a(href = link_pecc, target = "_blank", # utils_helpers.R
-                                              "plans énergie et climat communaux (PECC)."),
-                                       tags$br(), tags$br(),
-                                       "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
-                                       Pour cette raison, des valeurs peuvent changer de manière rétroactive.
-                                       Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour.",
-                                       tags$br(), tags$br(),
-                                       "<i>Un aperçu des ajouts récents est disponible dans le menu Divers > Nouveautés</i>."
-                                       ),
-                         html = TRUE,
-                         size = "m",
-                         closeOnEsc = TRUE,
-                         closeOnClickOutside = TRUE,
-                         type = "info",
-                         showConfirmButton = TRUE,
-                         showCancelButton = FALSE,
-                         confirmButtonText = "OK",
-                         timer = 0,
-                         animation = "pop"
+  showModal(
+    modalDialog(size = "l",
+                fade = TRUE,
+                easyClose = TRUE,
+                footer = tagList(
+                  actionButton("modal_info", "En savoir plus"), # will be used to redirect to a page
+                  modalButton(label = "C'est parti !")
+                ),
+                # Modal content
+                tagList(
+                  # Header section with company logo
+                  div(class = "modal-header",
+                      img(src = "www/vd-logo-black.svg", alt = "Etat de Vaud", class = "customLogo"),
+                      h3("Profil climatique des communes vaudoises")
+                  ),
+                  # Middle text
+                  div(
+                    p("This is some text in the middle of the modal. Customize this as needed.",
+                      "This is some text in the middle of the modal. Customize this as needed.",
+                      "This is some text in the middle of the modal. Customize this as needed.")
+                  ),
+                  # Grey warning area
+                  div(class = "modal-warning",
+                      shiny::icon("warning", "fa-2x"),
+                      "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
+           Pour cette raison, des valeurs peuvent changer de manière rétroactive.
+           Il est donc important d'interpréter ces données avec précaution et d'anticiper
+           le fait que celles-ci puissent changer au gré des prochaines mises à jour."
+                  )
+                )
+    )
   )
+
+
+
+
+
+
+
+
+  # shinyalert::shinyalert(
+  #   inputId = "welcome-msg",
+  #   title = "Bienvenue sur le profil climatique des communes !",
+  #                        text = paste0("Cette application est mise à disposition par la ",
+  #                                      tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
+  #                                      " et l'",
+  #                                      tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat (OCDC)"),
+  #                                      " afin de diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises.",
+  #                                      tags$br(),
+  #                                      "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",
+  #                                      tags$a(href = link_pecc, target = "_blank", # utils_helpers.R
+  #                                             "plans énergie et climat communaux (PECC)."),
+  #                                      tags$br(), tags$br(),
+  #                                      "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
+  #                                      Pour cette raison, des valeurs peuvent changer de manière rétroactive.
+  #                                      Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour.",
+  #                                      tags$br(), tags$br(),
+  #                                      "<i>Un aperçu des ajouts récents est disponible dans le menu Divers > Nouveautés</i>."
+  #                                      ),
+  #                        html = TRUE,
+  #                        size = "m",
+  #                        closeOnEsc = TRUE,
+  #                        closeOnClickOutside = TRUE,
+  #                        type = "info",
+  #                        showConfirmButton = TRUE,
+  #                        showCancelButton = FALSE,
+  #                        confirmButtonText = "OK",
+  #                        timer = 0,
+  #                        animation = "pop"
+  # )
 
 }
 

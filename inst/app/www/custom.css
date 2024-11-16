@@ -1,12 +1,27 @@
 /* import components ; the full bs path is provided in theme.R */
-/* info_dev_message() custom class*/
-.sweet-alert > p {
-  font-size: 1.2rem !important;
+.modal-header {
+  background-color: #333333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* position sweet alert slightly more on top */
-.sweet-alert {
-  top: 45% !important;
+.modal-header img {
+  max-height: 50px;
+}
+
+.modal-warning {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-left: 5px solid #ffc107;
+  color: #856404;
+  font-size: 14px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .shiny-notification {

@@ -74,7 +74,7 @@ app_ui <- function(request) {
       sidebar = bslib::sidebar(
 
         open = "always",
-        class = "shadow rounded-end-4", # add some shadow + rounded + see custom.scss
+        class = "shadow rounded-end-3", # add some shadow + rounded + see custom.scss
         width = "300px",
         bg =  "#343A40",
 

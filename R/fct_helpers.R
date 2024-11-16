@@ -18,23 +18,29 @@ info_dev_message <- function(){
                 # Modal content
                 tagList(
                   # Header section with company logo
-                  div(class = "modal-header",
-                      img(src = "www/vd-logo-black.svg", alt = "Etat de Vaud", class = "customLogo"),
-                      h3("Profil climatique des communes vaudoises")
+                  div(class = "modal-header d-flex align-items-start flex-column",
+                      img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
+                      h4("Profil climatique des communes vaudoises", style = "align-self:center;padding-bottom:5vh;")
                   ),
+                  tags$br(),
                   # Middle text
-                  div(
-                    p("This is some text in the middle of the modal. Customize this as needed.",
-                      "This is some text in the middle of the modal. Customize this as needed.",
-                      "This is some text in the middle of the modal. Customize this as needed.")
+                  div(class = "px-4",
+                    tags$p("Cette application est mise à disposition par l'",
+                           tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat"),
+                           "et la ",
+                           tags$a(href = link_diren, target = "_blank", "Direction de l'énergie"),
+                           " pour diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises, notamment pour la réalisation des ",
+                           tags$a(href = link_pecc, target = "_blank", "plans énergie et climat communaux (PECC).")
+
+                    )
                   ),
                   # Grey warning area
-                  div(class = "modal-warning",
-                      shiny::icon("warning", "fa-2x"),
-                      "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
-           Pour cette raison, des valeurs peuvent changer de manière rétroactive.
-           Il est donc important d'interpréter ces données avec précaution et d'anticiper
-           le fait que celles-ci puissent changer au gré des prochaines mises à jour."
+                  div(class = "modal-warning d-flex align-items-center",
+                      shiny::icon("warning", class = "fa-2x me-3"), # Add margin to the right of the icon
+                      div(
+                        "Attention : les données sont susceptibles de changer de manière rétroactive.",
+                        "Il est donc important de les interpréter avec précaution car des améliorations méthodologiques peuvent avoir lieu."
+                      )
                   )
                 )
     )

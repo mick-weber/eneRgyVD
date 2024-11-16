@@ -40,7 +40,12 @@ app_server <- function(input, output, session) {
 
    # Dev message ----
 
-       info_dev_message() # defined in fct_helpers.R
+  info_dev_message() # defined in fct_helpers.R
+
+   observeEvent(input$modal_info, {
+     bslib::nav_select(id = "nav", selected = "À propos", session)
+     removeModal() # Close the modal after redirecting
+   })
 
    # Bookmarking feature ----
 

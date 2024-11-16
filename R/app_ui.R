@@ -26,7 +26,7 @@ app_ui <- function(request) {
     # Shinybrowser identifies the web browser for use in app_server.R/fct_helpers.R
     shinybrowser::detect(),
 
-    # Custom top navbar
+    # Top navbar ----
     tags$nav(
       class = "navbar navbar-expand-lg bg-primary",
       style = "color:white;padding: 2px; width: 100%; position: relative; z-index: 1000;",
@@ -55,7 +55,7 @@ app_ui <- function(request) {
       )
     ),
 
-    # Navbar page
+    # Main navbar ----
     bslib::page_navbar(
 
       id = "nav", # conditionalPanels will refer to this as input.nav == <condition>
@@ -70,7 +70,8 @@ app_ui <- function(request) {
       title = NULL, #strong("Profil climatique des communes vaudoises", class = "adaptiveTitle"),
       # Browser title
       window_title = "Profil climatique VD",
-      # Sidebar
+
+      # Sidebar ----
       sidebar = bslib::sidebar(
 
         open = "always",
@@ -83,7 +84,17 @@ app_ui <- function(request) {
       ),# End sidebar()
 
       # Logo VD left of main sidebar
-      bslib::nav_item(tags$img(src = "www/vd-logo-black.svg", height = "50px", class = "navbar-brand")),
+      bslib::nav_item(
+        tags$div(
+          style = "display: flex; align-items: center; gap: 10px;",
+          tags$img(src = "www/vd-logo-black.svg", height = "50px", class = "navbar-brand"),
+          tags$div(
+            style = "font-size:0.9rem;",
+            tags$p(class = "m-0", "Office cantonal de la durabilité et du climat"),
+            tags$p(class = "m-0", "Direction de l'énergie")
+          )
+        )
+      ),
 
       bslib::nav_spacer(),
 

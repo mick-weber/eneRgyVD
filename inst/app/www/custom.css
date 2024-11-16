@@ -1,10 +1,9 @@
 /* import components ; the full bs path is provided in theme.R */
+/* Custom modal upon opening the app -> fct_helpers.R */
 .modal-header {
-  background-color: #333333;
+  background-color: #343A40;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: 20vh;
 }
 
 .modal-header img {
@@ -16,12 +15,18 @@
   padding: 15px;
   border-left: 5px solid #ffc107;
   color: #856404;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
+/* Add padding between the two buttons */
+.modal-footer button {
+  margin-right: 10px;
+  /* Add space between buttons */
+}
+
+.modal-footer button:last-child {
+  margin-right: 0;
+  /* No extra space after the last button */
 }
 
 .shiny-notification {

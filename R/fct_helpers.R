@@ -20,7 +20,7 @@ info_dev_message <- function(){
                   # Header section with company logo
                   div(class = "modal-header d-flex align-items-start flex-column",
                       img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
-                      h4("Profil climatique des communes vaudoises", style = "align-self:center;padding-bottom:5vh;")
+                      h5("Bienvenue sur le profil climatique des communes vaudoises !", style = "align-self:center;padding-bottom:5vh;"),
                   ),
                   tags$br(),
                   # Middle text

@@ -86,7 +86,7 @@ app_ui <- function(request) {
       # Logo VD left of main sidebar
       bslib::nav_item(
         tags$div(
-          style = "display: flex; align-items: center; gap: 10px;",
+          style = "display: flex; align-items: center; gap: 10px;margin-right:10vw;",
           tags$img(src = "www/vd-logo-black.svg", height = "50px", class = "navbar-brand"),
           tags$div(
             style = "font-size:0.9rem;",
@@ -95,8 +95,6 @@ app_ui <- function(request) {
           )
         )
       ),
-
-      bslib::nav_spacer(),
 
       # Navigation panels ----
       ## Carte ----

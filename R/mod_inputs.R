@@ -18,7 +18,10 @@ mod_inputs_ui <- function(id){
                           choices = choices_canton_communes,
                           selected = NULL,
                           multiple = TRUE,
-                          options = list(placeholder = "Plusieurs acceptées")
+                          options = list(
+                            placeholder = "Plusieurs acceptées",
+                            plugins = list("remove_button")
+                            )
     ),
       # conditionalPanel uploadCommunes widget ----
 

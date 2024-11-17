@@ -108,6 +108,12 @@
   margin-right:5px;
 }
 
+/* Increase size of choices when opening selectizeInput dropdown */
+.selectize-dropdown-content {
+          max-height: 40vh !important; /* Adjust the height */
+          overflow-y: auto !important; /* Add scroll */
+        }
+
 /* Remove SelectizeInput's shadow when .focus is on */
 .selectize-input.focus{
   border-color:black !important;

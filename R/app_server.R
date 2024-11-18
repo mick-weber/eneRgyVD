@@ -47,6 +47,13 @@ app_server <- function(input, output, session) {
      removeModal() # Close the modal after redirecting
    })
 
+   # introJS ----
+
+   observeEvent(input$introjs, {
+     session$sendCustomMessage(type = "startIntro", list())
+     removeModal()
+   })
+
    # Bookmarking feature ----
 
    # List of authorized inputs for bookmarking

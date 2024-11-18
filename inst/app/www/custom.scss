@@ -31,6 +31,23 @@
   margin-right: 0; /* No extra space after the last button */
 }
 
+/* introJS center wide tooltips (can't achieve that with position:"center" in the .js script... */
+.introjs-center-tooltip {
+      left: 50% !important;  /* Center the tooltip horizontally */
+      transform: translateX(-50%) !important;  /* Shift the tooltip back by 50% of its width */
+    }
+
+/* IntroJS 'Passer' button will otherwise overflow the introjs div */
+.introjs-skipbutton{
+  width:unset;
+  padding-right:10px;
+}
+
+/* Override progress color instead of default's blue */
+.introjs-progressbar{
+  background-color:#3A862D;
+}
+
 
 .shiny-notification{
   position:fixed;
@@ -177,8 +194,9 @@
   display: grid;
 }
 
+/* Add spacing approx. the same as card_header() from leaflet map next to sidebar*/
 .sidebar-content{
-  padding-top:15px !important;
+  padding-top:2.5rem !important;
 }
 
 .sidebar_na_list{
@@ -223,23 +241,14 @@
 }
 
 .dropdown-menu{
-  background-color:#3A862D;
+  background-color:white;
   .dropdown-item{
-    color:white;
+    color:black;
   }
 
   .dropdown-header{
-    color:white;
+    color:black;
   }
-}
-
-/* Redirects buttons formatting for mod_table_content.R */
-
-.disabledTocButtons{
-
-  cursor: not-allowed;
-  pointer-events: none;
-  text-align:left;
 }
 
 /* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
@@ -267,8 +276,11 @@
 
 
 /*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
-.btnCustomWidth{
-  width:50%;
+.btnDownloadAll{
+  width:100% !important;
+  background-color:white !important;
+  color:black !important;
+  margin-top:1rem;
 }
 
 /*Set card header background to transparent*/

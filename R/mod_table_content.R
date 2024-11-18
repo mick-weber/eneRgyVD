@@ -23,64 +23,66 @@ mod_table_content_ui <- function(id){
                          ),
       bslib::card_body(
 
-        bslib::accordion(
-          class = "TOCaccordionPanelBold", # custom.scss : affects only this TOC module !
-          open = FALSE,
-          multiple = TRUE,
-          bslib::accordion_panel(title = "Électricité", value = "elec",
-                                   tags$div(class = "row", actionLink(ns("data_1"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                      "Distribution d'électricité", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
-                                 tags$div(class = "row", actionLink(ns("data_2"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Production d'électricité",  icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
-          ),
+        tags$div(id = "introjs_toc_accordion",
+                 bslib::accordion(
+                   class = "TOCaccordionPanelBold", # custom.scss : affects only this TOC module !
+                   open = FALSE,
+                   multiple = TRUE,
+                   bslib::accordion_panel(title = "Électricité", value = "elec",
+                                          tags$div(class = "row", actionLink(ns("data_1"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Distribution d'électricité", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                          tags$div(class = "row", actionLink(ns("data_2"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Production d'électricité",  icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                   ),
 
-          bslib::accordion_panel(title = "Gaz naturel", value = "ng",
-                                 tags$div(class = "row", actionLink(ns("data_8"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
-          ),
-          bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener",
-                                 tags$div(class = "row", actionLink(ns("data_3"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Besoins théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
-                                 tags$div(class = "row", actionLink(ns("data_4"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Consommations théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
-                                 tags$div(class = "row", actionLink(ns("data_5"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Informations bâtiments", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
-          ),
-          bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies",
-                                 tags$div(class = "row", actionLink(ns("data_6"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Vue par bâtiments subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
-                                 tags$div(class = "row", actionLink(ns("data_7"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Vue par travaux subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                   bslib::accordion_panel(title = "Gaz naturel", value = "ng",
+                                          tags$div(class = "row", actionLink(ns("data_8"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                   ),
+                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener",
+                                          tags$div(class = "row", actionLink(ns("data_3"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Besoins théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                          tags$div(class = "row", actionLink(ns("data_4"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Consommations théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                          tags$div(class = "row", actionLink(ns("data_5"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Informations bâtiments", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                   ),
+                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies",
+                                          tags$div(class = "row", actionLink(ns("data_6"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Vue par bâtiments subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                          tags$div(class = "row", actionLink(ns("data_7"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Vue par travaux subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
 
-          ),
-          bslib::accordion_panel(title = "Adaptation climat", value = "adaptation",
-                                 tags$div(class = "row", actionLink(ns("data_10"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Exemple générique", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                   ),
+                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation",
+                                          tags$div(class = "row", actionLink(ns("data_10"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Exemple générique", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
 
-                                 ),
+                   ),
 
-          bslib::accordion_panel(title = "Mobilité", value = "mobility",
-                                 tags$div(class = "row", actionLink(ns("data_11"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
-                                 )
-        )#End accordion
+                   bslib::accordion_panel(title = "Mobilité", value = "mobility",
+                                          tags$div(class = "row", actionLink(ns("data_11"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                   )
+                 )#End accordion
+        )#End introjs div
       )# End card_body
     ),#End card
 
-        # Section Energie ----
-        #actionButton(ns("header_energie"), label = "Energie", class = "disabledTocButtons"),
+    # Section Energie ----
+    #actionButton(ns("header_energie"), label = "Energie", class = "disabledTocButtons"),
 
-        # actionLink(ns("data_1"), class = "border p-3 customTOC", "Electricité (distribution)", icon = icon("bolt")),
-        # actionLink(ns("data_2"), class = "border p-3 customTOC", "Electricité (production)",  icon = icon("bolt")),
-        # actionLink(ns("data_8"), class = "border p-3 customTOC", "Distribution de gaz naturel", icon = icon("fire-flame-simple")),
-        # actionLink(ns("data_3"), class = "border p-3 customTOC", "Chaleur des bâtiments (besoins théoriques)", icon = icon("fire")),
-        # actionLink(ns("data_4"), class = "border p-3 customTOC", "Chaleur des bâtiments (consommations théoriques)", icon = icon("fire")),
-        # actionLink(ns("data_5"), class = "border p-3 customTOC", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
-        # actionLink(ns("data_6"), class = "border p-3 customTOC", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
-        # actionLink(ns("data_7"), class = "border p-3 customTOC", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
+    # actionLink(ns("data_1"), class = "border p-3 customTOC", "Electricité (distribution)", icon = icon("bolt")),
+    # actionLink(ns("data_2"), class = "border p-3 customTOC", "Electricité (production)",  icon = icon("bolt")),
+    # actionLink(ns("data_8"), class = "border p-3 customTOC", "Distribution de gaz naturel", icon = icon("fire-flame-simple")),
+    # actionLink(ns("data_3"), class = "border p-3 customTOC", "Chaleur des bâtiments (besoins théoriques)", icon = icon("fire")),
+    # actionLink(ns("data_4"), class = "border p-3 customTOC", "Chaleur des bâtiments (consommations théoriques)", icon = icon("fire")),
+    # actionLink(ns("data_5"), class = "border p-3 customTOC", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
+    # actionLink(ns("data_6"), class = "border p-3 customTOC", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
+    # actionLink(ns("data_7"), class = "border p-3 customTOC", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
 
-        # Section Adaptation ----
-        #actionButton(ns("header_adapt"), "Adaptation", class = "disabledTocButtons"),
+    # Section Adaptation ----
+    #actionButton(ns("header_adapt"), "Adaptation", class = "disabledTocButtons"),
 
         #actionLink(ns("data_10"), class = "border p-3 customTOC", "Adaptation (exemple générique)", icon = icon("earth")),
 

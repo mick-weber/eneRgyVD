@@ -10,18 +10,7 @@
 mod_download_all_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-
-    bslib::accordion(open = FALSE,
-                     class = "fs-sidebar-header rotatedSVG mb-2", # adds spacing with next accordion()
-                     bslib::accordion_panel(title = "Tout télécharger",
-                                            icon = bsicons::bs_icon("file-earmark-spreadsheet-fill"),
-
-                                            tags$p(style = "font-size:1rem;", "Exporter toutes les données du profil climatique au format Excel"),
-
-                                            shiny::uiOutput(ns("render_ui_button") )#, fill = TRUE)  # explicitly take 100% avail width
-
-                     )
-    )
+    shiny::uiOutput(ns("render_ui_button"))
   )
 }
 
@@ -38,25 +27,40 @@ mod_download_all_data_server <- function(id,
 
 
       # Check if selected communes : if not, we show a dummy disabled button
-      # could be implemented nicely with shinyjs, but this creates a dependency just for this...
+      # could be implemented nicely with shinyjs, but this creates an extra dependency just for this...
 
       if(isTruthy(inputVals$selectedCommunes)){
 
         # Real download button
-          shiny::downloadButton(outputId = ns("download_all_excel"),
-                                label = "Télécharger",  class = "btn-sm") # class defined in custom.css
+        shiny::downloadButton(outputId = ns("download_all_excel"),
+                              class = "btnDownloadAll",
+                              icon = icon("file-excel", class = "fa-solid"),
+                              label = tags$div("Tout télécharger",
+                                             style = "font-weight:500;",
+                                             bslib::tooltip(
+                                               id = "tooltip_download_all",
+                                               placement = "right",
+                                               options = list(customClass = "customTooltips"), # custom.scss
+                                               trigger = bsicons::bs_icon("info-circle"),
+                                               "Exporter toutes les données du profil climatique au format Excel (un onglet par donnée)."
+                                             )
+                              )
+        )
       }else{
 
         # Dummy download button + warning text
         tagList(
-          tags$p(style = "font-size:1rem;color:red;", "Aucun territoire sélectionné !"),
-          shiny::downloadButton(outputId = ns("dummy_disabled"),
-                                label = "Télécharger",
-                              class = "disabled btn-sm")
+          shiny::actionButton(inputId = ns("dummy_disabled"),
+                                label = "Aucune sélection !" ,
+                                icon = icon("ban"),
+                                disabled = TRUE,
+                                class = "btnDownloadAll"
+          )
         )
+
       }
 
-        })
+    })
 
     ## Prepare datasets ----
     download_all_sheets <- reactive({
@@ -127,7 +131,7 @@ mod_download_all_data_server <- function(id,
       }
     )
 
-      })
+  })
 }
 
 ## To be copied in the UI

@@ -9,16 +9,76 @@ app_ui <- function(request) {
 
   shiny::tagList(
 
-    # This script (see app_server.R too) closes nav_menu's after being redirected by a click (2s delay) It is used for redirects from app_server.R to mod_about_the_app.R
-    # ! This may cause some unexpected behaviour since all dropdown-menu are targeted by the script ! see https://github.com/rstudio/bslib/issues/621
-    tags$script("
+    # First proceed to load JS scripts / librairies as needed
+    tags$head(
+      # This script (see app_server.R too) closes nav_menu's after being redirected by a click (2s delay) It is used for redirects from app_server.R to mod_about_the_app.R
+      # ! This may cause some unexpected behaviour since all dropdown-menu are targeted by the script ! see https://github.com/rstudio/bslib/issues/621
+      tags$script("
         Shiny.addCustomMessageHandler(
           'toggleDropdown',
           function toggleDropdown(msg) {
             $('.dropdown-menu').removeClass('show')
           });
         "
-    ),
+      ),
+
+      # Add introJS library for the guided tour
+      tags$link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css"),
+      tags$script(src = "https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"),
+
+      # call introJS.R's tour object (tags$script)
+      tags$script(HTML('
+      Shiny.addCustomMessageHandler("startIntro", function(message) {
+        introJs()
+          .setOptions({
+            steps: [
+              {
+                intro: "Bienvenue dans ce tour guidé du profil climatique !<br>Parcourez ces quelques étapes pour mieux comprendre comment utiliser cette application."
+              },
+              {
+                element: "#map",
+                intro: "<b>Communes 1/2</b><br>Pour commencer, sélectionnez une ou plusieurs communes sur la carte.",
+                position: "left"
+              },
+              {
+                element: "#introjs_select_communes",
+                intro: "<b>Communes 2/2</b><br>Vous pouvez également choisir des communes dans la barre latérale.",
+                position: "right"
+              },
+              {
+                element: "#nav",
+                intro: "<b>Données 1/2</b><br> Naviguez ensuite dans les différents sujets ici. C\'est dans ces onglets que vous trouverez les données propres à chaque thème !",
+                tooltipClass: "introjs-center-tooltip"
+              },
+              {
+                element: "#introjs_toc_accordion",
+                intro: "<b>Données 2/2</b><br> Ou explorez directement les données disponibles dans ce menu. Chaque onglet contient des graphiques et des tables qui peuvent facilement être exportés.",
+                position: "left"
+              },
+              {
+                element: "#introjs_download_all",
+                intro: "<b>Droit au but !</b><br>Vous pouvez aussi directement télécharger toutes les données de l\'application au format Excel, pour autant qu\'au moins une commune soit sélectionnée.",
+                position: "right"
+
+              },
+              {
+                intro: "D\'autres fonctionnalités comme l\'importation de communes via un fichier, le changement d\'unités, des chiffres-clés, etc. permettent de vous simplifier la vie."
+              },
+              {
+                intro: "Voilà pour l\'essentiel, bonne visite !<br>Nous espérons que vous trouverez cette application utile."
+              }
+            ],
+            nextLabel: "Suivant",
+            prevLabel: "Précédent",
+            skipLabel: "Passer",
+            doneLabel: "Terminé",
+            showProgress: true,
+            showBullets: true,
+          })
+          .start();
+      });
+    '))# End tags$script
+    ),# End tags$head
 
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -117,10 +177,10 @@ app_ui <- function(request) {
 
                                        "En cas de fusions communales, un décalage de quelques semaines peut être nécessaire
                                         pour mettre à jour les données avec les nouveaux périmètres communaux")
-                                       ),
+                                     ),
 
                                      bslib::card_body(class = "m-0 p-0",
-                                       leafletOutput("map"))
+                                                      leafletOutput("map"))
                          ),# End card() map
 
                          # 2nd column
@@ -144,28 +204,28 @@ app_ui <- function(request) {
 
                                        bslib::navset_card_tab(id = "navset_elec",
 
-                                                               #### cons elec ----
-                                                               bslib::nav_panel(title = "Distribution d'électricité",
+                                                              #### cons elec ----
+                                                              bslib::nav_panel(title = "Distribution d'électricité",
 
 
-                                                                                # Module for producing cons elec charts
-                                                                                mod_elec_charts_ui("consumption_charts",
-                                                                                                   title = "Distribution d'électricité par commune",
-                                                                                                   title_complement = title_complement_elec_cons # utils_text_and_links.R
-                                                                                )
+                                                                               # Module for producing cons elec charts
+                                                                               mod_elec_charts_ui("consumption_charts",
+                                                                                                  title = "Distribution d'électricité par commune",
+                                                                                                  title_complement = title_complement_elec_cons # utils_text_and_links.R
+                                                                               )
 
-                                                               ),# End nav_panel
+                                                              ),# End nav_panel
 
-                                                               #### prod elec ----
-                                                               bslib::nav_panel("Production d'électricité",
+                                                              #### prod elec ----
+                                                              bslib::nav_panel("Production d'électricité",
 
-                                                                                # Module for producing prod elec charts
-                                                                                mod_elec_charts_ui("production_charts",
-                                                                                                   title = "Production d'électricité par commune",
-                                                                                                   title_complement = title_complement_elec_prod # utils_text_and_links.R
-                                                                                )
+                                                                               # Module for producing prod elec charts
+                                                                               mod_elec_charts_ui("production_charts",
+                                                                                                  title = "Production d'électricité par commune",
+                                                                                                  title_complement = title_complement_elec_prod # utils_text_and_links.R
+                                                                               )
 
-                                                               )# End nav_panel
+                                                              )# End nav_panel
                                        ),# End navset_card_pill
                       ),# End nav_panel 'Electricite'
 
@@ -177,16 +237,16 @@ app_ui <- function(request) {
 
                                        bslib::navset_card_tab(id = "navset_ng",
 
-                                                               ### cons_ng ----
-                                                               bslib::nav_panel(title = "Distribution de gaz naturel",
+                                                              ### cons_ng ----
+                                                              bslib::nav_panel(title = "Distribution de gaz naturel",
 
-                                                                                mod_ng_charts_ui("ng_cons_charts",
-                                                                                                 title = "Distribution de gaz naturel par commune",
-                                                                                                 title_complement = title_complement_ng_cons # utils_text_and_links.R
-                                                                                                 )
-                                                                                )
-                                                               )
-                                       ),# End nav_panel 'Gaz naturel'
+                                                                               mod_ng_charts_ui("ng_cons_charts",
+                                                                                                title = "Distribution de gaz naturel par commune",
+                                                                                                title_complement = title_complement_ng_cons # utils_text_and_links.R
+                                                                               )
+                                                              )
+                                       )
+                      ),# End nav_panel 'Gaz naturel'
 
 
 
@@ -196,60 +256,60 @@ app_ui <- function(request) {
 
                                        bslib::navset_card_tab(id = "navset_regener",
 
-                                                               #### besoins ----
-                                                               bslib::nav_panel("Besoins des bâtiments",
+                                                              #### besoins ----
+                                                              bslib::nav_panel("Besoins des bâtiments",
 
-                                                                                mod_regener_needs_charts_ui("regener_needs",
-                                                                                                            title = "Besoins théoriques des bâtiments",
-                                                                                                            title_complement = title_complement_regener_needs # utils_text_and_links.R
-                                                                                                            )
+                                                                               mod_regener_needs_charts_ui("regener_needs",
+                                                                                                           title = "Besoins théoriques des bâtiments",
+                                                                                                           title_complement = title_complement_regener_needs # utils_text_and_links.R
+                                                                               )
 
-                                                               ),
-                                                               #### consommation ----
-                                                               bslib::nav_panel("Consommation des bâtiments",
+                                                              ),
+                                                              #### consommation ----
+                                                              bslib::nav_panel("Consommation des bâtiments",
 
-                                                                                mod_regener_cons_charts_ui("regener_cons",
-                                                                                                           title = "Consommations théoriques des bâtiments",
-                                                                                                           title_complement = title_complement_regener_cons # utils_text_and_links.R
-                                                                                                             )
-                                                               ),
-                                                               #### misc ----
-                                                               bslib::nav_panel("Informations bâtiments",
+                                                                               mod_regener_cons_charts_ui("regener_cons",
+                                                                                                          title = "Consommations théoriques des bâtiments",
+                                                                                                          title_complement = title_complement_regener_cons # utils_text_and_links.R
+                                                                               )
+                                                              ),
+                                                              #### misc ----
+                                                              bslib::nav_panel("Informations bâtiments",
 
-                                                                                mod_regener_misc_charts_ui("regener_misc",
-                                                                                                           title = "Autres informations des bâtiments",
-                                                                                                           title_complement = title_complement_regener_misc # utils_text_and_links.R
-                                                                                                             )
-                                                               )
+                                                                               mod_regener_misc_charts_ui("regener_misc",
+                                                                                                          title = "Autres informations des bâtiments",
+                                                                                                          title_complement = title_complement_regener_misc # utils_text_and_links.R
+                                                                               )
+                                                              )
                                        )# End navset_card_pill
                       ),# End nav_panel 'Chaleur bâtiments'
 
 
                       ### Subventions ----
                       bslib::nav_panel("Subventions bâtiments",
-                                          icon = icon("house-circle-check"),
+                                       icon = icon("house-circle-check"),
 
-                                          bslib::navset_card_tab(id = "navset_subsidies",
+                                       bslib::navset_card_tab(id = "navset_subsidies",
 
-                                            #### Par batiments ----
-                                            bslib::nav_panel("Vue par bâtiments",
+                                                              #### Par batiments ----
+                                                              bslib::nav_panel("Vue par bâtiments",
 
-                                                             mod_subsidies_building_charts_ui("subsidies_building",
-                                                                                              title = HTML("Subventions Programme bâtiments<br>(vue par bâtiment)"),
-                                                                                              title_complement = title_complement_subsidies_building # utils_text_and_links.R
-                                                                                              )
-                                            ),
+                                                                               mod_subsidies_building_charts_ui("subsidies_building",
+                                                                                                                title = HTML("Subventions Programme bâtiments<br>(vue par bâtiment)"),
+                                                                                                                title_complement = title_complement_subsidies_building # utils_text_and_links.R
+                                                                               )
+                                                              ),
 
-                                            #### Par mesures ----
-                                            bslib::nav_panel("Vue par subventions",
+                                                              #### Par mesures ----
+                                                              bslib::nav_panel("Vue par subventions",
 
-                                                             mod_subsidies_measure_charts_ui("subsidies_measure",
-                                                                                             title = HTML("Subventions Programme bâtiments<br>(vue par mesures)"),
-                                                                                             title_complement = title_complement_subsidies_measure # utils_text_and_links.R
-                                                                                             )
+                                                                               mod_subsidies_measure_charts_ui("subsidies_measure",
+                                                                                                               title = HTML("Subventions Programme bâtiments<br>(vue par mesures)"),
+                                                                                                               title_complement = title_complement_subsidies_measure # utils_text_and_links.R
+                                                                               )
 
-                                            )
-                                          )# End navset_card_pill
+                                                              )
+                                       )# End navset_card_pill
                       )# End nav_panel 'Subventions bâtiments'
       ),# End nav_menu Energie
 
@@ -259,19 +319,19 @@ app_ui <- function(request) {
                       bslib::nav_panel("Exemple générique 1",
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_climat",
-                                         bslib::nav_panel(title = "Première donnée",
+                                                              bslib::nav_panel(title = "Première donnée",
 
-                                                          mod_generic_charts_ui("test_generic_climat",
-                                                                                title = "Titre générique adaptation",
-                                                                                title_complement = tags$div(tags$p("Complément de titre (...)"),
-                                                                                                            tags$p(create_geoportail_tag(link = regener_geovd_link)
-                                                                                                          )
-                                                                                ))
-                                         ),# end firstnav_panel
+                                                                               mod_generic_charts_ui("test_generic_climat",
+                                                                                                     title = "Titre générique adaptation",
+                                                                                                     title_complement = tags$div(tags$p("Complément de titre (...)"),
+                                                                                                                                 tags$p(create_geoportail_tag(link = regener_geovd_link)
+                                                                                                                                 )
+                                                                                                     ))
+                                                              ),# end firstnav_panel
 
-                                         bslib::nav_panel(title = "Deuxième donnée", icon = bsicons::bs_icon("cart"),
-                                                          "A remplir..."
-                                                          )
+                                                              bslib::nav_panel(title = "Deuxième donnée", icon = bsicons::bs_icon("cart"),
+                                                                               "A remplir..."
+                                                              )
                                        )# end navset_card_pill
                       )# end main nav_panel
       ), # End nav_menu() 'Adaptation'
@@ -283,19 +343,19 @@ app_ui <- function(request) {
                                        icon = icon("bus"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_mobilite",
-                                         bslib::nav_panel(title = "Qualité de desserte des transports publics",
+                                                              bslib::nav_panel(title = "Qualité de desserte des transports publics",
 
-                                                          mod_generic_charts_ui("public_transports",
-                                                                                title = "Qualité de desserte des transports publics",
-                                                                                title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
-                                                          )
-                                         ),# end firstnav_panel
+                                                                               mod_generic_charts_ui("public_transports",
+                                                                                                     title = "Qualité de desserte des transports publics",
+                                                                                                     title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
+                                                                               )
+                                                              ),# end firstnav_panel
 
-                                         bslib::nav_panel(title = "Deuxième donnée",
+                                                              bslib::nav_panel(title = "Deuxième donnée",
 
-                                                          "A remplir..."
+                                                                               "A remplir..."
 
-                                                          )
+                                                              )
                                        )# end navset_card_pill
                       )# end main nav_panel
       ),# End nav_menu() 'Mobilite'
@@ -303,32 +363,32 @@ app_ui <- function(request) {
       ## Misc ----
       bslib::nav_menu("Divers",
 
-        ### Chiffres-clés
+                      ### Chiffres-clés
 
-        bslib::nav_panel("Chiffres-clés", icon = icon("list-ol"),
+                      bslib::nav_panel("Chiffres-clés", icon = icon("list-ol"),
 
-        bslib::layout_columns(col_widths = c(-1, 9, -2),
+                                       bslib::layout_columns(col_widths = c(-1, 9, -2),
 
-          mod_stats_box_ui("vd_box"),
-          mod_stats_box_ui("communes_box")
+                                                             mod_stats_box_ui("vd_box"),
+                                                             mod_stats_box_ui("communes_box")
 
-        )
-          ),
+                                       )
+                      ),
 
-        ## News ----
+                      ## News ----
 
-        bslib::nav_panel("Nouveautés",
-                         icon = bsicons::bs_icon("star"),
+                      bslib::nav_panel("Nouveautés",
+                                       icon = bsicons::bs_icon("star"),
 
-                         mod_news_ui("news")
-                         ),
+                                       mod_news_ui("news")
+                      ),
 
-        ### About ----
-        bslib::nav_panel("À propos",icon = icon("circle-info"),
+                      ### About ----
+                      bslib::nav_panel("À propos",icon = icon("circle-info"),
 
-                         mod_about_the_app_ui("about")
+                                       mod_about_the_app_ui("about")
 
-                         )
+                      )
 
       ),#End nav_menu() 'Divers'
 

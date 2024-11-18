@@ -13,39 +13,43 @@ mod_inputs_ui <- function(id){
   shiny::tagList(
 
     # selectizeInput() for municipalities ----
-    shiny::selectizeInput(inputId = ns("selected_communes"),
-                          label = "Sélection des communes",
-                          choices = choices_canton_communes,
-                          selected = NULL,
-                          multiple = TRUE,
-                          options = list(
-                            placeholder = "Plusieurs acceptées",
-                            plugins = list("remove_button")
-                            )
+    # make a div so that introjs can target the full item
+    tags$div(id = "introjs_select_communes",
+             shiny::selectizeInput(inputId = ns("selected_communes"),
+                                   label = tags$p("Sélection des communes", style = "font-weight:500;margin-bottom:0px;"),
+                                   choices = choices_canton_communes,
+                                   selected = NULL,
+                                   multiple = TRUE,
+                                   options = list(
+                                     placeholder = "Plusieurs acceptées",
+                                     plugins = list("remove_button")
+                                   )
+             )
     ),
-      # conditionalPanel uploadCommunes widget ----
+    # conditionalPanel uploadCommunes widget ----
 
-      # IF tab Accueil
-      shiny::conditionalPanel(
-        condition="input.nav == 'Accueil'",
+    # IF tab Accueil
+    shiny::conditionalPanel(
+      condition="input.nav == 'Accueil'",
 
-        # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
-        tags$div(
-          br(),
-          # Label as for selectizeInput for esthetics (form-label bs5 class) + add tooltip
-          tags$p("Importer des communes",
+      # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
+      tags$div(
+        br(),
+        # Label as for selectizeInput for esthetics (form-label bs5 class) + add tooltip
+        tags$p("Importer des communes",
+               style = "font-weight:500;",
+               bslib::tooltip(
+                 id = "tooltip_import_communes",
+                 placement = "right",
+                 options = list(customClass = "customTooltips"), # custom.scss
+                 trigger = bsicons::bs_icon("info-circle"),
+                 "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes."
+                 ),
+               style = "margin-bottom:0.5rem !important;"),
 
-                 bslib::tooltip(
-                   id = "tooltip_import_communes",
-                   placement = "right",
-                   options = list(customClass = "customTooltips"), # custom.scss
-                   trigger = bsicons::bs_icon("info-circle"),
-                   "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes."),
-                 style = "margin-bottom:0.5rem !important;"),
-
-          mod_upload_communes_ui(ns("uploaded_communes"))
-        )
-      ),# End div
+        mod_upload_communes_ui(ns("uploaded_communes"))
+      )
+    ),# End div
 
 
     ## |---------------------------------------------------------------|
@@ -72,12 +76,20 @@ mod_inputs_ui <- function(id){
 
     tags$div(style = "margin-top: auto;",
 
-             ## 1. Downoad all widget ----
-             mod_download_all_data_ui(ns("download_all_data")),
+             ##  1. Unit converter widget ----
+             shiny::conditionalPanel(
+               condition="input.nav != 'Accueil'",
+               mod_unit_converter_ui(ns("unit_converter"))
+             ),# End conditionalPanel
 
-             ##  2. Unit converter widget ----
-             mod_unit_converter_ui(ns("unit_converter"))
-             )# End div()
+
+             ## 1. Downoad all widget ----
+             tags$div(
+               id = "introjs_download_all",
+               mod_download_all_data_ui(ns("download_all_data")),
+             )
+    )# End div()
+
 
   ) # End tagList
 } # End UI
@@ -243,18 +255,18 @@ mod_inputs_server <- function(id){
       inputVals$energyDatasets <- energy_datasets |>
         # Filter communes and convert units as needed
         purrr::map(\(df){
-                      df |>
-                        dplyr::filter(commune %in% input$selected_communes) |>
-                        convert_units(colnames = c("consommation", "besoins",
-                                                   "production", "injection", "autoconsommation",
-                                                   "puissance_electrique_installee"),
-                                      unit_from = "kWh", # initial value in all dataset
-                                      unit_to = selectedUnits$energy_unit) |>
-                        convert_units(colnames = c("co2_direct"),
-                                      unit_from = "tCO2", # initial value in all dataset
-                                      unit_to = selectedUnits$co2_unit
-                        )
-                    }) |>
+          df |>
+            dplyr::filter(commune %in% input$selected_communes) |>
+            convert_units(colnames = c("consommation", "besoins",
+                                       "production", "injection", "autoconsommation",
+                                       "puissance_electrique_installee"),
+                          unit_from = "kWh", # initial value in all dataset
+                          unit_to = selectedUnits$energy_unit) |>
+            convert_units(colnames = c("co2_direct"),
+                          unit_from = "tCO2", # initial value in all dataset
+                          unit_to = selectedUnits$co2_unit
+            )
+        }) |>
         # Filter years selectively with respective (if any) slider/selectInputs
         purrr::map2(names(energy_datasets),
                     \(df, name_df){
@@ -263,7 +275,7 @@ mod_inputs_server <- function(id){
                           if(name_df == "ng_cons"){df |> dplyr::filter(dplyr::between(annee, input$ng_cons_year[1], input$ng_cons_year[2]))}else
                             #if(grepl(name_df, pattern = "regener")){df |> dplyr::filter(etat == input$regener_needs_year)}else
                             # else (regener, others dfs, just return the df unfiltered
-                              {df}
+                          {df}
                     })
     })
 
@@ -308,7 +320,7 @@ mod_inputs_server <- function(id){
           inputVals$energyDatasets$elec_prod,
           inputVals$energyDatasets$regener_cons_ae_use,
           inputVals$energyDatasets$subsidies_by_measure
-          )
+      )
 
       # Statbox value for current selection's aggregated electricity production
       inputVals$elec_prod_last_year <- inputVals$energyDatasets$elec_prod |>

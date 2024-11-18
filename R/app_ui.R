@@ -142,11 +142,10 @@ app_ui <- function(request) {
                       bslib::nav_panel("Electricité",
                                        icon = icon("bolt"),
 
-                                       bslib::navset_card_pill(id = "navset_elec",
+                                       bslib::navset_card_tab(id = "navset_elec",
 
                                                                #### cons elec ----
                                                                bslib::nav_panel(title = "Distribution d'électricité",
-                                                                                icon = icon("bolt"),
 
 
                                                                                 # Module for producing cons elec charts
@@ -159,7 +158,6 @@ app_ui <- function(request) {
 
                                                                #### prod elec ----
                                                                bslib::nav_panel("Production d'électricité",
-                                                                                icon = icon("bolt"),
 
                                                                                 # Module for producing prod elec charts
                                                                                 mod_elec_charts_ui("production_charts",
@@ -177,11 +175,10 @@ app_ui <- function(request) {
                       bslib::nav_panel("Gaz naturel",
                                        icon = icon("fire-flame-simple"),
 
-                                       bslib::navset_card_pill(id = "navset_ng",
+                                       bslib::navset_card_tab(id = "navset_ng",
 
                                                                ### cons_ng ----
                                                                bslib::nav_panel(title = "Distribution de gaz naturel",
-                                                                                icon = icon("fire-flame-simple"),
 
                                                                                 mod_ng_charts_ui("ng_cons_charts",
                                                                                                  title = "Distribution de gaz naturel par commune",
@@ -195,9 +192,9 @@ app_ui <- function(request) {
 
                       ### Chaleur batiments ----
                       bslib::nav_panel("Chaleur des bâtiments",
-                                       icon = icon("fire"),
+                                       icon = icon("city"),
 
-                                       bslib::navset_card_pill(id = "navset_regener",
+                                       bslib::navset_card_tab(id = "navset_regener",
 
                                                                #### besoins ----
                                                                bslib::nav_panel("Besoins des bâtiments",
@@ -230,9 +227,9 @@ app_ui <- function(request) {
 
                       ### Subventions ----
                       bslib::nav_panel("Subventions bâtiments",
-                                          icon = icon("house"),
+                                          icon = icon("house-circle-check"),
 
-                                          bslib::navset_card_pill(id = "navset_subsidies",
+                                          bslib::navset_card_tab(id = "navset_subsidies",
 
                                             #### Par batiments ----
                                             bslib::nav_panel("Vue par bâtiments",
@@ -260,10 +257,9 @@ app_ui <- function(request) {
       bslib::nav_menu("Adaptation climat",
                       # icon = shiny::icon("temperature-half"),
                       bslib::nav_panel("Exemple générique 1",
-                                       # Nested navset_card_pill()
-                                       bslib::navset_card_pill(id = "navset_climat",
+                                       # Nested navset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_climat",
                                          bslib::nav_panel(title = "Première donnée",
-                                                          icon = bsicons::bs_icon("award"),
 
                                                           mod_generic_charts_ui("test_generic_climat",
                                                                                 title = "Titre générique adaptation",
@@ -283,12 +279,11 @@ app_ui <- function(request) {
 
       ## Mobilité (générique) ----
       bslib::nav_menu("Mobilité",
-                      # icon = icon("car"),
                       bslib::nav_panel("Transports publics",
-                                       # Nested navset_card_pill()
-                                       bslib::navset_card_pill(id = "navset_mobilite",
+                                       icon = icon("bus"),
+                                       # Nested navset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_mobilite",
                                          bslib::nav_panel(title = "Qualité de desserte des transports publics",
-                                                          icon = bsicons::bs_icon("bus-front-fill"),
 
                                                           mod_generic_charts_ui("public_transports",
                                                                                 title = "Qualité de desserte des transports publics",
@@ -297,7 +292,6 @@ app_ui <- function(request) {
                                          ),# end firstnav_panel
 
                                          bslib::nav_panel(title = "Deuxième donnée",
-                                                          icon = bsicons::bs_icon("cart"),
 
                                                           "A remplir..."
 

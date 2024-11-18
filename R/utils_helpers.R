@@ -34,11 +34,9 @@ load("./data/public_transports.rda")
 ## adaptation data ----
 load("./data/canopee.rda")
 
-## dummy data ----
-
 ## glossary ----
 
-load("./data/glossary.rda")
+glossary <- load("data/glossary.rda")
 
 ## energy datasets ----
 # <ADD NEW ENERGY DATASETS HERE>
@@ -80,10 +78,6 @@ doc_objects <- c("elec_prod_doc",
 
 doc_datasets <- setNames(mget(doc_objects), doc_objects)
 
-## glossary ----
-
-glossary <- load("data/glossary.rda")
-
 ## doc panels for accordions ----
 # see fct_helpers.R
 
@@ -123,13 +117,7 @@ subpanels_tribble <- dplyr::tribble(
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
   # mobility
-  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_9", "Transports publics", "navset_tp", "Qualité de desserte des transports publics",
-
-  # COMPLETE THESE ONES (and more !) when real data is here
-  "test_generic_climat-generic_data_help",  "Adaptation climat","navset_climat", "Donnée générique", "data_10", "Exemple générique 1", "navset_climat", "Première donnée",
-  "test_generic_mob-generic_data_help",  "Mobilité","navset_mobilite", "Donnée générique", "data_11", "Exemple générique 2", "navset_mobilite","Première donnée"
-
-
+  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_9", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
 )
 
 # Generic utils ----

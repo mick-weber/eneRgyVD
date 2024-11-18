@@ -24,10 +24,12 @@ mod_table_content_ui <- function(id){
       bslib::card_body(
 
         bslib::accordion(
-          multiple = FALSE,
+          class = "TOCaccordionPanelBold", # custom.scss : affects only this TOC module !
+          open = FALSE,
+          multiple = TRUE,
           bslib::accordion_panel(title = "Électricité", value = "elec",
-                                 tags$div(class = "row", actionLink(ns("data_1"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Distribution d'électricité", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                   tags$div(class = "row", actionLink(ns("data_1"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                      "Distribution d'électricité", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                  tags$div(class = "row", actionLink(ns("data_2"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                     "Production d'électricité",  icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
           ),
@@ -59,7 +61,7 @@ mod_table_content_ui <- function(id){
 
           bslib::accordion_panel(title = "Mobilité", value = "mobility",
                                  tags$div(class = "row", actionLink(ns("data_11"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                    "Qualité desserte transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                    "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                                  )
         )#End accordion
       )# End card_body

@@ -75,10 +75,27 @@
   }}
 }
 
+
+/* Make TOC accordion_panel bold */
+.TOCaccordionPanelBold{
+    .accordion-button {
+      font-weight: 500;
+    }
+}
+
+/* Add margin between accordion items + remove underline (default from actionLInk)*/
 .customTOC{
   text-decoration:none;
   margin-bottom:5px;
 }
+
+/* Add some underline only when hovering actionLink */
+.customTOC:hover {
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
+
+
 
 /*Used for main title resizing*/
 .adaptiveTitle{
@@ -258,6 +275,19 @@
 .card-header{
   background-color:transparent;
 }
+
+/* Change default colors of navset_card_tab() tab links */
+.card-header-tabs .nav-link {
+      color: #343A40;
+    }
+
+.card-header-tabs .nav-link.active {
+      color: #3A862D;
+      font-weight:500;
+    }
+
+
+
 
 /* Div backgrounds with icons used in mod_stats_box.R for each type of make_statbox_item() call*/
 /* For a new icon : go to https://icons.getbootstrap.com/, paste the desired icon 'Copy HTML' text, paste it in the <svg> balises */

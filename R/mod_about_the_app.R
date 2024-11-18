@@ -25,21 +25,23 @@ mod_about_the_app_ui <- function(id){
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
                                                                  # breathing
+                                                             tags$br(),
+                                                             "Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application.",
+                                       tags$span(
+                                         "Contact : ",
+                                         tags$a(href = paste0("mailto:", mail_address), # utils_helpers.R
+                                                mail_address,
+                                                target = "_blank")
+                                         ),
                                                                  br(),
-                                                                 h4(strong("Contact")),
-                                                                 tags$p("Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application. N'hésitez pas à les envoyer à ",
-                                                                        tags$a(href = paste0("mailto:", mail_address),paste0(mail_address, "."), target = "_blank"), # open in new tab. address defined in utils_helpers.R
-                                                                        tags$br(),
-                                                                        "Le profil énergétique a été initialement développée par la DIREN en 2023.
+                                                                 h4(strong("Collaborations")),
+                                                                 tags$p("Le profil énergétique a été initialement développée par la DGE-DIREN en 2023.
                                                                         En 2024, l’OCDC a souhaité mettre à disposition des communes d’autres données et l’application est devenue le profil climatique dès janvier 2025.
                                                                         De ce fait, le point de contact pour la gestion de cette application est désormais l’OCDC qui collabore toujours étroitement avec la DIREN.
-                                                                        D’autres services ont également participé à la valorisation des données comme DGE-Biodiv, DGE-UDN et la DGMR.",
-                                                                        tags$br(),
-                                                                        tags$br(),
-                                                                        tags$li("Mail de contact : ",
-                                                                        tags$a(href = paste0("mailto:", mail_address), # utils_helpers.R
-                                                                               mail_address,
-                                                                                target = "_blank")))
+                                                                        D’autres services ont également participé à la valorisation des données comme DGE-Biodiv, DGE-UDN et la DGMR."
+
+                                                                        )
+
 
                                        )# End 1st layout_columns'
                                        ),# End nav_panel' Général

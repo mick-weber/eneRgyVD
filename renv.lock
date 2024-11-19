@@ -628,12 +628,10 @@
         "promises",
         "purrr",
         "readr",
-        "rmarkdown",
         "scales",
         "sf",
         "shiny",
         "shinyWidgets",
-        "shinyalert",
         "shinybrowser",
         "shinycssloaders",
         "shinylogs",
@@ -1953,19 +1951,6 @@
         "shiny"
       ],
       "Hash": "fd8239886f70daa85c36596214958451"
-    },
-    "shinyalert": {
-      "Package": "shinyalert",
-      "Version": "3.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "htmltools",
-        "shiny",
-        "uuid"
-      ],
-      "Hash": "45f99f3173e5513e2dec78dc4d63f9f0"
     },
     "shinybrowser": {
       "Package": "shinybrowser",

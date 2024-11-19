@@ -33,7 +33,7 @@ app_ui <- function(request) {
           .setOptions({
             steps: [
               {
-                intro: "Bienvenue dans ce tour guidé du profil climatique !<br>Parcourez ces quelques étapes pour mieux comprendre comment utiliser cette application."
+                intro: "Bienvenue dans ce tour guidé du <b>profil climatique</b> !<br>Parcourez ces quelques étapes pour mieux comprendre comment utiliser cette application."
               },
               {
                 element: "#map",
@@ -65,7 +65,7 @@ app_ui <- function(request) {
                 intro: "D\'autres fonctionnalités comme l\'importation de communes via un fichier, le changement d\'unités, des chiffres-clés, etc. permettent de vous simplifier la vie."
               },
               {
-                intro: "Voilà pour l\'essentiel, bonne visite !<br>Nous espérons que vous trouverez cette application utile."
+                intro: "Voilà pour l\'essentiel, Nous espérons que vous trouverez cette application utile.<br>Bonne visite !"
               }
             ],
             nextLabel: "Suivant",
@@ -210,7 +210,7 @@ app_ui <- function(request) {
 
                                                                                # Module for producing cons elec charts
                                                                                mod_elec_charts_ui("consumption_charts",
-                                                                                                  title = "Distribution d'électricité par commune",
+                                                                                                  title = "Distribution d'électricité",
                                                                                                   title_complement = title_complement_elec_cons # utils_text_and_links.R
                                                                                )
 
@@ -221,7 +221,7 @@ app_ui <- function(request) {
 
                                                                                # Module for producing prod elec charts
                                                                                mod_elec_charts_ui("production_charts",
-                                                                                                  title = "Production d'électricité par commune",
+                                                                                                  title = "Production d'électricité",
                                                                                                   title_complement = title_complement_elec_prod # utils_text_and_links.R
                                                                                )
 
@@ -241,7 +241,7 @@ app_ui <- function(request) {
                                                               bslib::nav_panel(title = "Distribution de gaz naturel",
 
                                                                                mod_ng_charts_ui("ng_cons_charts",
-                                                                                                title = "Distribution de gaz naturel par commune",
+                                                                                                title = "Distribution de gaz naturel",
                                                                                                 title_complement = title_complement_ng_cons # utils_text_and_links.R
                                                                                )
                                                               )
@@ -443,8 +443,6 @@ golem_add_external_resources <- function() {
       path = app_sys("app/www"),
       app_title = "Profil climatique VD"
     )
-    # Add here other external resources
-    # for example, you can add shinyalert::useShinyalert()
   )
 }
 

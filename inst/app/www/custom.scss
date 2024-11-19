@@ -112,6 +112,10 @@
           text-underline-offset: 4px;
         }
 
+/* Add some spacing between underline and text for all <a> tags */
+a {
+  text-underline-offset: 3px;
+}
 
 
 /*Used for main title resizing*/

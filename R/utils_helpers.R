@@ -36,7 +36,7 @@ load("./data/canopee.rda")
 
 ## glossary ----
 
-glossary <- load("data/glossary.rda")
+load("data/glossary.rda")
 
 ## energy datasets ----
 # <ADD NEW ENERGY DATASETS HERE>
@@ -116,8 +116,8 @@ subpanels_tribble <- dplyr::tribble(
   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
-  # mobility
-  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_9", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
+  # mobility (20+)
+  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_20", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
 )
 
 # Generic utils ----
@@ -149,7 +149,7 @@ sidebar_width <- 300 # px ; used in custom.css & plotting fns with inputVals$web
 n_facets_limit <- 4
 
 # Height of facet plot's below limit
-height_facet_under_limit <- 400
+height_facet_under_limit <- 50
 
 # Height of facet plot's above limit
 height_facet_above_limit <- 700

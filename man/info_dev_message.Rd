@@ -3,14 +3,14 @@
 \name{info_dev_message}
 \alias{info_dev_message}
 \title{info_dev_message()
-shinyalert popup message from the dev to explain what is the app made for}
+shiny modal message to inform the user about the app, and offer the possibility to have a guided tour (introjs)}
 \usage{
 info_dev_message()
 }
 \value{
-A shinyalert object when opening the app
+A a modal object when opening the app
 }
 \description{
 info_dev_message()
-shinyalert popup message from the dev to explain what is the app made for
+shiny modal message to inform the user about the app, and offer the possibility to have a guided tour (introjs)
 }

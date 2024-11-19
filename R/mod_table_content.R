@@ -61,7 +61,7 @@ mod_table_content_ui <- function(id){
                    ),
 
                    bslib::accordion_panel(title = "Mobilité", value = "mobility",
-                                          tags$div(class = "row", actionLink(ns("data_11"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                          tags$div(class = "row", actionLink(ns("data_20"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    )
                  )#End accordion

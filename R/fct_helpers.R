@@ -1,9 +1,8 @@
 # Info fn ----
 
 #' info_dev_message()
-#' shinyalert popup message from the dev to explain what is the app made for
-#' @importFrom shinyalert shinyalert
-#' @return A shinyalert object when opening the app
+#' shiny modal message to inform the user about the app, and offer the possibility to have a guided tour (introjs)
+#' @return A a modal object when opening the app
 
 info_dev_message <- function(){
 
@@ -23,7 +22,8 @@ info_dev_message <- function(){
                   # Header section with company logo
                   div(class = "modal-header d-flex align-items-start flex-column",
                       img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
-                      h5("Bienvenue sur le profil climatique des communes vaudoises !", style = "align-self:center;padding-bottom:5vh;"),
+                      h6("Bienvenue sur le", style = "align-self:left;padding-top:30px;"),
+                      h4("Profil climatique des communes vaudoises", style = "align-self:left;")
                   ),
                   tags$br(),
                   # Middle text
@@ -48,44 +48,6 @@ info_dev_message <- function(){
                 )
     )
   )
-
-
-
-
-
-
-
-
-  # shinyalert::shinyalert(
-  #   inputId = "welcome-msg",
-  #   title = "Bienvenue sur le profil climatique des communes !",
-  #                        text = paste0("Cette application est mise à disposition par la ",
-  #                                      tags$a(href = link_diren, target = "_blank", "Direction de l'énergie du Canton de Vaud (DGE-DIREN)"),
-  #                                      " et l'",
-  #                                      tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat (OCDC)"),
-  #                                      " afin de diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises.",
-  #                                      tags$br(),
-  #                                      "Cette démarche s'inscrit notamment dans l'accompagnement du Canton afin de faciliter l'élaboration des ",
-  #                                      tags$a(href = link_pecc, target = "_blank", # utils_helpers.R
-  #                                             "plans énergie et climat communaux (PECC)."),
-  #                                      tags$br(), tags$br(),
-  #                                      "Attention : cette application contient des données résultant de méthodologies complexes vouées à améliorations.
-  #                                      Pour cette raison, des valeurs peuvent changer de manière rétroactive.
-  #                                      Il est donc important d'interpréter ces données avec précaution et d'anticiper le fait que celles-ci puissent changer au gré des prochaines mises à jour.",
-  #                                      tags$br(), tags$br(),
-  #                                      "<i>Un aperçu des ajouts récents est disponible dans le menu Divers > Nouveautés</i>."
-  #                                      ),
-  #                        html = TRUE,
-  #                        size = "m",
-  #                        closeOnEsc = TRUE,
-  #                        closeOnClickOutside = TRUE,
-  #                        type = "info",
-  #                        showConfirmButton = TRUE,
-  #                        showCancelButton = FALSE,
-  #                        confirmButtonText = "OK",
-  #                        timer = 0,
-  #                        animation = "pop"
-  # )
 
 }
 

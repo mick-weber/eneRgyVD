@@ -144,11 +144,10 @@ mod_generic_charts_server <- function(id,
     ## Make debounced inputs ----
     # For barplot functions only, this avoids flickering plots when many items are selected/removed
     subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
 
     # Initialize toggle free_y condition for conditionalPanel in ui
     output$toggle <- reactive({
-      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
+      dplyr::n_distinct(subsetData_d()$commune) > 1 # Returns TRUE if more than 1 commune, else FALSE
     })
 
     # We don't suspend output$toggle when hidden (default is TRUE)

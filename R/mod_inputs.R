@@ -60,7 +60,6 @@ mod_inputs_ui <- function(id){
 
 
     # uiOutput for elec consumption ----
-
     uiOutput(ns("elec_cons_widget")), # End conditionalPanel
 
     # uiOutput() for elec production ----
@@ -221,8 +220,14 @@ mod_inputs_server <- function(id){
     )
 
     ## Store communes & unit ----
+    # Create a reactive value for the debounced communes
+    debouncedCommunes <- debounce(reactive(input$selected_communes), millis = 2000)
+
     # communes
-    observe({inputVals$selectedCommunes <- input$selected_communes})
+
+    #observe({inputVals$selectedCommunes <- input$selected_communes})
+    observe({inputVals$selectedCommunes <- debouncedCommunes()})
+
     # uploaded communes (we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval)
     observe({inputVals$uploadedCommunesTimed <- uploaded_communes_timed()})
     # units selected
@@ -361,7 +366,7 @@ mod_inputs_server <- function(id){
     })# End observe
 
     # mod_download_all_data ----
-    mod_download_all_data_server("download_all_data", inputVals = inputVals)
+    #mod_download_all_data_server("download_all_data", inputVals = inputVals)
 
     # Returning inputVals ----
     return(inputVals)

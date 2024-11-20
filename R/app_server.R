@@ -55,32 +55,32 @@ app_server <- function(input, output, session) {
    })
 
    # Bookmarking feature ----
-
-   # List of authorized inputs for bookmarking
-   bookmarkingWhitelist <- c(
-      "nav",      # which main nav_panel is selected
-      "inputs_1-selected_communes"      # which communes are selected
-   )
-
-   # Trigger bookmarking only if communes OR units are modified
-   observeEvent({
-     input$nav
-     inputVals$selectedCommunes
-     },{session$doBookmark()})
-
-   # Exclude everything but bookmarkingWhitelist above
-   ExcludedIDs <- reactiveVal(value = NULL)
-
-   observe({
-      toExclude <- setdiff(names(input), bookmarkingWhitelist) # utils.R
-      setBookmarkExclude(toExclude)
-      ExcludedIDs(toExclude)
-   })
-
-   # Update url with bookmarking state
-   onBookmarked(function(url) {
-      updateQueryString(url)
-   })
+#
+#    # List of authorized inputs for bookmarking
+#    bookmarkingWhitelist <- c(
+#       "nav",      # which main nav_panel is selected
+#       "inputs_1-selected_communes"      # which communes are selected
+#    )
+#
+#    # Trigger bookmarking only if communes OR units are modified
+#    observeEvent({
+#      input$nav
+#      inputVals$selectedCommunes
+#      },{session$doBookmark()})
+#
+#    # Exclude everything but bookmarkingWhitelist above
+#    ExcludedIDs <- reactiveVal(value = NULL)
+#
+#    observe({
+#       toExclude <- setdiff(names(input), bookmarkingWhitelist) # utils.R
+#       setBookmarkExclude(toExclude)
+#       ExcludedIDs(toExclude)
+#    })
+#
+#    # Update url with bookmarking state
+#    onBookmarked(function(url) {
+#       updateQueryString(url)
+#    })
 
    ## Tabs redirecting ----
    # Code below is to generate redirections from methodological accordions in each module to mod_about_the_app.R

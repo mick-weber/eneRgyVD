@@ -131,8 +131,7 @@ mod_regener_cons_charts_server <- function(id,
 
     })
 
-    # debounce + filter for the latest year for the plots (not the table) ----
-    # subset_rgr_cons_1 -> subset_rgr_cons_1_last_year
+    # filter for the latest year for the plots (not the table) ----
 
     subset_rgr_cons_1_last_year <- reactive({
 

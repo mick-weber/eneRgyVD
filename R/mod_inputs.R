@@ -221,7 +221,7 @@ mod_inputs_server <- function(id){
 
     ## Store communes & unit ----
     # Create a reactive value for the debounced communes
-    debouncedCommunes <- debounce(reactive(input$selected_communes), millis = 500)
+    debouncedCommunes <- debounce(reactive(input$selected_communes), millis = 300)
 
     # communes
 
@@ -249,7 +249,7 @@ mod_inputs_server <- function(id){
     observe({
 
       # req all inputs needed to filter & convert the datasets
-      req(debouncedCommunes())#req(input$selected_communes)
+      req(debouncedCommunes())
       req(selectedUnits$energy_unit)
       req(selectedUnits$co2_unit)
 
@@ -366,7 +366,7 @@ mod_inputs_server <- function(id){
     })# End observe
 
     # mod_download_all_data ----
-    #mod_download_all_data_server("download_all_data", inputVals = inputVals)
+    mod_download_all_data_server("download_all_data", inputVals = inputVals)
 
     # Returning inputVals ----
     return(inputVals)

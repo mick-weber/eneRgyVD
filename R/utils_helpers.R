@@ -123,11 +123,6 @@ subpanels_tribble <- dplyr::tribble(
 # Generic utils ----
 # Tab-specific items at the end (see outline : `Objects specific to...`) !
 
-## Debounce time ----
-# Usef in app_server.R + plotting modules to avoid flickering and error loops with leaflet map
-
-debounce_plot_time <- 0 # 400 ms, empirically defined as ideal
-
 ## NEWS notifications  ----
 # These are served to bs4DropdownMenu in app_ui.R
 

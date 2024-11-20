@@ -152,11 +152,6 @@ mod_subsidies_building_charts_server <- function(id,
                        SRE = sum(SRE))
     })
 
-
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-
     # Plot accordingly to which radioGroupButton (sre/n_egid) is selected
         output$plot_subsidies <- plotly::renderPlotly({
 

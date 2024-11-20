@@ -149,6 +149,7 @@ mod_regener_needs_charts_server <- function(id,
 
     output$current_year_txt <- renderText({
 
+      req(inputVals$selectedCommunes)
       req(inputVals$max_selected_regener)
 
       inputVals$max_selected_regener
@@ -158,6 +159,8 @@ mod_regener_needs_charts_server <- function(id,
     # Preparing data ----
     # We process subsetData() in a nice, wide format for the TABLE
     subsetData_wide <- reactive({
+
+      req(inputVals$selectedCommunes)
 
       subsetData() |>
         # this creates vars `Besoins actuels` & `Besoins optimaux` from var `besoins`
@@ -172,24 +175,18 @@ mod_regener_needs_charts_server <- function(id,
     subsetData_barplot <- reactive({
 
       req(inputVals$max_selected_regener)
+      req(inputVals$selectedCommunes)
 
       subsetData() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
     })
 
-    # Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_barplot_d <- reactive({
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-      subsetData_barplot()}) |> debounce(debounce_plot_time)
-
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({length(unique(subsetData_barplot_d()$commune)) > 1})
+    output$toggle <- reactive({length(unique(subsetData_barplot()$commune)) > 1})
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({length(unique(subsetData_barplot_d()$commune)) > 0})
+    output$commune <- reactive({length(unique(subsetData_barplot()$commune)) > 0})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
@@ -202,15 +199,14 @@ mod_regener_needs_charts_server <- function(id,
 
     output$plot_render_ui <- renderUI({
 
-      # Update the initialized FALSE toggle_status with the input$toggle_status
-      # WIP with inputVals$energyUnit
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       # ...PLOTLY BAR PLOT ----
       output$chart_1 <- plotly::renderPlotly({
 
         # fct_helpers.R
-        create_bar_plotly(data = subsetData_barplot_d(),
-                          n_communes = dplyr::n_distinct(subsetData_barplot_d()$commune),
+        create_bar_plotly(data = subsetData_barplot(),
+                          n_communes = dplyr::n_distinct(subsetData_barplot()$commune),
                           var_year = var_year,
                           var_commune = var_commune,
                           unit = inputVals$energyUnit,

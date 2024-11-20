@@ -215,9 +215,9 @@ app_server <- function(input, output, session) {
    # Handles the highlight/removal of a polygon and borders from inputVals$selectedCommunes
 
    ## VD border highlighting (Canton selected only) ----
-   observeEvent(inputVals$selectedCommunes, {
+   observeEvent(inputVals$selectedCommunesDirect, {
 
-     if("Canton de Vaud" %in% inputVals$selectedCommunes){
+     if("Canton de Vaud" %in% inputVals$selectedCommunesDirect){
 
        proxy |>
          # Contour for Canton VD, orange + light orange fill
@@ -236,16 +236,16 @@ app_server <- function(input, output, session) {
      }
 
      ## Polygons highlighting (Communes selected only) ----
-     removed_via_selectInput <- setdiff(selected$groups, inputVals$selectedCommunes)
-     added_via_selectInput <- setdiff(inputVals$selectedCommunes, selected$groups)
+     removed_via_selectInput <- setdiff(selected$groups, inputVals$selectedCommunesDirect)
+     added_via_selectInput <- setdiff(inputVals$selectedCommunesDirect, selected$groups)
 
      if(length(removed_via_selectInput) > 0){
-       selected$groups <- inputVals$selectedCommunes
+       selected$groups <- inputVals$selectedCommunesDirect
        proxy |> leaflet::hideGroup(group = removed_via_selectInput)
      }
 
      if(length(added_via_selectInput) > 0){
-       selected$groups <- inputVals$selectedCommunes
+       selected$groups <- inputVals$selectedCommunesDirect
        proxy |> leaflet::showGroup(group = added_via_selectInput)
      }
    }, ignoreNULL = FALSE) # Don't trigger when input is NULL

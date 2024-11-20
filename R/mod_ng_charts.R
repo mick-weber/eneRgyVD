@@ -139,18 +139,11 @@ mod_ng_charts_server <- function(id,
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-    subsetData_d <- reactive({
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-      subsetData()}) |> debounce(debounce_plot_time)
-
-
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({length(unique(subsetData_d()$commune)) > 1})
+    output$toggle <- reactive({length(unique(subsetData()$commune)) > 1})
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({length(unique(subsetData_d()$commune)) > 0})
+    output$commune <- reactive({length(unique(subsetData()$commune)) > 0})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
@@ -160,8 +153,10 @@ mod_ng_charts_server <- function(id,
 
     output$chart_1 <- plotly::renderPlotly({
 
-      create_bar_plotly(data = subsetData_d(),
-                        n_communes = dplyr::n_distinct(subsetData_d()$commune), # length(inputVals_communes_d()),
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+      create_bar_plotly(data = subsetData(),
+                        n_communes = dplyr::n_distinct(subsetData()$commune), # length(inputVals_communes_d()),
                         var_commune = var_commune,
                         var_year = var_year,
                         var_values = var_values,

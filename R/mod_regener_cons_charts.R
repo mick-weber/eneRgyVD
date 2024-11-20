@@ -126,7 +126,7 @@ mod_regener_cons_charts_server <- function(id,
 
     output$current_year_txt <- renderText({
 
-      validate(need(inputVals$max_selected_regener, req_communes_phrase))
+      req(inputVals$selectedCommunes)
       inputVals$max_selected_regener
 
     })
@@ -134,38 +134,40 @@ mod_regener_cons_charts_server <- function(id,
     # debounce + filter for the latest year for the plots (not the table) ----
     # subset_rgr_cons_1 -> subset_rgr_cons_1_last_year
 
-    subset_rgr_cons_1_last_year_d <- reactive({
+    subset_rgr_cons_1_last_year <- reactive({
 
       req(inputVals$max_selected_regener)
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      req(inputVals$selectedCommunes)
 
       subset_rgr_cons_1() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
-    }) |> debounce(debounce_plot_time)
+    })
 
     # subset_rgr_cons_2 -> subset_rgr_cons_2_last_year
 
-    subset_rgr_cons_2_last_year_d <- reactive({
+    subset_rgr_cons_2_last_year <- reactive({
 
       req(inputVals$max_selected_regener)
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      req(inputVals$selectedCommunes)
 
       subset_rgr_cons_2() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
-    }) |> debounce(debounce_plot_time)
+    })
 
 
     # tabs and renderPlot() ----
 
     output$plot_render_ui <- renderUI({
 
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
 
       if(input$tab_plot_type == "use"){
       output$chart_1 <- renderPlot({
 
-            subset_rgr_cons_1_last_year_d()  |>
+            subset_rgr_cons_1_last_year()  |>
               lump_alluvial_factors(var_commune = "commune",
                                     var_flow = "consommation",
                                     var_from = "ae",
@@ -177,15 +179,15 @@ mod_regener_cons_charts_server <- function(id,
                                     var_to = "usage",
                                     label_to = "Usage")
 
-      }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_1_last_year_d()$commune)),
+      }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_1_last_year()$commune)),
                          yes = 400, # if no commune selected, default width = 400
-                         no = ceiling(dplyr::n_distinct(subset_rgr_cons_1_last_year_d()$commune)/2)*400))
+                         no = ceiling(dplyr::n_distinct(subset_rgr_cons_1_last_year()$commune)/2)*400))
 
       }else if(input$tab_plot_type == "aff"){
 
 
         output$chart_1 <- renderPlot({
-          subset_rgr_cons_2_last_year_d()  |>
+          subset_rgr_cons_2_last_year()  |>
             lump_alluvial_factors(var_commune = "commune",
                                   var_flow = "consommation",
                                   var_from = "ae",
@@ -196,9 +198,9 @@ mod_regener_cons_charts_server <- function(id,
                                   label_from = "Consommation",
                                   var_to = "affectation",
                                   label_to = "Affectation")
-        }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_2_last_year_d()$commune)),
+        }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_2_last_year()$commune)),
                            yes = 400, # if no commune selected, default width = 400
-                           no = ceiling(dplyr::n_distinct(subset_rgr_cons_2_last_year_d()$commune)/2)*400))
+                           no = ceiling(dplyr::n_distinct(subset_rgr_cons_2_last_year()$commune)/2)*400))
 
       }
 

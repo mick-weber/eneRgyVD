@@ -140,17 +140,11 @@ mod_elec_charts_server <- function(id,
 
     ns <- session$ns
 
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-    subsetData_d <- reactive({
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-      subsetData()}) |> debounce(debounce_plot_time)
-
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({length(unique(subsetData_d()$commune)) > 1})
+    output$toggle <- reactive({length(unique(subsetData()$commune)) > 1})
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({length(unique(subsetData_d()$commune)) > 0})
+    output$commune <- reactive({length(unique(subsetData()$commune)) > 0})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
@@ -163,14 +157,16 @@ mod_elec_charts_server <- function(id,
 
     output$plot_render_ui <- renderUI({
 
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
         # Update the initialized FALSE toggle_status with the input$toggle_status
         # PLOTLY BAR PLOT
 
         output$chart_1 <- plotly::renderPlotly({
 
           # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetData_d(),
-                            n_communes = dplyr::n_distinct(subsetData_d()$commune),
+          create_bar_plotly(data = subsetData(),
+                            n_communes = dplyr::n_distinct(subsetData()$commune),
                             var_year = var_year,
                             var_commune = var_commune,
                             unit = inputVals$energyUnit,

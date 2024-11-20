@@ -221,11 +221,11 @@ mod_inputs_server <- function(id){
 
     ## Store communes & unit ----
     # Create a reactive value for the debounced communes
-    debouncedCommunes <- debounce(reactive(input$selected_communes), millis = 2000)
+    debouncedCommunes <- debounce(reactive(input$selected_communes), millis = 500)
 
     # communes
 
-    #observe({inputVals$selectedCommunes <- input$selected_communes})
+    observe({inputVals$selectedCommunesDirect <- input$selected_communes})
     observe({inputVals$selectedCommunes <- debouncedCommunes()})
 
     # uploaded communes (we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval)
@@ -249,7 +249,7 @@ mod_inputs_server <- function(id){
     observe({
 
       # req all inputs needed to filter & convert the datasets
-      req(input$selected_communes)
+      req(debouncedCommunes())#req(input$selected_communes)
       req(selectedUnits$energy_unit)
       req(selectedUnits$co2_unit)
 
@@ -261,7 +261,7 @@ mod_inputs_server <- function(id){
         # Filter communes and convert units as needed
         purrr::map(\(df){
           df |>
-            dplyr::filter(commune %in% input$selected_communes) |>
+            dplyr::filter(commune %in% debouncedCommunes()) |>
             convert_units(colnames = c("consommation", "besoins",
                                        "production", "injection", "autoconsommation",
                                        "puissance_electrique_installee"),
@@ -288,12 +288,12 @@ mod_inputs_server <- function(id){
     observe({
 
       # req all inputs needed to filter & convert the datasets
-      req(input$selected_communes)
+      req(debouncedCommunes())
 
       inputVals$mobilityDatasets <- mobility_datasets |>
         purrr::map(\(mobility_df){
           mobility_df |>
-            dplyr::filter(commune %in% input$selected_communes)
+            dplyr::filter(commune %in% debouncedCommunes())
           # no convert_units() call here
           # no input widgets filter here neither
         })
@@ -303,13 +303,13 @@ mod_inputs_server <- function(id){
     observe({
 
       # req all inputs needed to filter & convert the datasets
-      req(input$selected_communes)
+      req(debouncedCommunes())
       req(selectedUnits$co2_unit)
 
       inputVals$adaptationDatasets <- adaptation_datasets |>
         purrr::map(\(adaptation_df){
           adaptation_df |>
-            dplyr::filter(commune %in% input$selected_communes) # |>
+            dplyr::filter(commune %in% debouncedCommunes()) # |>
           # no convert_units() call here
           # no input widgets filter here neither
         })

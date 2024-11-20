@@ -167,7 +167,7 @@ app_ui <- function(request) {
                          style = htmltools::css(grid_template_columns = "2fr 1fr"),
 
                          # 1st column
-                         bslib::card(full_screen = TRUE,
+                         bslib::card(full_screen = FALSE,
 
                                      bslib::card_header(strong("Carte interactive des communes"), bslib::tooltip(
                                        id = "tooltip_map_card",

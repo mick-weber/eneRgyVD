@@ -116,17 +116,8 @@ mod_subsidies_measure_charts_server <- function(id,
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_d <- reactive({
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-      subsetData()}) |>
-      shiny::debounce(debounce_plot_time)
-
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({length(unique(subsetData_d()$commune)) > 1})
+    output$toggle <- reactive({length(unique(subsetData()$commune)) > 1})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
@@ -135,8 +126,10 @@ mod_subsidies_measure_charts_server <- function(id,
 
     output$plot_subsidies <- plotly::renderPlotly({
 
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
       # Plotly but factor lumped for clarity :
-      subsetData_d() |>
+      subsetData() |>
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,
                                                               n = 3,
                                                               w = nombre,
@@ -144,7 +137,7 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_plotly(n_communes = dplyr::n_distinct(subsetData_d()$commune),
+        create_bar_plotly(n_communes = dplyr::n_distinct(subsetData()$commune),
                           var_year = "annee",
                           var_commune = "commune",
                           var_values = "nombre",

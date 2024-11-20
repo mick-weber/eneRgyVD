@@ -10,6 +10,18 @@
 mod_download_all_data_ui <- function(id){
   ns <- NS(id)
   tagList(
+
+    tags$p("Tout télécharger",
+           style = "font-weight:500;",
+           bslib::tooltip(
+             id = "tooltip_download_all",
+             placement = "right",
+             options = list(customClass = "customTooltips"), # custom.scss
+             trigger = bsicons::bs_icon("info-circle"),
+             "Exporter toutes les données du profil climatique au format Excel (un onglet par donnée)"
+           ),
+           style = "margin-bottom:0.5rem !important;"),
+
     shiny::uiOutput(ns("render_ui_button"))
   )
 }
@@ -32,29 +44,21 @@ mod_download_all_data_server <- function(id,
       if(isTruthy(inputVals$selectedCommunes)){
 
         # Real download button
-        shiny::downloadButton(outputId = ns("download_all_excel"),
-                              class = "btnDownloadAll",
-                              icon = icon("file-excel", class = "fa-solid"),
-                              label = tags$div("Tout télécharger",
-                                             style = "font-weight:500;",
-                                             bslib::tooltip(
-                                               id = "tooltip_download_all",
-                                               placement = "right",
-                                               options = list(customClass = "customTooltips"), # custom.scss
-                                               trigger = bsicons::bs_icon("info-circle"),
-                                               "Exporter toutes les données du profil climatique au format Excel (un onglet par donnée)."
-                                             )
-                              )
+
+          shiny::downloadButton(outputId = ns("download_all_excel"),
+                                class = "btnDownloadAll",
+                                icon = icon("file-excel", class = "fa-solid me-2"),
+                                label = "Prêt à l'export"
         )
       }else{
 
         # Dummy download button + warning text
         tagList(
           shiny::actionButton(inputId = ns("dummy_disabled"),
-                                label = "Aucune sélection !" ,
-                                icon = icon("ban"),
-                                disabled = TRUE,
-                                class = "btnDownloadAll"
+                              label = "Attente de sélection" ,
+                              icon = icon("ban", class = "me-1"),
+                              disabled = TRUE,
+                              class = "btnDownloadAll"
           )
         )
 

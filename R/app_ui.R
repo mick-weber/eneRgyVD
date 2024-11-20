@@ -65,7 +65,7 @@ app_ui <- function(request) {
                 intro: "D\'autres fonctionnalités comme l\'importation de communes via un fichier, le changement d\'unités, des chiffres-clés, etc. permettent de vous simplifier la vie."
               },
               {
-                intro: "Voilà pour l\'essentiel, Nous espérons que vous trouverez cette application utile.<br>Bonne visite !"
+                intro: "Voilà pour l\'essentiel, nous espérons que vous trouverez cette application utile.<br><br>Bonne visite ! &#x1F389;"
               }
             ],
             nextLabel: "Suivant",

@@ -21,7 +21,11 @@ info_dev_message <- function(){
                 tagList(
                   # Header section with company logo
                   div(class = "modal-header d-flex align-items-start flex-column",
-                      img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
+                      tags$span(
+                        img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
+                        tags$div("Office cantonal de la durabilité et du climat",
+                                 "Direction de l'énergie")
+                        ),
                       h6("Bienvenue sur le", style = "align-self:left;padding-top:30px;"),
                       h4("Profil climatique des communes vaudoises", style = "align-self:left;")
                   ),

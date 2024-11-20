@@ -37,15 +37,14 @@ mod_inputs_ui <- function(id){
         br(),
         # Label as for selectizeInput for esthetics (form-label bs5 class) + add tooltip
         tags$p("Importer des communes",
-               style = "font-weight:500;",
+               style = "font-weight:500;margin-bottom:0.5rem !important;",
                bslib::tooltip(
                  id = "tooltip_import_communes",
                  placement = "right",
                  options = list(customClass = "customTooltips"), # custom.scss
                  trigger = bsicons::bs_icon("info-circle"),
-                 "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes."
-                 ),
-               style = "margin-bottom:0.5rem !important;"),
+                 "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes"
+                 )),
 
         mod_upload_communes_ui(ns("uploaded_communes"))
       )
@@ -83,6 +82,7 @@ mod_inputs_ui <- function(id){
 
 
              ## 1. Downoad all widget ----
+             hr(),
              tags$div(
                id = "introjs_download_all",
                mod_download_all_data_ui(ns("download_all_data")),
@@ -130,7 +130,7 @@ mod_inputs_server <- function(id){
         condition="input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
 
         shiny::sliderInput(ns("elec_cons_year"),
-                           label = "Choix des années",
+                           label = tags$p("Choix des années", style = "font-weight:500;margin-bottom:0px;"),
                            min = min(energy_datasets$elec_cons$annee),
                            max = max(energy_datasets$elec_cons$annee),
                            value = c(min(energy_datasets$elec_cons$annee),
@@ -149,7 +149,7 @@ mod_inputs_server <- function(id){
         condition="input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
 
         shiny::sliderInput(ns("elec_prod_year"),
-                           label = "Choix des années",
+                           label = tags$p("Choix des années", style = "font-weight:500;margin-bottom:0px;"),
                            # reactive choices from current subset
                            min = min(energy_datasets$elec_prod$annee),
                            max = max(energy_datasets$elec_prod$annee),
@@ -172,7 +172,7 @@ mod_inputs_server <- function(id){
 
         #shiny::uiOutput(ns("regener_year_selector"))
         shiny::selectInput(ns("regener_needs_year"),
-                           label = "Année (graphique)",
+                           label = tags$p("Année (graphique)", style = "font-weight:500;margin-bottom:0px;"),
                            # static choices from utils_helpers.R -> no reactivity needed
                            choices = c(min(energy_datasets$regener_needs$etat):max(energy_datasets$regener_needs$etat)),
                            selected = max(energy_datasets$regener_needs$etat),
@@ -191,7 +191,7 @@ mod_inputs_server <- function(id){
         condition = "input.nav == 'Gaz naturel'", # 1 condition !
 
         shiny::sliderInput(ns("ng_cons_year"),
-                           label = "Choix des années",
+                           label = tags$p("Choix des années", style = "font-weight:500;margin-bottom:0px;"),
                            # reactive choices from current subset
                            min = min(energy_datasets$ng_cons$annee),
                            max = max(energy_datasets$ng_cons$annee),

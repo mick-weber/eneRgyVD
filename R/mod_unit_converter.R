@@ -10,13 +10,22 @@
 mod_unit_converter_ui <- function(id){
   ns <- NS(id)
   tagList(
+
+    tags$p("Conversion d'unités",
+           style = "font-weight:500;margin-bottom:0.5rem",
+           bslib::tooltip(
+             id = "tooltip_download_all",
+             placement = "right",
+             options = list(customClass = "customTooltips"), # custom.scss
+             trigger = bsicons::bs_icon("info-circle"),
+             "Modifier l'affichage et l'export des unités de certaines données"
+           )
+    ),
+
     bslib::accordion(open = FALSE,
                      class = "fs-sidebar-header rotatedSVG",
-                     bslib::accordion_panel(title = "Changer d'unité",
+                     bslib::accordion_panel(title = "Afficher les unités",
                                             icon = bsicons::bs_icon("calculator-fill"),
-
-                                            tags$p(style = "font-size:1rem;",
-                                                   "Modifier les unités affichées dans les graphique, tables et exportations"),
 
                                             bslib::navset_tab(
                                               bslib::nav_panel(title = tags$div(style = "font-size:1rem;", "Energie"),

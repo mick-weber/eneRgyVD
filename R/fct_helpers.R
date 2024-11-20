@@ -12,34 +12,30 @@ info_dev_message <- function(){
                 easyClose = TRUE,
                 footer = tagList(
                   tags$div(class = "d-flex justify-content-evenly w-100",
-                    actionButton(inputId = "modal_info", "En savoir plus"), # will be used to redirect to a page,
-                    actionButton(inputId = "introjs", "Tour guidé de l'application"), # will run introJS in app_server.R
-                    modalButton(label = "C'est parti !")
+                           actionButton(inputId = "modal_info", "En savoir plus"), # will be used to redirect to a page,
+                           actionButton(inputId = "introjs", "Tour guidé de l'application"), # will run introJS in app_server.R
+                           modalButton(label = "C'est parti !")
                   )
                 ),
                 # Modal content
                 tagList(
                   # Header section with company logo
                   div(class = "modal-header d-flex align-items-start flex-column",
-                      tags$span(
-                        img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
-                        tags$div("Office cantonal de la durabilité et du climat",
-                                 "Direction de l'énergie")
-                        ),
+                      img(src = "www/vd-logo-black.svg", height = "35px", alt = "Etat de Vaud", class = "customLogo"),
                       h6("Bienvenue sur le", style = "align-self:left;padding-top:30px;"),
                       h4("Profil climatique des communes vaudoises", style = "align-self:left;")
                   ),
                   tags$br(),
                   # Middle text
                   div(class = "px-4",
-                    tags$p("Cette application est mise à disposition par l'",
-                           tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat"),
-                           "et la ",
-                           tags$a(href = link_diren, target = "_blank", "Direction de l'énergie"),
-                           " pour diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises, notamment pour la réalisation des ",
-                           tags$a(href = link_pecc, target = "_blank", "plans énergie et climat communaux (PECC).")
+                      tags$p("Cette application est mise à disposition par l'",
+                             tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat"),
+                             "et la ",
+                             tags$a(href = link_diren, target = "_blank", "Direction de l'énergie"),
+                             " pour diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises, notamment pour la réalisation des ",
+                             tags$a(href = link_pecc, target = "_blank", "plans énergie et climat communaux (PECC).")
 
-                    )
+                      )
                   ),
                   # Grey warning area
                   div(class = "modal-warning d-flex align-items-center",
@@ -76,17 +72,17 @@ make_statbox_item <- function(iconBgClass,
   tags$div(class = glue::glue("text-center padding-top-1 rounded {iconBgClass}"),
 
            p(HTML(title), class = "p-0 m-0", style = "font-size:1.1rem;font-weight:500;"),
-                     tags$div(
-                       # Nicely format value (rounded + big.mark) and add unit below as newline
-                       strong(HTML(format(round(value, digits = 0),
-                                          big.mark = "'",
-                                          zero.print = "-" # ! important when no commune is selected,0 is passed
-                                          )),
-                              style = "font-size:1.3rem;"),
-                       strong(p(unit, style = "font-size:1.2rem;")),
-                       p(year, style = "font-size:1.1rem;font-weight:500;")
-                     )
+           tags$div(
+             # Nicely format value (rounded + big.mark) and add unit below as newline
+             strong(HTML(format(round(value, digits = 0),
+                                big.mark = "'",
+                                zero.print = "-" # ! important when no commune is selected,0 is passed
+             )),
+             style = "font-size:1.3rem;"),
+             strong(p(unit, style = "font-size:1.2rem;")),
+             p(year, style = "font-size:1.1rem;font-weight:500;")
            )
+  )
 
 }
 
@@ -126,8 +122,8 @@ generate_doc_accordion_panels <- function(md_file){
       titles,
       icon = bsicons::bs_icon("question-circle", class = "text-secondary"),
       shiny::tags$div(class = "customPanel",
-               shiny::markdown(paragraphs))
-      )
+                      shiny::markdown(paragraphs))
+    )
 
   })
 
@@ -157,7 +153,7 @@ create_select_leaflet <- function(sf_districts,
     minZoom = 9, # lock the back zoom range
     maxZoom = 12, # limit zoom max
     attributionControl = F # remove leaflet url
-    )) |>
+  )) |>
     # Couche de base des districts si un district est sélectionné
     leaflet::addPolygons(data = sf_districts,
                          fillColor = NULL,
@@ -235,19 +231,19 @@ create_select_leaflet <- function(sf_districts,
 #' @export
 
 create_bar_plotly <- function(data,
-                                  n_communes,
-                                  var_year,
-                                  var_commune,
-                                  unit, # input$energy_unit, or other unit value retrieved in app_server
-                                  var_cat, # one of secteur, categorie...
-                                  var_values, # one of consommation, production_totale...
-                                  color_palette, # utils_helpers.R,
-                                  dodge = FALSE, # stacked by default
-                                  free_y = FALSE,
-                                  legend_title = NULL,
-                                  web_width = 1500, # set default when shinybrowser not used
-                                  web_height = 800, # set default when shinybrowser not used
-                                  ... # free
+                              n_communes,
+                              var_year,
+                              var_commune,
+                              unit, # input$energy_unit, or other unit value retrieved in app_server
+                              var_cat, # one of secteur, categorie...
+                              var_values, # one of consommation, production_totale...
+                              color_palette, # utils_helpers.R,
+                              dodge = FALSE, # stacked by default
+                              free_y = FALSE,
+                              legend_title = NULL,
+                              web_width = 1500, # set default when shinybrowser not used
+                              web_height = 800, # set default when shinybrowser not used
+                              ... # free
 ){
 
   # First create ggplot graph
@@ -478,7 +474,7 @@ return_dynamic_size <- function(which,
 
     return(
       max(plot_width_ceiling, plot_width)
-           )
+    )
 
   }else{
     stop("'which' arg can only be of type 'height' or 'width'.")
@@ -503,7 +499,7 @@ return_dynamic_size <- function(which,
 create_prod_table_dt <- function(data,
                                  energy_unit,
                                  DT_dom = "Bfrtip" # we set default with Buttons
-                                 ){
+){
 
   data |>
     dplyr::arrange(desc(annee)) |>
@@ -522,8 +518,8 @@ create_prod_table_dt <- function(data,
                                                         drop0trailing = TRUE,
                                                         scientific = FALSE),
                                           false = NA_character_ )
-            )
-  ) |>
+      )
+    ) |>
 
     dplyr::select(-c(numero_de_la_commune)) |>
     dplyr::relocate(commune, annee, categorie,
@@ -582,7 +578,7 @@ create_prod_table_dt <- function(data,
 create_cons_table_dt <- function(data,
                                  energy_unit,
                                  DT_dom = "Bfrtip" # we set default with Buttons
-                                 ){
+){
 
   data |>
     dplyr::arrange(desc(annee)) |>
@@ -607,22 +603,22 @@ create_cons_table_dt <- function(data,
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
-      options = list(paging = TRUE,    # paginate the output
-                     pageLength = 15,  # number of rows to output for each page
-                     scrollY = TRUE,   # enable scrolling on Y axis
-                     autoWidth = TRUE, # use smart column width handling
-                     server = FALSE,   # use server-side processing
-                     dom = DT_dom, # dynamic according to needs
-                     buttons = list(
-                       list(extend = 'copy', text = "Copier"),
-                       list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
-                     ),
-                     columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                     # https://rstudio.github.io/DT/004-i18n.html   for languages
-                     language = DT_fr_language # from utils_helpers.R !
-      ),
-    selection = 'single', ## enable selection of a single row
-    rownames = FALSE               ## don't show row numbers/names
+                  options = list(paging = TRUE,    # paginate the output
+                                 pageLength = 15,  # number of rows to output for each page
+                                 scrollY = TRUE,   # enable scrolling on Y axis
+                                 autoWidth = TRUE, # use smart column width handling
+                                 server = FALSE,   # use server-side processing
+                                 dom = DT_dom, # dynamic according to needs
+                                 buttons = list(
+                                   list(extend = 'copy', text = "Copier"),
+                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
+                                 ),
+                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
+                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
+                                 language = DT_fr_language # from utils_helpers.R !
+                  ),
+                  selection = 'single', ## enable selection of a single row
+                  rownames = FALSE               ## don't show row numbers/names
     ) # End DT
 }
 
@@ -638,7 +634,7 @@ create_cons_table_dt <- function(data,
 create_rg_needs_table_dt <- function(data,
                                      unit,
                                      DT_dom = "Bfrtip" # we set default with Buttons
-                                     ){
+){
 
   data |>
     dplyr::arrange(desc(etat)) |>
@@ -708,10 +704,10 @@ create_regener_table_dt <- function(data,
       etat = as.factor(etat), # if needed later
       # format numeric cols
       dplyr::across(where(is.numeric), ~format(.x,
-                                          big.mark = "'",
-                                          digits = 3,
-                                          drop0trailing = TRUE,
-                                          scientific = FALSE))) |>
+                                               big.mark = "'",
+                                               digits = 3,
+                                               drop0trailing = TRUE,
+                                               scientific = FALSE))) |>
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(regener_icons, by = "ae") |>
     # relocate call
@@ -814,23 +810,23 @@ create_doc_table_dt <- function(data,
     DT::datatable(rownames = FALSE, # no index col
                   extensions = "Buttons",
                   options = list(
-      dom = "Bfti", # Button ; filter; table ; information summary
-      buttons = list(
-        list(className = "btn btn-outline-secondary mx-1",
-             extend = 'csv',
-             filename = paste0(doc_prefix, Sys.Date()),
-             title = NULL),
-        list(className = "btn btn-outline-secondary mx-1",
-             extend = 'excel',
-             filename = paste0(doc_prefix, Sys.Date()),
-             title = NULL)),
-      columnDefs = list(list(targets = 0, className = 'dt-center')), # or "_all"
-      paging = TRUE,
-      pageLength = 20,
-      scrollY = FALSE,
-      autoWidth = TRUE,
-      language = DT_fr_language # utils_helpers.R
-    ))
+                    dom = "Bfti", # Button ; filter; table ; information summary
+                    buttons = list(
+                      list(className = "btn btn-outline-secondary mx-1",
+                           extend = 'csv',
+                           filename = paste0(doc_prefix, Sys.Date()),
+                           title = NULL),
+                      list(className = "btn btn-outline-secondary mx-1",
+                           extend = 'excel',
+                           filename = paste0(doc_prefix, Sys.Date()),
+                           title = NULL)),
+                    columnDefs = list(list(targets = 0, className = 'dt-center')), # or "_all"
+                    paging = TRUE,
+                    pageLength = 20,
+                    scrollY = FALSE,
+                    autoWidth = TRUE,
+                    language = DT_fr_language # utils_helpers.R
+                  ))
 
 }
 
@@ -866,7 +862,7 @@ create_subsidies_table_dt <- function(data,
                                          digits = 3,
                                          drop0trailing = TRUE,
                                          scientific = FALSE))
-      )|>
+    )|>
     # add icons HTML tags from utils_helpers.R
     dplyr::left_join(icon_list, by = var_cat) |>
     dplyr::relocate(icon, .before = any_of(var_cat)) |>
@@ -1024,8 +1020,8 @@ return_icons_subsidies <- function(which){
 
   # According to which palette is asked, we return one of the objects from utils_helpers.R
   icons_subsidies <- switch(which,
-         "building" = subsidies_building_icons,
-         "measure" = subsidies_measure_icons)
+                            "building" = subsidies_building_icons,
+                            "measure" = subsidies_measure_icons)
 
   return(icons_subsidies)
 
@@ -1230,7 +1226,7 @@ add_colname_units <- function(data, unit){
     # If the unit is not recognized then simply return the data...
     return(data)
 
-    }
+  }
 }
 
 

@@ -95,7 +95,9 @@ app_ui <- function(request) {
 
       tags$div(
         # dropdown with useful links, collapses on small widths
-        class = "collapse navbar-collapse", id = "topNavbar",
+        id = "topNavbar",
+        class = "collapse navbar-collapse",
+        style = "margin-right:2vw;",
         tags$ul(
           class = "navbar-nav ms-auto",
           tags$li(class = "nav-item dropdown",
@@ -105,14 +107,16 @@ app_ui <- function(request) {
                     "Liens utiles"
                   ),
                   tags$ul(
-                    class = "dropdown-menu",
-                    tags$li(tags$a(class = "dropdown-item", href = "https://link1.com", "Link 1")),
-                    tags$li(tags$a(class = "dropdown-item", href = "https://link2.com", "Link 2")),
-                    tags$li(tags$a(class = "dropdown-item", href = "https://link3.com", "Link 3"))
+                    class = "dropdown-menu dropdown-menu-end",
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("envelope-at-fill"), "Contact", href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("link"), "Plan énergie climat", href = link_pecc, target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("link"), "OCDC", href = link_ocdc, target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("link"), "DGE-DIREN", href = link_diren, target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("github"), "GitHub",  href = link_github, target = "_blank")
                   )
           )
         )
-      )
+      )# End div
     ),
 
     # Main navbar ----

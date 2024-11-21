@@ -23,6 +23,7 @@ mod_download_all_data_ui <- function(id){
            style = "margin-bottom:0.5rem !important;"),
 
     shiny::uiOutput(ns("render_ui_button"))
+
   )
 }
 
@@ -45,22 +46,21 @@ mod_download_all_data_server <- function(id,
 
         # Real download button
 
-          shiny::downloadButton(outputId = ns("download_all_excel"),
-                                class = "btnDownloadAll",
-                                icon = icon("file-excel", class = "fa-solid me-2"),
-                                label = "Prêt à l'export"
+        shiny::downloadButton(outputId = ns("download_all_excel"),
+                              class = "btnDownloadAll",
+                              icon = icon("file-excel", class = "fa-solid me-2"),
+                              label = "Prêt à l'export"
         )
+
       }else{
 
         # Dummy download button + warning text
-        tagList(
           shiny::actionButton(inputId = ns("dummy_disabled"),
                               label = "Attente de sélection" ,
                               icon = icon("ban", class = "me-1"),
                               disabled = TRUE,
                               class = "btnDownloadAll"
           )
-        )
 
       }
 

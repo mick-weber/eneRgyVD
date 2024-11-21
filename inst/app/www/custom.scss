@@ -95,15 +95,33 @@
 
 /* Make TOC accordion_panel bold */
 .TOCaccordionPanelBold{
+
     .accordion-button {
       font-weight: 500;
+      padding-top:0.75rem;
+      padding-bottom:0.75rem;
     }
+
+    .accordion-button:not(.collapsed) {
+      background-color: white; /* Active background color */
+      color: #343A40;
+    }
+
+    .accordion-item {
+      border: 1px solid #ccc; /* Full border around each panel */
+      border-radius: 10px; /* Rounded corners */
+      margin-bottom: 10px; /* Add space between panels */
+      overflow: hidden; /* Ensure rounded corners apply properly */
+    }
+
 }
 
 /* Add margin between accordion items + remove underline (default from actionLInk)*/
 .customTOC{
   text-decoration:none;
   margin-bottom:5px;
+  color:#343A40;
+  font-weight: 500;
 }
 
 /* Add some underline only when hovering actionLink */

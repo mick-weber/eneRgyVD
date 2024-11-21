@@ -28,18 +28,18 @@ mod_table_content_ui <- function(id){
                    class = "TOCaccordionPanelBold", # custom.scss : affects only this TOC module !
                    open = FALSE,
                    multiple = TRUE,
-                   bslib::accordion_panel(title = "Électricité", value = "elec",
+                   bslib::accordion_panel(title = "Électricité", value = "elec", icon = icon("bolt", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_1"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Distribution d'électricité", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                           tags$div(class = "row", actionLink(ns("data_2"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Production d'électricité",  icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             "Production",  icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    ),
 
-                   bslib::accordion_panel(title = "Gaz naturel", value = "ng",
+                   bslib::accordion_panel(title = "Gaz naturel", value = "ng", icon = icon("fire", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_8"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    ),
-                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener",
+                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener", icon = icon("house", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_3"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Besoins théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                           tags$div(class = "row", actionLink(ns("data_4"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
@@ -47,20 +47,20 @@ mod_table_content_ui <- function(id){
                                           tags$div(class = "row", actionLink(ns("data_5"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Informations bâtiments", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    ),
-                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies",
+                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies", icon = icon("file-lines", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_6"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Vue par bâtiments subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                           tags$div(class = "row", actionLink(ns("data_7"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Vue par travaux subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
 
                    ),
-                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation",
+                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation", icon = icon("temperature-half", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_10"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Exemple générique", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
 
                    ),
 
-                   bslib::accordion_panel(title = "Mobilité", value = "mobility",
+                   bslib::accordion_panel(title = "Mobilité", value = "mobility", icon = icon("car", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_20"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    )

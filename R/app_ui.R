@@ -91,7 +91,7 @@ app_ui <- function(request) {
       class = "navbar navbar-expand-lg bg-primary",
       style = "color:white;padding: 2px; width: 100%; position: relative; z-index: 1000;",
 
-      tags$p("Profil climatique des communes vaudoises", class = "ps-2 py-0 my-0 fs-5"),
+      tags$p("Profil climatique des communes vaudoises", class = "ps-2 py-0 my-0 fs-5", style = "font-weight:500;"),
 
       tags$div(
         # dropdown with useful links, collapses on small widths

@@ -12,8 +12,8 @@ info_dev_message <- function(){
                 easyClose = TRUE,
                 footer = tagList(
                   tags$div(class = "d-flex justify-content-evenly w-100",
-                           actionButton(inputId = "modal_info", "En savoir plus"), # will be used to redirect to a page,
-                           actionButton(inputId = "introjs", "Tour guidé de l'application"), # will run introJS in app_server.R
+                           actionButton(inputId = "modal_info", "En savoir plus", class = "btn-outline-secondary"), # will be used to redirect to a page,
+                           actionButton(inputId = "introjs", "Tour guidé de l'application", class = "btn-outline-secondary"), # will run introJS in app_server.R
                            modalButton(label = "C'est parti !")
                   )
                 ),

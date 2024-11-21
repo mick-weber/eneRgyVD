@@ -38,38 +38,37 @@ load("./data/canopee.rda")
 
 load("data/glossary.rda")
 
-## energy datasets ----
-# <ADD NEW ENERGY DATASETS HERE>
+# Group dataset objects ----
 
+# energy
 energy_datasets_objects <- c("elec_prod",
-                           "elec_cons",
-                           "ng_cons",
-                           "regener_needs",
-                           "regener_cons_ae_use",
-                           "regener_cons_ae_aff",
-                           "regener_misc",
-                           "subsidies_by_measure",
-                           "subsidies_by_building")
-
-energy_datasets <- setNames(mget(energy_datasets_objects), energy_datasets_objects)
-
-## mobility datasets ----
-
-# <ADD NEW MOBILITY DATASETS HERE>
-mobility_datasets_objects <- c("public_transports")
-
-mobility_datasets <- setNames(mget(mobility_datasets_objects), mobility_datasets_objects)
-
-## adaptation datasets ----
-
-# <ADD NEW ADAPTATION DATASETS HERE>
+                             "elec_cons",
+                             "ng_cons",
+                             "regener_needs",
+                             "regener_cons_ae_use",
+                             "regener_cons_ae_aff",
+                             "regener_misc",
+                             "subsidies_by_measure",
+                             "subsidies_by_building")
+# adaptation
 adaptation_datasets_objects <- c("canopee")
 
+# mobility
+mobility_datasets_objects <- c("public_transports")
+
+# Create datasets groups
+
+## energy
+energy_datasets <- setNames(mget(energy_datasets_objects), energy_datasets_objects)
+
+## mobility
+mobility_datasets <- setNames(mget(mobility_datasets_objects), mobility_datasets_objects)
+
+## adaptation
 adaptation_datasets <- setNames(mget(adaptation_datasets_objects), adaptation_datasets_objects)
 
-
-## documentation datasets (all thematics included) ----
-
+# Documentation datasets ----
+# Reminder : this is not necessary but provides a dictionnary table if available to mod_about_the_app.R
 doc_objects <- c("elec_prod_doc",
                  "elec_cons_doc",
                  "ng_cons_doc",
@@ -527,3 +526,4 @@ ng_cons_vd_last_year <- energy_datasets$ng_cons |>
   dplyr::filter(annee == last_year_ng_cons) |>
   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
   dplyr::pull()
+

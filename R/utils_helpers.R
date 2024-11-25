@@ -115,8 +115,11 @@ subpanels_tribble <- dplyr::tribble(
   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
-  # mobility (20+)
-  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_20", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
+  # adaptation (data_20+)
+  "adaptation_canopy-generic_data_help", "Adaptation climat", "navset_canopy", "Surface de canopée", "data_20", "Surface de canopée", "navset_climat", "Surface de canopée",
+
+  # mobility (data_30+)
+  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_30", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
 )
 
 # Generic utils ----

@@ -317,31 +317,28 @@ app_ui <- function(request) {
                       )# End nav_panel 'Subventions bâtiments'
       ),# End nav_menu Energie
 
-      ## Adaptation (générique) ----
+      ## Adaptation climat ----
       bslib::nav_menu("Adaptation climat",
                       # icon = shiny::icon("temperature-half"),
-                      bslib::nav_panel("Exemple générique 1",
+                      bslib::nav_panel("Surface de canopée",
+                                       icon = icon("leaf"),
                                        # Nested navset_card_tab()
-                                       bslib::navset_card_tab(id = "navset_climat",
-                                                              bslib::nav_panel(title = "Première donnée",
+                                       bslib::navset_card_tab(id = "navset_canopy",
+                                                              bslib::nav_panel(title = "Surface de canopée",
 
-                                                                               mod_generic_charts_ui("test_generic_climat",
-                                                                                                     title = "Titre générique adaptation",
+                                                                               mod_generic_charts_ui("adaptation_canopy",
+                                                                                                     title = "Surface de canopée urbaine",
                                                                                                      title_complement = tags$div(tags$p("Complément de titre (...)"),
                                                                                                                                  tags$p(create_geoportail_tag(link = regener_geovd_link)
                                                                                                                                  )
                                                                                                      ))
-                                                              ),# end firstnav_panel
-
-                                                              bslib::nav_panel(title = "Deuxième donnée", icon = bsicons::bs_icon("cart"),
-                                                                               "A remplir..."
-                                                              )
+                                                              )# end firstnav_panel
                                        )# end navset_card_pill
                       )# end main nav_panel
       ), # End nav_menu() 'Adaptation'
 
 
-      ## Mobilité (générique) ----
+      ## Mobilité ----
       bslib::nav_menu("Mobilité",
                       bslib::nav_panel("Transports publics",
                                        icon = icon("bus"),

@@ -171,11 +171,11 @@ mod_about_the_app_ui <- function(id){
                                                                  bslib::nav_panel("Adaptation climat",
                                                                                   bslib::navset_tab(id = ns("navset_climat"),
 
-                                                                                                    bslib::nav_panel("Donnée générique",
+                                                                                                    bslib::nav_panel("Surface de canopée",
 
                                                                                                                      tags$div(
                                                                                                                        br(),
-                                                                                                                       # h4(strong("Détails méthodologiques : subventions bâtiments")),
+                                                                                                                         h4(strong("Détails méthodologiques : surface de canopée")),
                                                                                                                        # br(),
                                                                                                                         bslib::accordion(!!!generic_data_panels, open = FALSE)
                                                                                                                        # br(),

@@ -360,7 +360,7 @@ app_server <- function(input, output, session) {
 
    ## mod_generic_charts ----
 
-   mod_generic_charts_server("test_generic_climat",
+   mod_generic_charts_server("adaptation_canopy",
                              subsetData = reactive({inputVals$adaptationDatasets$canop}),
                              inputVals = inputVals,
                              var_commune = "commune",

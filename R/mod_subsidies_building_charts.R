@@ -17,22 +17,23 @@ mod_subsidies_building_charts_ui <- function(id,
     tags$div(
       # Large+ screens : inline, flex layout, justified items
       #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
+      class = "d-flex justify-content-start",
       # Title
-      h4(title, style = "padding-right:10px;"),
+      h4(title, style = "padding-right:3vw;"),
 
-
-      # Methodology accordion
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_subsidies_warning)),
-          br(),
-          actionButton(ns("subsidies_building_help"), label = "Plus de détails sur les données")
-        ),
-        open = FALSE)
+      # Methodology button
+      actionButton(ns("generic_data_help"),
+                   class = "btnCustom",
+                   label = tags$span(style = "font-weight:500;",
+                                     "Source et méthode",
+                                     bslib::tooltip(
+                                       id = ns("tooltip_data_help"),
+                                       placement = "right",
+                                       options = list(customClass = "customTooltips"), # custom.scss
+                                       trigger = bsicons::bs_icon("info-circle"),
+                                       generic_method_warning # utils_text_and_links.R
+                                     )
+                   ))
     ),
 
     # utils_text_and_links.R

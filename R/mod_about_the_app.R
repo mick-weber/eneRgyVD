@@ -55,9 +55,9 @@ mod_about_the_app_ui <- function(id){
                                               # breathing
                                               br(),
                                               h4(strong("Sources des données")),
-                                              tags$p("Les différentes informations fournies par cette application reflètent au mieux la réalité en fonction des données disponibles à la Direction de l'énergie.
-                                    L'exactitude de ces informations ne peut être garantie. En cas d'incohérence de données, prière d'en informer la Direction de l'énergie.
-                                    Lorsque disponibles, des documentations plus détaillées sont annexées en-dessous de chaque onglet."),
+                                              tags$p("Chaque donnée est détaillée ci-dessous.
+                                              Les différentes informations fournies par cette application reflètent au mieux la réalité avec les données disponibles.
+                                                     L'exactitude de ces informations ne peut être garantie. En cas d'incohérence de données, merci de prendre contact."),
 
 
                                               ## |---------------------------------------------------------------|

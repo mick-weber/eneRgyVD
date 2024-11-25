@@ -16,8 +16,7 @@ req_communes_not_available <- "Aucune donnée n'est disponible pour la sélectio
 ## Methodological disclaimers ----
 # Used in all methodological accordions in each thematic module
 
-generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
-                                                       Les grands principes de chaque méthode ainsi que les principales modifications sont documentés dans l'onglet 'À propos'."
+generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour en savoir plus sur cette donnée, cliquez sur le boutton"
 
 specific_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite.
 Les données par secteurs sont spécialement dépendantes de la qualité de l'information fournie par les distributeurs."

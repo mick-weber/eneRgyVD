@@ -18,26 +18,23 @@ mod_elec_charts_ui <- function(id,
     tags$div(
       # Large+ screens : inline, flex layout, justified items
       #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
+      class = "d-flex justify-content-start",
       # Title (w small padding to avoid it touching the accordion)
-      h4(title, style = "padding-right:10px;"),
+      h4(title, style = "padding-right:3vw;"),
 
-
-      # Methodology accordion
-
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_elec_warning)),
-              br(),
-          # Since multiple mod_elec_charts can exist, we play with the namespace to land the correct 'mod_about_the_app.R' page
-          # This is done in app_server.R, `subpanels_tribble` object
-
-          actionButton(ns("elec_data_help"), label = "Plus de détails sur les données")
-        ),
-        open = FALSE)
+      # Methodology button
+      actionButton(ns("generic_data_help"),
+                   class = "btnCustom",
+                   label = tags$span(style = "font-weight:500;",
+                                     "Source et méthode",
+                                     bslib::tooltip(
+                                       id = ns("tooltip_data_help"),
+                                       placement = "right",
+                                       options = list(customClass = "customTooltips"), # custom.scss
+                                       trigger = bsicons::bs_icon("info-circle"),
+                                       generic_method_warning # utils_text_and_links.R
+                                     )
+                   ))
     ),#End div
 
     # utils_text_and_links.R

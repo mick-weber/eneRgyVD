@@ -39,7 +39,7 @@ mod_table_content_ui <- function(id){
                                           tags$div(class = "row", actionLink(ns("data_8"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    ),
-                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener", icon = icon("house", class = "text-primary"),
+                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener", icon = icon("city", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_3"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Besoins théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                           tags$div(class = "row", actionLink(ns("data_4"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
@@ -47,7 +47,7 @@ mod_table_content_ui <- function(id){
                                           tags$div(class = "row", actionLink(ns("data_5"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Informations bâtiments", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    ),
-                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies", icon = icon("file-lines", class = "text-primary"),
+                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies", icon = icon("house-circle-check", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_6"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Vue par bâtiments subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                           tags$div(class = "row", actionLink(ns("data_7"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",

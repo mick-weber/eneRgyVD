@@ -95,7 +95,9 @@ mod_elec_charts_ui <- function(id,
 
 
                                  # !! Since sunburst is removed we can directly use renderPlotly
-                                 uiOutput(ns("plot_render_ui"))
+                                 uiOutput(ns("plot_render_ui")) |>
+                                  shinycssloaders::withSpinner(type = 6,
+                                                               color= main_color)
 
 
 
@@ -153,16 +155,17 @@ mod_elec_charts_server <- function(id,
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
+      # Compute number of rows
       num_facets <- length(inputVals$selectedCommunes)
       num_columns <- 2
       num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
 
-      # Dynamic height and width ratios
+      # Dynamic height and width ratios (unitless)
       base_height_per_row <- 2  # Adjust height ratio per row
-      base_width <- 15  # Static base width
 
+      # Save units passed to create_bar_ggiraph()
       height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
-      width_svg <- base_width  # Keep width static for two columns
+      width_svg <- 15  # Keep width static for two columns layout
 
       # fct is defined in fct_helpers.R
       create_bar_ggiraph(data = subsetData(),
@@ -179,7 +182,7 @@ mod_elec_charts_server <- function(id,
                          height_svg = height_svg, # px width of browser when app starts
                          width_svg = width_svg # px height of browser when app starts
       )
-    })# End renderPlotly
+    })# End renderGirafe
 
 
     # Render plot selectively based on radioButton above

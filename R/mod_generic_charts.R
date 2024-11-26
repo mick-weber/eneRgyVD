@@ -95,7 +95,7 @@ mod_generic_charts_ui <- function(id,
 
 
                                         # !! Since sunburst is removed we can directly use renderPlotly
-                                        plotly::plotlyOutput(ns("generic_chart"))|>
+                                        ggiraph::girafeOutput(ns("generic_chart"))|>
                                           shinycssloaders::withSpinner(type = 6,
                                                                        color= main_color) # color defined in utils_helpers.R
 
@@ -133,6 +133,7 @@ mod_generic_charts_server <- function(id,
                                       var_values,
                                       unit,
                                       color_palette,
+                                      legend_title,
                                       dl_prefix = dl_prefix,
                                       doc_vars = doc_vars
                                       ){ # the non-reactive documentation file for variables description
@@ -149,26 +150,39 @@ mod_generic_charts_server <- function(id,
 
     # Plot logic ----
 
-      output$generic_chart <- plotly::renderPlotly({
+    output$generic_chart <- ggiraph::renderGirafe({
 
-        validate(need(inputVals$selectedCommunes, req_communes_phrase))
-        validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
 
-        subsetData() |>
-          create_bar_plotly(n_communes = dplyr::n_distinct(subsetData()$commune),
-                            var_commune = var_commune,
-                            var_year = var_year,
-                            var_values = var_values,
-                            var_cat = var_cat,
-                            unit = unit,
-                            legend_title = "Titre de légende générique",
-                            color_palette = color_palette,
-                            dodge = FALSE, # we don't allow user to dodge w/ toggle button
-                            free_y = input$toggle_status, # reactive(input$toggle_status)
-                            web_width = inputVals$web_width, # px width of browser when app starts
-                            web_height = inputVals$web_height # px height of browser when app starts
-          )# End create_bar_plotly
-      })# End renderPlot
+      # Compute number of rows
+      num_facets <- length(inputVals$selectedCommunes)
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
+
+      # Dynamic height and width ratios (unitless)
+      base_height_per_row <- 2  # Adjust height ratio per row
+
+      # Save units passed to create_bar_ggiraph()
+      height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
+
+      # fct is defined in fct_helpers.R
+      create_bar_ggiraph(data = subsetData(),
+                         n_communes = dplyr::n_distinct(subsetData()$commune),
+                         var_year = var_year,
+                         var_commune = var_commune,
+                         unit = inputVals$energyUnit,
+                         var_cat = var_cat,
+                         var_values = var_values,
+                         color_palette = color_palette, # defined in utils_helpers.R
+                         dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
+                         free_y = input$toggle_status, # reactive(input$toggle_status)
+                         legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
+                         height_svg = height_svg, # px width of browser when app starts
+                         width_svg = width_svg # px height of browser when app starts
+      )
+    })# End renderGirafe
 
     # Table logic ----
 

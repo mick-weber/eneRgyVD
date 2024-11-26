@@ -253,6 +253,7 @@ create_bar_ggiraph <- function(data,
                                  y = .data[[var_values]],
                                  fill = if (!is.null(var_cat)){.data[[var_cat]]},
                                  # Ggiraph interactivity
+                                 data_id = id,
                                  tooltip = paste0(
                                    if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
                                    format(round(.data[[var_values]], digits = 0), big.mark = "'"),
@@ -308,7 +309,9 @@ create_bar_ggiraph <- function(data,
   ggiraph::girafe(ggobj = ggplot,
                   height_svg = height_svg,
                   width_svg = width_svg,
-                  options = list(ggiraph::opts_sizing(rescale = FALSE))
+                  options = list(ggiraph::opts_sizing(rescale = FALSE),
+                                 ggiraph::opts_hover_inv(css = "opacity:0.1;") ## CSS code of all other lines)
+  )
   )
 
 

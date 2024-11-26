@@ -201,32 +201,45 @@ mod_regener_needs_charts_server <- function(id,
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-      # ...PLOTLY BAR PLOT ----
-      output$chart_1 <- plotly::renderPlotly({
+      # Plot logic ----
 
-        # fct_helpers.R
-        create_bar_plotly(data = subsetData_barplot(),
-                          n_communes = dplyr::n_distinct(subsetData_barplot()$commune),
-                          var_year = var_year,
-                          var_commune = var_commune,
-                          unit = inputVals$energyUnit,
-                          var_cat = var_cat,
-                          var_values = var_values,
-                          color_palette = color_palette, # defined in utils_helpers.R
-                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
-                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                          legend_title = legend_title,  # links to ifelse in facet_wrap(scales = ...)
-                          web_width = inputVals$web_width, # px width of browser when app starts
-                          web_height = inputVals$web_height # px height of browser when app starts
+      output$chart_1 <- ggiraph::renderGirafe({
+
+        validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+        # Compute number of rows
+        num_facets <- length(inputVals$selectedCommunes)
+        num_columns <- 2
+        num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
+
+        # Dynamic height and width ratios (unitless)
+        base_height_per_row <- 2  # Adjust height ratio per row
+
+        # Save units passed to create_bar_ggiraph()
+        height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+        width_svg <- 15  # Keep width static for two columns layout
+
+        # fct is defined in fct_helpers.R
+        create_bar_ggiraph(data = subsetData(),
+                           n_communes = dplyr::n_distinct(subsetData()$commune),
+                           var_year = var_year,
+                           var_commune = var_commune,
+                           unit = inputVals$energyUnit,
+                           var_cat = var_cat,
+                           var_values = var_values,
+                           color_palette = color_palette, # defined in utils_helpers.R
+                           dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
+                           free_y = input$toggle_status, # reactive(input$toggle_status)
+                           legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
+                           height_svg = height_svg, # px width of browser when app starts
+                           width_svg = width_svg # px height of browser when app starts
         )
-      })# End renderPlotly
+      })# End renderGirafe
 
       # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not, barClass -> custom.css
-      tags$div(class = ifelse(input$tab_plot_type == "sunburst", "sunburstClass", "barClass"),
-               plotly::plotlyOutput(ns("chart_1")) |>
+               ggiraph::girafeOutput(ns("chart_1")) |>
                  shinycssloaders::withSpinner(type = 6,
                                               color= main_color) # color defined in utils_helpers.R
-      )#End div
 
     })# End renderUI
 

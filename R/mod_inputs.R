@@ -43,7 +43,7 @@ mod_inputs_ui <- function(id){
                  placement = "right",
                  options = list(customClass = "customTooltips"), # custom.scss
                  trigger = bsicons::bs_icon("info-circle"),
-                 "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes"
+                 "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes, par exemple pour une agglomération"
                  )),
 
         mod_upload_communes_ui(ns("uploaded_communes"))

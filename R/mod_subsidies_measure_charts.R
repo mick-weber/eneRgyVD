@@ -76,7 +76,7 @@ mod_subsidies_measure_charts_ui <- function(id,
                        # Plotly bar (only one viz) ----
                        # plotly barplot in server according to which flow/bar is selected
 
-                       plotly::plotlyOutput(ns("plot_subsidies")) |>
+                       ggiraph::girafeOutput(ns("plot_subsidies")) |>
                          shinycssloaders::withSpinner(type = 6,
                                                       color= main_color) # color defined in utils_helpers.R
 
@@ -125,9 +125,21 @@ mod_subsidies_measure_charts_server <- function(id,
 
     # Plot logic ----
 
-    output$plot_subsidies <- plotly::renderPlotly({
+    output$plot_subsidies <- ggiraph::renderGirafe({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+      # Compute number of rows
+      num_facets <- length(inputVals$selectedCommunes)
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
+
+      # Dynamic height and width ratios (unitless)
+      base_height_per_row <- 2  # Adjust height ratio per row
+
+      # Save units passed to create_bar_ggiraph()
+      height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
 
       # Plotly but factor lumped for clarity :
       subsetData() |>
@@ -138,19 +150,21 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_plotly(n_communes = dplyr::n_distinct(subsetData()$commune),
-                          var_year = "annee",
-                          var_commune = "commune",
-                          var_values = "nombre",
-                          var_cat = "mesure_simplifiee",
-                          unit = "subventions",
-                          legend_title = NULL,
-                          color_palette = subsidies_measure_simplifiee_colors,
-                          dodge = FALSE, # we don't allow user to dodge w/ toggle button
-                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                          web_width = inputVals$web_width, # px width of browser when app starts
-                          web_height = inputVals$web_height # px height of browser when app starts
-        )# End create_bar_plotly
+        create_bar_ggiraph(data = subsetData(),
+                           n_communes = dplyr::n_distinct(subsetData()$commune),
+                           var_year = "annee",
+                           var_commune = "commune",
+                           unit = "subventions",
+                           var_cat = "mesure_simplifiee",
+                           var_values = "nombre",
+                           color_palette = subsidies_measure_simplifiee_colors, # defined in utils_helpers.R
+                           dodge = FALSE, # if T -> 'dodge', F -> 'stack'
+                           free_y = input$toggle_status, # reactive(input$toggle_status)
+                           legend_title = NULL, # links to ifelse in facet_wrap(scales = ...)
+                           height_svg = height_svg, # px width of browser when app starts
+                           width_svg = width_svg # px height of browser when app starts
+        )
+
     })# End renderPlot
 
     # Table logic ----

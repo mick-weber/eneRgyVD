@@ -23,7 +23,7 @@ mod_regener_cons_charts_ui <- function(id,
       h4(title, style = "padding-right:3vw;"),
 
       # Methodology button
-      actionButton(ns("generic_data_help"),
+      actionButton(ns("rgr_cons_help"),
                    class = "btnCustom",
                    label = tags$span(style = "font-weight:500;",
                                      "Source et méthode",

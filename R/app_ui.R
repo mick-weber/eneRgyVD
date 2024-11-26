@@ -299,7 +299,7 @@ app_ui <- function(request) {
                                                               bslib::nav_panel("Vue par bâtiments",
 
                                                                                mod_subsidies_building_charts_ui("subsidies_building",
-                                                                                                                title = HTML("Subventions Programme bâtiments<br>(vue par bâtiment)"),
+                                                                                                                title = HTML("Subventions Programme bâtiments (vue par bâtiment)"),
                                                                                                                 title_complement = title_complement_subsidies_building # utils_text_and_links.R
                                                                                )
                                                               ),
@@ -308,7 +308,7 @@ app_ui <- function(request) {
                                                               bslib::nav_panel("Vue par subventions",
 
                                                                                mod_subsidies_measure_charts_ui("subsidies_measure",
-                                                                                                               title = HTML("Subventions Programme bâtiments<br>(vue par mesures)"),
+                                                                                                               title = HTML("Subventions Programme bâtiments (vue par subventions)"),
                                                                                                                title_complement = title_complement_subsidies_measure # utils_text_and_links.R
                                                                                )
 

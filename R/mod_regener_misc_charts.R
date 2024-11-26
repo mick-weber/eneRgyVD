@@ -22,7 +22,7 @@ mod_regener_misc_charts_ui <- function(id,
       h4(title, style = "padding-right:3vw;"),
 
       # Methodology button
-      actionButton(ns("generic_data_help"),
+      actionButton(ns("rgr_misc_help"),
                    class = "btnCustom",
                    label = tags$span(style = "font-weight:500;",
                                      "Source et méthode",

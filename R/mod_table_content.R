@@ -68,30 +68,7 @@ mod_table_content_ui <- function(id){
         )#End introjs div
       )# End card_body
     ),#End card
-
-    # Section Energie ----
-    #actionButton(ns("header_energie"), label = "Energie", class = "disabledTocButtons"),
-
-    # actionLink(ns("data_1"), class = "border p-3 customTOC", "Electricité (distribution)", icon = icon("bolt")),
-    # actionLink(ns("data_2"), class = "border p-3 customTOC", "Electricité (production)",  icon = icon("bolt")),
-    # actionLink(ns("data_8"), class = "border p-3 customTOC", "Distribution de gaz naturel", icon = icon("fire-flame-simple")),
-    # actionLink(ns("data_3"), class = "border p-3 customTOC", "Chaleur des bâtiments (besoins théoriques)", icon = icon("fire")),
-    # actionLink(ns("data_4"), class = "border p-3 customTOC", "Chaleur des bâtiments (consommations théoriques)", icon = icon("fire")),
-    # actionLink(ns("data_5"), class = "border p-3 customTOC", "Chaleur des bâtiments (informations bâtiments)", icon = icon("fire")),
-    # actionLink(ns("data_6"), class = "border p-3 customTOC", "Subventions bâtiments (vue par bâtiments)", icon = icon("house")),
-    # actionLink(ns("data_7"), class = "border p-3 customTOC", "Subventions bâtiments (vue par mesures)", icon = icon("house")),
-
-    # Section Adaptation ----
-    #actionButton(ns("header_adapt"), "Adaptation", class = "disabledTocButtons"),
-
-        #actionLink(ns("data_10"), class = "border p-3 customTOC", "Adaptation (exemple générique)", icon = icon("earth")),
-
-        # Section Mobilité ----
-        #actionButton(ns("header_mob"), "Mobilité", class = "disabledTocButtons"),
-
-        #actionLink(ns("data_11"), class = "border p-3 customTOC", "Mobilité (exemple générique)", icon = icon("car")),
-
-      )
+  )
 }
 
 #' table_content Server Functions

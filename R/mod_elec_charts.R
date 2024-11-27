@@ -95,7 +95,9 @@ mod_elec_charts_ui <- function(id,
 
 
                                  # !! Since sunburst is removed we can directly use renderPlotly
-                                 uiOutput(ns("plot_render_ui"))
+                                 uiOutput(ns("plot_render_ui")) |>
+                                  shinycssloaders::withSpinner(type = 6,
+                                                               color= main_color)
 
 
 
@@ -149,6 +151,40 @@ mod_elec_charts_server <- function(id,
 
     # Plot logic ----
 
+    output$chart_1 <- ggiraph::renderGirafe({
+
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+      # Compute number of rows
+      num_facets <- length(inputVals$selectedCommunes)
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
+
+      # Dynamic height and width ratios (unitless)
+      base_height_per_row <- 2  # Adjust height ratio per row
+
+      # Save units passed to create_bar_ggiraph()
+      height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
+
+      # fct is defined in fct_helpers.R
+      create_bar_ggiraph(data = subsetData(),
+                         n_communes = dplyr::n_distinct(subsetData()$commune),
+                         var_year = var_year,
+                         var_commune = var_commune,
+                         unit = inputVals$energyUnit,
+                         var_cat = var_cat,
+                         var_values = var_values,
+                         color_palette = color_palette, # defined in utils_helpers.R
+                         dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
+                         free_y = input$toggle_status, # reactive(input$toggle_status)
+                         legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
+                         height_svg = height_svg, # px width of browser when app starts
+                         width_svg = width_svg # px height of browser when app starts
+      )
+    })# End renderGirafe
+
+
     # Render plot selectively based on radioButton above
     # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
 
@@ -156,36 +192,8 @@ mod_elec_charts_server <- function(id,
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-        # Update the initialized FALSE toggle_status with the input$toggle_status
-        # PLOTLY BAR PLOT
-
-        output$chart_1 <- plotly::renderPlotly({
-
-          # fct is defined in fct_helpers.R
-          create_bar_plotly(data = subsetData(),
-                            n_communes = dplyr::n_distinct(subsetData()$commune),
-                            var_year = var_year,
-                            var_commune = var_commune,
-                            unit = inputVals$energyUnit,
-                            var_cat = var_cat,
-                            var_values = var_values,
-                            color_palette = color_palette, # defined in utils_helpers.R
-                            dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
-                            free_y = input$toggle_status, # reactive(input$toggle_status)
-                            legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
-                            web_width = inputVals$web_width, # px width of browser when app starts
-                            web_height = inputVals$web_height # px height of browser when app starts
-          )
-
-        })# End renderPlotly
-
-
       # We create a div so that we can optionnaly pass a class
-      tags$div(
-               plotly::plotlyOutput(ns("chart_1")) |>
-                 shinycssloaders::withSpinner(type = 6,
-                                              color= main_color) # color defined in utils_helpers.R
-      )
+               ggiraph::girafeOutput(ns("chart_1"))
 
     })# End renderUI
 

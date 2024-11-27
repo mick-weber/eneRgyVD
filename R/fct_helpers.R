@@ -218,6 +218,128 @@ create_select_leaflet <- function(sf_districts,
 }
 
 
+#' create_bar_ggiraph()
+#'
+#'@description Creates a girafe object from a facetted ggplot bar plot for use in renderGirafe
+#'
+#' @param data the data to provide
+#'
+#'
+#' @import ggplot2
+#' @importFrom ggiraph girafe
+#' @return an interactive girafe object
+#' @export
+
+create_bar_ggiraph <- function(data,
+                               n_communes,
+                               var_year,
+                               var_commune,
+                               unit, # input$energy_unit, or other unit value retrieved in app_server
+                               var_cat, # one of secteur, categorie...
+                               var_values, # one of consommation, production_totale...
+                               color_palette, # utils_helpers.R,
+                               dodge = FALSE, # stacked by default
+                               free_y = FALSE,
+                               legend_title = NULL,
+                               height_svg, # set default when shinybrowser not used
+                               width_svg, # set default when shinybrowser not used
+                               ... # free
+){
+
+  # First create ggplot graph
+  # We turn to MWh to save space, especially when free_y is activated...
+  ggplot <- data |>
+    ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
+                                 y = .data[[var_values]],
+                                 fill = if (!is.null(var_cat)){.data[[var_cat]]},
+                                 # Ggiraph interactivity
+                                 data_id = paste0(.data[[var_year]], .data[[var_cat]]),
+                                 tooltip = paste0(
+                                   if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
+                                   format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+                                   paste("", unit, "en "), .data[[var_year]]))
+    )
+
+  # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
+  # If one color is supplied : we must pass it to 'fill' of geom_col(), scale_fill_manual would not accept it
+  if(length(color_palette) == 1){
+    ggplot <- ggplot +
+      ggiraph::geom_col_interactive(position = dplyr::if_else(condition = dodge, # arg
+                                                              true = "dodge",
+                                                              false = "stack"),
+                                    fill = color_palette)
+  }else{
+    # If a palette is passed : we must pass it fo 'scale_fill_manual' with a legend name
+    ggplot <- ggplot +
+      ggiraph::geom_col_interactive(position = dplyr::if_else(condition = dodge, # arg
+                                                              true = "dodge",
+                                                              false = "stack"))+
+      ggplot2::scale_fill_manual(
+        name = legend_title, # passed from arg
+        values = color_palette # palette defined in utils_helpers.R
+      )
+  }
+
+
+  # Scales, facts, theme options etc.
+  ggplot <- ggplot+
+    ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
+                                                scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3),
+                                                scales::label_number(big.mark = "'", accuracy = 1))
+    )+
+    ggplot2::labs(x = "", y = unit)+
+    ggiraph::facet_wrap_interactive(facets = ggplot2::vars(.data[[var_commune]]),
+                                    ncol = 2,
+                                    # if the toggle linked to the free_y argument is TRUE, then free y axis
+                                    scales = ifelse(free_y, "free_y", "fixed"))+
+    ggplot2::theme_bw(base_size = 13)+
+    ggplot2::theme(
+      legend.position = "top",        # Move legend to the top
+      legend.direction = "horizontal", # Arrange items horizontally
+      legend.justification = c(0, 0), # Align legend box to the top-left corner
+      legend.box.just = "left",
+      #change the labels of facet wrap. main_color defined in utils_helpers.R
+      strip.background = ggplot2::element_rect(color="black", fill=main_color, linewidth = 0.5, linetype="solid"),
+      strip.text = ggplot2::element_text(color = "white", size = 14),
+      legend.background = ggplot2::element_rect(fill = NA), # transparent
+      panel.spacing.x = ggplot2::unit(.05, "cm"),
+      panel.spacing.y = ggplot2::unit(0.5, "cm")
+    )
+
+  ggiraph::girafe(ggobj = ggplot,
+                  height_svg = height_svg,
+                  width_svg = width_svg,
+                  options = list(
+                    ggiraph::opts_sizing(
+                      rescale = FALSE
+                    ),
+                    ggiraph::opts_hover(
+                      css = ""
+                    ),
+                    ggiraph::opts_hover_inv(
+                      css = "opacity:0.6;"
+                    ),
+                    ggiraph::opts_toolbar(
+                      position = "top",
+                      fixed = TRUE,
+                      pngname = "profil_climatique",
+                      tooltips = list(
+                        saveaspng = "Télécharger (.png)"
+                      )
+                    ),
+                    ggiraph::opts_tooltip(
+                      opacity = 0.8
+                    ),
+                    ggiraph::opts_selection(
+                      type = "none"
+                    )
+                  )
+  )
+
+
+}
+
+
 #' create_bar_plotly()
 #'
 #'@description Creates a plotly object from a facetted ggplot bar plot for use in renderPlotly

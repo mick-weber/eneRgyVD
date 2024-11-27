@@ -210,7 +210,7 @@ app_ui <- function(request) {
 
                                                               #### cons elec ----
                                                               bslib::nav_panel(title = "Distribution d'électricité",
-                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                # Module for producing cons elec charts
 
@@ -357,77 +357,71 @@ app_ui <- function(request) {
                                                                                                      title = "Qualité de desserte des transports publics",
                                                                                                      title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
                                                                                )
-                                                              ),# end firstnav_panel
+                                                              )# end firstnav_panel
+                      )# end navset_card_tab
+      )# end main nav_panel
+    ),# End nav_menu() 'Mobilite'
 
-                                                              bslib::nav_panel(title = "Deuxième donnée",
+    ## Misc ----
+    bslib::nav_menu("Divers",
 
-                                                                               "A remplir..."
+                    ### Chiffres-clés
 
-                                                              )
-                                       )# end navset_card_pill
-                      )# end main nav_panel
-      ),# End nav_menu() 'Mobilite'
+                    bslib::nav_panel("Chiffres-clés", icon = icon("list-ol"),
 
-      ## Misc ----
-      bslib::nav_menu("Divers",
+                                     bslib::layout_columns(col_widths = c(-1, 9, -2),
 
-                      ### Chiffres-clés
+                                                           mod_stats_box_ui("vd_box"),
+                                                           mod_stats_box_ui("communes_box")
 
-                      bslib::nav_panel("Chiffres-clés", icon = icon("list-ol"),
+                                     )
+                    ),
 
-                                       bslib::layout_columns(col_widths = c(-1, 9, -2),
+                    ## News ----
 
-                                                             mod_stats_box_ui("vd_box"),
-                                                             mod_stats_box_ui("communes_box")
+                    bslib::nav_panel("Nouveautés",
+                                     icon = bsicons::bs_icon("star"),
 
-                                       )
-                      ),
+                                     mod_news_ui("news")
+                    ),
 
-                      ## News ----
+                    ### About ----
+                    bslib::nav_panel("À propos",icon = icon("circle-info"),
 
-                      bslib::nav_panel("Nouveautés",
-                                       icon = bsicons::bs_icon("star"),
+                                     mod_about_the_app_ui("about")
 
-                                       mod_news_ui("news")
-                      ),
+                    )
 
-                      ### About ----
-                      bslib::nav_panel("À propos",icon = icon("circle-info"),
-
-                                       mod_about_the_app_ui("about")
-
-                      )
-
-      ),#End nav_menu() 'Divers'
+    ),#End nav_menu() 'Divers'
 
 
-      #### (spacer) ----
-      bslib::nav_spacer(),
+    #### (spacer) ----
+    bslib::nav_spacer(),
 
-      # ## Useful links ----
-      # bslib::nav_menu(
-      #   align = "right",
-      #   title = "Liens utiles", # utils_helpers.R for links
-      #
-      #   ### Contact ----
-      #   bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
-      #
-      #                          # add objet to mail manually, better UX
-      #                          href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank")),
-      #   ### DGE-DIREN ----
-      #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
-      #                          href = link_diren, target = "_blank")),
-      #
-      #   ### PECC ----
-      #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "Plan énergie climat",
-      #                          href = link_pecc, target = "_blank")),
-      #
-      #   ### GitHub ----
-      #   bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
-      #                          href = link_github, target = "_blank"))
-      #
-      # )
-    )#End page_navbar()
+    # ## Useful links ----
+    # bslib::nav_menu(
+    #   align = "right",
+    #   title = "Liens utiles", # utils_helpers.R for links
+    #
+    #   ### Contact ----
+    #   bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
+    #
+    #                          # add objet to mail manually, better UX
+    #                          href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank")),
+    #   ### DGE-DIREN ----
+    #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
+    #                          href = link_diren, target = "_blank")),
+    #
+    #   ### PECC ----
+    #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "Plan énergie climat",
+    #                          href = link_pecc, target = "_blank")),
+    #
+    #   ### GitHub ----
+    #   bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
+    #                          href = link_github, target = "_blank"))
+    #
+    # )
+  )#End page_navbar()
   )# End tagList()
 }# End UI
 

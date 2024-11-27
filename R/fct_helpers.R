@@ -253,7 +253,7 @@ create_bar_ggiraph <- function(data,
                                  y = .data[[var_values]],
                                  fill = if (!is.null(var_cat)){.data[[var_cat]]},
                                  # Ggiraph interactivity
-                                 data_id = paste0(.data[[var_year]], .data[[var_cat]]),
+                                 data_id = if(!is.null(var_cat)){paste0(.data[[var_year]], .data[[var_cat]])}else{.data[[var_year]]},
                                  tooltip = paste0(
                                    if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
                                    format(round(.data[[var_values]], digits = 0), big.mark = "'"),
@@ -320,7 +320,7 @@ create_bar_ggiraph <- function(data,
                       css = "opacity:0.6;"
                     ),
                     ggiraph::opts_toolbar(
-                      position = "top",
+                      position = "topleft",
                       fixed = TRUE,
                       pngname = "profil_climatique",
                       tooltips = list(

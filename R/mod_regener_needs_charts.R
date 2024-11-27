@@ -220,8 +220,8 @@ mod_regener_needs_charts_server <- function(id,
         width_svg <- 15  # Keep width static for two columns layout
 
         # fct is defined in fct_helpers.R
-        create_bar_ggiraph(data = subsetData(),
-                           n_communes = dplyr::n_distinct(subsetData()$commune),
+        create_bar_ggiraph(data = subsetData_barplot(),
+                           n_communes = dplyr::n_distinct(subsetData_barplot()$commune),
                            var_year = var_year,
                            var_commune = var_commune,
                            unit = inputVals$energyUnit,

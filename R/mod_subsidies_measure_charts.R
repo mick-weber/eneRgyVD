@@ -150,7 +150,7 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_ggiraph(data = subsetData(),
+        create_bar_ggiraph(# data piped
                            n_communes = dplyr::n_distinct(subsetData()$commune),
                            var_year = "annee",
                            var_commune = "commune",

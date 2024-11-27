@@ -172,7 +172,7 @@ mod_generic_charts_server <- function(id,
                          n_communes = dplyr::n_distinct(subsetData()$commune),
                          var_year = var_year,
                          var_commune = var_commune,
-                         unit = inputVals$energyUnit,
+                         unit = unit,
                          var_cat = var_cat,
                          var_values = var_values,
                          color_palette = color_palette, # defined in utils_helpers.R

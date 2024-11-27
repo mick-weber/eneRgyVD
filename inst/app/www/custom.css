@@ -348,3 +348,45 @@ a {
   background-size: 100%;
   background-position: center;
 }
+
+/* CSS for notification pulsing in nested navsets so we see them more when inactive */
+.nav-link .pulse {
+  position: relative;
+  vertical-align: middle;
+  margin-bottom: 3px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  z-index: 10;
+  border: 10px solid #3A862D;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-out infinite;
+}
+
+.nav-link.active .pulse {
+  display: none;
+  /* Hide pulse for the active nav panel */
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(0);
+    opacity: 0.0;
+  }
+  25% {
+    -webkit-transform: scale(0.1);
+    opacity: 0.1;
+  }
+  50% {
+    -webkit-transform: scale(0.5);
+    opacity: 0.3;
+  }
+  75% {
+    -webkit-transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0.0;
+  }
+}

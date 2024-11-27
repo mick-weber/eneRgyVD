@@ -210,9 +210,10 @@ app_ui <- function(request) {
 
                                                               #### cons elec ----
                                                               bslib::nav_panel(title = "Distribution d'électricité",
-
+                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                # Module for producing cons elec charts
+
                                                                                mod_elec_charts_ui("consumption_charts",
                                                                                                   title = "Distribution d'électricité",
                                                                                                   title_complement = title_complement_elec_cons # utils_text_and_links.R
@@ -222,6 +223,7 @@ app_ui <- function(request) {
 
                                                               #### prod elec ----
                                                               bslib::nav_panel("Production d'électricité",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                # Module for producing prod elec charts
                                                                                mod_elec_charts_ui("production_charts",
@@ -262,6 +264,7 @@ app_ui <- function(request) {
 
                                                               #### besoins ----
                                                               bslib::nav_panel("Besoins des bâtiments",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_regener_needs_charts_ui("regener_needs",
                                                                                                            title = "Besoins théoriques des bâtiments",
@@ -271,6 +274,7 @@ app_ui <- function(request) {
                                                               ),
                                                               #### consommation ----
                                                               bslib::nav_panel("Consommation des bâtiments",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_regener_cons_charts_ui("regener_cons",
                                                                                                           title = "Consommations théoriques des bâtiments",
@@ -279,6 +283,7 @@ app_ui <- function(request) {
                                                               ),
                                                               #### misc ----
                                                               bslib::nav_panel("Informations bâtiments",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_regener_misc_charts_ui("regener_misc",
                                                                                                           title = "Autres informations des bâtiments",
@@ -297,6 +302,7 @@ app_ui <- function(request) {
 
                                                               #### Par batiments ----
                                                               bslib::nav_panel("Vue par bâtiments",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_subsidies_building_charts_ui("subsidies_building",
                                                                                                                 title = HTML("Subventions Programme bâtiments (vue par bâtiment)"),
@@ -306,6 +312,7 @@ app_ui <- function(request) {
 
                                                               #### Par mesures ----
                                                               bslib::nav_panel("Vue par subventions",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_subsidies_measure_charts_ui("subsidies_measure",
                                                                                                                title = HTML("Subventions Programme bâtiments (vue par subventions)"),

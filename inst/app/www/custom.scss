@@ -319,7 +319,13 @@ a {
       font-weight:500;
     }
 
+/* ggiraph toolbar icon display (color and size) */
 
+.ggiraph-toolbar-icon.neutral{
+  stroke:#3A862D;
+  fill:#3A862D;
+  width:2rem;
+}
 
 
 /* Div backgrounds with icons used in mod_stats_box.R for each type of make_statbox_item() call*/

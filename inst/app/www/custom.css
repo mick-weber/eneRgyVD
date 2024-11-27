@@ -356,7 +356,8 @@ a {
   background-position: center;
 }
 
-/* CSS for notification pulsing in nested navsets so we see them more when inactive */
+/* custom CSS for creating a pulse notification in nested nav_panels so we see them more when inactive */
+/* this class is called in nav_panel(..., icon(NULL, class = 'pulse')) when we want it to appear */
 .nav-link .pulse {
   position: relative;
   vertical-align: middle;
@@ -370,11 +371,13 @@ a {
   animation: pulse 1.5s ease-out infinite;
 }
 
+/* Display pulse animation only when the item is NOT active ! */
 .nav-link.active .pulse {
   display: none;
   /* Hide pulse for the active nav panel */
 }
 
+/* Controlling the pulse frames */
 @keyframes pulse {
   0% {
     -webkit-transform: scale(0);

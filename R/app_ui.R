@@ -91,7 +91,8 @@ app_ui <- function(request) {
       class = "navbar navbar-expand-lg bg-primary",
       style = "color:white;padding: 2px; width: 100%; position: relative; z-index: 1000;",
 
-      tags$p("Profil climatique des communes vaudoises", class = "ps-2 py-0 my-0 fs-5", style = "font-weight:500;"),
+      # Tweak the title spacers and font-size
+      tags$p("Profil climatique des communes vaudoises", class = "ms-4 py-0 my-0 fs-5", style = "font-weight:500;"),
 
       tags$div(
         # dropdown with useful links, collapses on small widths
@@ -108,11 +109,16 @@ app_ui <- function(request) {
                   ),
                   tags$ul(
                     class = "dropdown-menu dropdown-menu-end",
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("envelope-at-fill"), "Contact", href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("link"), "Plan énergie climat", href = link_pecc, target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("link"), "OCDC", href = link_ocdc, target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("link"), "DGE-DIREN", href = link_diren, target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("github"), "GitHub",  href = link_github, target = "_blank")
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("envelope-at-fill", class = "text-primary"),
+                           "Contact", href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
+                           "Plan énergie climat", href = link_pecc, target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
+                           "OCDC", href = link_ocdc, target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
+                           "DGE-DIREN", href = link_diren, target = "_blank"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("github", class = "text-primary"),
+                           "GitHub",  href = link_github, target = "_blank")
                   )
           )
         )
@@ -130,8 +136,8 @@ app_ui <- function(request) {
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
       # Custom theme
       theme = profil_theme, # utils_helpers.R
-      # Title
-      title = NULL, #strong("Profil climatique des communes vaudoises", class = "adaptiveTitle"),
+      # Title not needed here, provided in app_ui.R
+      title = NULL, #strong("Profil climatique des communes vaudoises"),
       # Browser title
       window_title = "Profil climatique VD",
 
@@ -204,7 +210,7 @@ app_ui <- function(request) {
 
                       ### Electricite ----
                       bslib::nav_panel("Electricité",
-                                       icon = icon("bolt"),
+                                       icon = icon("bolt", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_elec",
 
@@ -239,7 +245,7 @@ app_ui <- function(request) {
                       ### Gaz naturel ----
 
                       bslib::nav_panel("Gaz naturel",
-                                       icon = icon("fire-flame-simple"),
+                                       icon = icon("fire-flame-simple", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_ng",
 
@@ -258,7 +264,7 @@ app_ui <- function(request) {
 
                       ### Chaleur batiments ----
                       bslib::nav_panel("Chaleur des bâtiments",
-                                       icon = icon("city"),
+                                       icon = icon("city", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_regener",
 
@@ -296,7 +302,7 @@ app_ui <- function(request) {
 
                       ### Subventions ----
                       bslib::nav_panel("Subventions bâtiments",
-                                       icon = icon("house-circle-check"),
+                                       icon = icon("house-circle-check", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_subsidies",
 
@@ -328,7 +334,7 @@ app_ui <- function(request) {
       bslib::nav_menu("Adaptation climat",
                       # icon = shiny::icon("temperature-half"),
                       bslib::nav_panel("Surface de canopée",
-                                       icon = icon("leaf"),
+                                       icon = icon("leaf", class = "text-primary"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_canopy",
                                                               bslib::nav_panel(title = "Surface de canopée",
@@ -348,7 +354,7 @@ app_ui <- function(request) {
       ## Mobilité ----
       bslib::nav_menu("Mobilité",
                       bslib::nav_panel("Transports publics",
-                                       icon = icon("bus"),
+                                       icon = icon("bus", class = "text-primary"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_mobilite",
                                                               bslib::nav_panel(title = "Qualité de desserte des transports publics",
@@ -367,7 +373,7 @@ app_ui <- function(request) {
 
                     ### Chiffres-clés
 
-                    bslib::nav_panel("Chiffres-clés", icon = icon("list-ol"),
+                    bslib::nav_panel("Chiffres-clés", icon = icon("list-ol", class = "text-primary"),
 
                                      bslib::layout_columns(col_widths = c(-1, 9, -2),
 
@@ -380,13 +386,13 @@ app_ui <- function(request) {
                     ## News ----
 
                     bslib::nav_panel("Nouveautés",
-                                     icon = bsicons::bs_icon("star"),
+                                     icon = bsicons::bs_icon("star", class = "text-primary"),
 
                                      mod_news_ui("news")
                     ),
 
                     ### About ----
-                    bslib::nav_panel("À propos",icon = icon("circle-info"),
+                    bslib::nav_panel("À propos",icon = icon("circle-info", class = "text-primary"),
 
                                      mod_about_the_app_ui("about")
 
@@ -398,29 +404,6 @@ app_ui <- function(request) {
     #### (spacer) ----
     bslib::nav_spacer(),
 
-    # ## Useful links ----
-    # bslib::nav_menu(
-    #   align = "right",
-    #   title = "Liens utiles", # utils_helpers.R for links
-    #
-    #   ### Contact ----
-    #   bslib::nav_item(tags$a(bsicons::bs_icon("envelope-at-fill"), "Contact",
-    #
-    #                          # add objet to mail manually, better UX
-    #                          href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank")),
-    #   ### DGE-DIREN ----
-    #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "DGE-DIREN",
-    #                          href = link_diren, target = "_blank")),
-    #
-    #   ### PECC ----
-    #   bslib::nav_item(tags$a(bsicons::bs_icon("link"), "Plan énergie climat",
-    #                          href = link_pecc, target = "_blank")),
-    #
-    #   ### GitHub ----
-    #   bslib::nav_item(tags$a(bsicons::bs_icon("github"), "GitHub",
-    #                          href = link_github, target = "_blank"))
-    #
-    # )
   )#End page_navbar()
   )# End tagList()
 }# End UI

@@ -93,11 +93,13 @@ make_statbox_item <- function(iconBgClass,
 #' spliced as arguments inside a `bslib::accordion()` item. Each markdown h2 heading is used as a `title` argument for
 #' `accordion_panel()` and each paragraph (i.e. not a h2 header) is used as content to fill the `accordion_panel()`.
 #' @param md_file the documentation filename stored in `./data-doc`
-#'
-#' @importFrom stringr str_extract_all str_subset
+#' @import dplyr
+#' @importFrom tidyr tibble fill
+#' @importFrom stringr str_detect str_starts str_remove
 #' @importFrom purrr map2
 #' @importFrom bslib accordion_panel
 #' @importFrom shiny markdown
+#' @importFrom bsicons bs_icon
 #'
 #' @return a list of HTML accordion_panels to be spliced in a `bslib::accordion()`
 #' @export
@@ -105,7 +107,7 @@ make_statbox_item <- function(iconBgClass,
 generate_doc_accordion_panels <- function(md_file){
 
   # Read the doc md file into a vector of lines
-  markdown_lines <- readLines(mdfile, skipNul = TRUE)
+  markdown_lines <- readLines(md_file, skipNul = TRUE)
 
   # Which pattern identifies a section for accordion_panel()
   section_pattern <- "## "

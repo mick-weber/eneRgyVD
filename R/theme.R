@@ -5,12 +5,15 @@
 main_color <- "#3A862D"
 main_color_active <- "#343A40"
 
-## Custom {fresh} theme passed to bs4Dash in app_ui.R
-# Example from https://dreamrs.github.io/fresh/
+## Font selection : if bslib::font_google() fails due to proxy issue, then fallback on Arial sans-serif
 
+
+
+## Custom theme
 profil_theme <- bslib::bs_theme(version = 5,
                                 preset = "bootstrap",
                                 font_scale = 1.2,
+                                base_font = "Open Sans, Arial, sans-serif", # Use local 'Open Sans' (in www/fonts), fallback to Arial
                                 "navbar-bg" = "white",
                                 "modal-footer-margin-between" = "0rem",
                                 primary = main_color,

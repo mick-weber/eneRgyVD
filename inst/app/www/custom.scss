@@ -136,18 +136,6 @@ a {
 }
 
 
-/*Used for main title resizing*/
-.adaptiveTitle{
-  text-wrap: wrap;
-  font-family: 'Tahoma', sans-serif;
-  font-size:18px;
-  font-weight:300;
-  @include media-breakpoint-up(xl){
-   font-size:22px;
-  }
-}
-
-
 /* Create contour in all nav-link descendants (direct or not) of nav-pills classes*/
 .nav-pills .nav-link {
 
@@ -221,11 +209,6 @@ a {
   padding-top:2.5rem !important;
 }
 
-.sidebar_na_list{
-  list-style: none;
-  padding-left:10%;
-}
-
 .fs-sidebar{
   font-size:0.9rem;
 }
@@ -238,23 +221,6 @@ a {
   .accordion-title{
     font-size:1rem;
   }
-}
-
-/*On large media : 70% width to allow title space ; on smaller media 100% width to maximize screen space*/
-.customAccordion{
-	@include media-breakpoint-up(lg){
-	width: 65% !important;
-
-  /* Change default's collapsed state border with primary color*/
-
-	.collapsed {
-	  border-style: solid;
-	  border-width: 1px !important;
-	  border-color: #3A862D !important;
-
-	}
-}
-
 }
 
 /* Remove default's bottom margin for <p> elements. Used in fct_helpers.R (generate_doc_accordion_panels()) */

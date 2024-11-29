@@ -104,25 +104,41 @@ make_statbox_item <- function(iconBgClass,
 
 generate_doc_accordion_panels <- function(md_file){
 
-  # Locale md file
-  doc_txt <- readLines(md_file, skipNul = TRUE)
+  # Read the doc md file into a vector of lines
+  markdown_lines <- readLines(mdfile, skipNul = TRUE)
 
-  # Extract HTML titles following ## headers (titles for accordion_panel)
-  titles <- stringr::str_extract_all(doc_txt, pattern = "(?<=#{2}\\s).*", simplify =  TRUE) |>
-    stringr::str_subset(pattern = "[:alpha:]") # remove empty lines without any letter
+  # Which pattern identifies a section for accordion_panel()
+  section_pattern <- "## "
 
-  # Extract HTML content paragraphs (do not start with '#')
-  paragraphs <- stringr::str_extract_all(doc_txt, pattern = "^([^#]+)", simplify =  TRUE) |>
-    stringr::str_subset(pattern = "^\\w")  # remove empty lines
+  # Create a tibble with section headers and paragraphs
+  # this code allows returns of line within a paragraph due to summarise call
+  parsed_content <- tidyr::tibble(line = markdown_lines) |>
+    # Remove comments and empty lines
+    dplyr::filter(!stringr::str_detect(line, "<!---|^\\s*$")) |>
+    # Remove main header (1x #)
+    dplyr::filter(!stringr::str_starts(line, "#(?!#)")) |>
+    # Identify section headers
+    dplyr::mutate(section_header = ifelse(stringr::str_starts(line, section_pattern), stringr::str_remove(line, "^##\\s*"), NA)) |>
+    # Fill section headers down for associated paragraphs
+    tidyr::fill(section_header, .direction = "down") |>
+    # Identify paragraphs
+    dplyr::mutate(paragraph = ifelse(stringr::str_starts(line, section_pattern), NA, line)) |>
+    # Drop section headers without paragraph
+    dplyr::filter(!is.na(paragraph)) |>
+    # Recombine full paragraphs (replaces line breaks by a space)
+    dplyr::summarise(paragraph = paste(paragraph, collapse = " "),
+                     .by = section_header)
 
   # Map titles & values into separate accordion_panels
-  items <- purrr::map2(titles, paragraphs, function(titles, paragraphs){
+  items <- purrr::map2(parsed_content$section_header,
+                       parsed_content$paragraph,
+                       function(title, paragraph){
 
     bslib::accordion_panel(
-      titles,
+      title,
       icon = bsicons::bs_icon("question-circle", class = "text-secondary"),
       shiny::tags$div(class = "customPanel",
-                      shiny::markdown(paragraphs))
+                      shiny::markdown(paragraph))
     )
 
   })

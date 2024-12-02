@@ -41,7 +41,7 @@ info_dev_message <- function(){
                   div(class = "modal-warning d-flex align-items-center",
                       shiny::icon("warning", class = "fa-2x me-3"), # Add margin to the right of the icon
                       div(
-                        "Attention : les données sont susceptibles de changer de manière rétroactive.",
+                        "Les données sont susceptibles de changer de manière rétroactive.",
                         "Il est donc important de les interpréter avec précaution car des améliorations méthodologiques peuvent avoir lieu."
                       )
                   )

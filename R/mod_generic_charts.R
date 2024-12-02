@@ -132,6 +132,7 @@ mod_generic_charts_server <- function(id,
                                       var_cat,
                                       var_values,
                                       unit,
+                                      coerce_stack,
                                       color_palette,
                                       legend_title,
                                       dl_prefix = dl_prefix,
@@ -140,13 +141,18 @@ mod_generic_charts_server <- function(id,
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    # Initialize toggle stacked condition for conditionalPanel in ui
+    # if 'force
+    output$commune <- reactive({
+      if(coerce_stack == TRUE){FALSE}else{length(unique(subsetData()$commune)) > 0}
+      })
+
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({
-      dplyr::n_distinct(subsetData()$commune) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
+    output$toggle <- reactive({dplyr::n_distinct(subsetData()$commune) > 1 })# Returns TRUE if more than 1 commune, else FALSE
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
+    outputOptions(output, 'commune', suspendWhenHidden = FALSE)
 
     # Plot logic ----
 
@@ -176,7 +182,7 @@ mod_generic_charts_server <- function(id,
                          var_cat = var_cat,
                          var_values = var_values,
                          color_palette = color_palette, # defined in utils_helpers.R
-                         dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
+                         dodge = if(coerce_stack == TRUE){TRUE}else{input$stacked_status}, # if T -> 'dodge', F -> 'stack'
                          free_y = input$toggle_status, # reactive(input$toggle_status)
                          legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
                          height_svg = height_svg, # px width of browser when app starts
@@ -194,6 +200,7 @@ mod_generic_charts_server <- function(id,
       create_generic_table_dt(data = subsetData(),
                               var_commune = var_commune,
                               var_year = var_year,
+                              var_values = var_values,
                               var_cat = var_cat,
                               unit = unit,
                               DT_dom = "frtip" # remove default button in DT extensions

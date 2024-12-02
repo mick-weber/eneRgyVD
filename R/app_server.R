@@ -361,15 +361,16 @@ app_server <- function(input, output, session) {
    ## mod_generic_charts ----
 
    mod_generic_charts_server("adaptation_canopy",
-                             subsetData = reactive({inputVals$adaptationDatasets$canop}),
+                             subsetData = reactive({inputVals$adaptationDatasets$taux_canopee}),
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = "part_voit_elec", # !! wrong data here, waiting new OCDC inputs
+                             var_values = "taux_canopee",
                              unit = "%",
-                             var_cat = NULL, # ask OCDC to change dataset var name...
-                             color_palette = "olivedrab3", # default_palette, dedicated one, or one color
-                             legend_title = NULL,
+                             coerce_stack = TRUE,
+                             var_cat = "categorie", # ask OCDC to change dataset var name...
+                             color_palette = default_palette, # default_palette, dedicated one, or one color
+                             legend_title = "Type",
                              dl_prefix = "canopee_",
                              doc_vars = NULL # for now
                              )
@@ -386,6 +387,7 @@ app_server <- function(input, output, session) {
                              var_year = "annee",
                              var_values = "part_voit_elec", #!! wrong data here, waiting new OCDC inputs
                              unit = "[?]",
+                             coerce_stack = FALSE,
                              var_cat = NULL,
                              color_palette = "lightblue", # default_palette, dedicated one, or one color
                              legend_title = NULL,

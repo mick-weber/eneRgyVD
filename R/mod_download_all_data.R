@@ -72,7 +72,13 @@ mod_download_all_data_server <- function(id,
 
       # List all pertinent inputVals$<datasets>$... from mod_inputs.R
       # <sheet_name> = inputVals$dataset$...
+
       list(
+
+        ## |---------------------------------------------------------------|
+        ##          ENERGY DATASETS
+        ## |---------------------------------------------------------------|
+
         # Cons elec renamed+units
         elec_cons = inputVals$energyDatasets$elec_cons |>
           rename_fr_colnames() |>
@@ -117,10 +123,14 @@ mod_download_all_data_server <- function(id,
         # NG consumption
         gaz_cons = inputVals$energyDatasets$ng_cons |>
           rename_fr_colnames() |>
-          add_colname_units(unit = inputVals$energyUnit)
+          add_colname_units(unit = inputVals$energyUnit),
 
-        # Add other datasets with associated functions here !
+        ## |---------------------------------------------------------------|
+        ##          ADAPTATION CLIMAT DATASETS
+        ## |---------------------------------------------------------------|
 
+        canopee = inputVals$adaptationDatasets$taux_canopee |>
+          rename_fr_colnames()
       )
     })
 

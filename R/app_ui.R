@@ -332,7 +332,6 @@ app_ui <- function(request) {
 
       ## Adaptation climat ----
       bslib::nav_menu("Adaptation climat",
-                      # icon = shiny::icon("temperature-half"),
                       bslib::nav_panel("Surface de canopée",
                                        icon = icon("leaf", class = "text-primary"),
                                        # Nested navset_card_tab()
@@ -340,8 +339,8 @@ app_ui <- function(request) {
                                                               bslib::nav_panel(title = "Surface de canopée",
 
                                                                                mod_generic_charts_ui("adaptation_canopy",
-                                                                                                     title = "Surface de canopée urbaine",
-                                                                                                     title_complement = tags$div(tags$p("Complément de titre (...)"),
+                                                                                                     title = "Surface de canopée",
+                                                                                                     title_complement = tags$div(tags$p("Complément à proposer OCDC"),
                                                                                                                                  tags$p(create_geoportail_tag(link = regener_geovd_link)
                                                                                                                                  )
                                                                                                      ))

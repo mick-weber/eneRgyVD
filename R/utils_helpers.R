@@ -32,10 +32,9 @@ load("./data/subsidies_doc.rda")
 load("./data/public_transports.rda")
 
 ## adaptation data ----
-load("./data/canopee.rda")
+load("./data/taux_canopee.rda")
 
 ## glossary ----
-
 load("data/glossary.rda")
 
 # Group dataset objects ----
@@ -51,7 +50,7 @@ energy_datasets_objects <- c("elec_prod",
                              "subsidies_by_measure",
                              "subsidies_by_building")
 # adaptation
-adaptation_datasets_objects <- c("canopee")
+adaptation_datasets_objects <- c("taux_canopee")
 
 # mobility
 mobility_datasets_objects <- c("public_transports")
@@ -91,7 +90,7 @@ ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_con
 public_transports_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/public_transports-doc.md")
 
 # adaptation
-canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/canopee-doc.md")
+canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/taux_canopee-doc.md")
 
 # DEV for now
 generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
@@ -225,7 +224,7 @@ replace_fr_accents <- c("electricite" = "électricité",
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
 power_col_keywords <- c("Puissance", "installé")
 co2_keywords <- c("CO2")
-percent_keywords <- c("Pct", "Part", "canopee")
+percent_keywords <- c("Pct", "Part", "Taux")
 
 
 # Colors and icons ----

@@ -266,15 +266,25 @@ create_bar_ggiraph <- function(data,
 
   # First create ggplot graph
   # We turn to MWh to save space, especially when free_y is activated...
+
   ggplot <- data |>
     ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
                                  y = .data[[var_values]],
-                                 fill = if (!is.null(var_cat)){.data[[var_cat]]},
-                                 # Ggiraph interactivity
+                                 # built conditionnally if var_cat is supplied else nothing
+                                 fill = if(!is.null(var_cat)){.data[[var_cat]]},
+
+                                 # built conditionnally if var_cat is supplied else var_year only
                                  data_id = if(!is.null(var_cat)){paste0(.data[[var_year]], .data[[var_cat]])}else{.data[[var_year]]},
+
+                                 # built conditionnally if var_cat is supplied and if unit is %
                                  tooltip = paste0(
                                    if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
-                                   format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+                                   # if unit percent --> show percents nicely
+                                   if(unit == "%"){
+                                     scales::percent(.data[[var_values]], accuracy = 0.1)
+                                   }else{
+                                     format(round(.data[[var_values]], digits = 0), big.mark = "'")
+                                   },
                                    paste("", unit, "en "), .data[[var_year]]))
     )
 
@@ -301,9 +311,10 @@ create_bar_ggiraph <- function(data,
 
   # Scales, facts, theme options etc.
   ggplot <- ggplot+
-    ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
-                                                scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3),
-                                                scales::label_number(big.mark = "'", accuracy = 1))
+    ggplot2::scale_y_continuous(labels = ifelse(unit == "%",
+                                                scales::percent,
+                                                scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3)
+                                                )
     )+
     ggplot2::labs(x = "", y = unit)+
     ggiraph::facet_wrap_interactive(facets = ggplot2::vars(.data[[var_commune]]),
@@ -1048,28 +1059,34 @@ create_subsidies_table_dt <- function(data,
 create_generic_table_dt <- function(data,
                                     var_commune,
                                     var_year,
+                                    var_values,
                                     var_cat = NULL,
                                     unit = unit,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
+  # First change data to percent if unit == %, or else turn it into a nicely formatted value
+  if(unit == "%"){
+    data <- data |> dplyr::mutate(!!rlang::sym(var_values) := scales::percent(.data[[var_values]], accuracy = 0.01))
+  }else{
+    data <- data |> dplyr::mutate(!!rlang::sym(var_values) := format(.data[[var_values]],
+                                                           big.mark = "'",
+                                                           digits = 3,
+                                                           drop0trailing = TRUE,
+                                                           scientific = FALSE))
+  }
+
+  # Then proceed with the rest of the table code
 
   data |>
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>
     dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
-    dplyr::mutate(
-      # limit decimals for <num> variables (note var_year is converted to factor before)
-      dplyr::across(where(is.numeric), ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) |>
     # any_of() allows to pass var_car even if it does not exist
     dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
-    rename_misc_colnames() |>
+    rename_misc_colnames() |> # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_units(unit = unit) |>
+    add_colname_units(unit = unit) |> # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',

@@ -367,7 +367,7 @@ app_server <- function(input, output, session) {
                              var_year = "annee",
                              var_values = "taux_canopee",
                              unit = "%",
-                             coerce_stack = TRUE,
+                             coerce_dodge = TRUE,
                              var_cat = "categorie", # ask OCDC to change dataset var name...
                              color_palette = default_palette, # default_palette, dedicated one, or one color
                              legend_title = "Type",
@@ -387,7 +387,7 @@ app_server <- function(input, output, session) {
                              var_year = "annee",
                              var_values = "part_voit_elec", #!! wrong data here, waiting new OCDC inputs
                              unit = "[?]",
-                             coerce_stack = FALSE,
+                             coerce_dodge = FALSE,
                              var_cat = NULL,
                              color_palette = "lightblue", # default_palette, dedicated one, or one color
                              legend_title = NULL,

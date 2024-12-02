@@ -132,7 +132,7 @@ mod_generic_charts_server <- function(id,
                                       var_cat,
                                       var_values,
                                       unit,
-                                      coerce_stack,
+                                      coerce_dodge,
                                       color_palette,
                                       legend_title,
                                       dl_prefix = dl_prefix,
@@ -144,7 +144,7 @@ mod_generic_charts_server <- function(id,
     # Initialize toggle stacked condition for conditionalPanel in ui
     # if 'force
     output$commune <- reactive({
-      if(coerce_stack == TRUE){FALSE}else{length(unique(subsetData()$commune)) > 0}
+      if(coerce_dodge == TRUE){FALSE}else{length(unique(subsetData()$commune)) > 0}
       })
 
     # Initialize toggle free_y condition for conditionalPanel in ui
@@ -182,7 +182,7 @@ mod_generic_charts_server <- function(id,
                          var_cat = var_cat,
                          var_values = var_values,
                          color_palette = color_palette, # defined in utils_helpers.R
-                         dodge = if(coerce_stack == TRUE){TRUE}else{input$stacked_status}, # if T -> 'dodge', F -> 'stack'
+                         dodge = if(coerce_dodge == TRUE){TRUE}else{input$stacked_status}, # if T -> 'dodge', F -> 'stack'
                          free_y = input$toggle_status, # reactive(input$toggle_status)
                          legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
                          height_svg = height_svg, # px width of browser when app starts

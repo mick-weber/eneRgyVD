@@ -15,7 +15,6 @@ mod_news_ui <- function(id){
 
                           br(),
                           h4(strong("Historique des versions")),
-                          br(),
 
                           bslib::accordion(open = c("tocome", "jan25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,

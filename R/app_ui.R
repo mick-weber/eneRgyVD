@@ -243,7 +243,6 @@ app_ui <- function(request) {
 
 
                       ### Gaz naturel ----
-
                       bslib::nav_panel("Gaz naturel",
                                        icon = icon("fire-flame-simple", class = "text-primary"),
 
@@ -358,7 +357,7 @@ app_ui <- function(request) {
                                        bslib::navset_card_tab(id = "navset_mobilite",
                                                               bslib::nav_panel(title = "Qualité de desserte des transports publics",
 
-                                                                               mod_generic_charts_ui("public_transports",
+                                                                               mod_generic_charts_ui("qualite_desserte",
                                                                                                      title = "Qualité de desserte des transports publics",
                                                                                                      title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
                                                                                )
@@ -371,7 +370,6 @@ app_ui <- function(request) {
     bslib::nav_menu("Divers",
 
                     ### Chiffres-clés
-
                     bslib::nav_panel("Chiffres-clés", icon = icon("list-ol", class = "text-primary"),
 
                                      bslib::layout_columns(col_widths = c(-1, 9, -2),
@@ -383,7 +381,6 @@ app_ui <- function(request) {
                     ),
 
                     ## News ----
-
                     bslib::nav_panel("Nouveautés",
                                      icon = bsicons::bs_icon("star", class = "text-primary"),
 

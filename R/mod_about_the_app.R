@@ -177,7 +177,7 @@ mod_about_the_app_ui <- function(id){
                                                                                                                        br(),
                                                                                                                          h4(strong("Détails méthodologiques : surface de canopée")),
                                                                                                                        # br(),
-                                                                                                                        bslib::accordion(!!!generic_data_panels, open = FALSE)
+                                                                                                                        bslib::accordion(!!!taux_canopee_doc_panels, open = FALSE)
                                                                                                                        # br(),
                                                                                                                        # h5(strong("Descriptif des variables")),
                                                                                                                        # br(),
@@ -201,7 +201,7 @@ mod_about_the_app_ui <- function(id){
                                                                                                                        br(),
                                                                                                                        # h4(strong("Détails méthodologiques : subventions bâtiments")),
                                                                                                                        # br(),
-                                                                                                                        bslib::accordion(!!!public_transports_doc_panels, open = FALSE)
+                                                                                                                        bslib::accordion(!!!qualite_desserte_doc_panels, open = FALSE)
                                                                                                                        # br(),
                                                                                                                        # h5(strong("Descriptif des variables")),
                                                                                                                        # br(),

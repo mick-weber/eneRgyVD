@@ -380,16 +380,16 @@ app_server <- function(input, output, session) {
 
    ## mod_generic_charts ----
 
-   mod_generic_charts_server("public_transports",
-                             subsetData = reactive({inputVals$mobilityDatasets$public_transports}),
+   mod_generic_charts_server("qualite_desserte",
+                             subsetData = reactive({inputVals$mobilityDatasets$qualite_desserte}),
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = "part_voit_elec", #!! wrong data here, waiting new OCDC inputs
-                             unit = "[?]",
+                             var_values = "qualite_desserte_population",
+                             unit = "[-]",
                              coerce_dodge = FALSE,
                              var_cat = NULL,
-                             color_palette = "lightblue", # default_palette, dedicated one, or one color
+                             color_palette = "burlywood1", # default_palette, dedicated one, or one color
                              legend_title = NULL,
                              dl_prefix = "desserte_tp_",
                              doc_vars = NULL # for now

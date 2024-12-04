@@ -130,7 +130,15 @@ mod_download_all_data_server <- function(id,
         ## |---------------------------------------------------------------|
 
         canopee = inputVals$adaptationDatasets$taux_canopee |>
+          rename_fr_colnames(),
+
+        ## |---------------------------------------------------------------|
+        ##          MOBILITY DATASETS
+        ## |---------------------------------------------------------------|
+
+        qualite_desserte = inputVals$mobilityDatasets$qualite_desserte |>
           rename_fr_colnames()
+
       )
     })
 

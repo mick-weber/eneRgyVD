@@ -313,7 +313,7 @@ create_bar_ggiraph <- function(data,
   ggplot <- ggplot+
     ggplot2::scale_y_continuous(labels = ifelse(unit == "%",
                                                 scales::percent,
-                                                scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3)
+                                                scales::label_number(big.mark = "'")
                                                 )
     )+
     ggplot2::labs(x = "", y = unit)+

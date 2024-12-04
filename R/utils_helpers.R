@@ -29,7 +29,7 @@ load("./data/subsidies_by_measure.rda")
 load("./data/subsidies_doc.rda")
 
 ## mobility data ----
-load("./data/public_transports.rda")
+load("./data/qualite_desserte.rda")
 
 ## adaptation data ----
 load("./data/taux_canopee.rda")
@@ -53,7 +53,7 @@ energy_datasets_objects <- c("elec_prod",
 adaptation_datasets_objects <- c("taux_canopee")
 
 # mobility
-mobility_datasets_objects <- c("public_transports")
+mobility_datasets_objects <- c("qualite_desserte")
 
 # Create datasets groups
 
@@ -87,10 +87,10 @@ subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subs
 ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_cons-doc.md")
 
 # mobility
-public_transports_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/public_transports-doc.md")
+qualite_desserte_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/qualite_desserte-doc.md")
 
 # adaptation
-canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/taux_canopee-doc.md")
+taux_canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/taux_canopee-doc.md")
 
 # DEV for now
 generic_data_panels <- generate_doc_accordion_panels(md_file = "./data-doc/generic-doc.md")
@@ -118,37 +118,9 @@ subpanels_tribble <- dplyr::tribble(
   "adaptation_canopy-generic_data_help", "Adaptation climat", "navset_canopy", "Surface de canopée", "data_20", "Surface de canopée", "navset_climat", "Surface de canopée",
 
   # mobility (data_30+)
-  "public_transports-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_30", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
+  "qualite_desserte-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_30", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
 )
 
-# Generic utils ----
-# Tab-specific items at the end (see outline : `Objects specific to...`) !
-
-## NEWS notifications  ----
-# These are served to bs4DropdownMenu in app_ui.R
-
-notif_msg <- tidyr::tribble(~icon, ~status, ~text,
-                    "cloud-arrow-up", "info", "01.24: Ajout données subventions Programme Bâtiments",
-                    "cloud-arrow-up", "info", "06.23: Ajout données consommation th. bâtiments 2022",
-                     "cloud-arrow-up", "info", "06.23: Ajout données production électricité 2015-2022",
-                     "star", "info", "06.23: Mise en ligne du profil"
-)
-
-
-## Sidebar width ----
-
-sidebar_width <- 300 # px ; used in custom.css & plotting fns with inputVals$web_width/height
-
-## Facetted plot's height ----
-
-# Number of facets starting from which a height increase is necessary
-n_facets_limit <- 4
-
-# Height of facet plot's below limit
-height_facet_under_limit <- 50
-
-# Height of facet plot's above limit
-height_facet_above_limit <- 700
 
 ## DT language file ----
 ### RUN ONCE : Store JSON french language items file for DT library. May require rjson library (not in DESCRIPTION)
@@ -472,7 +444,7 @@ regener_current_year <- max_regener_year
 # mesures_pb |> dplyr::select(MESURE, MESURE_TRAD, MESURE_SIMPLIFIEE2)
 
 
-## Objects specific 'Accueil' (Statbox)  ----
+## Objects specific (Statbox)  ----
 
 #last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
 

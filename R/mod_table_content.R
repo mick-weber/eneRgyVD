@@ -63,7 +63,9 @@ mod_table_content_ui <- function(id){
                    ),
 
                    bslib::accordion_panel(title = "Mobilité", value = "mobility", icon = icon("car", class = "text-primary"),
-                                          tags$div(class = "row", actionLink(ns("data_30"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                          tags$div(class = "row", actionLink(ns("data_3"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             "Part des voitures électriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                          tags$div(class = "row", actionLink(ns("data_31"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
                    )
                  )#End accordion

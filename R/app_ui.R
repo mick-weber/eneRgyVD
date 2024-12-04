@@ -367,15 +367,30 @@ app_ui <- function(request) {
 
       ## Mobilité ----
       bslib::nav_menu("Mobilité",
+
+                      bslib::nav_panel("Véhicules électriques",
+                                       icon = icon("car", class = "text-primary"),
+                                       # Nested navset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_vehicules",
+                                                              bslib::nav_panel(title = "Part des voitures électriques",
+
+                                                                               mod_generic_charts_ui("part_voit_elec",
+                                                                                                     title = "Part des voitures électriques",
+                                                                                                     title_complement = HTML("<i>Complément à proposer OCDC</i>")
+                                                                               )
+                                                              )# end firstnav_panel
+                                       )# end navset_card_tab
+                      ),# end main nav_panel
+
                       bslib::nav_panel("Transports publics",
                                        icon = icon("bus", class = "text-primary"),
                                        # Nested navset_card_tab()
-                                       bslib::navset_card_tab(id = "navset_mobilite",
+                                       bslib::navset_card_tab(id = "navset_qualite_desserte",
                                                               bslib::nav_panel(title = "Qualité de desserte des transports publics",
 
                                                                                mod_generic_charts_ui("qualite_desserte",
                                                                                                      title = "Qualité de desserte des transports publics",
-                                                                                                     title_complement = HTML("<i>Complément de titre générique pour mobilité</i>")
+                                                                                                     title_complement = HTML("<i>Complément à proposer OCDC</i>")
                                                                                )
                                                               )# end firstnav_panel
                       )# end navset_card_tab

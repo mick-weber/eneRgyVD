@@ -76,7 +76,7 @@ mod_download_all_data_server <- function(id,
       list(
 
         ## |---------------------------------------------------------------|
-        ##          ENERGY DATASETS
+        ##          ENERGY DATASETS ----
         ## |---------------------------------------------------------------|
 
         # Cons elec renamed+units
@@ -126,7 +126,7 @@ mod_download_all_data_server <- function(id,
           add_colname_units(unit = inputVals$energyUnit),
 
         ## |---------------------------------------------------------------|
-        ##          ADAPTATION CLIMAT DATASETS
+        ##          ADAPTATION CLIMAT DATASETS ----
         ## |---------------------------------------------------------------|
 
         # Canopy area
@@ -138,9 +138,14 @@ mod_download_all_data_server <- function(id,
           rename_fr_colnames(),
 
         ## |---------------------------------------------------------------|
-        ##          MOBILITY DATASETS
+        ##          MOBILITY DATASETS ----
         ## |---------------------------------------------------------------|
 
+        # EVs
+        part_ve = inputVals$mobilityDatasets$part_voit_elec |>
+          rename_fr_colnames(),
+
+        # Public transportation quality
         qualite_desserte = inputVals$mobilityDatasets$qualite_desserte |>
           rename_fr_colnames()
 

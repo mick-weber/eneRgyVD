@@ -210,7 +210,25 @@ mod_about_the_app_ui <- function(id){
 
                                                                                 ## nav_panel 'Mobilité' ----
                                                                                 bslib::nav_panel("Mobilité",
+
                                                                                                  bslib::navset_tab(id = ns("navset_mobilite"),
+
+                                                                                                                   bslib::nav_panel("Part des voitures électriques",
+
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : part des voitures électriques")),
+                                                                                                                                      # br(),
+                                                                                                                                      bslib::accordion(!!!part_voit_elec_doc_panels, open = FALSE),
+                                                                                                                                      br()
+                                                                                                                                      # h5(strong("Descriptif des variables")),
+                                                                                                                                      # br(),
+                                                                                                                                      # Documentation table ??
+                                                                                                                                      # DT::dataTableOutput(ns("subsidies_doc"))
+
+
+                                                                                                                                    )# End div
+                                                                                                                   ),# End nav_panel
 
                                                                                                                    bslib::nav_panel("Qualité de desserte des transports publics",
 

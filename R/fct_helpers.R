@@ -281,12 +281,17 @@ create_bar_ggiraph <- function(data,
                                    if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
                                    # if unit percent --> show percents nicely
                                    if(unit == "%"){
-                                     scales::percent(.data[[var_values]], accuracy = 0.1)
+                                     paste(
+                                       scales::percent(.data[[var_values]], accuracy = 0.1), " en ", .data[[var_year]]
+                                     )
                                    }else{
-                                     format(round(.data[[var_values]], digits = 0), big.mark = "'")
-                                   },
-                                   paste("", unit, "en "), .data[[var_year]]))
+                                     paste(
+                                     format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+                                     unit, "en ", .data[[var_year]]
+                                     )
+                                   }
     )
+    ))
 
   # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
   # If one color is supplied : we must pass it to 'fill' of geom_col(), scale_fill_manual would not accept it

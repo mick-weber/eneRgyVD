@@ -30,6 +30,7 @@ load("./data/subsidies_doc.rda")
 
 ## mobility data ----
 load("./data/qualite_desserte.rda")
+load("./data/part_voit_elec.rda")
 
 ## adaptation data ----
 load("./data/taux_canopee.rda")
@@ -55,7 +56,8 @@ adaptation_datasets_objects <- c("taux_canopee",
                                  "batiment_danger")
 
 # mobility
-mobility_datasets_objects <- c("qualite_desserte")
+mobility_datasets_objects <- c("part_voit_elec",
+                               "qualite_desserte")
 
 # Create datasets groups
 
@@ -89,6 +91,7 @@ subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subs
 ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_cons-doc.md")
 
 # mobility
+part_voit_elec_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/part_voit_elec-doc.md")
 qualite_desserte_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/qualite_desserte-doc.md")
 
 # adaptation
@@ -119,8 +122,10 @@ subpanels_tribble <- dplyr::tribble(
   "buildings_exposure_hazards-generic_data_help", "Adaptation climat", "navset_climat", "Bâtiments exposés à des dangers naturels", "data_21", "Exposition aux dangers naturels", "navset_natural_hazards", "Bâtiments exposés à des dangers naturels",
 
   # mobility (data_30+)
-  "qualite_desserte-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_30", "Transports publics", "navset_mobilite", "Qualité de desserte des transports publics"
-)
+  "part_voit_elec-generic_data_help", "Mobilité", "navset_mobilite", "Part des voitures électriques", "data_30", "Véhicules électriques", "navset_vehicules", "Part des voitures électriques",
+  "qualite_desserte-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_31", "Transports publics", "navset_qualite_desserte", "Qualité de desserte des transports publics"
+
+  )
 
 
 ## DT language file ----
@@ -161,9 +166,10 @@ co2_units_table <- dplyr::tribble(
 
 cols_renaming_vector <- c(
   # regener_misc
-  "Commune" = "commune",  # applies to `subsidies` too
-  "Etat" = "etat",        # applies to `subsidies` too
-  "Surface de référence énergétique (m2)" = "SRE",  # applies to `subsidies` too
+  "Commune" = "commune",
+  "Etat" = "etat",
+  "Catégorie" = "categorie",
+  "Surface de référence énergétique (m2)" = "SRE",
   "Bâtiments chauffés" = "N_EGID",
   "Bâtiments neufs (2001+)" = "N_NEW_POST_2000",
   "Bâtiments rénovés légèrement (2001+)" = "N_RENOV_L_POST_2000",
@@ -174,8 +180,9 @@ cols_renaming_vector <- c(
   # subsidies
   "Type de subvention" = "subv_type",
 
-  # part_ve
-  "Part véhicules électriques (hybrides compris)" = "part_ve"
+  # mobility
+  "Part véhicules électriques" = "part_voit_elec",
+  "Bâtiments" = "nb_batiment_danger"
 )
 
 

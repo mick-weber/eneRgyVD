@@ -395,6 +395,21 @@ app_server <- function(input, output, session) {
 
    ## mod_generic_charts ----
 
+   mod_generic_charts_server("part_voit_elec",
+                             subsetData = reactive({inputVals$mobilityDatasets$part_voit_elec}),
+                             inputVals = inputVals,
+                             var_commune = "commune",
+                             var_year = "annee",
+                             var_values = "part_voit_elec",
+                             unit = "%",
+                             coerce_dodge = FALSE,
+                             var_cat = NULL,
+                             color_palette = "darkolivegreen4", # default_palette, dedicated one, or one color
+                             legend_title = NULL,
+                             dl_prefix = "part_ve_",
+                             doc_vars = NULL # for now
+   )
+
    mod_generic_charts_server("qualite_desserte",
                              subsetData = reactive({inputVals$mobilityDatasets$qualite_desserte}),
                              inputVals = inputVals,

@@ -259,8 +259,6 @@ app_ui <- function(request) {
                                        )
                       ),# End nav_panel 'Gaz naturel'
 
-
-
                       ### Chaleur batiments ----
                       bslib::nav_panel("Chaleur des bâtiments",
                                        icon = icon("city", class = "text-primary"),
@@ -323,7 +321,6 @@ app_ui <- function(request) {
                                                                                                                title = HTML("Subventions Programme bâtiments (vue par subventions)"),
                                                                                                                title_complement = title_complement_subsidies_measure # utils_text_and_links.R
                                                                                )
-
                                                               )
                                        )# End navset_card_pill
                       )# End nav_panel 'Subventions bâtiments'
@@ -331,6 +328,7 @@ app_ui <- function(request) {
 
       ## Adaptation climat ----
       bslib::nav_menu("Adaptation climat",
+                      # Canopée ----
                       bslib::nav_panel("Surface de canopée",
                                        icon = icon("leaf", class = "text-primary"),
                                        # Nested navset_card_tab()
@@ -343,9 +341,27 @@ app_ui <- function(request) {
                                                                                                                                  tags$p(create_geoportail_tag(link = regener_geovd_link)
                                                                                                                                  )
                                                                                                      ))
-                                                              )# end firstnav_panel
+                                                              )# end nested nav_panel
                                        )# end navset_card_pill
-                      )# end main nav_panel
+                      ),# end first main nav_panel
+
+                      # Dangers naturels (bâtiments) ----
+                      bslib::nav_panel("Exposition aux dangers naturels",
+                                       icon = icon("circle-exclamation", class = "text-primary"),
+                                       #Nested navaset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_natural_hazards",
+                                                              bslib::nav_panel(title = "Bâtiments exposés à des dangers naturels",
+
+                                                                               mod_generic_charts_ui("buildings_exposure_hazards",
+                                                                                                     title = "Bâtiments exposés à des dangers naturels",
+                                                                                                     title_complement = tags$div(tags$p("Complément à proposer OCDC"),
+                                                                                                                                 tags$p(create_geoportail_tag(link = regener_geovd_link)
+                                                                                                                                 )
+                                                                                                     ))
+
+                                                                               )# end nested nav_panel
+                                       )
+                      )# end second main nav_panel
       ), # End nav_menu() 'Adaptation'
 
 

@@ -18,33 +18,33 @@ mod_about_the_app_ui <- function(id){
                       ## |---------------------------------------------------------------|
                       bslib::nav_panel(title = "Général",
                                        bslib::layout_columns(col_widths = c(-1, 8, -3),
-                                                                 # breathing
-                                                                 br(),
-                                                                 h4(strong("Pourquoi cette application ?")),
-                                                                 tags$p("Le but de ce profil climatique est de faciliter la planification énergie et climat des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
+                                                             # breathing
+                                                             br(),
+                                                             h4(strong("Pourquoi cette application ?")),
+                                                             tags$p("Le but de ce profil climatique est de faciliter la planification énergie et climat des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
-                                                                 # breathing
+                                                             # breathing
                                                              tags$br(),
                                                              "Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application.",
-                                       tags$span(
-                                         "Contact : ",
-                                         tags$a(href = paste0("mailto:", mail_address), # utils_helpers.R
-                                                mail_address,
-                                                target = "_blank")
-                                         ),
-                                                                 br(),
-                                                                 h4(strong("Collaborations")),
-                                                                 tags$p("Le profil énergétique a été initialement développée par la DGE-DIREN en 2023.
+                                                             tags$span(
+                                                               "Contact : ",
+                                                               tags$a(href = paste0("mailto:", mail_address), # utils_helpers.R
+                                                                      mail_address,
+                                                                      target = "_blank")
+                                                             ),
+                                                             br(),
+                                                             h4(strong("Collaborations")),
+                                                             tags$p("Le profil énergétique a été initialement développée par la DGE-DIREN en 2023.
                                                                         En 2024, l’OCDC a souhaité mettre à disposition des communes d’autres données et l’application est devenue le profil climatique dès janvier 2025.
                                                                         De ce fait, le point de contact pour la gestion de cette application est désormais l’OCDC qui collabore toujours étroitement avec la DIREN.
                                                                         D’autres services ont également participé à la valorisation des données comme DGE-Biodiv, DGE-UDN et la DGMR."
 
-                                                                        )
+                                                             )
 
 
                                        )# End 1st layout_columns'
-                                       ),# End nav_panel' Général
+                      ),# End nav_panel' Général
 
                       ## |---------------------------------------------------------------|
                       ##          tabPanel 'Données' ----
@@ -52,168 +52,185 @@ mod_about_the_app_ui <- function(id){
                       bslib::nav_panel(title = "Données",
 
                                        bslib::layout_columns(col_widths = c(-1, 9, -2),
-                                              # breathing
-                                              br(),
-                                              h4(strong("Sources des données")),
-                                              tags$p("Chaque donnée est détaillée ci-dessous.
+                                                             # breathing
+                                                             br(),
+                                                             h4(strong("Sources des données")),
+                                                             tags$p("Chaque donnée est détaillée ci-dessous.
                                               Les différentes informations fournies par cette application reflètent au mieux la réalité avec les données disponibles.
                                                      L'exactitude de ces informations ne peut être garantie. En cas d'incohérence de données, merci de prendre contact."),
 
 
-                                              ## |---------------------------------------------------------------|
-                                              ##        Higher navigation level (Energie/Climat/Mobilité...)
-                                              ## |---------------------------------------------------------------|
-                                              bslib::navset_pill(id = ns("navset_donnees"),
+                                                             ## |---------------------------------------------------------------|
+                                                             ##        Higher navigation level (Energie/Climat/Mobilité...)
+                                                             ## |---------------------------------------------------------------|
+                                                             bslib::navset_pill(id = ns("navset_donnees"),
 
-                                                                 # breathing
-                                                                 header = br(),
+                                                                                # breathing
+                                                                                header = br(),
 
-                                                                 ## nav_panel 'Energie' ----
-                                                                 bslib::nav_panel("Energie",
+                                                                                ## nav_panel 'Energie' ----
+                                                                                bslib::nav_panel("Energie",
 
-                                                                                  ### Données subtabs ----
-                                                                                  bslib::navset_tab(id = ns("navset_energie"),
+                                                                                                 ### Données subtabs ----
+                                                                                                 bslib::navset_tab(id = ns("navset_energie"),
 
-                                                                                                    ### 1. Cons elec ----
-                                                                                                    # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel("Distribution d'électricité",
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                       h4(strong("Détails méthodologiques : distribution d'électricité")),
-                                                                                                                       br(),
-                                                                                                                       bslib::accordion(!!!elec_cons_doc_panels, open = FALSE),
-                                                                                                                       br(),
-                                                                                                                       h5(strong("Descriptif des variables")),
-                                                                                                                       br(),
-                                                                                                                       DT::dataTableOutput(ns("elec_cons_doc"))
+                                                                                                                   ### 1. Cons elec ----
+                                                                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
+                                                                                                                   bslib::nav_panel("Distribution d'électricité",
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : distribution d'électricité")),
+                                                                                                                                      br(),
+                                                                                                                                      bslib::accordion(!!!elec_cons_doc_panels, open = FALSE),
+                                                                                                                                      br(),
+                                                                                                                                      h5(strong("Descriptif des variables")),
+                                                                                                                                      br(),
+                                                                                                                                      DT::dataTableOutput(ns("elec_cons_doc"))
 
-                                                                                                                     )# End tags$div
-                                                                                                    ),# End nested tabPanel 1.
-
-
-                                                                                                    ### 2. Prod élec ----
-                                                                                                    # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel("Production d'électricité",
-                                                                                                                     # create div to apply class
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                       # Overview method
-                                                                                                                       h4(strong("Détails méthodologiques : production d'électricité")),
-                                                                                                                       br(),
-                                                                                                                       bslib::accordion(!!!elec_prod_doc_panels, open = FALSE),
-                                                                                                                       br(),
-                                                                                                                       h5(strong("Descriptif des variables")),
-                                                                                                                       br(),
-                                                                                                                       DT::dataTableOutput(ns("elec_prod_doc"))
-                                                                                                                     )# End tags$div
-
-                                                                                                    ),# End nested tabPanel 2.
-
-                                                                                                    ### 3. Regener ----
-                                                                                                    # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel("Chaleur bâtiments",
-                                                                                                                     # create div to apply class
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                       h4(strong("Détails méthodologiques : chaleur bâtiments")),
-                                                                                                                       br(),
-                                                                                                                       bslib::accordion(!!!regener_doc_panels, open = FALSE),
-                                                                                                                       br(),
-                                                                                                                       h5(strong("Descriptif des variables")),
-                                                                                                                       br(),
-                                                                                                                       DT::dataTableOutput(ns("regener_doc"))
-
-                                                                                                                     )# End tags$div
-
-                                                                                                    ),# End nested tabPanel 3.
-
-                                                                                                    ### 4. Subsidies ----
-                                                                                                    # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
-                                                                                                    bslib::nav_panel("Subventions bâtiments",
-                                                                                                                     # create div to apply class
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                       h4(strong("Détails méthodologiques : subventions bâtiments")),
-                                                                                                                       br(),
-                                                                                                                       bslib::accordion(!!!subsidies_doc_panels, open = FALSE),
-                                                                                                                       br(),
-                                                                                                                       h5(strong("Descriptif des variables")),
-                                                                                                                       br(),
-                                                                                                                       # Documentation table for both subsidies datasets
-                                                                                                                       DT::dataTableOutput(ns("subsidies_doc"))
+                                                                                                                                    )# End tags$div
+                                                                                                                   ),# End nested tabPanel 1.
 
 
-                                                                                                                     )# End tags$div
-                                                                                                    ),# End tabPanel 4
+                                                                                                                   ### 2. Prod élec ----
+                                                                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
+                                                                                                                   bslib::nav_panel("Production d'électricité",
+                                                                                                                                    # create div to apply class
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      # Overview method
+                                                                                                                                      h4(strong("Détails méthodologiques : production d'électricité")),
+                                                                                                                                      br(),
+                                                                                                                                      bslib::accordion(!!!elec_prod_doc_panels, open = FALSE),
+                                                                                                                                      br(),
+                                                                                                                                      h5(strong("Descriptif des variables")),
+                                                                                                                                      br(),
+                                                                                                                                      DT::dataTableOutput(ns("elec_prod_doc"))
+                                                                                                                                    )# End tags$div
 
-                                                                                                    ### 5. Conso gaz ----
-                                                                                                    bslib::nav_panel("Distribution de gaz naturel",
-                                                                                                                     # create div to apply class
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                       h4(strong("Détails méthodologiques : distribution de gaz naturel")),
-                                                                                                                       br(),
-                                                                                                                       bslib::accordion(!!!ng_cons_doc_panels, open = FALSE),
-                                                                                                                       br(),
-                                                                                                                       h5(strong("Descriptif des variables")),
-                                                                                                                       br(),
-                                                                                                                       # Documentation table for both subsidies datasets
-                                                                                                                       DT::dataTableOutput(ns("ng_cons_doc"))
+                                                                                                                   ),# End nested tabPanel 2.
 
+                                                                                                                   ### 3. Regener ----
+                                                                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
+                                                                                                                   bslib::nav_panel("Chaleur bâtiments",
+                                                                                                                                    # create div to apply class
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : chaleur bâtiments")),
+                                                                                                                                      br(),
+                                                                                                                                      bslib::accordion(!!!regener_doc_panels, open = FALSE),
+                                                                                                                                      br(),
+                                                                                                                                      h5(strong("Descriptif des variables")),
+                                                                                                                                      br(),
+                                                                                                                                      DT::dataTableOutput(ns("regener_doc"))
 
-                                                                                                                     )# End tags$div
-                                                                                                    )# End tabPanel 5
-                                                                                  )# End nested tabsetPanel within 'Données'
-                                                                 ),# End nav_panel Energie
+                                                                                                                                    )# End tags$div
 
+                                                                                                                   ),# End nested tabPanel 3.
 
-                                                                 ## nav_panel 'Adaptation' ----
-                                                                 bslib::nav_panel("Adaptation climat",
-                                                                                  bslib::navset_tab(id = ns("navset_climat"),
-
-                                                                                                    bslib::nav_panel("Surface de canopée",
-
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                         h4(strong("Détails méthodologiques : surface de canopée")),
-                                                                                                                       # br(),
-                                                                                                                        bslib::accordion(!!!taux_canopee_doc_panels, open = FALSE)
-                                                                                                                       # br(),
-                                                                                                                       # h5(strong("Descriptif des variables")),
-                                                                                                                       # br(),
-                                                                                                                       # # Documentation table for both subsidies datasets
-                                                                                                                       # DT::dataTableOutput(ns("subsidies_doc"))
-
-
-                                                                                                                     )# End div)
-                                                                                  )# End nav_panel
-                                                                 )# End navset_tab 'Adaptation'
-                                                                 ),# End nav_panel 'Adaptation'
-
-
-                                                                 ## nav_panel 'Mobilité' ----
-                                                                 bslib::nav_panel("Mobilité",
-                                                                                  bslib::navset_tab(id = ns("navset_mobilite"),
-
-                                                                                                    bslib::nav_panel("Qualité de desserte des transports publics",
-
-                                                                                                                     tags$div(
-                                                                                                                       br(),
-                                                                                                                       # h4(strong("Détails méthodologiques : subventions bâtiments")),
-                                                                                                                       # br(),
-                                                                                                                        bslib::accordion(!!!qualite_desserte_doc_panels, open = FALSE)
-                                                                                                                       # br(),
-                                                                                                                       # h5(strong("Descriptif des variables")),
-                                                                                                                       # br(),
-                                                                                                                       # Documentation table ??
-                                                                                                                       # DT::dataTableOutput(ns("subsidies_doc"))
+                                                                                                                   ### 4. Subsidies ----
+                                                                                                                   # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
+                                                                                                                   bslib::nav_panel("Subventions bâtiments",
+                                                                                                                                    # create div to apply class
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : subventions bâtiments")),
+                                                                                                                                      br(),
+                                                                                                                                      bslib::accordion(!!!subsidies_doc_panels, open = FALSE),
+                                                                                                                                      br(),
+                                                                                                                                      h5(strong("Descriptif des variables")),
+                                                                                                                                      br(),
+                                                                                                                                      # Documentation table for both subsidies datasets
+                                                                                                                                      DT::dataTableOutput(ns("subsidies_doc"))
 
 
-                                                                                                                     )# End div
-                                                                                                    )# End nav_panel
-                                                                                  )# End navset 'Mobilite'
-                                                                 ), # End nav_panel 'Mobilite'
-                                              )# End main navset_pill
+                                                                                                                                    )# End tags$div
+                                                                                                                   ),# End tabPanel 4
+
+                                                                                                                   ### 5. Conso gaz ----
+                                                                                                                   bslib::nav_panel("Distribution de gaz naturel",
+                                                                                                                                    # create div to apply class
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : distribution de gaz naturel")),
+                                                                                                                                      br(),
+                                                                                                                                      bslib::accordion(!!!ng_cons_doc_panels, open = FALSE),
+                                                                                                                                      br(),
+                                                                                                                                      h5(strong("Descriptif des variables")),
+                                                                                                                                      br(),
+                                                                                                                                      # Documentation table for both subsidies datasets
+                                                                                                                                      DT::dataTableOutput(ns("ng_cons_doc"))
+
+
+                                                                                                                                    )# End tags$div
+                                                                                                                   )# End tabPanel 5
+                                                                                                 )# End nested tabsetPanel within 'Données'
+                                                                                ),# End nav_panel Energie
+
+
+                                                                                ## nav_panel 'Adaptation' ----
+                                                                                bslib::nav_panel("Adaptation climat",
+                                                                                                 bslib::navset_tab(id = ns("navset_climat"),
+
+                                                                                                                   bslib::nav_panel("Surface de canopée",
+
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : surface de canopée")),
+                                                                                                                                      # br(),
+                                                                                                                                      bslib::accordion(!!!taux_canopee_doc_panels, open = FALSE),
+                                                                                                                                      br()
+                                                                                                                                      # h5(strong("Descriptif des variables")),
+                                                                                                                                      # br(),
+                                                                                                                                      # # Documentation table for both subsidies datasets
+                                                                                                                                      # DT::dataTableOutput(ns("subsidies_doc"))
+
+
+                                                                                                                                    )# End div)
+                                                                                                                   ),# End nav_panel
+
+                                                                                                                   bslib::nav_panel("Bâtiments exposés à des dangers naturels",
+
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : Bâtiments exposés à des dangers naturels")),
+                                                                                                                                      # br(),
+                                                                                                                                      bslib::accordion(!!!batiment_danger_doc_panels, open = FALSE),
+                                                                                                                                      br()
+                                                                                                                                      # h5(strong("Descriptif des variables")),
+                                                                                                                                      # br(),
+                                                                                                                                      # # Documentation table for both subsidies datasets
+                                                                                                                                      # DT::dataTableOutput(ns("subsidies_doc"))
+
+
+                                                                                                                                    )# End div)
+                                                                                                                   )# End nav_panel
+                                                                                                 )# End navset_tab 'Adaptation'
+                                                                                ),# End nav_panel 'Adaptation'
+
+
+                                                                                ## nav_panel 'Mobilité' ----
+                                                                                bslib::nav_panel("Mobilité",
+                                                                                                 bslib::navset_tab(id = ns("navset_mobilite"),
+
+                                                                                                                   bslib::nav_panel("Qualité de desserte des transports publics",
+
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : qualité de desserte des transports publics")),
+                                                                                                                                      # br(),
+                                                                                                                                      bslib::accordion(!!!qualite_desserte_doc_panels, open = FALSE),
+                                                                                                                                      br()
+                                                                                                                                      # h5(strong("Descriptif des variables")),
+                                                                                                                                      # br(),
+                                                                                                                                      # Documentation table ??
+                                                                                                                                      # DT::dataTableOutput(ns("subsidies_doc"))
+
+
+                                                                                                                                    )# End div
+                                                                                                                   )# End nav_panel
+                                                                                                 )# End navset 'Mobilite'
+                                                                                ), # End nav_panel 'Mobilite'
+                                                             )# End main navset_pill
                                        )# End layout_columns()
                       ),# End tabPanel 'Données'
 

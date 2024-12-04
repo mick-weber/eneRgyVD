@@ -129,7 +129,12 @@ mod_download_all_data_server <- function(id,
         ##          ADAPTATION CLIMAT DATASETS
         ## |---------------------------------------------------------------|
 
+        # Canopy area
         canopee = inputVals$adaptationDatasets$taux_canopee |>
+          rename_fr_colnames(),
+
+        # Buildings natural hazards
+        batiment_danger = inputVals$adaptationDatasets$batiment_danger |>
           rename_fr_colnames(),
 
         ## |---------------------------------------------------------------|

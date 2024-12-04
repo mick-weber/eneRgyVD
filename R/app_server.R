@@ -367,11 +367,26 @@ app_server <- function(input, output, session) {
                              var_year = "annee",
                              var_values = "taux_canopee",
                              unit = "%",
-                             coerce_dodge = TRUE,
-                             var_cat = "categorie", # ask OCDC to change dataset var name...
+                             coerce_dodge = TRUE, # these should not be stacked --> don't make sense
+                             var_cat = "categorie",
                              color_palette = default_palette, # default_palette, dedicated one, or one color
                              legend_title = "Type",
                              dl_prefix = "canopee_",
+                             doc_vars = NULL # for now
+                             )
+
+   mod_generic_charts_server("buildings_exposure_hazards",
+                             subsetData = reactive({inputVals$adaptationDatasets$batiment_danger}),
+                             inputVals = inputVals,
+                             var_commune = "commune",
+                             var_year = "annee",
+                             var_values = "nb_batiment_danger",
+                             unit = "Bâtiments",
+                             coerce_dodge = FALSE,
+                             var_cat = "categorie", # ask OCDC to change dataset var name...
+                             color_palette = default_palette, # default_palette, dedicated one, or one color
+                             legend_title = "Type",
+                             dl_prefix = "bat_danger_",
                              doc_vars = NULL # for now
                              )
 

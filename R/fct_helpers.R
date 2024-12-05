@@ -685,8 +685,12 @@ create_prod_table_dt <- function(data,
     dplyr::left_join(prod_icons, by = "categorie") |>
     dplyr::relocate(icon, .before = categorie) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
+    add_colname_unit(colnames = c("puissance_electrique_installee",
+                                  "injection",
+                                  "autoconsommation",
+                                  "production"),
+                     unit = energy_unit) |>  # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_units(unit = energy_unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -754,8 +758,9 @@ create_cons_table_dt <- function(data,
     dplyr::left_join(cons_icons, by = "secteur") |>
     dplyr::relocate(icon, .before = secteur) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
+    add_colname_unit(colnames = "consommation",
+                      unit = energy_unit) |>  # fct_helpers.R
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_units(unit = energy_unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -809,8 +814,9 @@ create_rg_needs_table_dt <- function(data,
     # relocate call
     dplyr::relocate(commune, etat, icon, type) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
+    add_colname_unit(colnames = "besoins",
+                      unit = unit) |>  # fct_helpers.R
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_units(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -872,10 +878,10 @@ create_regener_table_dt <- function(data,
                     consommation, pct_commune) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
     #turn to DT
+    add_colname_unit(colnames = "consommation", unit = energy_unit) |>  # fct_helpers.R
+    add_colname_unit(colnames = "co2_direct", unit = co2_unit) |> # fct_helpers.R
+    add_colname_unit(colnames = "pct_commune", unit = "%") |>
     rename_fr_colnames() |> # fct_helpers.R
-    add_colname_units(unit = energy_unit) |>  # fct_helpers.R
-    add_colname_units(unit = co2_unit) |> # fct_helpers.R
-    add_colname_units(unit = "%") |>
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
                   options = list(paging = TRUE,    # paginate the output
@@ -1091,7 +1097,7 @@ create_generic_table_dt <- function(data,
     dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
     rename_misc_colnames() |> # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_units(unit = unit) |> # fct_helpers.R
+    add_colname_unit(colnames = var_values, unit = unit) |> # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -1271,18 +1277,59 @@ convert_units <- function(data,
   }
 }
 
+
+#' add_colname_unit
+#'
+#' @return dataframe with renamed columns (units added)
+#' @export
+
+add_colname_unit <- function(data,
+                             colnames,
+                             unit){
+
+  power_keyword <- "puissance"
+
+  data <- data |>
+    dplyr::rename_with(.cols = dplyr::all_of(colnames[!stringr::str_detect(colnames, pattern = power_keyword)]),
+                       .fn = \(col) paste0(col, " [", unit, "]"))
+
+  # Energy specificity : if a power_col_keyword colname is detected AND unit is energy
+  # Then transform energy unit to power unit according to this rule
+  if(any(stringr::str_detect(colnames, power_keyword))){
+
+    data <- data |>
+      dplyr::rename_with(.cols = dplyr::contains(power_keyword, # utils_helpers.R
+                                          ignore.case = TRUE),
+                         ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
+                                 ifelse(
+                                   test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
+                                   yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
+                                   no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
+                                 ), "]") # closing bracket for unit
+      )
+
+  }else{
+    data
+  }
+
+  return(data)
+
+}
+
+
 #' add_colname_units()
 #' returns unit extension in target columns according to the currently selected unit
 #' of the app for power and energy related colnames. Should be called before making
 #' nicely formatted columns with rename_fr_colnames()
 #'
 #' @param data the dataframe
-#' @param unit the unit selected in the app or other options available ("pct")
+#' @param unit the unit selected in the app or other options available (such as "%")
 #'
 #' @return dataframe with renamed columns
 #' @export
 
 add_colname_units <- function(data, unit){
+
 
   ## |---------------------------------------------------------------|
   ##          Energy section : refer dynamically to widget's unit
@@ -1404,7 +1451,17 @@ rename_fr_colnames <- function(data){
 
   data |>
     # Standard renaming
-    rename_with(.cols = dplyr::everything(), .fn = stringr::str_to_sentence) |>
+    rename_with(.cols = dplyr::everything(),
+                .fn = function(x) {
+                  # Temporarily remove the units in square brackets
+                  x_no_units <- stringr::str_replace_all(x, "\\[.*?\\]", "<unit>")
+
+                  # Apply sentence case to the rest of the name
+                  x_no_units <- stringr::str_to_sentence(x_no_units)
+
+                  # Reinsert the units back into their original places
+                  stringr::str_replace_all(x_no_units, "<unit>", stringr::str_extract(x, "\\[.*?\\]"))
+                }) |>
     rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
                 pattern = "_", replacement = " ") |>
     rename_with(.cols = everything(),

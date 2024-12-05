@@ -206,7 +206,10 @@ replace_fr_accents <- c("electricite" = "électricité",
 
 ## These are used to dynamically target columns renaming in add_colname_units() and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
+
 power_col_keywords <- c("Puissance", "installé")
+power_col_keywords_dev <- c("puissance", "installe")
+
 co2_keywords <- c("CO2")
 percent_keywords <- c("Pct", "Part", "Taux")
 

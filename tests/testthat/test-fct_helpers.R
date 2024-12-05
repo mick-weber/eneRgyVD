@@ -39,7 +39,7 @@ test_that("Check unit conversion works as expected",
 # add_colname_units() ----
 test_that("Check unit addition in colname works as expected",
           {
-            df_in <- eneRgyVD::add_colname_units(data = data.frame(consommation = 100), unit = "MWh")
+            df_in <- eneRgyVD::add_colname_units(colnames = "consommation", data = data.frame(consommation = 100), unit = "MWh")
             df_out <- data.frame(`consommation [MWh]` = 100, check.names = FALSE)
 
             expect_equal(df_in, df_out)

@@ -12,7 +12,7 @@ add_colname_units(data, unit)
 \arguments{
 \item{data}{the dataframe}
 
-\item{unit}{the unit selected in the app or other options available ("pct")}
+\item{unit}{the unit selected in the app or other options available (such as "%")}
 }
 \value{
 dataframe with renamed columns

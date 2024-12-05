@@ -142,7 +142,6 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       # Documentation table for both subsidies datasets
                                                                                                                                       DT::dataTableOutput(ns("subsidies_doc"))
 
-
                                                                                                                                     )# End tags$div
                                                                                                                    ),# End tabPanel 4
 
@@ -159,7 +158,6 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       br(),
                                                                                                                                       # Documentation table for both subsidies datasets
                                                                                                                                       DT::dataTableOutput(ns("ng_cons_doc"))
-
 
                                                                                                                                     )# End tags$div
                                                                                                                    )# End tabPanel 5
@@ -184,7 +182,6 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       # # Documentation table for both subsidies datasets
                                                                                                                                       # DT::dataTableOutput(ns("subsidies_doc"))
 
-
                                                                                                                                     )# End div)
                                                                                                                    ),# End nav_panel
 
@@ -201,12 +198,10 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       # # Documentation table for both subsidies datasets
                                                                                                                                       # DT::dataTableOutput(ns("subsidies_doc"))
 
-
                                                                                                                                     )# End div)
                                                                                                                    )# End nav_panel
                                                                                                  )# End navset_tab 'Adaptation'
                                                                                 ),# End nav_panel 'Adaptation'
-
 
                                                                                 ## nav_panel 'Mobilité' ----
                                                                                 bslib::nav_panel("Mobilité",
@@ -226,6 +221,21 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       # Documentation table ??
                                                                                                                                       # DT::dataTableOutput(ns("subsidies_doc"))
 
+                                                                                                                                    )# End div
+                                                                                                                   ),# End nav_panel
+
+                                                                                                                   bslib::nav_panel("Taux de motorisation",
+
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : taux de motorisation")),
+                                                                                                                                      # br(),
+                                                                                                                                      bslib::accordion(!!!taux_motorisation_doc_panels, open = FALSE),
+                                                                                                                                      br()
+                                                                                                                                      # h5(strong("Descriptif des variables")),
+                                                                                                                                      # br(),
+                                                                                                                                      # Documentation table ??
+                                                                                                                                      # DT::dataTableOutput(ns("subsidies_doc"))
 
                                                                                                                                     )# End div
                                                                                                                    ),# End nav_panel
@@ -242,7 +252,6 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       # br(),
                                                                                                                                       # Documentation table ??
                                                                                                                                       # DT::dataTableOutput(ns("subsidies_doc"))
-
 
                                                                                                                                     )# End div
                                                                                                                    )# End nav_panel

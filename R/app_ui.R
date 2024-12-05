@@ -382,6 +382,20 @@ app_ui <- function(request) {
                                        )# end navset_card_tab
                       ),# end main nav_panel
 
+                      bslib::nav_panel("Taux de motorisation",
+                                       icon = icon("car", class = "text-primary"),
+                                       # Nested navset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_taux_motorisation",
+                                                              bslib::nav_panel(title = "Taux de motorisation",
+
+                                                                               mod_generic_charts_ui("taux_motorisation",
+                                                                                                     title = "Taux de motorisation",
+                                                                                                     title_complement = HTML("<i>Complément à proposer OCDC</i>")
+                                                                               )
+                                                              )# end firstnav_panel
+                                       )# end navset_card_tab
+                      ),# end main nav_panel
+
                       bslib::nav_panel("Transports publics",
                                        icon = icon("bus", class = "text-primary"),
                                        # Nested navset_card_tab()

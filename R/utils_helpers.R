@@ -29,8 +29,9 @@ load("./data/subsidies_by_measure.rda")
 load("./data/subsidies_doc.rda")
 
 ## mobility data ----
-load("./data/qualite_desserte.rda")
 load("./data/part_voit_elec.rda")
+load("./data/qualite_desserte.rda")
+load("./data/taux_motorisation.rda")
 
 ## adaptation data ----
 load("./data/taux_canopee.rda")
@@ -57,6 +58,7 @@ adaptation_datasets_objects <- c("taux_canopee",
 
 # mobility
 mobility_datasets_objects <- c("part_voit_elec",
+                               "taux_motorisation",
                                "qualite_desserte")
 
 # Create datasets groups
@@ -93,6 +95,7 @@ ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_con
 # mobility
 part_voit_elec_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/part_voit_elec-doc.md")
 qualite_desserte_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/qualite_desserte-doc.md")
+taux_motorisation_doc_panels <-  generate_doc_accordion_panels(md_file = "./data-doc/taux_motorisation-doc.md")
 
 # adaptation
 taux_canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/taux_canopee-doc.md")
@@ -107,7 +110,7 @@ batiment_danger_doc_panels <- generate_doc_accordion_panels(md_file = "./data-do
 subpanels_tribble <- dplyr::tribble(
   # <about_*> = item names in mod_about_the_app.R   //  <nav_*> = item names in app_ui.R
   ~observe_input, ~about_nav_panel, ~navset_id,  ~about_tabpanel_name, ~data_id, ~nav_panel, ~navset_name, ~nav_name,
-  # energy
+  # energy (data_1-20)
   "consumption_charts-elec_data_help","Energie","navset_energie", "Distribution d'électricité", "data_1", "Electricité", "navset_elec", "Distribution d'électricité",
   "production_charts-elec_data_help", "Energie","navset_energie", "Production d'électricité", "data_2", "Electricité", "navset_elec", "Production d'électricité",
   "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
@@ -117,13 +120,14 @@ subpanels_tribble <- dplyr::tribble(
   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
-  # adaptation (data_20+)
+  # adaptation (data_20-29)
   "adaptation_canopy-generic_data_help", "Adaptation climat", "navset_climat", "Surface de canopée", "data_20", "Surface de canopée", "navset_canopy", "Surface de canopée",
   "buildings_exposure_hazards-generic_data_help", "Adaptation climat", "navset_climat", "Bâtiments exposés à des dangers naturels", "data_21", "Exposition aux dangers naturels", "navset_natural_hazards", "Bâtiments exposés à des dangers naturels",
 
-  # mobility (data_30+)
+  # mobility (data_30-39)
   "part_voit_elec-generic_data_help", "Mobilité", "navset_mobilite", "Part des voitures électriques", "data_30", "Véhicules électriques", "navset_vehicules", "Part des voitures électriques",
-  "qualite_desserte-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_31", "Transports publics", "navset_qualite_desserte", "Qualité de desserte des transports publics"
+  "taux_motorisation-generic_data_help", "Mobilité", "navset_mobilite", "Taux de motorisation", "data_31", "Taux de motorisation", "navset_taux_motorisation", "Taux de motorisation",
+  "qualite_desserte-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_32", "Transports publics", "navset_qualite_desserte", "Qualité de desserte des transports publics"
 
   )
 

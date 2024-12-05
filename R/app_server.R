@@ -410,6 +410,21 @@ app_server <- function(input, output, session) {
                              doc_vars = NULL # for now
    )
 
+   mod_generic_charts_server("taux_motorisation",
+                             subsetData = reactive({inputVals$mobilityDatasets$taux_motorisation}),
+                             inputVals = inputVals,
+                             var_commune = "commune",
+                             var_year = "annee",
+                             var_values = "taux_motorisation",
+                             unit = "vhc/1000 habitants",
+                             coerce_dodge = FALSE,
+                             var_cat = NULL,
+                             color_palette = "pink", # default_palette, dedicated one, or one color
+                             legend_title = NULL,
+                             dl_prefix = "taux_motorisation_",
+                             doc_vars = NULL # for now
+   )
+
    mod_generic_charts_server("qualite_desserte",
                              subsetData = reactive({inputVals$mobilityDatasets$qualite_desserte}),
                              inputVals = inputVals,

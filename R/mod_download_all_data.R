@@ -145,6 +145,9 @@ mod_download_all_data_server <- function(id,
         part_ve = inputVals$mobilityDatasets$part_voit_elec |>
           rename_fr_colnames(),
 
+        taux_motorisation = inputVals$mobilityDatasets$taux_motorisation |>
+          rename_fr_colnames(),
+
         # Public transportation quality
         qualite_desserte = inputVals$mobilityDatasets$qualite_desserte |>
           rename_fr_colnames()

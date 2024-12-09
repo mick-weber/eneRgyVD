@@ -132,7 +132,7 @@ app_ui <- function(request) {
       fillable = TRUE,
 
       # Footer
-      footer = p("DGE-DIREN @ 2024", class = "fw-lighter",
+      footer = p("DGE-DIREN @ 2025", class = "fw-lighter",
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
       # Custom theme
       theme = profil_theme, # utils_helpers.R

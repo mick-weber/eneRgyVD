@@ -185,7 +185,7 @@ mod_generic_charts_server <- function(id,
                          var_commune = var_commune,
                          unit = unit,
                          var_cat = var_cat,
-                         var_values = var_values,
+                         var_values = var_values, # if more than one var_values is passed, plot only the first one.
                          color_palette = color_palette, # defined in utils_helpers.R
                          dodge = if(coerce_dodge == TRUE){TRUE}else{input$stacked_status}, # if T -> 'dodge', F -> 'stack'
                          free_y = input$toggle_status, # reactive(input$toggle_status)

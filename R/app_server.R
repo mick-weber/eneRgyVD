@@ -430,7 +430,7 @@ app_server <- function(input, output, session) {
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = dplyr::contains("desserte"),
+                             var_values = "qualite_desserte_population", #c("qualite_desserte_emploi", "qualite_desserte_population"), #"qualite_desserte_emploi",
                              unit = "-",
                              coerce_dodge = FALSE,
                              var_cat = NULL,

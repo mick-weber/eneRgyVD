@@ -904,19 +904,26 @@ create_generic_table_dt <- function(data,
                                     DT_dom = "Bfrtip" # we set default with Buttons
 ){
 
-  # First change data to percent if unit == %, or else turn it into a nicely formatted value
+  # First format <var_values> (could be more than one variable) nicely according to unit
   if(unit == "%"){
-    data <- data |> dplyr::mutate(!!rlang::sym(var_values) := scales::percent(.data[[var_values]], accuracy = 0.01))
+    data <- data |>
+      dplyr::mutate(
+        dplyr::across(
+          all_of(var_values),
+          ~ scales::percent(.x, accuracy = 0.01)
+        )
+      )
   }else{
-    data <- data |> dplyr::mutate(!!rlang::sym(var_values) := format(.data[[var_values]],
-                                                           big.mark = "'",
-                                                           digits = 3,
-                                                           drop0trailing = TRUE,
-                                                           scientific = FALSE))
+    data <- data |>
+      dplyr::mutate(
+        dplyr::across(
+          all_of(var_values),
+          ~ format(.x, big.mark = "'", digits = 3, drop0trailing = TRUE, scientific = FALSE)
+        )
+      )
   }
 
   # Then proceed with the rest of the table code
-
   data |>
     # Basic clean up for table output
     dplyr::arrange(desc(.data[[var_year]])) |>

@@ -2,13 +2,22 @@
 % Please edit documentation in R/fct_helpers.R
 \name{add_colname_unit}
 \alias{add_colname_unit}
-\title{add_colname_unit}
+\title{add_colname_unit
+Add units to target colnames usually right before display uses (datatable, download, etc.)}
 \usage{
 add_colname_unit(data, colnames, unit)
+}
+\arguments{
+\item{data}{the input data containing the colnames on which to append unit.}
+
+\item{colnames}{the colnames, as string or with tidyselect syntax, on which to append units}
+
+\item{unit}{the unit to append to `colnames` wrapped in brackets}
 }
 \value{
 dataframe with renamed columns (units added)
 }
 \description{
 add_colname_unit
+Add units to target colnames usually right before display uses (datatable, download, etc.)
 }

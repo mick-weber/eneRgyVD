@@ -374,119 +374,6 @@ create_bar_ggiraph <- function(data,
 }
 
 
-#' create_bar_plotly()
-#'
-#'@description Creates a plotly object from a facetted ggplot bar plot for use in renderPlotly
-#'
-#' @param data the data to provide
-#'
-#'
-#' @import ggplot2
-#' @importFrom plotly ggplotly layout config
-#' @return an interactive plotly object
-#' @export
-
-create_bar_plotly <- function(data,
-                              n_communes,
-                              var_year,
-                              var_commune,
-                              unit, # input$energy_unit, or other unit value retrieved in app_server
-                              var_cat, # one of secteur, categorie...
-                              var_values, # one of consommation, production_totale...
-                              color_palette, # utils_helpers.R,
-                              dodge = FALSE, # stacked by default
-                              free_y = FALSE,
-                              legend_title = NULL,
-                              web_width = 1500, # set default when shinybrowser not used
-                              web_height = 800, # set default when shinybrowser not used
-                              ... # free
-){
-
-  # First create ggplot graph
-  # We turn to MWh to save space, especially when free_y is activated...
-  ggplot <- data |>
-    ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
-                                 y = .data[[var_values]],
-                                 fill = if (!is.null(var_cat)){.data[[var_cat]]},
-                                 # Text is reused in ggplotly(tooltip = 'text')
-                                 text = paste0(
-                                   if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
-                                   format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-                                   paste("", unit, "en "), .data[[var_year]]))
-    )
-
-  # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
-  # If one color is supplied : we must pass it to 'fill' of geom_col(), scale_fill_manual would not accept it
-  if(length(color_palette) == 1){
-    ggplot <- ggplot +
-      ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
-                                                  true = "dodge",
-                                                  false = "stack"),
-                        fill = color_palette)
-  }else{
-    # If a palette is passed : we must pass it fo 'scale_fill_manual' with a legend name
-    ggplot <- ggplot +
-      ggplot2::geom_col(position = dplyr::if_else(condition = dodge, # arg
-                                                  true = "dodge",
-                                                  false = "stack"))+
-      ggplot2::scale_fill_manual(name = legend_title, # passed from arg
-                                 values = color_palette # palette defined in utils_helpers.R
-      )
-  }
-
-
-  # Scales, facts, theme options etc.
-  ggplot <- ggplot+
-    ggplot2::scale_y_continuous(labels = ifelse(unit == "kWh",
-                                                scales::label_number(big.mark = "'", suffix = "K", scale = 1e-3),
-                                                scales::label_number(big.mark = "'", accuracy = 1))
-    )+
-    ggplot2::labs(x = "", y = unit)+
-    ggplot2::facet_wrap(facets = ggplot2::vars(.data[[var_commune]]),
-                        ncol = 2,
-                        # if the toggle linked to the free_y argument is TRUE, then free y axis
-                        scales = ifelse(free_y, "free_y", "fixed"))+
-    ggplot2::theme_bw()+
-    ggplot2::theme(legend.position = "top",
-                   # change the labels of facet wrap. main_color defined in utils_helpers.R
-                   strip.background = ggplot2::element_rect(
-                     color="black", fill=main_color, linewidth = 1, linetype="solid"
-                   ),
-                   strip.text = ggplot2::element_text(
-                     size = 13, color = "white"),
-                   legend.text = ggplot2::element_text(size = 12),
-                   legend.title = ggplot2::element_text(size = 12),
-                   legend.background = ggplot2::element_rect(fill = NA), # transparent
-                   panel.spacing.x = ggplot2::unit(.05, "cm"),
-                   panel.spacing.y = ggplot2::unit(0.5, "cm"),
-                   axis.text.x = ggplot2::element_text(size = 10))
-
-  # Access how many facets there are for height management
-  n_facets <- n_communes
-
-  # Turn to plotly object and deal with plotting sizes
-  ggplot |>
-    plotly::ggplotly(tooltip = "text", # refers to aes(text) defined in ggplot2
-
-                     height = return_dynamic_size(which = 'height',
-                                                  web_size = web_height,
-                                                  n_facets = n_facets),
-                     width = return_dynamic_size(which = 'width',
-                                                 web_size = web_width,
-                                                 n_facets = n_facets)
-    ) |>
-    plotly::layout(
-      legend = list(
-        # font = list(size = 15),
-        traceorder = "reversed",
-        orientation = "h", # puts the legend in horizontal layout
-        y= max(1.075, 1.40-(n_communes*0.035)) # empirical model for optimal spacing between legend and plot
-      )) |>
-    plotly::config(modeBarButtons = list(list("toImage")),
-                   locale = "fr")
-}
-
-
 #' create_alluvial_chart()
 #' creates a ggplot2 alluvial plot using ggalluvial library and uses labels and variable
 #' names as arguments for a flexible data input
@@ -578,65 +465,6 @@ lump_alluvial_factors <- function(data,
 
 }
 
-
-#' return_dynamic_size()
-#' Returns a px value used for dynamic facet plots based on web display size and number of facets.
-#' A facet row is typically well displayed at around 1/6 of the screen's height
-#' @param which either 'width' or 'height'
-#' @param web_size px size of either width or height, typically obtained with {shinybrowser}
-#'
-#' @return a numeric value corresponding to px
-#' @export
-
-return_dynamic_size <- function(which,
-                                web_size,
-                                n_facets){
-
-  if(which == "height"){
-
-    # This returns the correct number of facetted rows
-    # Note : valid only when there are 2 facets per row
-    n_facet_rows <- (n_facets+ (n_facets %% 2))/2
-
-    # Empirically found web-relative height per facetted row
-    px_per_row <- web_size/6
-
-    # Empirically found absolute legend height
-    legend_height <- 250 # px
-
-    # Plot height acc. to number of rows and legend height
-
-    plot_height <- legend_height + n_facet_rows * px_per_row # px/row
-
-    return(plot_height)
-
-
-  }else if(which == "width"){
-    # For width, we return 75% of useful space if one facet, 90% if more than 1
-
-    plot_width <- ifelse(
-      # test :
-      test = n_facets == 1,
-      # Yes (1 facet) : web width - sidebar (300) * 75%
-      yes = (web_size-300)*0.75,
-      # No (More than 1 facet) : web width - sidebar (300) * 95%
-      no = (web_size-300)*0.95)
-
-    # That's an empirical minimal value for 'watchable' display
-    #  For some reason on mobile, updating the app messes up with the shinybrowser width record
-    #  So this ensures that a minimum width is set
-    plot_width_ceiling <- 800
-
-
-    return(
-      max(plot_width_ceiling, plot_width)
-    )
-
-  }else{
-    stop("'which' arg can only be of type 'height' or 'width'.")
-  }
-
-}
 
 # Table fns ----
 
@@ -814,8 +642,8 @@ create_rg_needs_table_dt <- function(data,
     # relocate call
     dplyr::relocate(commune, etat, icon, type) |>
     dplyr::rename(" " = "icon") |> # empty colname for icons
-    add_colname_unit(colnames = "besoins",
-                      unit = unit) |>  # fct_helpers.R
+    add_colname_unit(colnames = dplyr::contains("besoins"), # fct_helpers.R
+                      unit = unit) |>
     rename_fr_colnames() |> # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
@@ -1095,9 +923,9 @@ create_generic_table_dt <- function(data,
     dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
     # any_of() allows to pass var_car even if it does not exist
     dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
+    add_colname_unit(colnames = var_values, unit = unit) |> # fct_helpers.R
     rename_misc_colnames() |> # fct_helpers.R
     rename_fr_colnames() |>  # fct_helpers.R
-    add_colname_unit(colnames = var_values, unit = unit) |> # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -1279,6 +1107,11 @@ convert_units <- function(data,
 
 
 #' add_colname_unit
+#' Add units to target colnames usually right before display uses (datatable, download, etc.)
+#'
+#' @param data the input data containing the colnames on which to append unit.
+#' @param colnames the colnames, as string or with tidyselect syntax, on which to append units
+#' @param unit the unit to append to `colnames` wrapped in brackets
 #'
 #' @return dataframe with renamed columns (units added)
 #' @export
@@ -1316,130 +1149,6 @@ add_colname_unit <- function(data,
 
 }
 
-
-#' add_colname_units()
-#' returns unit extension in target columns according to the currently selected unit
-#' of the app for power and energy related colnames. Should be called before making
-#' nicely formatted columns with rename_fr_colnames()
-#'
-#' @param data the dataframe
-#' @param unit the unit selected in the app or other options available (such as "%")
-#'
-#' @return dataframe with renamed columns
-#' @export
-
-add_colname_units <- function(data, unit){
-
-
-  ## |---------------------------------------------------------------|
-  ##          Energy section : refer dynamically to widget's unit
-  ## |---------------------------------------------------------------|
-  if(unit %in% energy_units_table$unit){
-
-    # Step 1 : rename energy vars if they match expected units
-    # Important : the code is not elegant but using if(){data <- data |> (...)} is the only way I found to work.
-    # Using only rename_with(.cols = any_of(...)) doesnt work when no match inside any_of is found !
-
-    # Step 1 : rename nrg vars if contains energy related keywords and add the power unit in brackets
-    if(any(stringr::str_detect(string = colnames(data),
-                               pattern = stringr::regex(paste0(energy_col_keywords, collapse = "|"), ignore_case = TRUE)))){
-
-      data <- data |>
-        # For all energy-related units
-        dplyr::rename_with(.cols = contains(energy_col_keywords, # utils_helpers.R
-                                            ignore.case = TRUE),
-                           ~paste0(.x, " [", unit, "]"))
-
-    }else {
-      # If no column name is targeted with keyword, then simply return the data
-      message("`add_colname_units()` : an energy unit was passed but no variable was matched with `energy_col_keywords`, data is returned unmodified...")
-      return(data)
-
-    }
-
-
-    # Step 2 : rename power vars if contains power related keywords and add the power unit in brackets
-    # This step works if related after Step 1
-    if(any(stringr::str_detect(string = colnames(data),
-                               pattern = stringr::regex(paste0(power_col_keywords,
-                                                               collapse = "|"),
-                                                        ignore_case = TRUE)))){
-
-      data <- data |>
-        # For all power-related units
-        dplyr::rename_with(.cols = contains(power_col_keywords, # utils_helpers.R
-                                            ignore.case = TRUE),
-                           ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
-                                   ifelse(
-                                     test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
-                                     yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
-                                     no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
-                                   ), "]") # closing bracket for unit
-        )
-
-      # if no detection of either energy_col/power_col keywords, then just return the data. worst case : no unit is added...
-    }else {
-      # If no column name is targeted with keyword, then simply return the data
-      # since it's optional step we don't message the user if no power variable is found (e.g. regener)
-      return(data)
-    }
-
-    ## |---------------------------------------------------------------|
-    ##          CO2 section : refer dynamically to widget's unit
-    ## |---------------------------------------------------------------|
-  }else if(unit %in% co2_units_table$unit){
-
-    # Step 1 : rename CO2 vars if contains co2 related keywords and add the unit in brackets
-    if(any(stringr::str_detect(string = colnames(data),
-                               pattern = stringr::regex(paste0(co2_keywords,
-                                                               collapse = "|"),
-                                                        ignore_case = TRUE)))){
-
-      data <- data |>
-        # For all energy-related units
-        dplyr::rename_with(.cols = contains(co2_keywords, # utils_helpers.R
-                                            ignore.case = TRUE),
-                           ~paste0(.x, " [", unit, "]"))
-
-
-    }else {
-      # If no column name is targeted with keyword, then simply return the data
-      message("`add_colname_units()` : a co2 unit was passed but no variable was matched with `co2_keywords`, data is returned unmodified...")
-      return(data)
-    }
-
-    ## |---------------------------------------------------------------|
-    ##          Fixed % unit section :
-    ## |---------------------------------------------------------------|
-  }else if(unit == "%"){
-
-    if(any(stringr::str_detect(string = colnames(data),
-                               pattern = stringr::regex(paste0(percent_keywords,
-                                                               collapse = "|"),
-                                                        ignore_case = TRUE)))){
-
-      data <- data |>
-        # For all energy-related units
-        dplyr::rename_with(.cols = contains(percent_keywords, # utils_helpers.R
-                                            ignore.case = TRUE),
-                           ~paste0(.x, " [%]"))
-
-    }else {
-
-      # If no column name is targeted with keyword, then simply return the data
-      message("`add_colname_units()` a percent unit was passed but no variable was matched with `percent_keywords`, data is returned unmodified.")
-      return(data)
-
-    }
-  }else {
-    # If the unit is not recognized then simply return the data...
-    return(data)
-
-  }
-}
-
-
-
 # Colname renaming fns ----
 
 #' rename_fr_colnames()
@@ -1452,7 +1161,7 @@ rename_fr_colnames <- function(data){
   data |>
     # Standard renaming
     rename_with(.cols = dplyr::everything(),
-                .fn = function(x) {
+                \(x){
                   # Temporarily remove the units in square brackets
                   x_no_units <- stringr::str_replace_all(x, "\\[.*?\\]", "<unit>")
 

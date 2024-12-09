@@ -97,7 +97,7 @@ mod_download_all_data_server <- function(id,
 
         # Regener renamed+units
         regener_besoins = inputVals$energyDatasets$regener_needs |>
-          add_colname_unit(colnames = "besoins",
+          add_colname_unit(colnames = dplyr::contains("besoins"),
                            unit = inputVals$energyUnit) |>
           rename_fr_colnames(),
 
@@ -119,7 +119,7 @@ mod_download_all_data_server <- function(id,
 
         # Regener misc renamed
         regener_autres = inputVals$energyDatasets$regener_misc |>
-          # add_colname_units() |>
+          # add_colname_unit() |>
           rename_misc_colnames(),
 
         # Subsidies building

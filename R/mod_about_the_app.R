@@ -25,7 +25,7 @@ mod_about_the_app_ui <- function(id){
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
                                                              # breathing
-                                                             tags$br(),
+                                                             #tags$br(),
                                                              "Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application.",
                                                              tags$span(
                                                                "Contact : ",

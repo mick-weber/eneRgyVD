@@ -220,7 +220,7 @@ mod_subsidies_building_charts_server <- function(id,
       create_subsidies_table_dt(data = subsetData(),
                                 var_year = "etat",
                                 var_cat = "subv_type",
-                                icon_list = return_icons_subsidies(which = "building"),
+                                icon_list = subsidies_building_icons, #return_icons_subsidies(which = "building"),
                                 DT_dom = "frtip" # remove default button in DT extensions
       )
     })

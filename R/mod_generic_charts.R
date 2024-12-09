@@ -142,13 +142,18 @@ mod_generic_charts_server <- function(id,
     ns <- session$ns
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    # if 'force
-    output$commune <- reactive({
-      if(coerce_dodge == TRUE){FALSE}else{length(unique(subsetData()$commune)) > 0}
+    # stack/dodge widget will only show if <coerce_dodge> is FALSE OR if <var_cat> is NULL ANS if at least 1 commune is selected
+    # this is because sometimes we want to force the dodge (thus remove widget, see create_bar_ggiraph logic below), and
+    # sometimes we want to remove the widget when dodge/stack is pointless if there's no <var_cat> available
+      output$commune <- reactive({
+        if(is.null(var_cat) | coerce_dodge == TRUE){
+          FALSE  # this will never show the widget
+        }else{
+          length(unique(subsetData()$commune)) > 0}
       })
 
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({dplyr::n_distinct(subsetData()$commune) > 1 })# Returns TRUE if more than 1 commune, else FALSE
+    output$toggle <- reactive({dplyr::n_distinct(subsetData()$commune) > 1 }) # Returns TRUE if more than 1 commune, else FALSE
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)

@@ -222,7 +222,7 @@ mod_regener_needs_charts_server <- function(id,
         # fct is defined in fct_helpers.R
         create_bar_ggiraph(data = subsetData_barplot(),
                            n_communes = dplyr::n_distinct(subsetData_barplot()$commune),
-                           var_year = var_year,
+                           var_year = var_year, # note that <statut> is passed here instead of usual <annee> or <etat>
                            var_commune = var_commune,
                            unit = inputVals$energyUnit,
                            var_cat = var_cat,
@@ -263,7 +263,8 @@ mod_regener_needs_charts_server <- function(id,
         # Add the currently selected unit in the colnames (conversion is already done)
         rename_fr_colnames() |>  # fct_helpers.R
         # Add energy units in brackets for energy/power related columns
-        add_colname_units(unit = inputVals$energyUnit) # fct_helpers.R
+        add_colname_unit(colnames = dplyr::contains("besoins"),
+                          unit = inputVals$energyUnit) # fct_helpers.R
 
     })
 

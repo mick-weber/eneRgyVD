@@ -306,7 +306,7 @@ app_server <- function(input, output, session) {
                                    inputVals = inputVals,
                                    subsetData = reactive({inputVals$energyDatasets$regener_needs}), # filtered data for communes and selected years
                                    legend_title = "Usage", # for legend of barplot (either secteur/technologies)
-                                   var_year = "statut", # 'etat' instead of 'annee' better reflects the dataset
+                                   var_year = "statut", # DATASET SPECIFICITY : we don't plot usual year on X axis, but <statut> (actuel vs théorique)
                                    var_commune = "commune", # 'commune'
                                    var_cat = "type", # categorical var ('secteur'/'categorie', ...)
                                    var_values = "besoins", # prod/consumption/besoins
@@ -430,8 +430,8 @@ app_server <- function(input, output, session) {
                              inputVals = inputVals,
                              var_commune = "commune",
                              var_year = "annee",
-                             var_values = "qualite_desserte_population",
-                             unit = "[-]",
+                             var_values = dplyr::contains("desserte"),
+                             unit = "-",
                              coerce_dodge = FALSE,
                              var_cat = NULL,
                              color_palette = "burlywood1", # default_palette, dedicated one, or one color

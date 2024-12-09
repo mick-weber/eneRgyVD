@@ -368,6 +368,7 @@ app_ui <- function(request) {
       ## Mobilité ----
       bslib::nav_menu("Mobilité",
 
+                      # Véhicules électriques
                       bslib::nav_panel("Véhicules électriques",
                                        icon = icon("car", class = "text-primary"),
                                        # Nested navset_card_tab()
@@ -382,6 +383,7 @@ app_ui <- function(request) {
                                        )# end navset_card_tab
                       ),# end main nav_panel
 
+                      # Taux de motorisation ----
                       bslib::nav_panel("Taux de motorisation",
                                        icon = icon("car", class = "text-primary"),
                                        # Nested navset_card_tab()
@@ -396,6 +398,7 @@ app_ui <- function(request) {
                                        )# end navset_card_tab
                       ),# end main nav_panel
 
+                      # Transports publics
                       bslib::nav_panel("Transports publics",
                                        icon = icon("bus", class = "text-primary"),
                                        # Nested navset_card_tab()

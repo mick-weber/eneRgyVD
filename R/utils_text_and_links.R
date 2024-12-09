@@ -82,6 +82,7 @@ title_complement_regener_cons <-  tags$p(style = "width:70vw;",
 
 title_complement_regener_misc <- tags$p(style = "width:70vw;",
                                         "Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune.",
+                                        br(),
                                         create_geoportail_tag(link = regener_geovd_link))
 
 title_complement_subsidies_building <- tags$p(style = "width:70vw;",

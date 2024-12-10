@@ -134,17 +134,6 @@ app_server <- function(input, output, session) {
     # This retrieves the inputs saved in mod_inputs.R
    inputVals <- mod_inputs_server("inputs_1")
 
-   ### Browser dimensions ----
-   # height/width values are stored in inputVals because it's convenient
-   # these are used for some dynamic plots sizing
-
-   observe({
-
-      inputVals$web_width <- shinybrowser::get_width()  # store width
-      inputVals$web_height <- shinybrowser::get_height() # store height
-
-   })
-
    # Upload communes ----
 
    observeEvent(inputVals$uploadedCommunesTimed,{

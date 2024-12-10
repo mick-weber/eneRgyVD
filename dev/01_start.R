@@ -20,12 +20,12 @@
 ##
 golem::fill_desc(
   pkg_name = "eneRgyVD", # The Name of the package containing the App
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
-  repo_url = NULL # The URL of the GitHub Repo (optional)
+  pkg_title = "Profil climatique des communes vaudoises", # The Title of the package containing the App
+  pkg_description = "a shiny app to display energy, climate and mobility related statistics for communes in canton de Vaud, Switzerland", # The Description of the package containing the App
+  author_first_name = "Michaël", # Your First Name
+  author_last_name = "Weber", # Your Last Name
+  author_email = "michael.weber@vd.ch", # Your Email
+  repo_url = "https://github.com/mick-weber/eneRgyVD" # The URL of the GitHub Repo (optional)
 )
 
 ## Set {golem} options ----

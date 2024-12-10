@@ -30,7 +30,6 @@ Imports:
     scales,
     sf,
     shiny (>= 1.7.1),
-    shinybrowser,
     shinycssloaders,
     shinylogs,
     shinyWidgets,

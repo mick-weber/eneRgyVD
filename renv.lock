@@ -617,6 +617,7 @@
         "forcats",
         "future",
         "ggalluvial",
+        "ggiraph",
         "ggplot2",
         "glue",
         "golem",
@@ -640,7 +641,7 @@
         "utils",
         "writexl"
       ],
-      "Hash": "07b2831867c10b9faa994836acdc3b65"
+      "Hash": "bce3abbbd6e7327dd07ffc7871aa3286"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -774,6 +775,27 @@
         "tidyselect"
       ],
       "Hash": "29bb601821609476215720798eecf979"
+    },
+    "ggiraph": {
+      "Package": "ggiraph",
+      "Version": "0.8.11",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "Rcpp",
+        "cli",
+        "ggplot2",
+        "grid",
+        "htmltools",
+        "htmlwidgets",
+        "purrr",
+        "rlang",
+        "stats",
+        "systemfonts",
+        "uuid",
+        "vctrs"
+      ],
+      "Hash": "14b3b3b923944afb9542dbef4c68bf4b"
     },
     "ggplot2": {
       "Package": "ggplot2",
@@ -1744,7 +1766,7 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.28",
+      "Version": "2.29",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1763,7 +1785,7 @@
         "xfun",
         "yaml"
       ],
-      "Hash": "062470668513dcda416927085ee9bdc7"
+      "Hash": "df99277f63d01c34e95e3d2f06a79736"
     },
     "roxygen2": {
       "Package": "roxygen2",

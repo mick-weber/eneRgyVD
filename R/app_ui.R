@@ -139,7 +139,7 @@ app_ui <- function(request) {
       # Title not needed here, provided in app_ui.R
       title = NULL, #strong("Profil climatique des communes vaudoises"),
       # Browser title
-      window_title = "Profil climatique VD",
+      window_title = "Profil climatique vaudois",
 
       # Sidebar ----
       sidebar = bslib::sidebar(
@@ -470,7 +470,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Profil climatique VD"
+      app_title = "Profil climatique vaudois"
     )
   )
 }

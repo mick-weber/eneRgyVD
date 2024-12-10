@@ -262,6 +262,8 @@ a {
   width: 100% !important;
   background-color: white !important;
   color: black !important;
+  text-align: left !important;
+  font-size: 1.1rem;
 }
 
 /*Set card header background to transparent*/

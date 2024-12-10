@@ -156,7 +156,7 @@ mod_elec_charts_server <- function(id,
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       # Compute number of rows
-      num_facets <- length(inputVals$selectedCommunes)
+      num_facets <- length(unique(subsetData()$commune))
       num_columns <- 2
       num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
 

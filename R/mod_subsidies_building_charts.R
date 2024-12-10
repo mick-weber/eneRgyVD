@@ -157,9 +157,10 @@ mod_subsidies_building_charts_server <- function(id,
     output$plot_subsidies <- ggiraph::renderGirafe({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
 
       # Compute number of rows
-      num_facets <- length(inputVals$selectedCommunes)
+      num_facets <- length(unique(subsetData()$commune))
       num_columns <- 2
       num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
 

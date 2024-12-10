@@ -45,25 +45,21 @@ mod_download_all_data_server <- function(id,
       if(isTruthy(inputVals$selectedCommunes)){
 
         # Real download button
-
         shiny::downloadButton(outputId = ns("download_all_excel"),
                               class = "btnDownloadAll",
-                              icon = icon("file-excel", class = "fa-solid me-2"),
-                              label = "Prêt à l'export"
+                              icon = icon("file-excel", class = "fa-lg fa-solid m-3"), # fa-lg is 33% increase
+                              label = "Prêt à l'exportation"
         )
-
       }else{
 
         # Dummy download button + warning text
           shiny::actionButton(inputId = ns("dummy_disabled"),
-                              label = "Attente de sélection" ,
-                              icon = icon("ban", class = "me-1"),
-                              disabled = TRUE,
-                              class = "btnDownloadAll"
+                              class = "btnDownloadAll",
+                              icon = icon("ban", class = "fa-lg m-3"), # fa-lg is 33% increase
+                              label = "Attente de sélection",
+                              disabled = TRUE
           )
-
       }
-
     })
 
     ## Prepare datasets ----
@@ -79,10 +75,10 @@ mod_download_all_data_server <- function(id,
         ## |---------------------------------------------------------------|
 
         # # Cons elec renamed+units
-        # elec_cons = inputVals$energyDatasets$elec_cons |>
-        #   add_colname_unit(colnames = "consommation",
-        #                    unit = inputVals$energyUnit) |>
-        #   rename_fr_colnames(),
+        elec_cons = inputVals$energyDatasets$elec_cons |>
+          add_colname_unit(colnames = "consommation",
+                           unit = inputVals$energyUnit) |>
+          rename_fr_colnames(),
 
         # Prod elec renamed+units
         elec_prod = inputVals$energyDatasets$elec_prod |>

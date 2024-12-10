@@ -14,7 +14,7 @@ mod_unit_converter_ui <- function(id){
     tags$p("Conversion d'unités",
            style = "font-weight:500;margin-bottom:0.5rem",
            bslib::tooltip(
-             id = "tooltip_download_all",
+             id = "tooltip_convert_unit",
              placement = "right",
              options = list(customClass = "customTooltips"), # custom.scss
              trigger = bsicons::bs_icon("info-circle"),

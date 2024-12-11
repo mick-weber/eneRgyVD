@@ -6,6 +6,15 @@
 
 ## Suivi des modifications du profil énergétique
 
+### MàJ 2025-12-10
+
+* Migration profil climatique (nouvelle UI)
+
+* Ajout données canopée, dangers naturels, taux de motorisation, qualité de desserte TP, électrification des véhicules de tourisme
+
+* Ajout données gaz énergie
+
+
 ### MàJ 2024-10-10
 
 #### Distribution d'électricité

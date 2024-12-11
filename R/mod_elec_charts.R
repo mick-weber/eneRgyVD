@@ -193,7 +193,9 @@ mod_elec_charts_server <- function(id,
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       # We create a div so that we can optionnaly pass a class
+      tags$div(style = "width:80%;height:auto;",
                ggiraph::girafeOutput(ns("chart_1"))
+      )
 
     })# End renderUI
 

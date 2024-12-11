@@ -109,14 +109,14 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.13",
+      "Version": "1.0.13-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "methods",
         "utils"
       ],
-      "Hash": "f27411eb6d9c3dada5edd444b8416675"
+      "Hash": "6b868847b365672d6c1677b1608da9ed"
     },
     "RcppCCTZ": {
       "Package": "RcppCCTZ",
@@ -607,7 +607,13 @@
     "eneRgyVD": {
       "Package": "eneRgyVD",
       "Version": "0.1.0",
-      "Source": "unknown",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "mick-weber",
+      "RemoteRepo": "eneRgyVD",
+      "RemoteRef": "profil-climat",
+      "RemoteSha": "8958f99a3cdfe97b95d5043abfac549595633137",
       "Requirements": [
         "DT",
         "R",
@@ -633,7 +639,6 @@
         "sf",
         "shiny",
         "shinyWidgets",
-        "shinybrowser",
         "shinycssloaders",
         "shinylogs",
         "stringr",
@@ -641,7 +646,7 @@
         "utils",
         "writexl"
       ],
-      "Hash": "bce3abbbd6e7327dd07ffc7871aa3286"
+      "Hash": "5da520e6b1e8ae4e587bdbe7f6bbbc7f"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -1973,17 +1978,6 @@
         "shiny"
       ],
       "Hash": "fd8239886f70daa85c36596214958451"
-    },
-    "shinybrowser": {
-      "Package": "shinybrowser",
-      "Version": "1.0.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "shiny"
-      ],
-      "Hash": "0f3fec942ab67d497e1d89f71d99b637"
     },
     "shinycssloaders": {
       "Package": "shinycssloaders",

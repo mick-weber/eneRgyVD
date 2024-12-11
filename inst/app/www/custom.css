@@ -1,9 +1,21 @@
+@charset "UTF-8";
 /* import components ; the full bs path is provided in theme.R */
 /* Custom modal upon opening the app -> fct_helpers.R */
+/* Set dialog to a decent position */
+.modal-dialog {
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%) !important;
+  width: 40%;
+  /* or any width that suits your design */
+  max-width: 60%;
+  /* Optional: ensures modal doesn’t overflow the viewport */
+}
+
 .modal-header {
   background-color: #343A40;
   color: white;
-  height: 20vh;
 }
 
 .modal-header img {

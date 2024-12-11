@@ -83,9 +83,6 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
 
-    # Shinybrowser identifies the web browser for use in app_server.R/fct_helpers.R
-    shinybrowser::detect(),
-
     # Top navbar ----
     tags$nav(
       class = "navbar navbar-expand-lg bg-primary",
@@ -146,7 +143,7 @@ app_ui <- function(request) {
 
         open = "always",
         class = "shadow rounded-end-3", # add some shadow + rounded + see custom.scss
-        width = "300px",
+        width = "15vw",
         bg =  "#343A40",
 
         mod_inputs_ui("inputs_1")
@@ -190,7 +187,7 @@ app_ui <- function(request) {
                                      ),
 
                                      bslib::card_body(class = "m-0 p-0",
-                                                      leafletOutput("map"))
+                                                      leafletOutput("map"), fill = TRUE)
                          ),# End card() map
 
                          # 2nd column

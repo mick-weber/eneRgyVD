@@ -259,8 +259,8 @@ create_bar_ggiraph <- function(data,
                                dodge = FALSE, # stacked by default
                                free_y = FALSE,
                                legend_title = NULL,
-                               height_svg, # set default when shinybrowser not used
-                               width_svg, # set default when shinybrowser not used
+                               height_svg,
+                               width_svg,
                                ... # free
 ){
 
@@ -345,7 +345,7 @@ create_bar_ggiraph <- function(data,
                   width_svg = width_svg,
                   options = list(
                     ggiraph::opts_sizing(
-                      rescale = FALSE
+                      rescale = TRUE, width = 1
                     ),
                     ggiraph::opts_hover(
                       css = ""

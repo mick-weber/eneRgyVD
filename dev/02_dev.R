@@ -36,8 +36,6 @@ usethis::use_package("rjson")
 usethis::use_package("shinyWidgets")
 
 usethis::use_package("shinycssloaders")
-usethis::use_package("shinyalert")
-usethis::use_package("shinybrowser")
 usethis::use_package("leaflet")
 usethis::use_package("leaflet.extras")
 usethis::use_package("sf")

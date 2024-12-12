@@ -39,10 +39,7 @@ mod_about_the_app_ui <- function(id){
                                                                         En 2024, l’OCDC a souhaité mettre à disposition des communes d’autres données et l’application est devenue le profil climatique dès janvier 2025.
                                                                         De ce fait, le point de contact pour la gestion de cette application est désormais l’OCDC qui collabore toujours étroitement avec la DIREN.
                                                                         D’autres services ont également participé à la valorisation des données comme DGE-Biodiv, DGE-UDN et la DGMR."
-
                                                              )
-
-
                                        )# End 1st layout_columns'
                       ),# End nav_panel' Général
 

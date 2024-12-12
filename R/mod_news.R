@@ -14,7 +14,7 @@ mod_news_ui <- function(id){
     bslib::layout_columns(col_widths = c(-1, 8, -3), fill = FALSE,
 
                           br(),
-                          h4(strong("Historique des versions")),
+                          h4(strong("Nouveautés")),
 
                           bslib::accordion(open = c("tocome", "jan25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,

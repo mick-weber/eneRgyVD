@@ -227,6 +227,11 @@ a {
   font-size: 1rem;
 }
 
+.fs-sidebar-header .accordion-button {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
 /* Remove default's bottom margin for <p> elements. Used in fct_helpers.R (generate_doc_accordion_panels()) */
 .customPanel p {
   margin-bottom: 0 !important;
@@ -275,7 +280,9 @@ a {
   background-color: white !important;
   color: black !important;
   text-align: left !important;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 /*Set card header background to transparent*/

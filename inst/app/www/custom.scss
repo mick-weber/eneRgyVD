@@ -235,6 +235,10 @@ a {
   .accordion-title{
     font-size:1rem;
   }
+  .accordion-button{
+    padding-top:0.75rem;
+    padding-bottom:0.75rem;
+  }
 }
 
 /* Remove default's bottom margin for <p> elements. Used in fct_helpers.R (generate_doc_accordion_panels()) */
@@ -259,7 +263,6 @@ a {
   color:#3A862D;
   border-color:#3A862D;
 }
-
 .btnCustom:hover{
   background-color:#3A862D;
   color:white;
@@ -281,9 +284,11 @@ a {
 .btnDownloadAll{
   width:100% !important;
   background-color:white !important;
-  color:black !important;
+  color: black !important;
   text-align: left !important;
-  font-size:1.1rem;
+  font-size:1rem;
+  padding-top:0.75rem;
+  padding-bottom:0.75rem;
 }
 
 /*Set card header background to transparent*/

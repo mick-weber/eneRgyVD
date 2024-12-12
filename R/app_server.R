@@ -55,34 +55,45 @@ app_server <- function(input, output, session) {
    })
 
    # Bookmarking feature ----
-#
-#    # List of authorized inputs for bookmarking
-#    bookmarkingWhitelist <- c(
-#       "nav",      # which main nav_panel is selected
-#       "inputs_1-selected_communes"      # which communes are selected
-#    )
-#
-#    # Trigger bookmarking only if communes OR units are modified
-#    observeEvent({
-#      input$nav
-#      inputVals$selectedCommunes
-#      },{session$doBookmark()})
-#
-#    # Exclude everything but bookmarkingWhitelist above
-#    ExcludedIDs <- reactiveVal(value = NULL)
-#
-#    observe({
-#       toExclude <- setdiff(names(input), bookmarkingWhitelist) # utils.R
-#       setBookmarkExclude(toExclude)
-#       ExcludedIDs(toExclude)
-#    })
-#
-#    # Update url with bookmarking state
-#    onBookmarked(function(url) {
-#       updateQueryString(url)
-#    })
+   # This code allows returning back one step from the browser !
 
-   ## Tabs redirecting ----
+   # Enable URL bookmarking
+   onBookmark(function(state) {
+     state$values$nav <- input$nav  # Save the navbar state
+   })
+
+   onRestore(function(state) {
+     updateNavbarPage(session, "nav", state$values$nav)  # Restore the navbar state
+   })
+
+   # Update the URL whenever the navbar changes
+   observe({
+     updateQueryString(paste0("?nav=", input$nav), mode = "push")
+   })
+
+   # React to URL changes when user clicks back/forward
+   observe({
+     query <- parseQueryString(session$clientData$url_search)
+     if (!is.null(query$nav)) {
+       updateNavbarPage(session, "nav", query$nav)
+     }
+   })
+
+
+   # Redirect click logo --> Accueil
+
+   observeEvent(
+     input$clickLogoToHomepage_click, {
+       bslib::nav_select(
+         id = "nav",
+         select = "Accueil",
+         session = session
+       )
+     }
+   )
+
+   # Redirect to method tabs ----
+
    # Code below is to generate redirections from methodological accordions in each module to mod_about_the_app.R
    # pwalk -> our tribble -> observeEvent -> input[[observe_input]] (.x) -> selected -> tabpanel_name (.y)
 

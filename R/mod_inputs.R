@@ -26,30 +26,6 @@ mod_inputs_ui <- function(id){
                                    )
              )
     ),
-    # conditionalPanel uploadCommunes widget ----
-
-    # IF tab Accueil
-    shiny::conditionalPanel(
-      condition="input.nav == 'Accueil'",
-
-      # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
-      tags$div(
-        br(),
-        # Label as for selectizeInput for esthetics (form-label bs5 class) + add tooltip
-        tags$p("Importer des communes",
-               style = "font-weight:500;margin-bottom:0.5rem !important;",
-               bslib::tooltip(
-                 id = "tooltip_import_communes",
-                 placement = "right",
-                 options = list(customClass = "customTooltips"), # custom.scss
-                 trigger = bsicons::bs_icon("info-circle"),
-                 "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes, par exemple pour une agglomération"
-                 )),
-
-        mod_upload_communes_ui(ns("uploaded_communes"))
-      )
-    ),# End div
-
 
     ## |---------------------------------------------------------------|
     ##          This section is source of many sorrows !!
@@ -70,26 +46,32 @@ mod_inputs_ui <- function(id){
     # uiOutput() for ng_cons ----
     uiOutput(ns("ng_cons_widget")),
 
-    # Sidebar bottom ----
+    ## |---------------------------------------------------------------|
+    ##          Sidebar bottom footer
+    ## |---------------------------------------------------------------|
 
+    # Div with bottom elements ----
     tags$div(style = "margin-top: auto;",
 
-             ##  1. Unit converter widget ----
+             ## Upload communes widget (conditional) ----
+             shiny::conditionalPanel(
+               condition="input.nav == 'Accueil'",
+               mod_upload_communes_ui(ns("uploaded_communes"))
+             ),
+
+             ##  Unit converter widget (conditional) ----
              shiny::conditionalPanel(
                condition="input.nav != 'Accueil'",
                mod_unit_converter_ui(ns("unit_converter"))
              ),# End conditionalPanel
 
-
-             ## 1. Downoad all widget ----
-             hr(),
+             ##  Downoad all widget (fixed) ----
+             hr(), # separator
              tags$div(
                id = "introjs_download_all",
                mod_download_all_data_ui(ns("download_all_data")),
              )
     )# End div()
-
-
   ) # End tagList
 } # End UI
 

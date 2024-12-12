@@ -106,7 +106,7 @@ app_ui <- function(request) {
                   ),
                   tags$ul(
                     class = "dropdown-menu dropdown-menu-end",
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("envelope-at-fill", class = "text-primary"),
+                    tags$a(class = "dropdown-item", bsicons::bs_icon("envelope", class = "text-primary"),
                            "Contact", href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"),
                     tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
                            "Plan énergie climat", href = link_pecc, target = "_blank"),
@@ -153,7 +153,11 @@ app_ui <- function(request) {
       # Logo VD left of main sidebar
       bslib::nav_item(
         tags$div(
-          style = "display: flex; align-items: center; gap: 10px;margin-right:10vw;",
+          id = "clickLogoToHomepage",
+          # When clicked, add a reactive input (id from div is not listened by server). See app_server.R.
+          # With server code this redirects to 'Accueil' tab
+          onclick = "Shiny.setInputValue(id = 'clickLogoToHomepage_click', value = 'clickLogoToHomepage_click', {priority : 'event'})",
+          style = "cursor: pointer;display: flex; align-items: center; gap: 10px;margin-right:10vw;",
           tags$img(src = "www/vd-logo-black.svg", height = "50px", class = "navbar-brand"),
           tags$div(
             style = "font-size:0.9rem;",
@@ -414,31 +418,35 @@ app_ui <- function(request) {
     ## Misc ----
     bslib::nav_menu("Divers",
 
-                    ### Chiffres-clés
-                    bslib::nav_panel("Chiffres-clés", icon = icon("list-ol", class = "text-primary"),
+                    ### About ----
+                    bslib::nav_panel("À propos",icon = bsicons::bs_icon("question-circle", class = "text-primary"),
 
-                                     bslib::layout_columns(col_widths = c(-1, 9, -2),
+                                     mod_about_the_app_ui("about")
 
-                                                           mod_stats_box_ui("vd_box"),
-                                                           mod_stats_box_ui("communes_box")
-
-                                     )
                     ),
-
-                    ## News ----
+                    ### News ----
                     bslib::nav_panel("Nouveautés",
                                      icon = bsicons::bs_icon("star", class = "text-primary"),
 
                                      mod_news_ui("news")
                     ),
+                    ### Chiffres-clés ----
+                    bslib::nav_panel("Chiffres-clés", icon = bsicons::bs_icon("bar-chart", class = "text-primary"),
 
-                    ### About ----
-                    bslib::nav_panel("À propos",icon = icon("circle-info", class = "text-primary"),
+                                     bslib::layout_columns(col_widths = c(-1, 9, -2),
 
-                                     mod_about_the_app_ui("about")
-
+                                                           mod_stats_box_ui("vd_box"),
+                                                           mod_stats_box_ui("communes_box")
+                                     )
+                    ),
+                    ### Contact ----
+                    bslib::nav_item(
+                      tags$a(
+                        class = "dropdown-item",
+                        bsicons::bs_icon("envelope", class = "text-primary"), "Contact",
+                        href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"
+                             )
                     )
-
     ),#End nav_menu() 'Divers'
 
 

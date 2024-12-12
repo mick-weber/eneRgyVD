@@ -47,15 +47,15 @@ mod_download_all_data_server <- function(id,
         # Real download button
         shiny::downloadButton(outputId = ns("download_all_excel"),
                               class = "btnDownloadAll",
-                              icon = icon("file-excel", class = "fa-lg fa-solid m-3"), # fa-lg is 33% increase
-                              label = "Prêt à l'exportation"
+                              icon = icon("file-excel", class = "fa-lg fa-solid m-2"), # fa-lg is 33% increase
+                              label = "Téléchargement prêt"
         )
       }else{
 
         # Dummy download button + warning text
           shiny::actionButton(inputId = ns("dummy_disabled"),
                               class = "btnDownloadAll",
-                              icon = icon("ban", class = "fa-lg m-3"), # fa-lg is 33% increase
+                              icon = icon("ban", class = "fa-lg m-2"), # fa-lg is 33% increase
                               label = "Attente de sélection",
                               disabled = TRUE
           )
@@ -153,15 +153,15 @@ mod_download_all_data_server <- function(id,
         ##          MOBILITY DATASETS ----
         ## |---------------------------------------------------------------|
 
-        # EVs
+        # Electric vehicles
         part_ve = inputVals$mobilityDatasets$part_voit_elec |>
           # add_colname_unit() |>
           rename_fr_colnames(),
 
+        # Motorisation
         taux_motorisation = inputVals$mobilityDatasets$taux_motorisation |>
           add_colname_unit(colnames = "taux_motorisation", unit = "v/1000hab.") |>
           rename_fr_colnames(),
-
 
         # Public transportation quality
         qualite_desserte = inputVals$mobilityDatasets$qualite_desserte |>

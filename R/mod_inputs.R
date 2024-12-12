@@ -22,7 +22,8 @@ mod_inputs_ui <- function(id){
                                    multiple = TRUE,
                                    options = list(
                                      placeholder = "Plusieurs acceptées",
-                                     plugins = list("remove_button")
+                                     plugins = list("remove_button",
+                                                    "clear_button")
                                    )
              )
     ),

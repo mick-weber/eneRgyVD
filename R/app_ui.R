@@ -9,6 +9,9 @@ app_ui <- function(request) {
 
   shiny::tagList(
 
+    ## |---------------------------------------------------------------|
+    ##          Scripts and JS resources
+    ## |---------------------------------------------------------------|
     # First proceed to load JS scripts / librairies as needed
     tags$head(
       # This script (see app_server.R too) closes nav_menu's after being redirected by a click (2s delay) It is used for redirects from app_server.R to mod_about_the_app.R
@@ -80,9 +83,12 @@ app_ui <- function(request) {
     '))# End tags$script
     ),# End tags$head
 
-    # Leave this function for adding external resources
+    # Leave this function for adding external resources in inst/app
     golem_add_external_resources(),
 
+    ## |---------------------------------------------------------------|
+    ##        UI app starts here
+    ## |---------------------------------------------------------------|
     # Top navbar ----
     tags$nav(
       class = "navbar navbar-expand-lg bg-primary",
@@ -360,7 +366,7 @@ app_ui <- function(request) {
                                                                                                                                  )
                                                                                                      ))
 
-                                                                               )# end nested nav_panel
+                                                              )# end nested nav_panel
                                        )
                       )# end second main nav_panel
       ), # End nav_menu() 'Adaptation'
@@ -411,49 +417,49 @@ app_ui <- function(request) {
                                                                                                      title_complement = HTML("<i>Complément à proposer OCDC</i>")
                                                                                )
                                                               )# end firstnav_panel
-                      )# end navset_card_tab
-      )# end main nav_panel
-    ),# End nav_menu() 'Mobilite'
+                                       )# end navset_card_tab
+                      )# end main nav_panel
+      ),# End nav_menu() 'Mobilite'
 
-    ## Misc ----
-    bslib::nav_menu("Divers",
+      ## Misc ----
+      bslib::nav_menu("Divers",
 
-                    ### About ----
-                    bslib::nav_panel("À propos",icon = bsicons::bs_icon("question-circle", class = "text-primary"),
+                      ### About ----
+                      bslib::nav_panel("À propos",icon = bsicons::bs_icon("question-circle", class = "text-primary"),
 
-                                     mod_about_the_app_ui("about")
+                                       mod_about_the_app_ui("about")
 
-                    ),
-                    ### News ----
-                    bslib::nav_panel("Nouveautés",
-                                     icon = bsicons::bs_icon("star", class = "text-primary"),
+                      ),
+                      ### News ----
+                      bslib::nav_panel("Nouveautés",
+                                       icon = bsicons::bs_icon("star", class = "text-primary"),
 
-                                     mod_news_ui("news")
-                    ),
-                    ### Chiffres-clés ----
-                    bslib::nav_panel("Chiffres-clés", icon = bsicons::bs_icon("bar-chart", class = "text-primary"),
+                                       mod_news_ui("news")
+                      ),
+                      ### Chiffres-clés ----
+                      bslib::nav_panel("Chiffres-clés", icon = bsicons::bs_icon("bar-chart", class = "text-primary"),
 
-                                     bslib::layout_columns(col_widths = c(-1, 9, -2),
+                                       bslib::layout_columns(col_widths = c(-1, 9, -2),
 
-                                                           mod_stats_box_ui("vd_box"),
-                                                           mod_stats_box_ui("communes_box")
-                                     )
-                    ),
-                    ### Contact ----
-                    bslib::nav_item(
-                      tags$a(
-                        class = "dropdown-item",
-                        bsicons::bs_icon("envelope", class = "text-primary"), "Contact",
-                        href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"
-                             )
-                    )
-    ),#End nav_menu() 'Divers'
+                                                             mod_stats_box_ui("vd_box"),
+                                                             mod_stats_box_ui("communes_box")
+                                       )
+                      ),
+                      ### Contact ----
+                      bslib::nav_item(
+                        tags$a(
+                          class = "dropdown-item",
+                          bsicons::bs_icon("envelope", class = "text-primary"), "Contact",
+                          href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"
+                        )
+                      )
+      ),#End nav_menu() 'Divers'
 
 
-    #### (spacer) ----
-    bslib::nav_spacer(),
+      #### (spacer) ----
+      bslib::nav_spacer(),
 
-  )#End page_navbar()
+    )#End page_navbar()
   )# End tagList()
 }# End UI
 

@@ -95,7 +95,7 @@ mod_elec_charts_ui <- function(id,
 
 
                                  # !! Since sunburst is removed we can directly use renderPlotly
-                                 uiOutput(ns("plot_render_ui")) |>
+                                ggiraph::girafeOutput(ns("chart_1")) |>
                                   shinycssloaders::withSpinner(type = 6,
                                                                color= main_color)
 
@@ -184,20 +184,6 @@ mod_elec_charts_server <- function(id,
       )
     })# End renderGirafe
 
-
-    # Render plot selectively based on radioButton above
-    # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
-
-    output$plot_render_ui <- renderUI({
-
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-
-      # We create a div so that we can optionnaly pass a class
-      tags$div(style = "width:80%;height:auto;",
-               ggiraph::girafeOutput(ns("chart_1"))
-      )
-
-    })# End renderUI
 
     # Table logic ----
     # Renders the DT table

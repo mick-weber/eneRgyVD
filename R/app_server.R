@@ -12,8 +12,8 @@ app_server <- function(input, output, session) {
   ## |---------------------------------------------------------------|
 
   # observe({
-  #   print(inputVals$selectedCommunes)
-  #   print(inputVals$energyDatasets$ng_cons)
+  #   print(state$value$nav)
+  #   print(query$nav)
   #
   # })
 
@@ -54,32 +54,37 @@ app_server <- function(input, output, session) {
     removeModal()
   })
 
-  # Bookmarking feature ----
+  # Bookmarking ----
   # This code allows returning back one step from the browser !
 
-  # Enable URL bookmarking
-  onBookmark(function(state) {
-    state$values$nav <- input$nav  # Save the navbar state
-  })
+  # Track whether the app is initializing
+  initializing <- TRUE
 
-  onRestore(function(state) {
-    updateNavbarPage(session, "nav", state$values$nav)  # Restore the navbar state
-  })
+  # Load the correct tab on startup or URL change
+  observeEvent(session$clientData$url_search, {
 
-  # Update the URL whenever the navbar changes
-  observe({
-    updateQueryString(paste0("?nav=", input$nav), mode = "push")
-  })
-
-  # React to URL changes when user clicks back/forward
-  observe({
     query <- parseQueryString(session$clientData$url_search)
-    if (!is.null(query$nav)) {
-      updateNavbarPage(session, "nav", query$nav)
+
+    if (!is.null(query$nav) && query$nav != input$nav) {
+      bslib::nav_select("nav", query$nav, session)  # Switch to the tab from the URL
     }
-  })
+
+    # Mark initialization as complete, scoping assignment to write in parent function
+    initializing <<- FALSE
+
+    }, ignoreInit = FALSE)  # Trigger on app start
 
 
+  # Update the URL when switching tabs
+  observeEvent(input$nav, {
+    # Prevent URL update during initialization or redundant updates
+    if (!initializing) {
+      updateQueryString(paste0("?nav=", input$nav), mode = "push")
+    }
+  }, ignoreInit = TRUE)  # Ignore the initial tab value
+
+
+  # ----
   # Redirect click logo --> Accueil
 
   observeEvent(

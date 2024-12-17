@@ -264,9 +264,12 @@ create_bar_ggiraph <- function(data,
                                ... # free
 ){
 
-  # First create ggplot graph
-  # We turn to MWh to save space, especially when free_y is activated...
+  # Compute totals for conditional geom_text (if stacked)
+  data_totals <- data |>
+    dplyr::group_by(.data[[var_year]], .data[[var_commune]]) |>
+    dplyr::summarise(total = sum(.data[[var_values]], na.rm = TRUE))
 
+  # Compute ggplot2
   ggplot <- data |>
     ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
                                  y = .data[[var_values]],
@@ -292,6 +295,17 @@ create_bar_ggiraph <- function(data,
                                    }
     )
     ))
+
+
+  # geom_text conditionnally --> only if bars are stacked, otherwise it's messy
+    if (!isTRUE(dodge)) {
+      ggplot <- ggplot + ggiraph::geom_text_interactive(data = data_totals,
+                                   ggplot2::aes(x = as.factor(.data[[var_year]]),
+                                       y = total,
+                                       label = total |> format(big.mark = "'", digits = 1)),
+                                   vjust = -0.5, inherit.aes = FALSE)
+    }
+
 
   # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
   # If one color is supplied : we must pass it to 'fill' of geom_col(), scale_fill_manual would not accept it
@@ -319,14 +333,15 @@ create_bar_ggiraph <- function(data,
     ggplot2::scale_y_continuous(labels = ifelse(unit == "%",
                                                 scales::percent,
                                                 scales::label_number(big.mark = "'")
-                                                )
+                                                ),
+                                expand = ggplot2::expansion(mult = c(0, 0.15))
     )+
     ggplot2::labs(x = "", y = unit)+
     ggiraph::facet_wrap_interactive(facets = ggplot2::vars(.data[[var_commune]]),
                                     ncol = 2,
                                     # if the toggle linked to the free_y argument is TRUE, then free y axis
                                     scales = ifelse(free_y, "free_y", "fixed"))+
-    ggplot2::theme_bw(base_size = 13)+
+    ggplot2::theme_bw(base_size = 12)+
     ggplot2::theme(
       legend.position = "top",        # Move legend to the top
       legend.direction = "horizontal", # Arrange items horizontally
@@ -334,7 +349,7 @@ create_bar_ggiraph <- function(data,
       legend.box.just = "left",
       #change the labels of facet wrap. main_color defined in utils_helpers.R
       strip.background = ggplot2::element_rect(color="black", fill=main_color, linewidth = 0.5, linetype="solid"),
-      strip.text = ggplot2::element_text(color = "white", size = 14),
+      strip.text = ggplot2::element_text(color = "white", size = 12),
       legend.background = ggplot2::element_rect(fill = NA), # transparent
       panel.spacing.x = ggplot2::unit(.05, "cm"),
       panel.spacing.y = ggplot2::unit(0.5, "cm")

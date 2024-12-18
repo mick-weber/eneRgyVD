@@ -106,7 +106,24 @@ mod_about_the_app_ui <- function(id){
 
                                                                                                                    ),# End nested tabPanel 2.
 
-                                                                                                                   ### 3. Regener ----
+                                                                                                                   ### 3. Conso gaz ----
+                                                                                                                   bslib::nav_panel("Distribution de gaz naturel",
+                                                                                                                                    # create div to apply class
+                                                                                                                                    tags$div(
+                                                                                                                                      br(),
+                                                                                                                                      h4(strong("Détails méthodologiques : distribution de gaz naturel")),
+                                                                                                                                      br(),
+                                                                                                                                      bslib::accordion(!!!ng_cons_doc_panels, open = FALSE),
+                                                                                                                                      br(),
+                                                                                                                                      h5(strong("Descriptif des variables")),
+                                                                                                                                      br(),
+                                                                                                                                      # Documentation table for both subsidies datasets
+                                                                                                                                      DT::dataTableOutput(ns("ng_cons_doc"))
+
+                                                                                                                                    )# End tags$div
+                                                                                                                   ), # End tabPanel 3
+
+                                                                                                                   ### 4. Regener ----
                                                                                                                    # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
                                                                                                                    bslib::nav_panel("Chaleur bâtiments",
                                                                                                                                     # create div to apply class
@@ -122,9 +139,9 @@ mod_about_the_app_ui <- function(id){
 
                                                                                                                                     )# End tags$div
 
-                                                                                                                   ),# End nested tabPanel 3.
+                                                                                                                   ),# End nested tabPanel 4.
 
-                                                                                                                   ### 4. Subsidies ----
+                                                                                                                   ### 5. Subsidies ----
                                                                                                                    # -> if title changed (html tag too !) adapt in app_server.R's subpanels_tribble object
                                                                                                                    bslib::nav_panel("Subventions bâtiments",
                                                                                                                                     # create div to apply class
@@ -138,23 +155,6 @@ mod_about_the_app_ui <- function(id){
                                                                                                                                       br(),
                                                                                                                                       # Documentation table for both subsidies datasets
                                                                                                                                       DT::dataTableOutput(ns("subsidies_doc"))
-
-                                                                                                                                    )# End tags$div
-                                                                                                                   ),# End tabPanel 4
-
-                                                                                                                   ### 5. Conso gaz ----
-                                                                                                                   bslib::nav_panel("Distribution de gaz naturel",
-                                                                                                                                    # create div to apply class
-                                                                                                                                    tags$div(
-                                                                                                                                      br(),
-                                                                                                                                      h4(strong("Détails méthodologiques : distribution de gaz naturel")),
-                                                                                                                                      br(),
-                                                                                                                                      bslib::accordion(!!!ng_cons_doc_panels, open = FALSE),
-                                                                                                                                      br(),
-                                                                                                                                      h5(strong("Descriptif des variables")),
-                                                                                                                                      br(),
-                                                                                                                                      # Documentation table for both subsidies datasets
-                                                                                                                                      DT::dataTableOutput(ns("ng_cons_doc"))
 
                                                                                                                                     )# End tags$div
                                                                                                                    )# End tabPanel 5

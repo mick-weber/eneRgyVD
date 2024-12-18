@@ -64,7 +64,8 @@ title_complement_elec_prod <- tags$p(style = "width:70vw;",
                                      HTML("Ces données sont le résultat d'un traitement des données issues de l'organisme de certification des garanties d'origine <a href = 'https://pronovo.ch/fr/'> Pronovo</a> (voir détails méthodologiques)."))
 
 title_complement_ng_cons <- tags$p(style = "width:70vw",
-                                   HTML("Ces données sont issues des données de relevés des compteurs fournis par les gestionnaires de réseau de distribution.
+                                   HTML("Ces données sont issues des données de relevés des compteurs fournis par les gestionnaires de réseau de distribution. Elles ne
+                                   comprennent pas les livraisons de gaz naturel hors-réseau, par exemple via des citernes remplies par transport routier.
                                         <br>
                                         L'exactitude des distinctions sectorielles ainsi que certaines variations interannuelles peuvent s'expliquer par la qualité des données fournies (voir détails méthodologiques)."))
 

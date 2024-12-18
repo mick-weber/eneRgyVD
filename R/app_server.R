@@ -84,8 +84,9 @@ app_server <- function(input, output, session) {
   }, ignoreInit = TRUE)  # Ignore the initial tab value
 
 
-  # ----
-  # Redirect click logo --> Accueil
+
+
+  # Redirect click logo --> Accueil ----
 
   observeEvent(
     input$clickLogoToHomepage_click, {
@@ -149,6 +150,7 @@ app_server <- function(input, output, session) {
   observeEvent(inputVals$uploadedCommunesTimed,{
 
     ## UpdateSelectizeInput ----
+    # only when uploaded communes via widget !
     updateSelectizeInput(session = session,
                          inputId = "inputs_1-selected_communes",
                          choices = choices_canton_communes,
@@ -258,7 +260,7 @@ app_server <- function(input, output, session) {
   mod_elec_charts_server("consumption_charts",
                          inputVals = inputVals,
                          subsetData = reactive({inputVals$energyDatasets$elec_cons}),
-                         legend_title = "Secteur",
+                         legend_title = "Secteur : ",
                          var_year = "annee",
                          var_commune = "commune",
                          var_cat = "secteur", # might be NULL if needed
@@ -304,7 +306,7 @@ app_server <- function(input, output, session) {
   mod_regener_needs_charts_server("regener_needs",
                                   inputVals = inputVals,
                                   subsetData = reactive({inputVals$energyDatasets$regener_needs}), # filtered data for communes and selected years
-                                  legend_title = "Usage", # for legend of barplot (either secteur/technologies)
+                                  legend_title = "Usage : ", # for legend of barplot (either secteur/technologies)
                                   var_year = "statut", # DATASET SPECIFICITY : we don't plot usual year on X axis, but <statut> (actuel vs théorique)
                                   var_commune = "commune", # 'commune'
                                   var_cat = "type", # categorical var ('secteur'/'categorie', ...)
@@ -369,7 +371,7 @@ app_server <- function(input, output, session) {
                             coerce_dodge = TRUE, # these should not be stacked --> don't make sense
                             var_cat = "categorie",
                             color_palette = default_palette, # default_palette, dedicated one, or one color
-                            legend_title = "Type",
+                            legend_title = "Type : ",
                             dl_prefix = "canopee_",
                             doc_vars = NULL # for now
   )
@@ -384,7 +386,7 @@ app_server <- function(input, output, session) {
                             coerce_dodge = FALSE,
                             var_cat = "categorie", # ask OCDC to change dataset var name...
                             color_palette = default_palette, # default_palette, dedicated one, or one color
-                            legend_title = "Type",
+                            legend_title = "Type : ",
                             dl_prefix = "bat_danger_",
                             doc_vars = NULL # for now
   )

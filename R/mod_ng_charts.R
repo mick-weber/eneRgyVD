@@ -175,7 +175,7 @@ mod_ng_charts_server <- function(id,
                          color_palette = color_palette, # defined in utils_helpers.R
                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                         legend_title = NULL, # links to ifelse in facet_wrap(scales = ...)
+                         legend_title = "Secteur : ", # links to ifelse in facet_wrap(scales = ...)
                          height_svg = height_svg, # px width of browser when app starts
                          width_svg = width_svg # px height of browser when app starts
       )

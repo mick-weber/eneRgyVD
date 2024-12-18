@@ -299,11 +299,22 @@ create_bar_ggiraph <- function(data,
 
   # geom_text conditionnally --> only if bars are stacked, otherwise it's messy
     if (!isTRUE(dodge)) {
-      ggplot <- ggplot + ggiraph::geom_text_interactive(data = data_totals,
-                                   ggplot2::aes(x = as.factor(.data[[var_year]]),
-                                       y = total,
-                                       label = total |> format(big.mark = "'", digits = 1)),
-                                   vjust = -0.5, inherit.aes = FALSE)
+      ggplot <- ggplot +
+        ggiraph::geom_text_interactive(
+          data = data_totals,
+          ggplot2::aes(x = as.factor(.data[[var_year]]),
+                       y = total,
+                       label = if(unit == "%"){
+                         scales::percent(total, accuracy = 0.01)}else{
+                           format(total, big.mark = "'", digits = 1)
+                         }
+          ),
+          vjust = -0.5,
+          size = 10,
+          size.unit = "pt", # defaults to mm...
+          fontface = "plain",
+          inherit.aes = FALSE # ensures we loock at data_totals and not data
+        )
     }
 
 
@@ -352,7 +363,8 @@ create_bar_ggiraph <- function(data,
       strip.text = ggplot2::element_text(color = "white", size = 12),
       legend.background = ggplot2::element_rect(fill = NA), # transparent
       panel.spacing.x = ggplot2::unit(.05, "cm"),
-      panel.spacing.y = ggplot2::unit(0.5, "cm")
+      panel.spacing.y = ggplot2::unit(0.5, "cm"),
+      panel.grid.major.x = element_blank()
     )
 
   ggiraph::girafe(ggobj = ggplot,

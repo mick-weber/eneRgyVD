@@ -337,14 +337,14 @@ app_ui <- function(request) {
       ## Adaptation climat ----
       bslib::nav_menu("Adaptation climat",
                       # Canopée ----
-                      bslib::nav_panel("Surface de canopée",
+                      bslib::nav_panel("Surface de canopée urbaine",
                                        icon = icon("leaf", class = "text-primary"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_canopy",
-                                                              bslib::nav_panel(title = "Surface de canopée",
+                                                              bslib::nav_panel(title = "Surface de canopée urbaine",
 
                                                                                mod_generic_charts_ui("adaptation_canopy",
-                                                                                                     title = "Surface de canopée",
+                                                                                                     title = "Surface de canopée urbaine",
                                                                                                      title_complement = tags$div(tags$p("Complément à proposer OCDC"),
                                                                                                                                  tags$p(create_geoportail_tag(link = regener_geovd_link)
                                                                                                                                  )

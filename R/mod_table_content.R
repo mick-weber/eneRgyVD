@@ -56,7 +56,7 @@ mod_table_content_ui <- function(id){
                    ),
                    bslib::accordion_panel(title = "Adaptation climat", value = "adaptation", icon = icon("temperature-half", class = "text-primary"),
                                           tags$div(class = "row", actionLink(ns("data_20"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Surface de canopée", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             "Surface de canopée urbaine", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
                                           tags$div(class = "row", actionLink(ns("data_21"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              "Exposition aux dangers naturels", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
 

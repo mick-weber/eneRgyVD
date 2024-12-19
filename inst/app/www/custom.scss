@@ -15,10 +15,6 @@
   max-width: 60%; /* Optional: ensures modal doesn’t overflow the viewport */
 }
 
-.modal-body{
-
-}
-
 .modal-header {
       background-color: #343A40;
       color: white;
@@ -176,6 +172,12 @@ a {
 .selectize-input.focus{
   border-color:black !important;
   box-shadow:none !important;
+}
+
+/* Set the clear button completely at the right instead of calc(0.75rem-5px) & red*/
+.selectize-control.plugin-clear_button .clear{
+  right:0px;
+  color:red;
 }
 
 /* sliderInputs major ticks color */

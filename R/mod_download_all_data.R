@@ -140,7 +140,7 @@ mod_download_all_data_server <- function(id,
         ## |---------------------------------------------------------------|
 
         # Canopy area
-        canopee = inputVals$adaptationDatasets$taux_canopee |>
+        canopee = inputVals$adaptationDatasets$surface_canopee |>
           # add_colname_unit() |>
           rename_fr_colnames(),
 

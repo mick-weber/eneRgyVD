@@ -1,7 +1,7 @@
 <!--- Content retrieved by 'generate_doc_accordion_panels()' in fct_helpers.R & utils_helpers.R -->
 <!--- Don't add linebreaks within paragraphs, add empty line at the end, prefer plain HTML for links -->
 
-# Surface de canopée
+# Surface de canopée urbaine
 
 ## D'ou viennent ces données ?
 

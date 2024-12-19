@@ -306,13 +306,14 @@ create_bar_ggiraph <- function(data,
                        y = total,
                        label = if(unit == "%"){
                          scales::percent(total, accuracy = 0.01)}else{
-                           format(total, big.mark = "'", digits = 1)
+                           format(total, big.mark = "'", digits = 1, scientific = FALSE)
                          }
           ),
           vjust = -0.5,
           size = 10,
           size.unit = "pt", # defaults to mm...
           fontface = "plain",
+          color = "grey20",
           inherit.aes = FALSE # ensures we loock at data_totals and not data
         )
     }
@@ -944,16 +945,20 @@ create_generic_table_dt <- function(data,
     data <- data |>
       dplyr::mutate(
         dplyr::across(
-          all_of(var_values),
+          dplyr::all_of(var_values),
           ~ format(.x, big.mark = "'", digits = 3, drop0trailing = TRUE, scientific = FALSE)
-        )
-      )
+        )) |> # format if starts with 'part_' for flexibility (canopy)
+          dplyr::mutate(
+            dplyr::across(
+              dplyr::starts_with("part"),
+              ~ scales::percent(.x, accuracy = 0.01))
+            )
   }
 
   # Then proceed with the rest of the table code
   data |>
     # Basic clean up for table output
-    dplyr::arrange(desc(.data[[var_year]])) |>
+    dplyr::arrange(.data[[var_commune]], desc(.data[[var_year]])) |>
     dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
     # any_of() allows to pass var_car even if it does not exist
     dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>

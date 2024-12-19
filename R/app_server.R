@@ -359,23 +359,24 @@ app_server <- function(input, output, session) {
 
   # Output modules adaptation ----
 
-  ## mod_generic_charts ----
+  ## canopy (générique) ----
 
   mod_generic_charts_server("adaptation_canopy",
-                            subsetData = reactive({inputVals$adaptationDatasets$taux_canopee}),
+                            subsetData = reactive({inputVals$adaptationDatasets$surface_canopee}),
                             inputVals = inputVals,
                             var_commune = "commune",
                             var_year = "annee",
-                            var_values = "taux_canopee",
-                            unit = "%",
-                            coerce_dodge = TRUE, # these should not be stacked --> don't make sense
+                            var_values = "surface_urbaine",
+                            unit = "ha",
+                            coerce_dodge = FALSE, # these should not be stacked --> don't make sense
                             var_cat = "categorie",
                             color_palette = default_palette, # default_palette, dedicated one, or one color
-                            legend_title = "Type : ",
-                            dl_prefix = "canopee_",
+                            legend_title = "Hectares : ",
+                            dl_prefix = "canopee_urbaine_",
                             doc_vars = NULL # for now
   )
 
+  ## natural hazards (generic)
   mod_generic_charts_server("buildings_exposure_hazards",
                             subsetData = reactive({inputVals$adaptationDatasets$batiment_danger}),
                             inputVals = inputVals,
@@ -386,7 +387,7 @@ app_server <- function(input, output, session) {
                             coerce_dodge = FALSE,
                             var_cat = "categorie", # ask OCDC to change dataset var name...
                             color_palette = default_palette, # default_palette, dedicated one, or one color
-                            legend_title = "Type : ",
+                            legend_title = "Bâtiments : ",
                             dl_prefix = "bat_danger_",
                             doc_vars = NULL # for now
   )

@@ -34,7 +34,7 @@ load("./data/qualite_desserte.rda")
 load("./data/taux_motorisation.rda")
 
 ## adaptation data ----
-load("./data/taux_canopee.rda")
+load("./data/surface_canopee.rda")
 load("./data/batiment_danger.rda")
 
 ## glossary ----
@@ -53,7 +53,7 @@ energy_datasets_objects <- c("elec_prod",
                              "subsidies_by_measure",
                              "subsidies_by_building")
 # adaptation
-adaptation_datasets_objects <- c("taux_canopee",
+adaptation_datasets_objects <- c("surface_canopee",
                                  "batiment_danger")
 
 # mobility
@@ -98,7 +98,7 @@ qualite_desserte_doc_panels <- generate_doc_accordion_panels(md_file = "./data-d
 taux_motorisation_doc_panels <-  generate_doc_accordion_panels(md_file = "./data-doc/taux_motorisation-doc.md")
 
 # adaptation
-taux_canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/taux_canopee-doc.md")
+surface_canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/surface_canopee-doc.md")
 batiment_danger_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/batiment_danger-doc.md")
 
 
@@ -121,7 +121,7 @@ subpanels_tribble <- dplyr::tribble(
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
   # adaptation (data_20-29)
-  "adaptation_canopy-generic_data_help", "Adaptation climat", "navset_climat", "Surface de canopée", "data_20", "Surface de canopée", "navset_canopy", "Surface de canopée",
+  "adaptation_canopy-generic_data_help", "Adaptation climat", "navset_climat", "Surface de canopée urbaine", "data_20", "Surface de canopée urbaine", "navset_canopy", "Surface de canopée urbaine",
   "buildings_exposure_hazards-generic_data_help", "Adaptation climat", "navset_climat", "Bâtiments exposés à des dangers naturels", "data_21", "Exposition aux dangers naturels", "navset_natural_hazards", "Bâtiments exposés à des dangers naturels",
 
   # mobility (data_30-39)

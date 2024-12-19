@@ -21,7 +21,7 @@ mod_about_the_app_ui <- function(id){
                                                              # breathing
                                                              br(),
                                                              h4(strong("Pourquoi cette application ?")),
-                                                             tags$p("Le but de ce profil climatique est de faciliter la planification énergie et climat des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
+                                                             tags$p("Le but du profil climatique est de faciliter la planification énergie et climat des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
            Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
                                                              # breathing
@@ -166,13 +166,13 @@ mod_about_the_app_ui <- function(id){
                                                                                 bslib::nav_panel("Adaptation climat",
                                                                                                  bslib::navset_tab(id = ns("navset_climat"),
 
-                                                                                                                   bslib::nav_panel("Surface de canopée",
+                                                                                                                   bslib::nav_panel("Surface de canopée urbaine",
 
                                                                                                                                     tags$div(
                                                                                                                                       br(),
-                                                                                                                                      h4(strong("Détails méthodologiques : surface de canopée")),
+                                                                                                                                      h4(strong("Détails méthodologiques : surface de canopée urbaine")),
                                                                                                                                       # br(),
-                                                                                                                                      bslib::accordion(!!!taux_canopee_doc_panels, open = FALSE),
+                                                                                                                                      bslib::accordion(!!!surface_canopee_doc_panels, open = FALSE),
                                                                                                                                       br()
                                                                                                                                       # h5(strong("Descriptif des variables")),
                                                                                                                                       # br(),

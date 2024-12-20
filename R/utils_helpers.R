@@ -405,6 +405,16 @@ subsidies_measure_icons <- subsidies_measure_palette_table |>
 # subsidies_measure_detail_colors <- subsidies_measure_palette_table$color |>
 #   setNames(nm = subsidies_measure_palette_table$mesure)
 
+### Canopee palette ----
+
+surface_canopee_palette <- list("avec canopée >3m" = "limegreen",
+                                "sans canopée >3m" = "grey75"
+)
+
+### Natural hazards palette ----
+
+batiment_danger_palette <- list("danger moyen" = "#ffdb0f",
+                                "danger élevé" = "#FF870F")
 
 # Non-reactive objects for input widgets ----
 

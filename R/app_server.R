@@ -370,13 +370,13 @@ app_server <- function(input, output, session) {
                             unit = "ha",
                             coerce_dodge = FALSE, # these should not be stacked --> don't make sense
                             var_cat = "categorie",
-                            color_palette = default_palette, # default_palette, dedicated one, or one color
+                            color_palette = surface_canopee_palette, # default_palette, dedicated one, or one color
                             legend_title = "Hectares : ",
                             dl_prefix = "canopee_urbaine_",
                             doc_vars = NULL # for now
   )
 
-  ## natural hazards (generic)
+  ## natural hazards (generic) ----
   mod_generic_charts_server("buildings_exposure_hazards",
                             subsetData = reactive({inputVals$adaptationDatasets$batiment_danger}),
                             inputVals = inputVals,
@@ -386,7 +386,7 @@ app_server <- function(input, output, session) {
                             unit = "Bâtiments",
                             coerce_dodge = FALSE,
                             var_cat = "categorie", # ask OCDC to change dataset var name...
-                            color_palette = default_palette, # default_palette, dedicated one, or one color
+                            color_palette = batiment_danger_palette, # default_palette, dedicated one, or one color
                             legend_title = "Bâtiments : ",
                             dl_prefix = "bat_danger_",
                             doc_vars = NULL # for now
@@ -395,7 +395,7 @@ app_server <- function(input, output, session) {
 
   # Output modules mobility ----
 
-  ## mod_generic_charts ----
+  ## EV share ----
 
   mod_generic_charts_server("part_voit_elec",
                             subsetData = reactive({inputVals$mobilityDatasets$part_voit_elec}),
@@ -406,12 +406,13 @@ app_server <- function(input, output, session) {
                             unit = "%",
                             coerce_dodge = FALSE,
                             var_cat = NULL,
-                            color_palette = "darkolivegreen4", # default_palette, dedicated one, or one color
+                            color_palette = "#6495ED", # default_palette, dedicated one, or one color
                             legend_title = NULL,
                             dl_prefix = "part_ve_",
                             doc_vars = NULL # for now
   )
 
+  ## Motorisation rate ----
   mod_generic_charts_server("taux_motorisation",
                             subsetData = reactive({inputVals$mobilityDatasets$taux_motorisation}),
                             inputVals = inputVals,
@@ -421,22 +422,23 @@ app_server <- function(input, output, session) {
                             unit = "vhc/1000 habitants",
                             coerce_dodge = FALSE,
                             var_cat = NULL,
-                            color_palette = "pink", # default_palette, dedicated one, or one color
+                            color_palette = "#6495ED", # default_palette, dedicated one, or one color
                             legend_title = NULL,
                             dl_prefix = "taux_motorisation_",
                             doc_vars = NULL # for now
   )
 
+  ## Desserte quality ----
   mod_generic_charts_server("qualite_desserte",
                             subsetData = reactive({inputVals$mobilityDatasets$qualite_desserte}),
                             inputVals = inputVals,
                             var_commune = "commune",
                             var_year = "annee",
-                            var_values = "qualite_desserte_population", #c("qualite_desserte_emploi", "qualite_desserte_population"), #"qualite_desserte_emploi",
+                            var_values = c("qualite_desserte_emploi", "qualite_desserte_population"), #"qualite_desserte_emploi",
                             unit = "-",
                             coerce_dodge = FALSE,
                             var_cat = NULL,
-                            color_palette = "burlywood1", # default_palette, dedicated one, or one color
+                            color_palette = "#6495ED", # default_palette, dedicated one, or one color
                             legend_title = NULL,
                             dl_prefix = "desserte_tp_",
                             doc_vars = NULL # for now

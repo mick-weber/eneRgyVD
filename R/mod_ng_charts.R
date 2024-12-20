@@ -202,10 +202,12 @@ mod_ng_charts_server <- function(id,
 
     download_data <- reactive({
 
-      # Make colnames nicelly formatted and add the current unit
+      # Add first the current unit and then make colnames nicelly formatted
       subsetData() |>
-        rename_fr_colnames() |>        # fct_helpers.R
-        add_colname_units(unit = inputVals$energyUnit)
+        add_colname_unit(colnames = "consommation",
+                         unit = inputVals$energyUnit) |>
+        rename_fr_colnames()
+
 
     })
 

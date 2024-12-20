@@ -205,12 +205,14 @@ mod_elec_charts_server <- function(id,
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_fr_colnames()  |>  # fct_helpers.R
-        add_colname_unit(colnames = c("puissance_electrique_installee",
-                                      "injection",
-                                      "autoconsommation",
-                                      "production"),
-                         unit = inputVals$energyUnit)  # fct_helpers.R
+        add_colname_unit(colnames = c(
+          "consommation",                   # elec_cons
+          "puissance_electrique_installee", # elec_prod
+          "injection",                      # elec_prod
+          "autoconsommation",               # elec_prod
+          "production"),                    # elec_prod
+                         unit = inputVals$energyUnit) |>
+        rename_fr_colnames()
 
     })
 

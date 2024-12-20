@@ -261,11 +261,9 @@ mod_regener_needs_charts_server <- function(id,
 
       # We send data in wide format too (Besoins actuels/optimaux)
       subsetData_wide() |>
-        # Add the currently selected unit in the colnames (conversion is already done)
-        rename_fr_colnames() |>  # fct_helpers.R
-        # Add energy units in brackets for energy/power related columns
         add_colname_unit(colnames = dplyr::contains("besoins"),
-                          unit = inputVals$energyUnit) # fct_helpers.R
+                          unit = inputVals$energyUnit) |>
+        rename_fr_colnames()
 
     })
 

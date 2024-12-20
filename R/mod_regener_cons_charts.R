@@ -258,21 +258,20 @@ mod_regener_cons_charts_server <- function(id,
 
         subset_rgr_cons_1() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          rename_fr_colnames() |> # fct_helpers.R
           add_colname_unit(colnames = "consommation",
                             unit = inputVals$energyUnit) |>
           add_colname_unit(colnames = "co2_direct",
-                            unit = inputVals$co2Unit) # fct_helpers.R
+                            unit = inputVals$co2Unit) |>
+          rename_fr_colnames()
 
           } else if(input$tab_table_type == "aff"){
 
         subset_rgr_cons_2() |> # from app_server.R
-          # Add the currently selected unit in the colnames (conversion is already done)
-              rename_fr_colnames() |>  # fct_helpers.R
               add_colname_unit(colnames = "consommation",
                                 unit = inputVals$energyUnit) |>
               add_colname_unit(colnames = "co2_direct",
-                                unit = inputVals$co2Unit) # fct_helpers.R
+                                unit = inputVals$co2Unit) |>
+              rename_fr_colnames()
       }
 
     })

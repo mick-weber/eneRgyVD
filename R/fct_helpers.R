@@ -297,8 +297,9 @@ create_bar_ggiraph <- function(data,
     ))
 
 
-  # geom_text conditionnally --> only if bars are stacked, otherwise it's messy
-    if (!isTRUE(dodge)) {
+  # geom_text conditionnally --> only if bars are stacked & no var_cat supplied
+
+    if (!isTRUE(dodge) & !is.null(var_cat)) {
       ggplot <- ggplot +
         ggiraph::geom_text_interactive(
           data = data_totals,
@@ -789,7 +790,7 @@ create_rg_misc_table_dt <- function(data,
                                                scientific = FALSE))) |>
     dplyr::relocate(commune, etat) |>
     rename_misc_colnames() |>
-    # add_colname_units(unit = unit) |>  # fct_helpers.R
+    # add_colname_unit(unit = unit) |>  # fct_helpers.R
     #turn to DT
     DT::datatable(escape = F, # rendering the icons instead of text
                   extensions = 'Buttons',
@@ -1162,7 +1163,7 @@ add_colname_unit <- function(data,
   power_keyword <- "puissance"
 
   data <- data |>
-    dplyr::rename_with(.cols = dplyr::all_of(colnames[!stringr::str_detect(colnames, pattern = power_keyword)]),
+    dplyr::rename_with(.cols = dplyr::any_of(colnames[!stringr::str_detect(colnames, pattern = power_keyword)]),
                        .fn = \(col) paste0(col, " [", unit, "]"))
 
   # Energy specificity : if a power_col_keyword colname is detected AND unit is energy

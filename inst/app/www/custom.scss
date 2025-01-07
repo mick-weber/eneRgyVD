@@ -285,6 +285,9 @@ a {
 
 /*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
 .btnDownloadAll{
+  display:flex;
+  align-items:center;
+  gap: 0.5em;
   width:100% !important;
   background-color:white !important;
   color: black !important;
@@ -292,7 +295,13 @@ a {
   font-size:1rem;
   padding-top:0.75rem;
   padding-bottom:0.75rem;
+  text-decoration: none;
+
 }
+
+.btnDownloadAll:hover {
+        text-decoration: underline;
+      }
 
 /*Set card header background to transparent*/
 .card-header{

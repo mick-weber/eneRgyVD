@@ -47,16 +47,16 @@ mod_download_all_data_server <- function(id,
         # Real download button
         shiny::downloadButton(outputId = ns("download_all_excel"),
                               class = "btnDownloadAll",
-                              icon = icon("file-excel", class = "fa-lg fa-solid m-2"), # fa-lg is 33% increase
-                              label = "Téléchargement prêt"
+                              label = tagList(phosphoricons::ph("file-xls", height = "1.66em"), 'Téléchargement prêt !'),
+                              icon = NULL #see ph above
         )
       }else{
 
         # Dummy download button + warning text
           shiny::actionButton(inputId = ns("dummy_disabled"),
                               class = "btnDownloadAll",
-                              icon = icon("ban", class = "fa-lg m-2"), # fa-lg is 33% increase
-                              label = "Attente de sélection",
+                              label = tagList(phosphoricons::ph("prohibit", height = "1.66em"), 'Attente de sélection'),
+                              icon = NULL, #see ph above
                               disabled = TRUE
           )
       }

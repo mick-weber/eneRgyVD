@@ -177,7 +177,6 @@ app_ui <- function(request) {
       # Navigation panels ----
       ## Carte ----
       bslib::nav_panel("Accueil",
-                       # icon = icon("map"),
                        bslib::layout_column_wrap(
                          height_mobile = "200vh", # when mobile we allow 2x scren height of scrollable area (map+2statboxes)
                          fill = TRUE,
@@ -214,7 +213,6 @@ app_ui <- function(request) {
 
       ## Energie ----
       bslib::nav_menu("Energie",
-                      # icon = icon("bolt"),
 
                       ### Electricite ----
                       bslib::nav_panel("Electricité",

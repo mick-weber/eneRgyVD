@@ -218,7 +218,7 @@ app_ui <- function(request) {
                       bslib::nav_panel("Electricité",
                                        icon = phosphoricons::ph("lightning",
                                                                 weight = "fill",
-                                                                fill = "gold"), #icon("bolt", class = "text-primary"),
+                                                                fill = "gold"),
 
                                        bslib::navset_card_tab(id = "navset_elec",
 
@@ -254,7 +254,7 @@ app_ui <- function(request) {
                       bslib::nav_panel("Gaz naturel",
                                        icon = phosphoricons::ph("flame",
                                                                 weight = "fill",
-                                                                fill = "#4A708B"), #icon("fire-flame-simple", class = "text-primary"),
+                                                                fill = "#4A708B"),
 
                                        bslib::navset_card_tab(id = "navset_ng",
 
@@ -273,7 +273,7 @@ app_ui <- function(request) {
                       bslib::nav_panel("Chaleur des bâtiments",
                                        icon = phosphoricons::ph("building-apartment",
                                                                 weight = "fill",
-                                                                fill = "black"),#icon("city", class = "text-primary"),
+                                                                fill = "black"),
 
                                        bslib::navset_card_tab(id = "navset_regener",
 

@@ -17,7 +17,7 @@ mod_table_content_ui <- function(id){
                                   id = "tooltip_toc_card",
                                   placement = "right",
                                   options = list(customClass = "customTooltips"), # custom.scss
-                                  trigger = bsicons::bs_icon("info-circle"),
+                                  trigger = phosphoricons::ph("info"),
 
                                   "L'accès aux données peut se faire via la barre de navigation ou directement en cliquant sur les liens ci-dessous"))
                          ),
@@ -28,47 +28,47 @@ mod_table_content_ui <- function(id){
                    class = "TOCaccordionPanelBold", # custom.scss : affects only this TOC module !
                    open = FALSE,
                    multiple = TRUE,
-                   bslib::accordion_panel(title = "Électricité", value = "elec", icon = icon("bolt", class = "text-primary"),
+                   bslib::accordion_panel(title = "Électricité", value = "elec", icon = phosphoricons::ph("lightning", weight = "fill", fill = "gold"),
                                           tags$div(class = "row", actionLink(ns("data_1"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Distribution"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_2"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Production",  icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             tags$span(style = "margin-left:15px;", "Production"),  icon = NULL, tags$span(phosphoricons::ph("arrow-square-out"))))
                    ),
 
-                   bslib::accordion_panel(title = "Gaz naturel", value = "ng", icon = icon("fire", class = "text-primary"),
+                   bslib::accordion_panel(title = "Gaz naturel", value = "ng", icon = phosphoricons::ph("flame", weight = "fill", fill = "#4A708B"),
                                           tags$div(class = "row", actionLink(ns("data_8"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Distribution", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             tags$span(style = "margin-left:15px;", "Distribution"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out"))))
                    ),
-                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener", icon = icon("city", class = "text-primary"),
+                   bslib::accordion_panel(title = "Chaleur bâtiments", value = "regener", icon = phosphoricons::ph("building-apartment", weight = "fill", fill = "black"),
                                           tags$div(class = "row", actionLink(ns("data_3"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Besoins théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Besoins théoriques"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_4"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Consommations théoriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Consommations théoriques"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_5"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Informations bâtiments", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             tags$span(style = "margin-left:15px;", "Informations bâtiments"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out"))))
                    ),
-                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies", icon = icon("house-circle-check", class = "text-primary"),
+                   bslib::accordion_panel(title = "Subventions bâtiments", value = "subsidies", icon = phosphoricons::ph("files"),
                                           tags$div(class = "row", actionLink(ns("data_6"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Vue par bâtiments subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Vue par bâtiments subventionnés"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_7"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Vue par travaux subventionnés", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             tags$span(style = "margin-left:15px;", "Vue par travaux subventionnés"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out"))))
 
                    ),
-                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation", icon = icon("temperature-half", class = "text-primary"),
+                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation", icon = phosphoricons::ph("thermometer-simple", weight = "fill", fill = "#EE7600"),
                                           tags$div(class = "row", actionLink(ns("data_20"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Surface de canopée urbaine", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Surface de canopée urbaine"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_21"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Exposition aux dangers naturels", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             tags$span(style = "margin-left:15px;", "Exposition aux dangers naturels"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out"))))
 
                    ),
 
-                   bslib::accordion_panel(title = "Mobilité", value = "mobility", icon = icon("car", class = "text-primary"),
+                   bslib::accordion_panel(title = "Mobilité", value = "mobility", icon = phosphoricons::ph("road-horizon", weight = "bold", fill = "grey20"),
                                           tags$div(class = "row", actionLink(ns("data_30"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Part des voitures électriques", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Part des voitures électriques"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_31"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Taux de motorisation", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right")))),
+                                                                             tags$span(style = "margin-left:15px;", "Taux de motorisation"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_32"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             "Qualité de desserte des transports publics", icon = NULL, tags$span(bsicons::bs_icon("box-arrow-up-right"))))
+                                                                             tags$span(style = "margin-left:15px;", "Qualité de desserte des transports publics"), icon = NULL, tags$span(phosphoricons::ph("arrow-square-out"))))
                    )
                  )#End accordion
         )#End introjs div

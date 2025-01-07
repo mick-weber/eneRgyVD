@@ -240,20 +240,6 @@
       ],
       "Hash": "c1ee497a6d999947c2c224ae46799b1a"
     },
-    "bsicons": {
-      "Package": "bsicons",
-      "Version": "0.1.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "cli",
-        "htmltools",
-        "rlang",
-        "utils"
-      ],
-      "Hash": "d8f892fbd94d0b9b1f6d688b05b8633c"
-    },
     "bslib": {
       "Package": "bslib",
       "Version": "0.8.0",
@@ -639,6 +625,7 @@
         "sf",
         "shiny",
         "shinyWidgets",
+        "shinybrowser",
         "shinycssloaders",
         "shinylogs",
         "stringr",
@@ -1354,6 +1341,17 @@
       ],
       "Hash": "6e8b139c1904f5e9e14c69db64453bbe"
     },
+    "phosphoricons": {
+      "Package": "phosphoricons",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "htmltools"
+      ],
+      "Hash": "707ea26830bf7a2630955559dada2f72"
+    },
     "pillar": {
       "Package": "pillar",
       "Version": "1.9.0",
@@ -1978,6 +1976,17 @@
         "shiny"
       ],
       "Hash": "fd8239886f70daa85c36596214958451"
+    },
+    "shinybrowser": {
+      "Package": "shinybrowser",
+      "Version": "1.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "shiny"
+      ],
+      "Hash": "0f3fec942ab67d497e1d89f71d99b637"
     },
     "shinycssloaders": {
       "Package": "shinycssloaders",

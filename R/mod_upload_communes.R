@@ -20,14 +20,14 @@ mod_upload_communes_ui <- function(id){
                id = "tooltip_import_communes",
                placement = "right",
                options = list(customClass = "customTooltips"), # custom.scss
-               trigger = bsicons::bs_icon("info-circle"),
+               trigger = phosphoricons::ph("info"),
                "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes, par exemple pour une agglomération"
              )),
 
       bslib::accordion(open = FALSE,
                        class = "fs-sidebar-header rotatedSVG", # custom.css
                        bslib::accordion_panel(title = "Fichier de communes",
-                                              icon = bsicons::bs_icon("cloud-arrow-up-fill"),
+                                              icon = phosphoricons::ph("cloud-arrow-up"),
                                               style = "padding-bottom:0px;", # remove excessive padding below content
 
                                               shiny::fileInput(ns("file_communes"),

@@ -99,7 +99,7 @@ make_statbox_item <- function(iconBgClass,
 #' @importFrom purrr map2
 #' @importFrom bslib accordion_panel
 #' @importFrom shiny markdown
-#' @importFrom bsicons bs_icon
+#' @importFrom phosphoricons ph
 #'
 #' @return a list of HTML accordion_panels to be spliced in a `bslib::accordion()`
 #' @export
@@ -138,7 +138,7 @@ generate_doc_accordion_panels <- function(md_file){
 
     bslib::accordion_panel(
       title,
-      icon = bsicons::bs_icon("question-circle", class = "text-secondary"),
+      icon = phosphoricons::ph("question"),
       shiny::tags$div(class = "customPanel",
                       shiny::markdown(paragraph))
     )

@@ -54,7 +54,7 @@ mod_stats_box_server <- function(id,
                       id = ns("tooltip_card"),
                       placement = "right",
                       options = list(customClass = "customTooltips"), # custom.scss
-                      trigger = bsicons::bs_icon("info-circle"),
+                      trigger = phosphoricons::ph("info"),
                       "Les années de référence correspondent aux dernières années pour lesquelles des données sont disponibles"
                     )),
 

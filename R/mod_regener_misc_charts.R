@@ -30,7 +30,7 @@ mod_regener_misc_charts_ui <- function(id,
                                        id = ns("tooltip_data_help"),
                                        placement = "right",
                                        options = list(customClass = "customTooltips"), # custom.scss
-                                       trigger = bsicons::bs_icon("info-circle"),
+                                       trigger = phosphoricons::ph("info"),
                                        generic_method_warning # utils_text_and_links.R
                                      )
                    ))
@@ -44,7 +44,7 @@ mod_regener_misc_charts_ui <- function(id,
 
     ### Table ----
     bslib::nav_panel(title = "Table",
-                     icon = bsicons::bs_icon("table"),
+                     icon = phosphoricons::ph("table"),
 
                      # Download buttons
                      mod_download_data_ui(ns("table_download")),

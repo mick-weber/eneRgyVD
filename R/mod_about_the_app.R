@@ -304,9 +304,7 @@ mod_about_the_app_ui <- function(id){
                                                              tags$div(class = "d-flex align-items-center",
 
                                                                       tags$a(href = link_github,
-                                                                             bsicons::bs_icon("github",
-                                                                                              size = "3rem",
-                                                                                              class = "text-secondary"),
+                                                                             phosphoricons::ph("github-logo", height = "3em", fill = "black"),
                                                                              target = "_blank"),
                                                                       tags$a(class = "m-0 ps-3",
                                                                              href = link_github,

@@ -23,6 +23,7 @@ Imports:
     leaflet,
     leaflet.extras,
     markdown,
+    phosphoricons,
     plotly,
     promises,
     purrr,

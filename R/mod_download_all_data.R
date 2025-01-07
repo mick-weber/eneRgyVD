@@ -17,7 +17,7 @@ mod_download_all_data_ui <- function(id){
              id = "tooltip_download_all",
              placement = "right",
              options = list(customClass = "customTooltips"), # custom.scss
-             trigger = bsicons::bs_icon("info-circle"),
+             trigger = phosphoricons::ph("info"),
              "Exporter toutes les données du profil climatique au format Excel (un onglet par donnée)"
            ),
            style = "margin-bottom:0.5rem !important;"),

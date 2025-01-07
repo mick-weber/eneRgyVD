@@ -50,6 +50,7 @@ usethis::use_package("shinylogs") # record session logs for user tracking
 # UPDATE bs5
 
 usethis::use_package("bslib")
+usethis::use_package("phosphoricons")
 
 
 ## Add modules ----

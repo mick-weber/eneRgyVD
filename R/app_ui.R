@@ -113,15 +113,15 @@ app_ui <- function(request) {
                   ),
                   tags$ul(
                     class = "dropdown-menu dropdown-menu-end",
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("envelope", class = "text-primary"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph("envelope"),
                            "Contact", href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph("link-simple"),
                            "Plan énergie climat", href = link_pecc, target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph("link-simple"),
                            "OCDC", href = link_ocdc, target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("link", class = "text-primary"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph("link-simple"),
                            "DGE-DIREN", href = link_diren, target = "_blank"),
-                    tags$a(class = "dropdown-item", bsicons::bs_icon("github", class = "text-primary"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph("github-logo"),
                            "GitHub",  href = link_github, target = "_blank")
                   )
           )
@@ -191,7 +191,7 @@ app_ui <- function(request) {
                                        id = "tooltip_map_card",
                                        placement = "right",
                                        options = list(customClass = "customTooltips"), # custom.scss
-                                       trigger = bsicons::bs_icon("info-circle"),
+                                       trigger = phosphoricons::ph("info"),
 
                                        "En cas de fusions communales, un décalage de quelques semaines peut être nécessaire
                                         pour mettre à jour les données avec les nouveaux périmètres communaux")
@@ -218,7 +218,9 @@ app_ui <- function(request) {
 
                       ### Electricite ----
                       bslib::nav_panel("Electricité",
-                                       icon = icon("bolt", class = "text-primary"),
+                                       icon = phosphoricons::ph("lightning",
+                                                                weight = "fill",
+                                                                fill = "gold"), #icon("bolt", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_elec",
 
@@ -252,7 +254,9 @@ app_ui <- function(request) {
 
                       ### Gaz naturel ----
                       bslib::nav_panel("Gaz naturel",
-                                       icon = icon("fire-flame-simple", class = "text-primary"),
+                                       icon = phosphoricons::ph("flame",
+                                                                weight = "fill",
+                                                                fill = "#4A708B"), #icon("fire-flame-simple", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_ng",
 
@@ -269,7 +273,9 @@ app_ui <- function(request) {
 
                       ### Chaleur batiments ----
                       bslib::nav_panel("Chaleur des bâtiments",
-                                       icon = icon("city", class = "text-primary"),
+                                       icon = phosphoricons::ph("building-apartment",
+                                                                weight = "fill",
+                                                                fill = "black"),#icon("city", class = "text-primary"),
 
                                        bslib::navset_card_tab(id = "navset_regener",
 
@@ -307,7 +313,7 @@ app_ui <- function(request) {
 
                       ### Subventions ----
                       bslib::nav_panel("Subventions bâtiments",
-                                       icon = icon("house-circle-check", class = "text-primary"),
+                                       icon = phosphoricons::ph("files"),
 
                                        bslib::navset_card_tab(id = "navset_subsidies",
 
@@ -338,7 +344,9 @@ app_ui <- function(request) {
       bslib::nav_menu("Adaptation climat",
                       # Canopée ----
                       bslib::nav_panel("Surface de canopée urbaine",
-                                       icon = icon("leaf", class = "text-primary"),
+                                       icon = phosphoricons::ph("tree",
+                                                                weight = "fill",
+                                                                fill = "#3A862D"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_canopy",
                                                               bslib::nav_panel(title = "Surface de canopée urbaine",
@@ -355,7 +363,8 @@ app_ui <- function(request) {
 
                       # Dangers naturels (bâtiments) ----
                       bslib::nav_panel("Exposition aux dangers naturels",
-                                       icon = icon("circle-exclamation", class = "text-primary"),
+                                       icon = phosphoricons::ph("warning-diamond",
+                                                                fill = "#EE7600"),
                                        #Nested navaset_card_tab()
                                        bslib::navset_card_tab(id = "navset_natural_hazards",
                                                               bslib::nav_panel(title = "Bâtiments exposés à des dangers naturels",
@@ -378,7 +387,7 @@ app_ui <- function(request) {
 
                       # Véhicules électriques
                       bslib::nav_panel("Véhicules électriques",
-                                       icon = icon("car", class = "text-primary"),
+                                       icon = phosphoricons::ph("car", weight = "fill", fill = "#EEB422"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_vehicules",
                                                               bslib::nav_panel(title = "Part des voitures électriques",
@@ -393,7 +402,7 @@ app_ui <- function(request) {
 
                       # Taux de motorisation ----
                       bslib::nav_panel("Taux de motorisation",
-                                       icon = icon("car", class = "text-primary"),
+                                       icon =  phosphoricons::ph("car-profile", weight = "fill", fill = "black"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_taux_motorisation",
                                                               bslib::nav_panel(title = "Taux de motorisation",
@@ -408,7 +417,7 @@ app_ui <- function(request) {
 
                       # Transports publics
                       bslib::nav_panel("Transports publics",
-                                       icon = icon("bus", class = "text-primary"),
+                                       icon = phosphoricons::ph("tram"),
                                        # Nested navset_card_tab()
                                        bslib::navset_card_tab(id = "navset_qualite_desserte",
                                                               bslib::nav_panel(title = "Qualité de desserte des transports publics",
@@ -426,19 +435,20 @@ app_ui <- function(request) {
       bslib::nav_menu("Divers",
 
                       ### About ----
-                      bslib::nav_panel("À propos",icon = bsicons::bs_icon("question-circle", class = "text-primary"),
+                      bslib::nav_panel("À propos",
+                                       icon = phosphoricons::ph("question-mark"),
 
                                        mod_about_the_app_ui("about")
 
                       ),
                       ### News ----
                       bslib::nav_panel("Nouveautés",
-                                       icon = bsicons::bs_icon("star", class = "text-primary"),
+                                       icon = phosphoricons::ph("star"),
 
                                        mod_news_ui("news")
                       ),
                       ### Chiffres-clés ----
-                      bslib::nav_panel("Chiffres-clés", icon = bsicons::bs_icon("bar-chart", class = "text-primary"),
+                      bslib::nav_panel("Chiffres-clés", icon = phosphoricons::ph("chart-bar"),
 
                                        bslib::layout_columns(col_widths = c(-1, 9, -2),
 
@@ -450,7 +460,8 @@ app_ui <- function(request) {
                       bslib::nav_item(
                         tags$a(
                           class = "dropdown-item",
-                          bsicons::bs_icon("envelope", class = "text-primary"), "Contact",
+                          phosphoricons::ph("envelope"),
+                          "Contact",
                           href = paste0("mailto:", mail_address, "?subject=Question profil climatique"), target = "_blank"
                         )
                       )

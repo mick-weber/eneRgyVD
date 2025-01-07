@@ -162,6 +162,7 @@ mod_regener_cons_charts_server <- function(id,
     output$plot_render_ui <- renderUI({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      req(subset_rgr_cons_1_last_year())
 
 
       if(input$tab_plot_type == "use"){

@@ -201,6 +201,7 @@ mod_regener_needs_charts_server <- function(id,
     output$plot_render_ui <- renderUI({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      req(subsetData())
 
       # Plot logic ----
 

@@ -158,6 +158,7 @@ mod_subsidies_building_charts_server <- function(id,
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
       validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
+      req(subsetData())
 
       # Compute number of rows
       num_facets <- length(unique(subsetData()$commune))

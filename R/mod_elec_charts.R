@@ -154,6 +154,7 @@ mod_elec_charts_server <- function(id,
     output$chart_1 <- ggiraph::renderGirafe({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      req(subsetData())
 
       # Compute number of rows
       num_facets <- length(unique(subsetData()$commune))

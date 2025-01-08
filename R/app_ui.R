@@ -445,15 +445,15 @@ app_ui <- function(request) {
 
                                        mod_news_ui("news")
                       ),
-                      ### Chiffres-clés ----
-                      bslib::nav_panel("Chiffres-clés", icon = phosphoricons::ph(title = NULL, "chart-bar"),
-
-                                       bslib::layout_columns(col_widths = c(-1, 9, -2),
-
-                                                             mod_stats_box_ui("vd_box"),
-                                                             mod_stats_box_ui("communes_box")
-                                       )
-                      ),
+                      # ### Chiffres-clés ---- DISABLED FOR NOW
+                      # bslib::nav_panel("Chiffres-clés", icon = phosphoricons::ph(title = NULL, "chart-bar"),
+                      #
+                      #                  bslib::layout_columns(col_widths = c(-1, 9, -2),
+                      #
+                      #                                        mod_stats_box_ui("vd_box"),
+                      #                                        mod_stats_box_ui("communes_box")
+                      #                  )
+                      # ),
                       ### Contact ----
                       bslib::nav_item(
                         tags$a(

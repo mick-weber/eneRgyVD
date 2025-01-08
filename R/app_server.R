@@ -444,108 +444,108 @@ app_server <- function(input, output, session) {
                             doc_vars = NULL # for now
   )
 
-  #  ## Statboxes ----
-
-  ### VD Box ----
-  #  # Must be dynamically rendered because it depends on energyUnit (reactive)
-
-  observe({
-
-    req(inputVals$energyUnit)
-
-    mod_stats_box_server("vd_box",
-                         parent = session,
-                         title = strong("Synthèse : Canton de Vaud"),
-                         energyUnit = inputVals$energyUnit,
-
-                         # Computed in utils_helpers.R (using years below) then converted if needed
-                         elec_prod_value = elec_prod_vd_last_year |>
-                           convert_units(unit_from = "kWh",
-                                         colnames = NULL,
-                                         unit_to = inputVals$energyUnit),
-
-                         cons_rg_value = cons_rg_vd_last_year |>
-                           convert_units(unit_from = "kWh",
-                                         colnames = NULL,
-                                         unit_to = inputVals$energyUnit),
-
-                         subsidies_value = subsidies_m01_vd_last_year,
-
-                         elec_cons_value = elec_cons_vd_last_year |>
-                           convert_units(unit_from = "kWh",
-                                         colnames = NULL,
-                                         unit_to = inputVals$energyUnit),
-
-                         ng_cons_value = ng_cons_vd_last_year |>
-                           convert_units(unit_from = "kWh",
-                                         colnames = NULL,
-                                         unit_to = inputVals$energyUnit),
-
-                         # Computed in utils_helpers.R for both statboxes
-                         year_elec_prod = last_year_elec_prod,
-                         year_elec_cons = last_year_elec_cons,
-                         year_rgr = last_year_rgr,
-                         year_subsidies = last_year_subsidies,
-                         year_ng_cons = last_year_ng_cons
-
-    )
-
-  })
-
-
-  ### Communes box ----
-  # This is dependant on a UI's conditionalpanel toggled with output.commune below
-  # So that we remove the statbox if no more commune is selected (it was persisting without it)
-
-  observe({
-
-    # Make sure everything is available before sending values
-    req(inputVals$energyUnit)
-    req(inputVals$elec_cons_last_year)
-    req(inputVals$elec_prod_last_year)
-    req(inputVals$max_year_rg_cons)
-    req(inputVals$max_year_subsidies_m01)
-    req(inputVals$elec_cons_last_year)
-    req(inputVals$ng_cons_last_year)
-
-    check_selected_communes <- !is.null(inputVals$selectedCommunes)
-
-    mod_stats_box_server("communes_box",
-                         parent = session,
-                         title = strong("Synthèse : Commune(s) sélectionnée(s)"),
-                         energyUnit = inputVals$energyUnit,
-
-                         # Computed in utils_helpers.R (using years below) then converted if needed
-                         elec_prod_value = ifelse(
-                           check_selected_communes,
-                           inputVals$elec_prod_last_year,
-                           0),
-                         cons_rg_value = ifelse(
-                           check_selected_communes,
-                           inputVals$max_year_rg_cons,
-                           0),
-                         subsidies_value = ifelse(
-                           check_selected_communes,
-                           inputVals$max_year_subsidies_m01,
-                           0),
-                         elec_cons_value = ifelse(
-                           check_selected_communes,
-                           inputVals$elec_cons_last_year,
-                           0),
-
-                         ng_cons_value = ifelse(
-                           check_selected_communes,
-                           inputVals$ng_cons_last_year,
-                           0),
-
-                         # Computed in utils_helpers.R for both statboxes
-                         year_elec_prod = last_year_elec_prod,
-                         year_elec_cons = last_year_elec_cons,
-                         year_rgr = last_year_rgr,
-                         year_subsidies = last_year_subsidies,
-                         year_ng_cons = last_year_ng_cons
-    )
-  })
+  # #  ## Statboxes ---- DISABLED FOR NOW
+  #
+  # ### VD Box ----
+  # #  # Must be dynamically rendered because it depends on energyUnit (reactive)
+  #
+  # observe({
+  #
+  #   req(inputVals$energyUnit)
+  #
+  #   mod_stats_box_server("vd_box",
+  #                        parent = session,
+  #                        title = strong("Synthèse : Canton de Vaud"),
+  #                        energyUnit = inputVals$energyUnit,
+  #
+  #                        # Computed in utils_helpers.R (using years below) then converted if needed
+  #                        elec_prod_value = elec_prod_vd_last_year |>
+  #                          convert_units(unit_from = "kWh",
+  #                                        colnames = NULL,
+  #                                        unit_to = inputVals$energyUnit),
+  #
+  #                        cons_rg_value = cons_rg_vd_last_year |>
+  #                          convert_units(unit_from = "kWh",
+  #                                        colnames = NULL,
+  #                                        unit_to = inputVals$energyUnit),
+  #
+  #                        subsidies_value = subsidies_m01_vd_last_year,
+  #
+  #                        elec_cons_value = elec_cons_vd_last_year |>
+  #                          convert_units(unit_from = "kWh",
+  #                                        colnames = NULL,
+  #                                        unit_to = inputVals$energyUnit),
+  #
+  #                        ng_cons_value = ng_cons_vd_last_year |>
+  #                          convert_units(unit_from = "kWh",
+  #                                        colnames = NULL,
+  #                                        unit_to = inputVals$energyUnit),
+  #
+  #                        # Computed in utils_helpers.R for both statboxes
+  #                        year_elec_prod = last_year_elec_prod,
+  #                        year_elec_cons = last_year_elec_cons,
+  #                        year_rgr = last_year_rgr,
+  #                        year_subsidies = last_year_subsidies,
+  #                        year_ng_cons = last_year_ng_cons
+  #
+  #   )
+  #
+  # })
+  #
+  #
+  # ### Communes box ----
+  # # This is dependant on a UI's conditionalpanel toggled with output.commune below
+  # # So that we remove the statbox if no more commune is selected (it was persisting without it)
+  #
+  # observe({
+  #
+  #   # Make sure everything is available before sending values
+  #   req(inputVals$energyUnit)
+  #   req(inputVals$elec_cons_last_year)
+  #   req(inputVals$elec_prod_last_year)
+  #   req(inputVals$max_year_rg_cons)
+  #   req(inputVals$max_year_subsidies_m01)
+  #   req(inputVals$elec_cons_last_year)
+  #   req(inputVals$ng_cons_last_year)
+  #
+  #   check_selected_communes <- !is.null(inputVals$selectedCommunes)
+  #
+  #   mod_stats_box_server("communes_box",
+  #                        parent = session,
+  #                        title = strong("Synthèse : Commune(s) sélectionnée(s)"),
+  #                        energyUnit = inputVals$energyUnit,
+  #
+  #                        # Computed in utils_helpers.R (using years below) then converted if needed
+  #                        elec_prod_value = ifelse(
+  #                          check_selected_communes,
+  #                          inputVals$elec_prod_last_year,
+  #                          0),
+  #                        cons_rg_value = ifelse(
+  #                          check_selected_communes,
+  #                          inputVals$max_year_rg_cons,
+  #                          0),
+  #                        subsidies_value = ifelse(
+  #                          check_selected_communes,
+  #                          inputVals$max_year_subsidies_m01,
+  #                          0),
+  #                        elec_cons_value = ifelse(
+  #                          check_selected_communes,
+  #                          inputVals$elec_cons_last_year,
+  #                          0),
+  #
+  #                        ng_cons_value = ifelse(
+  #                          check_selected_communes,
+  #                          inputVals$ng_cons_last_year,
+  #                          0),
+  #
+  #                        # Computed in utils_helpers.R for both statboxes
+  #                        year_elec_prod = last_year_elec_prod,
+  #                        year_elec_cons = last_year_elec_cons,
+  #                        year_rgr = last_year_rgr,
+  #                        year_subsidies = last_year_subsidies,
+  #                        year_ng_cons = last_year_ng_cons
+  #   )
+  # })
 
 
   ## tabInfo ----

@@ -138,7 +138,7 @@ generate_doc_accordion_panels <- function(md_file){
 
     bslib::accordion_panel(
       title,
-      icon = phosphoricons::ph("question"),
+      icon = phosphoricons::ph(title = NULL, "question"),
       shiny::tags$div(class = "customPanel",
                       shiny::markdown(paragraph))
     )
@@ -1076,7 +1076,7 @@ return_icons_subsidies <- function(which){
 create_geoportail_tag <- function(link){
 
   tags$span(
-    phosphoricons::ph("map-trifold"), strong("Géodonnées détaillées disponibles sur", tags$a(href = link, 'geo.vd.ch', target = '_blank'))
+    phosphoricons::ph(title = NULL, "map-trifold"), strong("Géodonnées détaillées disponibles sur", tags$a(href = link, 'geo.vd.ch', target = '_blank'))
   )
 
 }

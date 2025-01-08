@@ -31,7 +31,7 @@ mod_regener_cons_charts_ui <- function(id,
                                        id = ns("tooltip_data_help"),
                                        placement = "right",
                                        options = list(customClass = "customTooltips"), # custom.scss
-                                       trigger = phosphoricons::ph("info"),
+                                       trigger = phosphoricons::ph(title = NULL, "info"),
                                        generic_method_warning # utils_text_and_links.R
                                      )
                    ))
@@ -47,7 +47,7 @@ mod_regener_cons_charts_ui <- function(id,
     # nav_panel for better readability of plot / table
 
     bslib::nav_panel(title = "Graphique",
-                     icon = phosphoricons::ph("chart-bar"),
+                     icon = phosphoricons::ph(title = NULL, "chart-bar"),
 
  tags$p(class = "text-muted justify-content-center pb-2",
    "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
@@ -82,7 +82,7 @@ mod_regener_cons_charts_ui <- function(id,
       ),# End nav_panel 'Graphique'
 
       bslib::nav_panel(title = "Table",
-                       icon = phosphoricons::ph("table"),
+                       icon = phosphoricons::ph(title = NULL, "table"),
 
                        bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
 

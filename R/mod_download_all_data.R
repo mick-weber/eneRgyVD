@@ -17,7 +17,7 @@ mod_download_all_data_ui <- function(id){
              id = "tooltip_download_all",
              placement = "right",
              options = list(customClass = "customTooltips"), # custom.scss
-             trigger = phosphoricons::ph("info"),
+             trigger = phosphoricons::ph(title = NULL, "info"),
              "Exporter toutes les données du profil climatique au format Excel (un onglet par donnée)"
            ),
            style = "margin-bottom:0.5rem !important;"),
@@ -47,7 +47,7 @@ mod_download_all_data_server <- function(id,
         # Real download button
         shiny::downloadButton(outputId = ns("download_all_excel"),
                               class = "btnDownloadAll",
-                              label = tagList(phosphoricons::ph("file-xls", height = "1.66em"), 'Téléchargement prêt !'),
+                              label = tagList(phosphoricons::ph(title = NULL, "file-xls", height = "1.66em"), 'Téléchargement prêt !'),
                               icon = NULL #see ph above
         )
       }else{
@@ -55,7 +55,7 @@ mod_download_all_data_server <- function(id,
         # Dummy download button + warning text
           shiny::actionButton(inputId = ns("dummy_disabled"),
                               class = "btnDownloadAll",
-                              label = tagList(phosphoricons::ph("prohibit", height = "1.66em"), 'Attente de sélection'),
+                              label = tagList(phosphoricons::ph(title = NULL, "prohibit", height = "1.66em"), 'Attente de sélection'),
                               icon = NULL, #see ph above
                               disabled = TRUE
           )

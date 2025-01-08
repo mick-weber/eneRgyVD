@@ -17,7 +17,7 @@ mod_unit_converter_ui <- function(id){
              id = "tooltip_convert_unit",
              placement = "right",
              options = list(customClass = "customTooltips"), # custom.scss
-             trigger = phosphoricons::ph("info"),
+             trigger = phosphoricons::ph(title = NULL, "info"),
              "Modifier l'affichage et l'export des unités de certaines données"
            )
     ),
@@ -25,7 +25,7 @@ mod_unit_converter_ui <- function(id){
     bslib::accordion(open = FALSE,
                      class = "fs-sidebar-header rotatedSVG",
                      bslib::accordion_panel(title = "Afficher les unités",
-                                            icon = phosphoricons::ph("calculator"),
+                                            icon = phosphoricons::ph(title = NULL, "calculator"),
 
                                             bslib::navset_tab(
                                               bslib::nav_panel(title = tags$div(style = "font-size:1rem;", "Energie"),

@@ -30,7 +30,7 @@ mod_subsidies_building_charts_ui <- function(id,
                                        id = ns("tooltip_data_help"),
                                        placement = "right",
                                        options = list(customClass = "customTooltips"), # custom.scss
-                                       trigger = phosphoricons::ph("info"),
+                                       trigger = phosphoricons::ph(title = NULL, "info"),
                                        generic_method_warning # utils_text_and_links.R
                                      )
                    ))
@@ -46,7 +46,7 @@ mod_subsidies_building_charts_ui <- function(id,
       ## Graphique tabPanel ----
 
       bslib::nav_panel(title = "Graphique",
-                       icon = phosphoricons::ph("chart-bar"),
+                       icon = phosphoricons::ph(title = NULL, "chart-bar"),
                        # breating
                        br(),
 
@@ -99,7 +99,7 @@ mod_subsidies_building_charts_ui <- function(id,
       ## Table tabPanel ----
 
       bslib::nav_panel(title = "Table",
-                       icon = phosphoricons::ph("table"),
+                       icon = phosphoricons::ph(title = NULL, "table"),
 
                        # breathing
                        br(),

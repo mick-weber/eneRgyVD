@@ -32,7 +32,7 @@ mod_generic_charts_ui <- function(id,
                                        id = ns("tooltip_data_help"),
                                        placement = "right",
                                        options = list(customClass = "customTooltips"), # custom.scss
-                                       trigger = phosphoricons::ph("info"),
+                                       trigger = phosphoricons::ph(title = NULL, "info"),
                                        generic_method_warning # utils_text_and_links.R
                                      )
                    ))
@@ -48,7 +48,7 @@ mod_generic_charts_ui <- function(id,
 
                        ### Graph ----
                        bslib::nav_panel(title = "Graphique",
-                                        icon = phosphoricons::ph("chart-bar"),
+                                        icon = phosphoricons::ph(title = NULL, "chart-bar"),
 
                                         bslib::layout_columns(col_widths = c(-2, 4, 4, -2),
                                                                   class = "fs-materialSwitch",
@@ -105,7 +105,7 @@ mod_generic_charts_ui <- function(id,
 
                        ### Table ----
                        bslib::nav_panel(title = "Table",
-                                        icon = phosphoricons::ph("table"),
+                                        icon = phosphoricons::ph(title = NULL, "table"),
 
                                         # Download buttons
                                         mod_download_data_ui(ns("table_download")),

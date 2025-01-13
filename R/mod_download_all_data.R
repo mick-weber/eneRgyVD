@@ -78,7 +78,7 @@ mod_download_all_data_server <- function(id,
         elec_cons = inputVals$energyDatasets$elec_cons |>
           add_colname_unit(colnames = "consommation",
                            unit = inputVals$energyUnit) |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Prod elec renamed+units
         elec_prod = inputVals$energyDatasets$elec_prod |>
@@ -87,7 +87,7 @@ mod_download_all_data_server <- function(id,
                                         "autoconsommation",
                                         "production"),
                            unit = inputVals$energyUnit) |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         #add_colname_unit(unit = inputVals$energyUnit),
 
@@ -95,7 +95,7 @@ mod_download_all_data_server <- function(id,
         regener_besoins = inputVals$energyDatasets$regener_needs |>
           add_colname_unit(colnames = dplyr::contains("besoins"),
                            unit = inputVals$energyUnit) |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Regener renamed+units
         regener_cons_use = inputVals$energyDatasets$regener_cons_ae_use |>
@@ -103,7 +103,7 @@ mod_download_all_data_server <- function(id,
                             unit = inputVals$energyUnit) |>
           add_colname_unit(colnames = "co2_direct",
                             unit = inputVals$co2Unit) |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Regener renamed+units
         regener_cons_aff = inputVals$energyDatasets$regener_cons_ae_aff |>
@@ -111,29 +111,28 @@ mod_download_all_data_server <- function(id,
                            unit = inputVals$energyUnit) |>
           add_colname_unit(colnames = "co2_direct",
                            unit = inputVals$co2Unit) |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Regener misc renamed
         regener_autres = inputVals$energyDatasets$regener_misc |>
           # add_colname_unit() |>
-          rename_misc_colnames(),
+          rename_columns_output(),
 
         # Subsidies building
         subventions_bat = inputVals$energyDatasets$subsidies_by_building |>
           # add_colname_unit() |>
-          rename_misc_colnames() |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Subsidies measure
         subventions_mesure = inputVals$energyDatasets$subsidies_by_measure|>
           rename_misc_colnames() |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # NG consumption
         gaz_cons = inputVals$energyDatasets$ng_cons |>
           add_colname_unit(colnames = "consommation",
                             unit = inputVals$energyUnit) |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         ## |---------------------------------------------------------------|
         ##          ADAPTATION CLIMAT DATASETS ----
@@ -142,12 +141,12 @@ mod_download_all_data_server <- function(id,
         # Canopy area
         canopee = inputVals$adaptationDatasets$surface_canopee |>
           # add_colname_unit() |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Buildings natural hazards
         batiment_danger = inputVals$adaptationDatasets$batiment_danger |>
           # add_colname_unit() |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         ## |---------------------------------------------------------------|
         ##          MOBILITY DATASETS ----
@@ -156,17 +155,17 @@ mod_download_all_data_server <- function(id,
         # Electric vehicles
         part_ve = inputVals$mobilityDatasets$part_voit_elec |>
           # add_colname_unit() |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Motorisation
         taux_motorisation = inputVals$mobilityDatasets$taux_motorisation |>
           add_colname_unit(colnames = "taux_motorisation", unit = "v/1000hab.") |>
-          rename_fr_colnames(),
+          rename_columns_output(),
 
         # Public transportation quality
         qualite_desserte = inputVals$mobilityDatasets$qualite_desserte |>
           # add_colname_unit() |>
-          rename_fr_colnames()
+          rename_columns_output()
 
       )
     })

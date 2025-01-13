@@ -266,8 +266,6 @@ app_server <- function(input, output, session) {
                          var_cat = "secteur", # might be NULL if needed
                          var_values = "consommation",
                          color_palette = colors_sectors, # app's defaults is blue if no var_cat supplied
-                         # name of fct to create dt table
-                         fct_table_dt_type = create_cons_table_dt,
                          # name of dl prefix to supply to download module
                          dl_prefix = "elec_cons_",
                          # documentation file from utils_helpers.R
@@ -282,10 +280,8 @@ app_server <- function(input, output, session) {
                          var_year = "annee",
                          var_commune = "commune",
                          var_cat = "categorie",
-                         var_values = "production",
+                         var_values = c("production", "injection", "autoconsommation", "puissance_electrique_installee"),
                          color_palette = colors_categories,
-                         # name of fct to create dt table
-                         fct_table_dt_type = create_prod_table_dt,
                          # name of dl prefix to supply to download module
                          dl_prefix = "elec_prod_",
                          # documentation file from utils_helpers.R
@@ -312,7 +308,6 @@ app_server <- function(input, output, session) {
                                   var_cat = "type", # categorical var ('secteur'/'categorie', ...)
                                   var_values = "besoins", # prod/consumption/besoins
                                   color_palette = colors_rg_type, # utils_helpers.R
-                                  fct_table_dt_type = create_rg_needs_table_dt, # table function to pass (data specific)
                                   dl_prefix = "besoins_bat_",# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                   doc_vars = doc_datasets$regener # utils_helpers.R
   )

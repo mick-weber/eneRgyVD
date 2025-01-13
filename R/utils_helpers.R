@@ -167,27 +167,14 @@ co2_units_table <- dplyr::tribble(
 )
 
 ## Column replacement ----
-
-cols_renaming_vector <- c(
-  # regener_misc
-  "Commune" = "commune",
-  "Etat" = "etat",
-  "Catégorie" = "categorie",
-  "Surface de référence énergétique (m2)" = "SRE",
-  "Bâtiments chauffés" = "N_EGID",
-  "Bâtiments neufs (2001+)" = "N_NEW_POST_2000",
-  "Bâtiments rénovés légèrement (2001+)" = "N_RENOV_L_POST_2000",
-  "Bâtiments rénovés lourdement (2001+)" = "N_RENOV_H_POST_2000",
-  "Bâtiments sans rénovation récente" = "N_NO_RENOV",
-  "Bâtiments sans année de construction" = "N_NO_GBAUJ",
-
-  # subsidies
-  "Type de subvention" = "subv_type",
-
-  # mobility
-  "Part véhicules électriques" = "part_voit_elec",
-  "Bâtiments" = "nb_batiment_danger"
-)
+# load csv file of replacement columns for tables & downloads in ./inst/extdata/
+# used by rename_columns_output()
+colnames_replacement_display <- read.delim(file = "inst/extdata/colnames_replacement_display.csv",
+                                           header = TRUE,
+                                           sep = ";",
+                                           encoding = "UTF-8") |>
+  tidyr::as_tibble() |>
+  dplyr::distinct(colname, replacement)
 
 
 ## List of non-ASCII words that should replace internal colnames
@@ -477,7 +464,7 @@ regener_current_year <- max_regener_year
 #
 # #### VD electricity production for last available year
 #
-# last_year_elec_prod <- max(energy_datasets$elec_prod$annee) # When prod elec alone
+last_year_elec_prod <- max(energy_datasets$elec_prod$annee) # When prod elec alone
 #
 # elec_prod_vd_last_year <- energy_datasets$elec_prod |>
 #   dplyr::filter(commune == "Canton de Vaud") |>
@@ -487,7 +474,7 @@ regener_current_year <- max_regener_year
 #
 # #### VD electricity consumption for last available year
 #
-# last_year_elec_cons <- max(energy_datasets$elec_cons$annee) # When prod elec alone
+last_year_elec_cons <- max(energy_datasets$elec_cons$annee) # When prod elec alone
 #
 # elec_cons_vd_last_year <- energy_datasets$elec_cons |>
 #   dplyr::filter(commune == "Canton de Vaud") |>
@@ -498,7 +485,7 @@ regener_current_year <- max_regener_year
 # #### VD heat consumption for last common year
 # # !`annee` -> `etat`
 #
-# last_year_rgr <- max(energy_datasets$regener_needs$etat)
+last_year_rgr <- max(energy_datasets$regener_needs$etat)
 #
 # cons_rg_vd_last_year <- energy_datasets$regener_cons_ae_aff |>
 #   dplyr::filter(commune == "Canton de Vaud") |>
@@ -507,7 +494,7 @@ regener_current_year <- max_regener_year
 #   dplyr::pull()
 #
 # #### VD subsidies M01 for last common year
-# last_year_subsidies <- max(energy_datasets$subsidies_by_measure$annee)
+last_year_subsidies <- max(energy_datasets$subsidies_by_measure$annee)
 #
 # subsidies_m01_vd_last_year <- energy_datasets$subsidies_by_measure |>
 #   dplyr::filter(commune == "Canton de Vaud") |>
@@ -518,7 +505,7 @@ regener_current_year <- max_regener_year
 #
 # #### VD ng cons for last available year
 #
-# last_year_ng_cons <- max(energy_datasets$ng_cons$annee) # When prod ng alone
+last_year_ng_cons <- max(energy_datasets$ng_cons$annee) # When prod ng alone
 #
 # ng_cons_vd_last_year <- energy_datasets$ng_cons |>
 #   dplyr::filter(commune == "Canton de Vaud") |>

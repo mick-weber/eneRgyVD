@@ -110,7 +110,7 @@ mod_ng_charts_ui <- function(id,
                        # Download buttons
                        mod_download_data_ui(ns("table_download")),
 
-                       # DT table
+                       # rt table
                        DT::dataTableOutput(ns("table_1"))
 
 
@@ -185,15 +185,19 @@ mod_ng_charts_server <- function(id,
 
     # Table logic ----
 
-    # DT table
+    # rt table
     output$table_1 <- DT::renderDataTable({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
       # ng needs are the same as electricity consumption
-      create_cons_table_dt(data = subsetData(),
-                              energy_unit = inputVals$energyUnit,
-                              DT_dom = "frtip" # remove default button in DT extensions
+      make_table_dt(
+        data = subsetData(),
+        var_commune = var_commune,
+        var_year = var_year,
+        var_values = var_values,
+        var_cat = var_cat,
+        unit = inputVals$energyUnit
       )
     })
 
@@ -207,7 +211,7 @@ mod_ng_charts_server <- function(id,
       subsetData() |>
         add_colname_unit(colnames = "consommation",
                          unit = inputVals$energyUnit) |>
-        rename_fr_colnames()
+        rename_columns_output()
 
 
     })

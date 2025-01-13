@@ -333,7 +333,7 @@ mod_about_the_app_server <- function(id){
     output$elec_cons_doc <- DT::renderDataTable({
 
       doc_datasets$elec_cons |>  # loaded in utils_helpers.R
-        create_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
+        make_doc_table_dt(doc_prefix = "doc_elec_cons_") # fct_helpers.R
 
     })
 
@@ -343,7 +343,7 @@ mod_about_the_app_server <- function(id){
     output$elec_prod_doc <- DT::renderDataTable({
 
       doc_datasets$elec_prod |>  # loaded in utils_helpers.R
-        create_doc_table_dt(doc_prefix = "doc_elec_prod_") # fct_helpers.R
+        make_doc_table_dt(doc_prefix = "doc_elec_prod_") # fct_helpers.R
 
     })
 
@@ -351,7 +351,7 @@ mod_about_the_app_server <- function(id){
 
     output$regener_doc <- DT::renderDataTable({
       doc_datasets$regener |>
-        create_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
+        make_doc_table_dt(doc_prefix = "doc_regener_") # fct_helpers.R
     })
 
 
@@ -359,21 +359,21 @@ mod_about_the_app_server <- function(id){
 
     output$subsidies_doc <- DT::renderDataTable({
       doc_datasets$subsidies |>
-        create_doc_table_dt(doc_prefix = "doc_subventions_") # fct_helpers.R
+        make_doc_table_dt(doc_prefix = "doc_subventions_") # fct_helpers.R
     })
 
     # 5. Conso gaz ----
 
     output$ng_cons_doc <- DT::renderDataTable({
       doc_datasets$ng_cons |>
-        create_doc_table_dt(doc_prefix = "doc_conso_gaz_") # fct_helpers.R
+        make_doc_table_dt(doc_prefix = "doc_conso_gaz_") # fct_helpers.R
     })
 
 
     # Glossaire ----
     output$glossary_table <- DT::renderDataTable({
       glossary |>
-        create_doc_table_dt(doc_prefix = "glossaire_")
+        make_doc_table_dt(doc_prefix = "glossaire_")
     })
 
   })

@@ -113,7 +113,7 @@ mod_subsidies_building_charts_ui <- function(id,
                        # Download module
                        mod_download_data_ui(ns("table_download")),
 
-                       # DT table
+                       # rt table
                        DT::dataTableOutput(ns("table_1"))
 
       )# End nav_panel 'Table'
@@ -214,16 +214,18 @@ mod_subsidies_building_charts_server <- function(id,
 
     # Table logic ----
 
-    # DT table, detailed (plot is aggregated) with both N_EGID & SRE
+    # rt table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-      create_subsidies_table_dt(data = subsetData(),
-                                var_year = "etat",
-                                var_cat = "subv_type",
-                                icon_list = subsidies_building_icons, #return_icons_subsidies(which = "building"),
-                                DT_dom = "frtip" # remove default button in DT extensions
+      make_table_dt(data = subsetData(),
+                    var_commune = "commune",
+                    var_year = "etat",
+                    var_values = c("N_EGID", "SRE"),
+                    var_cat = "subv_type",
+                    na_string = "Non disponible",
+                    unit = NULL # no unit to apply
       )
     })
 
@@ -236,8 +238,7 @@ mod_subsidies_building_charts_server <- function(id,
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_misc_colnames() |>  # fct_helpers.R
-        rename_fr_colnames()       # fct_helpers.R
+        rename_columns_output()
 
 
     })

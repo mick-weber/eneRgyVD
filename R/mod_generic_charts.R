@@ -110,7 +110,7 @@ mod_generic_charts_ui <- function(id,
                                         # Download buttons
                                         mod_download_data_ui(ns("table_download")),
 
-                                        # DT table
+                                        # rt table
                                         DT::dataTableOutput(ns("table_1"))
 
 
@@ -197,18 +197,17 @@ mod_generic_charts_server <- function(id,
 
     # Table logic ----
 
-    # DT table, detailed (plot is aggregated) with both N_EGID & SRE
+    # rt table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-      create_generic_table_dt(data = subsetData(),
-                              var_commune = var_commune,
-                              var_year = var_year,
-                              var_values = var_values,
-                              var_cat = var_cat,
-                              unit = unit,
-                              DT_dom = "frtip" # remove default button in DT extensions
+      make_table_dt(data = subsetData(),
+                    var_commune = var_commune,
+                    var_year = var_year,
+                    var_values = var_values,
+                    var_cat = var_cat,
+                    unit = unit
       )
     })
 
@@ -218,12 +217,10 @@ mod_generic_charts_server <- function(id,
 
     download_data <- reactive({
 
-
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_misc_colnames() |>  # fct_helpers.R
-        rename_fr_colnames()       # fct_helpers.R
-
+        add_colname_unit(colnames = var_values, unit = unit) |>
+        rename_columns_output()
 
     })
 

@@ -111,7 +111,7 @@ mod_elec_charts_ui <- function(id,
                                  # Download buttons
                                  mod_download_data_ui(ns("table_download")),
 
-                                 # DT table
+                                 # rt table
                                  DT::dataTableOutput(ns("table_1"))
 
 
@@ -132,7 +132,6 @@ mod_elec_charts_server <- function(id,
                                    var_cat, # categorical var ('secteur'/'categorie', NULL, ...)
                                    var_values, # prod/consumption kwh
                                    color_palette, # utils_helpers.R
-                                   fct_table_dt_type, # table function to pass (data specific)
                                    dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars){ # the non-reactive documentation file for variables description
   moduleServer(id, function(input, output, session){
@@ -175,7 +174,7 @@ mod_elec_charts_server <- function(id,
                          var_commune = var_commune,
                          unit = inputVals$energyUnit,
                          var_cat = var_cat,
-                         var_values = var_values,
+                         var_values = var_values[1],
                          color_palette = color_palette, # defined in utils_helpers.R
                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
                          free_y = input$toggle_status, # reactive(input$toggle_status)
@@ -187,14 +186,19 @@ mod_elec_charts_server <- function(id,
 
 
     # Table logic ----
-    # Renders the DT table
+    # Renders the rt table
     output$table_1 <- DT::renderDataTable({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-      fct_table_dt_type(data = subsetData(),
-                        energy_unit = inputVals$energyUnit,
-                        DT_dom = "frtip" # no buttons extension for DT table
+      make_table_dt(
+        data = subsetData(),
+        var_commune = var_commune,
+        var_year = var_year,
+        var_values = var_values,
+        var_cat = var_cat,
+        na_string = "(Confidentiel)", # override default 'Non disponible' for this dataset, until LVLEne 2025 passes.
+        unit = inputVals$energyUnit
       )
 
     })# End renderDT
@@ -206,14 +210,9 @@ mod_elec_charts_server <- function(id,
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        add_colname_unit(colnames = c(
-          "consommation",                   # elec_cons
-          "puissance_electrique_installee", # elec_prod
-          "injection",                      # elec_prod
-          "autoconsommation",               # elec_prod
-          "production"),                    # elec_prod
+        add_colname_unit(colnames = var_values,                    # elec_prod
                          unit = inputVals$energyUnit) |>
-        rename_fr_colnames()
+        rename_columns_output()
 
     })
 

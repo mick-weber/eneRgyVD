@@ -117,7 +117,7 @@ mod_regener_needs_charts_ui <- function(id,
                                         # Download buttons
                                         mod_download_data_ui(ns("table_download")),
 
-                                        # DT table
+                                        # rt table
                                         DT::dataTableOutput(ns("table_1"))
 
 
@@ -139,7 +139,6 @@ mod_regener_needs_charts_server <- function(id,
                                             var_cat, # categorical var ('secteur'/'categorie', ...)
                                             var_values, # prod/consumption kwh
                                             color_palette, # utils_helpers.R
-                                            fct_table_dt_type, # table function to pass (data specific)
                                             dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                             doc_vars){
   moduleServer( id, function(input, output, session){
@@ -245,14 +244,17 @@ mod_regener_needs_charts_server <- function(id,
 
     })# End renderUI
 
-    # Renders DT table ----
+    # Renders rt table ----
     output$table_1 <- DT::renderDataTable({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-      fct_table_dt_type(data = subsetData_wide(), # see pivot_wider() at the top of the server
-                        unit = inputVals$energyUnit,
-                        DT_dom = "frtip" # remove default button in DT extensions
+      make_table_dt(data = subsetData_wide(), # see pivot_wider() at the top of the server
+                    var_commune = "commune",
+                    var_year = "etat",
+                    var_values = c("Besoins actuels", "Besoins optimaux"),# created above in subsetData_wide()
+                    var_cat = "type",
+                    unit = inputVals$energyUnit
       )
 
     })# End renderDT
@@ -264,7 +266,7 @@ mod_regener_needs_charts_server <- function(id,
       subsetData_wide() |>
         add_colname_unit(colnames = dplyr::contains("besoins"),
                           unit = inputVals$energyUnit) |>
-        rename_fr_colnames()
+        rename_columns_output()
 
     })
 

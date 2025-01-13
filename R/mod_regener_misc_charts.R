@@ -49,7 +49,7 @@ mod_regener_misc_charts_ui <- function(id,
                      # Download buttons
                      mod_download_data_ui(ns("table_download")),
 
-                     # DT table
+                     # rt table
                      DT::dataTableOutput(ns("table_1"))
   )# End nav_panel
     )# End navset_pill
@@ -62,28 +62,32 @@ mod_regener_misc_charts_ui <- function(id,
 mod_regener_misc_charts_server <- function(id,
                                            inputVals,
                                            subsetData,
-                                           energyUnit, # quite irrelevant but might be useful later
                                            dl_prefix,
                                            doc_vars){
   moduleServer(id, function(input, output, session){
 
     ns <- session$ns
 
-    # Renders the DT table ----
+    # Renders the rt table ----
     output$table_1 <- DT::renderDataTable({
 
       validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-      create_rg_misc_table_dt(data = subsetData(),
-                              DT_dom = "frtip" # remove default button in DT extensions
-                              )
+      make_table_dt(
+        data = subsetData(),
+        var_commune = "commune",
+        var_year = "etat",
+        var_values = NULL,
+        var_cat = NULL,
+        unit = NULL
+      )
 
-    })# End DT table
+    })# End rt table
 
     # Download data : rename cols before export (also don)
       download_data <- reactive({
         subsetData() |>
-          rename_misc_colnames() # fct_helpers.R, used in create_rg_misc_table_dt too
+          rename_columns_output() # fct_helpers.R, used in create_rg_misc_table_dt too
       })
 
 

@@ -101,7 +101,7 @@ mod_regener_cons_charts_ui <- function(id,
                              # Download module
                              mod_download_data_ui(ns("table_download")),
 
-                             # DT table
+                       # rt table
                        DT::dataTableOutput(ns("table_1")) |>
                          shinycssloaders::withSpinner(type = 6,
                                                       color= main_color) # color defined in utils_helpers.R
@@ -226,11 +226,13 @@ mod_regener_cons_charts_server <- function(id,
 
             validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-            create_regener_table_dt(data = subset_rgr_cons_1(),
-                                    energy_unit = inputVals$energyUnit,
-                                    co2_unit = inputVals$co2Unit,
-                                    DT_dom = "frtip" # remove default button in DT extensions
-                                    )
+          make_table_dt(data = subset_rgr_cons_1(),
+                        var_commune = "commune",
+                        var_year = "etat",
+                        var_values = c("consommation", "co2_direct"),
+                        var_cat = "ae",
+                        unit = list(inputVals$energyUnit, inputVals$co2Unit)
+          )
         })
 
       }# End if tab...
@@ -241,10 +243,12 @@ mod_regener_cons_charts_server <- function(id,
 
           validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-          create_regener_table_dt(data = subset_rgr_cons_2(),
-                                  energy_unit = inputVals$energyUnit,
-                                  co2_unit = inputVals$co2Unit,
-                                  DT_dom = "frtip" # remove default button in DT extensions
+          make_table_dt(data = subset_rgr_cons_1(),
+                        var_commune = "commune",
+                        var_year = "etat",
+                        var_values = c("consommation", "co2_direct"),
+                        var_cat = "ae",
+                        unit = c(inputVals$energyUnit, inputVals$co2Unit)
           )
         })
       }# End elseif
@@ -259,20 +263,16 @@ mod_regener_cons_charts_server <- function(id,
 
         subset_rgr_cons_1() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
-          add_colname_unit(colnames = "consommation",
-                            unit = inputVals$energyUnit) |>
-          add_colname_unit(colnames = "co2_direct",
-                            unit = inputVals$co2Unit) |>
-          rename_fr_colnames()
+          add_colname_unit(colnames = c("consommation", "co2_direct"),
+                           unit = c(inputVals$energyUnit,inputVals$co2Unit )) |>
+          rename_columns_output()
 
           } else if(input$tab_table_type == "aff"){
 
         subset_rgr_cons_2() |> # from app_server.R
-              add_colname_unit(colnames = "consommation",
-                                unit = inputVals$energyUnit) |>
-              add_colname_unit(colnames = "co2_direct",
-                                unit = inputVals$co2Unit) |>
-              rename_fr_colnames()
+              add_colname_unit(colnames = c("consommation", "co2_direct"),
+                                unit = c(inputVals$energyUnit,inputVals$co2Unit )) |>
+              rename_columns_output()
       }
 
     })

@@ -136,14 +136,14 @@ generate_doc_accordion_panels <- function(md_file){
                        parsed_content$paragraph,
                        function(title, paragraph){
 
-    bslib::accordion_panel(
-      title,
-      icon = phosphoricons::ph(title = NULL, "question"),
-      shiny::tags$div(class = "customPanel",
-                      shiny::markdown(paragraph))
-    )
+                         bslib::accordion_panel(
+                           title,
+                           icon = phosphoricons::ph(title = NULL, "question"),
+                           shiny::tags$div(class = "customPanel",
+                                           shiny::markdown(paragraph))
+                         )
 
-  })
+                       })
 
   # Return list of accordion_panels
   return(items)
@@ -289,35 +289,35 @@ create_bar_ggiraph <- function(data,
                                      )
                                    }else{
                                      paste(
-                                     format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-                                     unit, "en ", .data[[var_year]]
+                                       format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+                                       unit, "en ", .data[[var_year]]
                                      )
                                    }
-    )
+                                 )
     ))
 
 
   # geom_text conditionnally --> only if bars are stacked & no var_cat supplied
 
-    if (!isTRUE(dodge) & !is.null(var_cat)) {
-      ggplot <- ggplot +
-        ggiraph::geom_text_interactive(
-          data = data_totals,
-          ggplot2::aes(x = as.factor(.data[[var_year]]),
-                       y = total,
-                       label = if(unit == "%"){
-                         scales::percent(total, accuracy = 0.01)}else{
-                           format(total, big.mark = "'", digits = 1, scientific = FALSE)
-                         }
-          ),
-          vjust = -0.5,
-          size = 10,
-          size.unit = "pt", # defaults to mm...
-          fontface = "plain",
-          color = "grey20",
-          inherit.aes = FALSE # ensures we loock at data_totals and not data
-        )
-    }
+  if (!isTRUE(dodge) & !is.null(var_cat)) {
+    ggplot <- ggplot +
+      ggiraph::geom_text_interactive(
+        data = data_totals,
+        ggplot2::aes(x = as.factor(.data[[var_year]]),
+                     y = total,
+                     label = if(unit == "%"){
+                       scales::percent(total, accuracy = 0.01)}else{
+                         format(total, big.mark = "'", digits = 1, scientific = FALSE)
+                       }
+        ),
+        vjust = -0.5,
+        size = 10,
+        size.unit = "pt", # defaults to mm...
+        fontface = "plain",
+        color = "grey20",
+        inherit.aes = FALSE # ensures we loock at data_totals and not data
+      )
+  }
 
 
   # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
@@ -346,8 +346,8 @@ create_bar_ggiraph <- function(data,
     ggplot2::scale_y_continuous(labels = ifelse(unit == "%",
                                                 scales::percent,
                                                 scales::label_number(big.mark = "'")
-                                                ),
-                                expand = ggplot2::expansion(mult = c(0, 0.15))
+    ),
+    expand = ggplot2::expansion(mult = c(0, 0.15))
     )+
     ggplot2::labs(x = "", y = unit)+
     ggiraph::facet_wrap_interactive(facets = ggplot2::vars(.data[[var_commune]]),
@@ -497,332 +497,123 @@ lump_alluvial_factors <- function(data,
 
 # Table fns ----
 
-#' create_table_dt()
+#' format_numbers_heuristic
+#' a custom function to display large numbers (below 1000) without any decimal, and small numbers with one decimal
+#' all values are displayed with thousand separator, no scientific notation and trailing zeroes are dropped
+#' @param number the number to format
 #'
-#' @param data Specific electricity production, DGE-DIREN data to transform to datatable
-#' Must follow Pronovo's outputs and utils_helpers.R format
-#' @param unit Unit currently selected inside the app
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @import dplyr
-#' @importFrom stringr str_replace_all str_to_title
-#' @return A DT table with export functionalities
+#' @return a formatted number as a string
 #' @export
 
-create_prod_table_dt <- function(data,
-                                 energy_unit,
-                                 DT_dom = "Bfrtip" # we set default with Buttons
-){
+format_numbers_heuristic <- function(number) {
+  ifelse(
+    abs(number) < 1000,               # Check if the number is less than 1000 (absolute value)
+    format(round(number, 1), nsmall = 2, big.mark = "'", scientific = FALSE, drop0trailing = TRUE),  # Format with one decimal place
+    format(round(number), nsmall = 0, big.mark = "'", scientific = FALSE, drop0trailing = TRUE)      # Format without any decimal places
+  )
+}
 
-  data |>
-    dplyr::arrange(desc(annee)) |>
-    # Basic clean up for table output
+
+#' make_table_dt
+#' a function that prepares data (add colnames, relocate, etc.) and makes a DT table
+#' which also formats numbers nicely
+#' @param data the dataframe or tibble to turn as a datatable
+#' @param var_commune colname corresponding to the municipality (passed as a string)
+#' @param var_year colname corresponding to the year (passed as a string)
+#' @param var_values colname corresponding to the value(s) (passed as a string, or a vector of string)
+#' @param var_cat colname corresponding to the categorical variable (passed as a string)
+#' @param string or variable containing a string or a list of strings, used as a prefix to `var_values` through `add_colname_unit`
+#' @param na_string a string specifying how should NAs be displayed, as it can change from one dataset to another
+#' @param DT_dom  the DT domain values to specify which DT extensions should be applied
+#'
+#' @return a dataTable object
+#' @export
+
+make_table_dt <- function(data,
+                          var_commune,
+                          var_year,
+                          var_values,
+                          var_cat,
+                          unit,
+                          na_string = "Non disponible",
+                          DT_dom = "frtip"){
+
+  ## |---------------------------------------------------------------|
+  ##          Prepare data
+  ## |---------------------------------------------------------------|
+  data_prep <- data |>
+    dplyr::mutate(!!var_year := as.factor(.data[[var_year]])) |>
+    # any_of() allows to pass var_car even if it does not exist
+    dplyr::relocate(.data[[var_commune]],
+                    .data[[var_year]],
+                    dplyr::any_of(var_cat),
+                    dplyr::any_of(var_values)) |>
+    dplyr::arrange(.data[[var_commune]], desc(.data[[var_year]])) |>
+    add_colname_unit(colnames = var_values, unit = unit) |> # fct_helpers.R
+    rename_columns_output()
+
+
+  ## |---------------------------------------------------------------|
+  ##          Format
+  ## |---------------------------------------------------------------|
+  data_prep <- data_prep |>
     dplyr::mutate(
-      # change year to factor |>
-      annee = as.factor(annee),
-      # format numeric cols
-      #  because of the NA->"Confidentiel" JS code in DT options (see below) we need
-      #  to keep NAs alive with an if_else statement (only needed for this fn)
+      dplyr::across(everything(), \(col) {
 
-      across(where(is.numeric), ~ if_else(condition = !is.na(.x),
-                                          true = format(.x,
-                                                        big.mark = "'",
-                                                        digits = 3,
-                                                        drop0trailing = TRUE,
-                                                        scientific = FALSE),
-                                          false = NA_character_ )
+        # Check if the column name starts with "part" (case-insensitive)
+        if (grepl("^part", dplyr::cur_column(), ignore.case = TRUE)) {
+          return(scales::percent(round(col, digits = 4), big.mark = "'")) # Format as percentage
+        }else if(is.numeric(col)){
+          return(format_numbers_heuristic(col))#format(col, big.mark = "'", digits = 4, drop0trailing = TRUE, scientific = FALSE))
+        }else{
+          return(col) # Leave column unchanged
+        }
+      })
+    )
+
+  ## |--------------------------------------------------------------------|
+  ##          Datatable options
+  ## |--------------------------------------------------------------------|
+
+  dt_table <- data_prep |>
+    DT::datatable(
+      escape = FALSE,                  # Render HTML (e.g., icons) instead of text
+      extensions = 'Buttons',          # Enable the Buttons extension (for export buttons)
+      selection = 'single',            # Allow single row selection
+      rownames = FALSE,                # Hide row numbers/names
+      options = list(
+        paging = TRUE,                 # Enable pagination
+        pageLength = 15,               # Number of rows per page
+        scrollY = TRUE,                # Enable vertical scrolling
+        autoWidth = TRUE,              # Smart column width handling
+        server = FALSE,                # Use client-side processing
+        dom = DT_dom,                  # Define DOM positioning
+        language = DT_fr_language,     # Language settings
+        columnDefs = list(
+          # Apply custom rendering for all columns
+          list(
+            targets = "_all",           # Apply to all columns
+            className = 'dt-center',
+            render = DT::JS(
+              "function(data, type, row, meta) {",
+              glue::glue("return data === null ? '({na_string})' : data;"),
+              "}")
+          )
+        )
       )
-    ) |>
-
-    dplyr::select(-c(numero_de_la_commune)) |>
-    dplyr::relocate(commune, annee, categorie,
-                    production, injection, autoconsommation,
-                    puissance_electrique_installee) |>
-    # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(prod_icons, by = "categorie") |>
-    dplyr::relocate(icon, .before = categorie) |>
-    dplyr::rename(" " = "icon") |> # empty colname for icons
-    add_colname_unit(colnames = c("puissance_electrique_installee",
-                                  "injection",
-                                  "autoconsommation",
-                                  "production"),
-                     unit = energy_unit) |>  # fct_helpers.R
-    rename_fr_colnames() |>  # fct_helpers.R
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 8,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom,
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(
-                                   targets = "_all",
-                                   className = 'dt-center',
-                                   # NA to custom string : see https://github.com/rstudio/DT/issues/322
-                                   render = DT::JS(
-                                     "function(data, type, row, meta) {",
-                                     "return data === null ? '(Confidentiel)' : data;",
-                                     "}")
-                                 )),
-
-
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', # enable selection of a single row
-                  rownames = FALSE      # don't show row numbers/names
-    ) # End DT
+    )
+  return(dt_table)
 }
 
-
-#' create_cons_table_dt()
-#'
-#' @param data Specific electricity consumption, DGE-DIREN data to transform to datatable
-#' Must follow specific data format which can be found in /data
-#' @param unit Unit currently selected inside the app
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @import dplyr
-#' @return A DT table with export functionalities
-#' @export
-
-create_cons_table_dt <- function(data,
-                                 energy_unit,
-                                 DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  data |>
-    dplyr::arrange(desc(annee)) |>
-    # Basic clean up for table output
-    dplyr::mutate(
-      # change year to factor
-      annee = as.factor(annee),
-      # format numeric cols
-      dplyr::across(where(is.numeric), ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) |>
-    # put installed power in the last position
-    dplyr::relocate(commune, annee, secteur, consommation) |>
-    # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(cons_icons, by = "secteur") |>
-    dplyr::relocate(icon, .before = secteur) |>
-    dplyr::rename(" " = "icon") |> # empty colname for icons
-    add_colname_unit(colnames = "consommation",
-                      unit = energy_unit) |>  # fct_helpers.R
-    rename_fr_colnames() |> # fct_helpers.R
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', ## enable selection of a single row
-                  rownames = FALSE               ## don't show row numbers/names
-    ) # End DT
-}
-
-#' create_rg_needs_table_dt()
-#' @param data Specific regener needs dataset to transform to datatable
-#' Must follow specific data format which can be found in /data
-#' @param unit Unit currently selected inside the app
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @return a DT table with export functionnalities
-#' @export
-
-create_rg_needs_table_dt <- function(data,
-                                     unit,
-                                     DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  data |>
-    dplyr::arrange(desc(etat)) |>
-    # Basic clean up for table output
-    dplyr::mutate(
-      # change year (etat for rg dataset) to factor
-      etat = as.factor(etat),
-      # format numeric cols
-      dplyr::across(where(is.numeric), ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) |>
-    # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(regener_icons_type, by = "type") |>
-    # relocate call
-    dplyr::relocate(commune, etat, icon, type) |>
-    dplyr::rename(" " = "icon") |> # empty colname for icons
-    add_colname_unit(colnames = dplyr::contains("besoins"), # fct_helpers.R
-                      unit = unit) |>
-    rename_fr_colnames() |> # fct_helpers.R
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("rgr_needs_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', ## enable selection of a single row
-                  rownames = FALSE               ## don't show row numbers/names
-    )# End DT
-
-}
-
-
-#' create_regener_table_dt()
-#' creates a DT table with custom formatting and html icons
-#' @param data Specific regener consumption table, DGE-DIREN data to transform to datatable
-#' @param unit Unit currently selected inside the app
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @return a datatable object for regener datasets
-#' @export
-
-create_regener_table_dt <- function(data,
-                                    energy_unit,
-                                    co2_unit,
-                                    DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  data |>
-    dplyr::arrange(desc(etat)) |>
-    # Set pct_commune to % display (output for dl is in numeric)
-    dplyr::mutate(pct_commune = scales::percent(
-      pct_commune, accuracy = 0.01)) |>
-    dplyr::mutate(
-      # change year to factor
-      etat = as.factor(etat), # if needed later
-      # format numeric cols
-      dplyr::across(where(is.numeric), ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) |>
-    # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(regener_icons, by = "ae") |>
-    # relocate call
-    dplyr::relocate(commune, etat, icon, ae,
-                    tidyselect::any_of(c("usage", "affectation")),
-                    consommation, pct_commune) |>
-    dplyr::rename(" " = "icon") |> # empty colname for icons
-    #turn to DT
-    add_colname_unit(colnames = "consommation", unit = energy_unit) |>  # fct_helpers.R
-    add_colname_unit(colnames = "co2_direct", unit = co2_unit) |> # fct_helpers.R
-    add_colname_unit(colnames = "pct_commune", unit = "%") |>
-    rename_fr_colnames() |> # fct_helpers.R
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("rgr_table_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', ## enable selection of a single row
-                  rownames = FALSE               ## don't show row numbers/names
-    ) # End DT
-
-}
-
-
-#' create_rg_misc_table_dt()
-#' Creates datatable for regener_misc dataset
+#' make_doc_table_dt
+#' Creates minimalistic documentation table with download features
 #' @param data the dataset containing variables and descriptions
-#' @param unit Unit currently selected inside the app
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @return a DT object
-#' @export
-
-create_rg_misc_table_dt <- function(data,
-                                    # unit arg not needed for misc data
-                                    DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  data |>
-    dplyr::arrange(desc(etat)) |>
-    # Basic clean up for table output
-    dplyr::mutate(
-      # change year (etat for rg dataset) to factor
-      etat = as.factor(etat),
-      # format numeric cols
-      dplyr::across(where(is.numeric), ~format(.x,
-                                               big.mark = "'",
-                                               digits = 3,
-                                               drop0trailing = TRUE,
-                                               scientific = FALSE))) |>
-    dplyr::relocate(commune, etat) |>
-    rename_misc_colnames() |>
-    # add_colname_unit(unit = unit) |>  # fct_helpers.R
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom, # dynamic according to needs
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("rgr_misc_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(targets = "_all", className = 'dt-center')),
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-
-                  selection = 'single', ## enable selection of a single row
-                  rownames = FALSE               ## don't show row numbers/names
-    )# End DT
-
-}
-
-#' create_doc_table_dt
-#' Creates minimalistic documentation table with download feature
-#' @param data the dataset containing variables and descriptions
+#' @doc_prefix the file prefix before the download date
 #'
 #' @return A DT object
 #' @export
 
-create_doc_table_dt <- function(data,
+make_doc_table_dt <- function(data,
                                 doc_prefix){
 
   data |>
@@ -850,152 +641,6 @@ create_doc_table_dt <- function(data,
 }
 
 
-
-#' create_subsidies_table_dt()
-#' Creates datatable for subsidies dataset. Flexible enough to handle both datasets
-#' `subsidies_by_building` and `subsidies_by_measure` hence its arguments for variables.
-#' @param data the subsidies dataset
-#' @param var_year the time variable
-#' @param DT_dom datatable 'dom' Option, see datatable documentation. Likely Bfrtip or frtip
-#'
-#' @return a DT object
-#' @export
-
-create_subsidies_table_dt <- function(data,
-                                      var_year,
-                                      var_cat,
-                                      icon_list,
-                                      DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  data |>
-    dplyr::arrange(desc(.data[[var_year]])) |>
-    # Clear undesired vars
-    dplyr::select(-any_of("mesure_simplifiee")) |>
-    # Basic clean up for table output
-    dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
-    dplyr::mutate(
-      # format numeric cols
-      across(where(is.numeric), ~ format(.x,
-                                         big.mark = "'",
-                                         digits = 3,
-                                         drop0trailing = TRUE,
-                                         scientific = FALSE))
-    )|>
-    # add icons HTML tags from utils_helpers.R
-    dplyr::left_join(icon_list, by = var_cat) |>
-    dplyr::relocate(icon, .before = any_of(var_cat)) |>
-    dplyr::rename(" " = "icon") |> # empty colname for icons
-    rename_misc_colnames() |> # fct_helpers.R
-    rename_fr_colnames() |>  # fct_helpers.R
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom,
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(
-                                   targets = "_all",
-                                   className = 'dt-center'
-                                 )),
-
-
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', # enable selection of a single row
-                  rownames = FALSE      # don't show row numbers/names
-    ) # End DT
-}
-
-#' create_generic_table_dt
-#' Creates datatable for generic datasets. Flexible enough to handle all datasets, but loses in
-#'  customizability compared to other energy-specific datatable functions.
-#' @param data the generic dataset
-#' @param var_year the name of the year variable to sort from
-#' @param DT_dom the datatable domain options to provide (e.g. 'Bfrtip')
-#' @return a DT object
-#' @export
-
-create_generic_table_dt <- function(data,
-                                    var_commune,
-                                    var_year,
-                                    var_values,
-                                    var_cat = NULL,
-                                    unit = unit,
-                                    DT_dom = "Bfrtip" # we set default with Buttons
-){
-
-  # First format <var_values> (could be more than one variable) nicely according to unit
-  if(unit == "%"){
-    data <- data |>
-      dplyr::mutate(
-        dplyr::across(
-          all_of(var_values),
-          ~ scales::percent(.x, accuracy = 0.01)
-        )
-      )
-  }else{
-    data <- data |>
-      dplyr::mutate(
-        dplyr::across(
-          dplyr::all_of(var_values),
-          ~ format(.x, big.mark = "'", digits = 3, drop0trailing = TRUE, scientific = FALSE)
-        )) |> # format if starts with 'part_' for flexibility (canopy)
-          dplyr::mutate(
-            dplyr::across(
-              dplyr::starts_with("part"),
-              ~ scales::percent(.x, accuracy = 0.01))
-            )
-  }
-
-  # Then proceed with the rest of the table code
-  data |>
-    # Basic clean up for table output
-    dplyr::arrange(.data[[var_commune]], desc(.data[[var_year]])) |>
-    dplyr::mutate({{var_year}} := as.factor(.data[[var_year]])) |>
-    # any_of() allows to pass var_car even if it does not exist
-    dplyr::relocate(.data[[var_commune]], .data[[var_year]], dplyr::any_of(var_cat)) |>
-    add_colname_unit(colnames = var_values, unit = unit) |> # fct_helpers.R
-    rename_misc_colnames() |> # fct_helpers.R
-    rename_fr_colnames() |>  # fct_helpers.R
-    #turn to DT
-    DT::datatable(escape = F, # rendering the icons instead of text
-                  extensions = 'Buttons',
-                  options = list(paging = TRUE,    # paginate the output
-                                 pageLength = 15,  # number of rows to output for each page
-                                 scrollY = TRUE,   # enable scrolling on Y axis
-                                 autoWidth = TRUE, # use smart column width handling
-                                 server = FALSE,   # use server-side processing
-                                 dom = DT_dom,
-                                 buttons = list(
-                                   list(extend = 'copy', text = "Copier"),
-                                   list(extend = 'excel', filename = paste0("elec_prod_vd_", Sys.Date()))
-                                 ),
-                                 columnDefs = list(list(
-                                   targets = "_all",
-                                   className = 'dt-center'
-                                 )),
-
-
-                                 # https://rstudio.github.io/DT/004-i18n.html   for languages
-                                 language = DT_fr_language # from utils_helpers.R !
-                  ),
-                  selection = 'single', # enable selection of a single row
-                  rownames = FALSE      # don't show row numbers/names
-    ) # End DT
-
-}
-
-
-
 # Palette fns ----
 
 #' return_palette_elec_prod
@@ -1021,7 +666,6 @@ return_palette_elec_cons <- function(){
 }
 
 
-
 #' return_palette_regener
 #' returns the color palette for energy sources in the regener dataset
 #' @return a vector with categorical data and hex color strings
@@ -1038,32 +682,6 @@ return_palette_regener <- function(){
   return(colors_ae_others)
 
 }
-
-# Icons fns ----
-
-# This one is required because create_subsidies_table_dt is flexible enough to host
-# two palettes (building+measure) but we need a function to return the palette
-# if we want to be using the rmarkdown feature ! Otherwise not needed.
-
-#' return_icons_subsidies
-#' returns one of two icons palette for subsidies data (either building or measure icons)
-#' @param which either `building` to return the building palette,
-#' or `measure` to return the measure palette
-#' @return a tibble with icon as html and a categorical variable to match icons
-#' @export
-
-return_icons_subsidies <- function(which){
-
-  # According to which palette is asked, we return one of the objects from utils_helpers.R
-  icons_subsidies <- switch(which,
-                            "building" = subsidies_building_icons,
-                            "measure" = subsidies_measure_icons)
-
-  return(icons_subsidies)
-
-}
-
-
 #' create_geoportail_tag
 #' Creates a icon+link combination (tag) which redirects towards a specified geoportail link where geodata
 #' can be viewed for Canton de Vaud
@@ -1083,7 +701,7 @@ create_geoportail_tag <- function(link){
 
 
 
-# Unit conversion & suffix fns ----
+# Unit conversion & prefix ----
 
 #' convert_units()
 #' Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
@@ -1156,80 +774,78 @@ convert_units <- function(data,
 #' @return dataframe with renamed columns (units added)
 #' @export
 
-add_colname_unit <- function(data,
-                             colnames,
-                             unit){
+add_colname_unit <- function(data, colnames, unit){
 
-  power_keyword <- "puissance"
+  # If any null, do nothing in this function
+  if(is.null(unit) | is.null(colnames)){
+    return(data)
+  }
 
-  data <- data |>
-    dplyr::rename_with(.cols = dplyr::any_of(colnames[!stringr::str_detect(colnames, pattern = power_keyword)]),
-                       .fn = \(col) paste0(col, " [", unit, "]"))
+  # Ensure that colnames and units are of equal length, otherwise replicate unit as needed
+  if(length(colnames) > length(unit)) {
+    unit <- rep(unit, length(colnames))
+  }
 
-  # Energy specificity : if a power_col_keyword colname is detected AND unit is energy
-  # Then transform energy unit to power unit according to this rule
-  if(any(stringr::str_detect(colnames, power_keyword))){
+  if(length(colnames) < length(unit)) {
+    stop("Number of units passed to `add_colname_unit()` is more important than the target colnames !")
+  }
 
-    data <- data |>
-      dplyr::rename_with(.cols = dplyr::contains(power_keyword, # utils_helpers.R
-                                          ignore.case = TRUE),
-                         ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
-                                 ifelse(
-                                   test = stringr::str_detect(string = unit, pattern = "Wh"), # search for *[Wh] in unit
-                                   yes = stringr::str_remove(string = unit, pattern = "h"), # (k)Wh -> (k)W in cols
-                                   no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
-                                 ), "]") # closing bracket for unit
-      )
+  power_keyword = "puissance"
 
-  }else{
-    data
+
+  for(i in seq_along(colnames)) {
+    current_colname <- colnames[[i]]
+    current_unit <- unit[[i]]
+
+    if(stringr::str_detect(current_colname, power_keyword)){
+
+      data <- data |>
+        dplyr::rename_with(.cols = dplyr::contains(power_keyword, # utils_helpers.R
+                                                   ignore.case = TRUE),
+                           ~paste0(.x, " [", # The colnames + the [unit] extension according to ifelse() below
+                                   ifelse(
+                                     test = stringr::str_detect(string = current_unit, pattern = "Wh"), # search for *[Wh] in unit
+                                     yes = stringr::str_remove(string = current_unit, pattern = "h"), # (k)Wh -> (k)W in cols
+                                     no = paste0(unit, "/h") # TJ -> TJ/h, and all other non-Wh units
+                                   ), "]") # closing bracket for unit
+        )
+
+
+    }else{
+
+      data <- data |>
+        dplyr::rename_with(.cols = dplyr::any_of(current_colname),
+                           .fn = \(col) paste0(col, " [", current_unit, "]"))
+
+
+
+    }
+
+
   }
 
   return(data)
-
 }
+
 
 # Colname renaming fns ----
 
-#' rename_fr_colnames()
-#' A generic function that aims at adding correct french accents inside the create_x_table_dt functions
-#' @return a dataframe with modified colnames, title case, accents where needed and space instead of underscore.
-#' @export
-
-rename_fr_colnames <- function(data){
-
-  data |>
-    # Standard renaming
-    rename_with(.cols = dplyr::everything(),
-                \(x){
-                  # Temporarily remove the units in square brackets
-                  x_no_units <- stringr::str_replace_all(x, "\\[.*?\\]", "<unit>")
-
-                  # Apply sentence case to the rest of the name
-                  x_no_units <- stringr::str_to_sentence(x_no_units)
-
-                  # Reinsert the units back into their original places
-                  stringr::str_replace_all(x_no_units, "<unit>", stringr::str_extract(x, "\\[.*?\\]"))
-                }) |>
-    rename_with(.cols = dplyr::everything(), .fn = stringr::str_replace_all,
-                pattern = "_", replacement = " ") |>
-    rename_with(.cols = everything(),
-                .fn = stringr::str_replace_all, replace_fr_accents) # utils_helpers.R
-
-
-}
-
-
-#' rename_misc_columns()
-#' Specific function to rename specific columns that can't be fixed with `rename_fr_colnames()`
-#' It relies on a named vector of specific columns to rename adequately.
+#' rename_columns_output()
+#' Uses the csv file in app/extdata/ to convert initial colnames to nicely formatted ones
+#' the function matches only the start of the initial colname to find a match
 #' @return a renamed dataframe
 #' @export
 
-rename_misc_colnames <- function(data){
+rename_columns_output <- function(data) {
 
-  data |>
-    dplyr::rename(dplyr::any_of(cols_renaming_vector)) # utils_helpers.R
+  # Renaming columns
+  renamed_data <- data |>
+    dplyr::rename_with(~ stringr::str_replace_all(.x, setNames(
+      colnames_replacement_display$replacement,
+      paste0("^", colnames_replacement_display$colname) # Only replace when it matches
+    )), dplyr::everything())
 
+  return(renamed_data)
 }
+
 

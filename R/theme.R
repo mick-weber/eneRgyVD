@@ -43,3 +43,33 @@ profil_theme <- bslib::bs_theme(version = 5,
       )
       )
 
+# Reactable options ----
+
+options(reactable.language = reactable::reactableLang(
+  sortLabel = "Trier {name}",
+  filterPlaceholder = "Filtrer...",
+  filterLabel = "Filtrer {name}",
+  searchPlaceholder = "Rechercher",
+  searchLabel = "Rechercher",
+  noData = "Aucune ligne trouvée",
+  pageNext = "Suivant",
+  pagePrevious = "Précédent",
+  pageNumbers = "{page} sur {pages}",
+  pageInfo = "{rowStart}\u2013{rowEnd} sur {rows} lignes",
+  pageSizeOptions = "Afficher {rows}",
+  pageNextLabel = "Page suivante",
+  pagePreviousLabel = "Page précédente",
+  pageNumberLabel = "Page {page}",
+  pageJumpLabel = "Aller à la page",
+  pageSizeOptionsLabel = "Lignes par page",
+  groupExpandLabel = "Basculer le groupe",
+  detailsExpandLabel = "Basculer les détails",
+  selectAllRowsLabel = "Sélectionner toutes les lignes",
+  selectAllSubRowsLabel = "Sélectionner toutes les lignes du groupe",
+  selectRowLabel = "Sélectionner la ligne",
+  defaultGroupHeader = NULL,
+  detailsCollapseLabel = NULL,
+  deselectAllRowsLabel = NULL,
+  deselectAllSubRowsLabel = NULL,
+  deselectRowLabel = NULL
+))

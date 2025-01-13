@@ -216,18 +216,19 @@ mod_regener_needs_charts_server <- function(id,
         # Dynamic height and width ratios (unitless)
         base_height_per_row <- 2  # Adjust height ratio per row
 
-        # Save units passed to create_bar_ggiraph()
+        # Save units passed to create_plot_ggiraph()
         height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
         width_svg <- 15  # Keep width static for two columns layout
 
         # fct is defined in fct_helpers.R
-        create_bar_ggiraph(data = subsetData_barplot(),
+        create_plot_ggiraph(data = subsetData_barplot(),
                            n_communes = dplyr::n_distinct(subsetData_barplot()$commune),
                            var_year = var_year, # note that <statut> is passed here instead of usual <annee> or <etat>
                            var_commune = var_commune,
                            unit = inputVals$energyUnit,
                            var_cat = var_cat,
                            var_values = var_values,
+                           geom = "col",
                            color_palette = color_palette, # defined in utils_helpers.R
                            dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
                            free_y = input$toggle_status, # reactive(input$toggle_status)

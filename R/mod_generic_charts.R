@@ -130,6 +130,7 @@ mod_generic_charts_server <- function(id,
                                       var_year,
                                       var_cat,
                                       var_values,
+                                      ggiraph_geom,
                                       unit,
                                       coerce_dodge,
                                       color_palette,
@@ -142,10 +143,10 @@ mod_generic_charts_server <- function(id,
 
     # Initialize toggle stacked condition for conditionalPanel in ui
     # stack/dodge widget will only show if <coerce_dodge> is FALSE OR if <var_cat> is NULL ANS if at least 1 commune is selected
-    # this is because sometimes we want to force the dodge (thus remove widget, see create_bar_ggiraph logic below), and
+    # this is because sometimes we want to force the dodge (thus remove widget, see create_plot_ggiraph logic below), and
     # sometimes we want to remove the widget when dodge/stack is pointless if there's no <var_cat> available
       output$commune <- reactive({
-        if(is.null(var_cat) | coerce_dodge == TRUE){
+        if(is.null(var_cat) | coerce_dodge == TRUE | ggiraph_geom == "line"){
           FALSE  # this will never show the widget
         }else{
           length(unique(subsetData()$commune)) > 0}
@@ -174,18 +175,19 @@ mod_generic_charts_server <- function(id,
       # Dynamic height and width ratios (unitless)
       base_height_per_row <- 2  # Adjust height ratio per row
 
-      # Save units passed to create_bar_ggiraph()
+      # Save units passed to create_plot_ggiraph()
       height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
       width_svg <- 15  # Keep width static for two columns layout
 
       # fct is defined in fct_helpers.R
-      create_bar_ggiraph(data = subsetData(),
+      create_plot_ggiraph(data = subsetData(),
                          n_communes = dplyr::n_distinct(subsetData()$commune),
                          var_year = var_year,
                          var_commune = var_commune,
                          unit = unit,
                          var_cat = var_cat,
-                         var_values = var_values[1], # if more than one var_values is passed, plot only the first one.
+                         var_values = var_values, # if more than one var_values is passed, plot only the first one.
+                         geom = ggiraph_geom,
                          color_palette = color_palette, # defined in utils_helpers.R
                          dodge = if(coerce_dodge == TRUE){TRUE}else{input$stacked_status}, # if T -> 'dodge', F -> 'stack'
                          free_y = input$toggle_status, # reactive(input$toggle_status)

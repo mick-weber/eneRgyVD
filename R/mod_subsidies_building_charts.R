@@ -168,7 +168,7 @@ mod_subsidies_building_charts_server <- function(id,
       # Dynamic height and width ratios (unitless)
       base_height_per_row <- 2  # Adjust height ratio per row
 
-      # Save units passed to create_bar_ggiraph()
+      # Save units passed to create_plot_ggiraph()
       height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
       width_svg <- 15  # Keep width static for two columns layout
 
@@ -176,7 +176,7 @@ mod_subsidies_building_charts_server <- function(id,
 
         # Then plot aggregated data :
         subsetData_agg() |>
-          create_bar_ggiraph(
+          create_plot_ggiraph(
             n_communes = dplyr::n_distinct(subsetData_agg()$commune),
             var_year = "etat",
             var_commune = "commune",
@@ -184,6 +184,7 @@ mod_subsidies_building_charts_server <- function(id,
             var_cat = "subv_type",
             unit = "m<sup>2</sup>",
             legend_title = "",
+            geom = "col",
             color_palette = subsidies_building_colors,
             dodge = FALSE, # we don't allow user to dodge w/ toggle button
             free_y = input$toggle_status, # reactive(input$toggle_status)
@@ -195,13 +196,14 @@ mod_subsidies_building_charts_server <- function(id,
 
         # Then plot aggregated data :
         subsetData_agg() |>
-          create_bar_ggiraph(n_communes =  dplyr::n_distinct(subsetData_agg()$commune),
+          create_plot_ggiraph(n_communes =  dplyr::n_distinct(subsetData_agg()$commune),
                              var_year = "etat",
                              var_commune = "commune",
                              var_values = "N_EGID",
                              var_cat = "subv_type",
                              unit = "Bâtiments",
                              legend_title = "",
+                             geom = "col",
                              color_palette = subsidies_building_colors,
                              dodge = FALSE, # we don't allow user to dodge w/ toggle button
                              free_y = input$toggle_status, # reactive(input$toggle_status)

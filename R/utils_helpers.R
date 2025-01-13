@@ -403,6 +403,13 @@ surface_canopee_palette <- list("avec canopée >3m" = "limegreen",
 batiment_danger_palette <- list("danger moyen" = "#ffdb0f",
                                 "danger élevé" = "#FF870F")
 
+
+### Qualite desserte palette ----
+
+qualite_desserte_palette <- c("Population" = "#1C86EE",
+                                 "Emploi" = "#BD6F6F")
+
+
 # Non-reactive objects for input widgets ----
 
 ## Generic objects (across all tabs) ----

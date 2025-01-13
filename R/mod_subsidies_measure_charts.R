@@ -139,7 +139,7 @@ mod_subsidies_measure_charts_server <- function(id,
       # Dynamic height and width ratios (unitless)
       base_height_per_row <- 2  # Adjust height ratio per row
 
-      # Save units passed to create_bar_ggiraph()
+      # Save units passed to create_plot_ggiraph()
       height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
       width_svg <- 15  # Keep width static for two columns layout
 
@@ -152,13 +152,14 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_ggiraph(# data piped
+        create_plot_ggiraph(# data piped
                            n_communes = dplyr::n_distinct(subsetData()$commune),
                            var_year = "annee",
                            var_commune = "commune",
                            unit = "subventions",
                            var_cat = "mesure_simplifiee",
                            var_values = "nombre",
+                           geom = "col",
                            color_palette = subsidies_measure_simplifiee_colors, # defined in utils_helpers.R
                            dodge = FALSE, # if T -> 'dodge', F -> 'stack'
                            free_y = input$toggle_status, # reactive(input$toggle_status)

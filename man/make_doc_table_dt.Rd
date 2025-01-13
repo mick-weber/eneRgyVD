@@ -9,6 +9,8 @@ make_doc_table_dt(data, doc_prefix)
 }
 \arguments{
 \item{data}{the dataset containing variables and descriptions}
+
+\item{doc_prefix}{the file prefix before the download date}
 }
 \value{
 A DT object

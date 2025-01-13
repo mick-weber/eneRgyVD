@@ -236,7 +236,7 @@ create_select_leaflet <- function(sf_districts,
 }
 
 
-#' create_bar_ggiraph()
+#' create_plot_ggiraph()
 #'
 #'@description Creates a girafe object from a facetted ggplot bar plot for use in renderGirafe
 #'
@@ -248,21 +248,21 @@ create_select_leaflet <- function(sf_districts,
 #' @return an interactive girafe object
 #' @export
 
-create_bar_ggiraph <- function(data,
-                               n_communes,
-                               var_year,
-                               var_commune,
-                               unit, # input$energy_unit, or other unit value retrieved in app_server
-                               var_cat, # one of secteur, categorie...
-                               var_values, # one of consommation, production_totale...
-                               color_palette, # utils_helpers.R,
-                               dodge = FALSE, # stacked by default
-                               free_y = FALSE,
-                               legend_title = NULL,
-                               height_svg,
-                               width_svg,
-                               ... # free
-){
+create_plot_ggiraph <- function(data,
+                                n_communes,
+                                var_year,
+                                var_commune,
+                                unit,
+                                var_cat,
+                                var_values,
+                                geom,
+                                color_palette,
+                                dodge = FALSE,
+                                free_y = FALSE,
+                                legend_title = NULL,
+                                height_svg,
+                                width_svg,
+                                ...) {
 
   # Compute totals for conditional geom_text (if stacked)
   data_totals <- data |>
@@ -271,136 +271,130 @@ create_bar_ggiraph <- function(data,
 
   # Compute ggplot2
   ggplot <- data |>
-    ggplot2::ggplot(ggplot2::aes(x = as.factor(.data[[var_year]]),
-                                 y = .data[[var_values]],
-                                 # built conditionnally if var_cat is supplied else nothing
-                                 fill = if(!is.null(var_cat)){.data[[var_cat]]},
-
-                                 # built conditionnally if var_cat is supplied else var_year only
-                                 data_id = if(!is.null(var_cat)){paste0(.data[[var_year]], .data[[var_cat]])}else{.data[[var_year]]},
-
-                                 # built conditionnally if var_cat is supplied and if unit is %
-                                 tooltip = paste0(
-                                   if(!is.null(var_cat)){paste0(.data[[var_cat]], "\n")},
-                                   # if unit percent --> show percents nicely
-                                   if(unit == "%"){
-                                     paste(
-                                       scales::percent(.data[[var_values]], accuracy = 0.1), " en ", .data[[var_year]]
-                                     )
-                                   }else{
-                                     paste(
-                                       format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-                                       unit, "en ", .data[[var_year]]
-                                     )
-                                   }
-                                 )
+    ggplot2::ggplot(ggplot2::aes(
+      x = as.factor(.data[[var_year]]),
+      y = .data[[var_values]],
+      fill = if (geom == "col" & !is.null(var_cat)) .data[[var_cat]] else NULL,  # Use fill only for bars
+      color = if (geom == "line" & !is.null(var_cat)) .data[[var_cat]] else NULL, # Use color for lines
+      data_id = if (!is.null(var_cat)) {
+        paste0(.data[[var_year]], .data[[var_cat]])
+      } else {
+        .data[[var_year]]
+      },
+      tooltip = paste0(
+        if (!is.null(var_cat)) paste0(.data[[var_cat]], "\n"),
+        if (unit == "%") {
+          paste(
+            scales::percent(.data[[var_values]], accuracy = 0.1),
+            " en ",
+            .data[[var_year]]
+          )
+        } else {
+          paste(
+            format(round(.data[[var_values]], digits = 0), big.mark = "'"),
+            unit,
+            "en ",
+            .data[[var_year]]
+          )
+        }
+      )
     ))
 
-
-  # geom_text conditionnally --> only if bars are stacked & no var_cat supplied
-
-  if (!isTRUE(dodge) & !is.null(var_cat)) {
+  # Conditional geom_text for stacked bars
+  if (!isTRUE(dodge) & !is.null(var_cat) & geom == "col") {
     ggplot <- ggplot +
       ggiraph::geom_text_interactive(
         data = data_totals,
-        ggplot2::aes(x = as.factor(.data[[var_year]]),
-                     y = total,
-                     label = if(unit == "%"){
-                       scales::percent(total, accuracy = 0.01)}else{
-                         format(total, big.mark = "'", digits = 1, scientific = FALSE)
-                       }
+        ggplot2::aes(
+          x = as.factor(.data[[var_year]]),
+          y = total,
+          label = if (unit == "%") {
+            scales::percent(total, accuracy = 0.01)
+          } else {
+            format(total, big.mark = "'", digits = 1, scientific = FALSE)
+          }
         ),
         vjust = -0.5,
         size = 10,
-        size.unit = "pt", # defaults to mm...
+        size.unit = "pt",
         fontface = "plain",
         color = "grey20",
-        inherit.aes = FALSE # ensures we loock at data_totals and not data
+        inherit.aes = FALSE
       )
   }
 
-
-  # Fill bars according to two options : either 'color_palette' is a single value when var_cat is NULL ; or it's a palette
-  # If one color is supplied : we must pass it to 'fill' of geom_col(), scale_fill_manual would not accept it
-  if(length(color_palette) == 1){
+  # Add geometries conditionally
+  if (geom == "col") {
     ggplot <- ggplot +
-      ggiraph::geom_col_interactive(position = dplyr::if_else(condition = dodge, # arg
-                                                              true = "dodge",
-                                                              false = "stack"),
-                                    fill = color_palette)
-  }else{
-    # If a palette is passed : we must pass it fo 'scale_fill_manual' with a legend name
-    ggplot <- ggplot +
-      ggiraph::geom_col_interactive(position = dplyr::if_else(condition = dodge, # arg
-                                                              true = "dodge",
-                                                              false = "stack"))+
+      ggiraph::geom_col_interactive(
+        position = dplyr::if_else(condition = dodge, true = "dodge", false = "stack")
+      ) +
       ggplot2::scale_fill_manual(
-        name = legend_title, # passed from arg
-        values = color_palette # palette defined in utils_helpers.R
+        name = legend_title,
+        values = color_palette
       )
+  } else if (geom == "line") {
+    ggplot <- ggplot +
+      ggiraph::geom_line_interactive(size = 1.5,
+                                     ggplot2::aes(group = if (!is.null(var_cat)) .data[[var_cat]] else 1)) +
+      ggiraph::geom_point_interactive(size = 3) +
+      ggplot2::scale_color_manual(
+        name = legend_title,
+        values = color_palette
+      )
+  } else {
+    stop("Invalid value for 'geom'. Use 'col' for bar chart or 'line' for line chart.")
   }
 
-
-  # Scales, facts, theme options etc.
-  ggplot <- ggplot+
-    ggplot2::scale_y_continuous(labels = ifelse(unit == "%",
-                                                scales::percent,
-                                                scales::label_number(big.mark = "'")
+  # Add scales, facets, and theme
+  ggplot <- ggplot +
+    ggplot2::scale_y_continuous(labels = ifelse(
+      unit == "%",
+      scales::percent,
+      scales::label_number(big.mark = "'")
     ),
     expand = ggplot2::expansion(mult = c(0, 0.15))
-    )+
-    ggplot2::labs(x = "", y = unit)+
-    ggiraph::facet_wrap_interactive(facets = ggplot2::vars(.data[[var_commune]]),
-                                    ncol = 2,
-                                    # if the toggle linked to the free_y argument is TRUE, then free y axis
-                                    scales = ifelse(free_y, "free_y", "fixed"))+
-    ggplot2::theme_bw(base_size = 12)+
+    ) +
+    ggplot2::labs(x = "", y = unit) +
+    ggiraph::facet_wrap_interactive(
+      facets = ggplot2::vars(.data[[var_commune]]),
+      ncol = 2,
+      scales = ifelse(free_y, "free_y", "fixed")
+    ) +
+    ggplot2::theme_bw(base_size = 12) +
     ggplot2::theme(
-      legend.position = "top",        # Move legend to the top
-      legend.direction = "horizontal", # Arrange items horizontally
-      legend.justification = c(0, 0), # Align legend box to the top-left corner
+      legend.position = "top",
+      legend.direction = "horizontal",
+      legend.justification = c(0, 0),
       legend.box.just = "left",
-      #change the labels of facet wrap. main_color defined in utils_helpers.R
-      strip.background = ggplot2::element_rect(color="black", fill=main_color, linewidth = 0.5, linetype="solid"),
+      strip.background = ggplot2::element_rect(color = "black", fill = main_color, linewidth = 0.5, linetype = "solid"),
       strip.text = ggplot2::element_text(color = "white", size = 12),
-      legend.background = ggplot2::element_rect(fill = NA), # transparent
-      panel.spacing.x = ggplot2::unit(.05, "cm"),
+      legend.background = ggplot2::element_rect(fill = NA),
+      panel.spacing.x = ggplot2::unit(0.05, "cm"),
       panel.spacing.y = ggplot2::unit(0.5, "cm"),
-      panel.grid.major.x = element_blank()
+      panel.grid.major.x = ggplot2::element_blank()
     )
 
-  ggiraph::girafe(ggobj = ggplot,
-                  height_svg = height_svg,
-                  width_svg = width_svg,
-                  options = list(
-                    ggiraph::opts_sizing(
-                      rescale = TRUE, width = 1
-                    ),
-                    ggiraph::opts_hover(
-                      css = ""
-                    ),
-                    ggiraph::opts_hover_inv(
-                      css = "opacity:0.6;"
-                    ),
-                    ggiraph::opts_toolbar(
-                      position = "topleft",
-                      fixed = TRUE,
-                      pngname = "profil_climatique",
-                      tooltips = list(
-                        saveaspng = "Télécharger (.png)"
-                      )
-                    ),
-                    ggiraph::opts_tooltip(
-                      opacity = 0.8
-                    ),
-                    ggiraph::opts_selection(
-                      type = "none"
-                    )
-                  )
+  ggiraph::girafe(
+    ggobj = ggplot,
+    height_svg = height_svg,
+    width_svg = width_svg,
+    options = list(
+      ggiraph::opts_sizing(rescale = TRUE, width = 1),
+      ggiraph::opts_hover(css = ""),
+      ggiraph::opts_hover_inv(css = "opacity:0.6;"),
+      ggiraph::opts_toolbar(
+        position = "topleft",
+        fixed = TRUE,
+        pngname = "profil_climatique",
+        tooltips = list(saveaspng = "Télécharger (.png)")
+      ),
+      ggiraph::opts_tooltip(opacity = 0.8),
+      ggiraph::opts_selection(type = "none")
+    )
   )
-
-
 }
+
 
 
 #' create_alluvial_chart()
@@ -608,7 +602,7 @@ make_table_dt <- function(data,
 #' make_doc_table_dt
 #' Creates minimalistic documentation table with download features
 #' @param data the dataset containing variables and descriptions
-#' @doc_prefix the file prefix before the download date
+#' @param doc_prefix the file prefix before the download date
 #'
 #' @return A DT object
 #' @export

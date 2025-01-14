@@ -357,6 +357,7 @@ app_server <- function(input, output, session) {
   ## canopy (générique) ----
 
   mod_generic_charts_server("adaptation_canopy",
+                            parent = session,
                             subsetData = reactive({inputVals$adaptationDatasets$surface_canopee}),
                             inputVals = inputVals,
                             var_commune = "commune",
@@ -374,6 +375,7 @@ app_server <- function(input, output, session) {
 
   ## natural hazards (generic) ----
   mod_generic_charts_server("buildings_exposure_hazards",
+                            parent = session,
                             subsetData = reactive({inputVals$adaptationDatasets$batiment_danger}),
                             inputVals = inputVals,
                             var_commune = "commune",
@@ -395,6 +397,7 @@ app_server <- function(input, output, session) {
   ## EV share ----
 
   mod_generic_charts_server("part_voit_elec",
+                            parent = session,
                             subsetData = reactive({inputVals$mobilityDatasets$part_voit_elec}),
                             inputVals = inputVals,
                             var_commune = "commune",
@@ -412,6 +415,7 @@ app_server <- function(input, output, session) {
 
   ## Motorisation rate ----
   mod_generic_charts_server("taux_motorisation",
+                            parent = session,
                             subsetData = reactive({inputVals$mobilityDatasets$taux_motorisation}),
                             inputVals = inputVals,
                             var_commune = "commune",
@@ -429,6 +433,7 @@ app_server <- function(input, output, session) {
 
   ## Desserte quality ----
   mod_generic_charts_server("qualite_desserte",
+                            parent = session,
                             subsetData = reactive({inputVals$mobilityDatasets$qualite_desserte}),
                             inputVals = inputVals,
                             var_commune = "commune",

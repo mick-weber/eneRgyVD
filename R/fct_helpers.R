@@ -150,6 +150,41 @@ generate_doc_accordion_panels <- function(md_file){
 
 }
 
+# Streamlined renderUIs ----
+
+
+render_sidebar_year_widget <- function(id,
+                                       ns,
+                                       condition,
+                                       available_years){
+
+  shiny::renderUI({
+
+    shiny::conditionalPanel(
+      condition = condition,
+      shiny::selectizeInput(
+        inputId = ns(paste0(id, "_year_from")),
+        label = "Année dès :",
+        choices = available_years,
+        selected = min(available_years),
+        width = "50%"
+      ),
+      shiny::selectizeInput(
+        inputId = ns(paste0(id, "_year_to")),
+        label = "Année jusqu'à :",
+        choices = available_years,
+        selected = max(available_years),
+        width = "50%"
+
+      )
+    )
+  })
+
+
+
+}
+
+
 # Graph fns ----
 
 #' create_select_leaflet()

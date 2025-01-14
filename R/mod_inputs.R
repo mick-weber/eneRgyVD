@@ -34,6 +34,10 @@ mod_inputs_ui <- function(id){
     # we must remember to update these conditionalPanel conditions when we change the names of each nav_panel() and navset_card_pill() !!
     # otherwise the plots etc. fail to render because they can't access the required conditional input values ! (selected year, etc.)
 
+    # uiOutput generic year slider attempt
+    uiOutput(ns("part_voit_elec_years_picker")),
+    uiOutput(ns("qualite_desserte_years_picker")),
+    uiOutput(ns("taux_motorisation_years_picker")),
 
     # uiOutput for elec consumption ----
     uiOutput(ns("elec_cons_widget")), # End conditionalPanel
@@ -46,6 +50,8 @@ mod_inputs_ui <- function(id){
 
     # uiOutput() for ng_cons ----
     uiOutput(ns("ng_cons_widget")),
+
+    uiOutput(ns("qualite_desserte_widget")),
 
     ## |---------------------------------------------------------------|
     ##          Sidebar bottom footer
@@ -104,6 +110,81 @@ mod_inputs_server <- function(id){
     # Render UI sidebar widgets ----
     # They must be rendered dynamically (and not in UI directly) so that we can pass req(input$selected_communes)
     # Additional display conditions are stored in conditionalPanel()
+
+
+    ## |---------------------------------------------------------------|
+    ##        qualite_desserte year management
+    ## |---------------------------------------------------------------|
+
+    output$part_voit_elec_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition = "input.nav == 'Véhicules électriques'",
+        shinyWidgets::airYearpickerInput(
+          inputId = ns("part_voit_elec_years"),
+          label = "Sélection des années",
+          range = TRUE,
+          width = "80%",
+          addon = "right",
+          addonAttributes = list(class = "btn disabled"),
+          value = part_voit_elec_years,
+          minDate = part_voit_elec_years[1],
+          maxDate = part_voit_elec_years[2],
+          language = "fr"
+        )
+      )
+    })
+
+    output$qualite_desserte_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition = "input.nav == 'Transports publics'",
+        shinyWidgets::airYearpickerInput(
+          inputId = ns("qualite_desserte_years"),
+          label = "Sélection des années",
+          range = TRUE,
+          width = "80%",
+          addon = "right",
+          addonAttributes = list(class = "btn disabled"),
+          value = qualite_desserte_years,
+          minDate = qualite_desserte_years[1],
+          maxDate = qualite_desserte_years[2],
+          language = "fr"
+        )
+      )
+    })
+
+    output$taux_motorisation_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(
+        condition = "input.nav == 'Taux de motorisation'",
+        shinyWidgets::airYearpickerInput(
+          inputId = ns("taux_motorisation_years"),
+          label = "Sélection des années",
+          range = TRUE,
+          width = "80%",
+          addon = "right",
+          addonAttributes = list(class = "btn disabled"),
+          value = taux_motorisation_years,
+          minDate = taux_motorisation_years[1],
+          maxDate = taux_motorisation_years[2],
+          language = "fr"
+        )
+      )
+    })
+
+
+
+
+    ## |---------------------------------------------------------------|
+    ##          /DEV WORK
+    ## |---------------------------------------------------------------|
 
     output$elec_cons_widget <- renderUI({
 
@@ -272,6 +353,10 @@ mod_inputs_server <- function(id){
 
       # req all inputs needed to filter & convert the datasets
       req(debouncedCommunes())
+      # req mobility_dataset
+      req(input$part_voit_elec_years)
+      req(input$taux_motorisation_years)
+      req(input$qualite_desserte_years)
 
       inputVals$mobilityDatasets <- mobility_datasets |>
         purrr::map(\(mobility_df){
@@ -279,7 +364,21 @@ mod_inputs_server <- function(id){
             dplyr::filter(commune %in% debouncedCommunes())
           # no convert_units() call here
           # no input widgets filter here neither
-        })
+        }) |> purrr::map2(names(mobility_datasets),
+                          \(df, name_df){
+
+                            if(name_df == "part_voit_elec"){df |> dplyr::filter(dplyr::between(annee,
+                                                                                               lubridate::year(input$part_voit_elec_years[1]),
+                                                                                               lubridate::year(input$part_voit_elec_years[2])))}else
+                              if(name_df == "taux_motorisation"){df |> dplyr::filter(dplyr::between(annee,
+                                                                                                    lubridate::year(input$taux_motorisation_years[1]),
+                                                                                                    lubridate::year(input$taux_motorisation_years[2])))}else
+                                if(name_df == "qualite_desserte"){df |> dplyr::filter(dplyr::between(annee,
+                                                                                                     lubridate::year(input$qualite_desserte_years[1]),
+                                                                                                     lubridate::year(input$qualite_desserte_years[2])))}else
+                                {df}
+
+                          })
     })
 
     ## 3. adaptationDatasets----
@@ -297,56 +396,6 @@ mod_inputs_server <- function(id){
           # no input widgets filter here neither
         })
     })
-
-    ### Statbox subsets, communes only (!) ----
-    # --> we exclude Cantonal row which value is separated inside a dedicated statbox
-
-    observe({
-
-      req(inputVals$energyDatasets$elec_prod,
-          inputVals$energyDatasets$elec_cons,
-          inputVals$energyDatasets$elec_prod,
-          inputVals$energyDatasets$regener_cons_ae_use,
-          inputVals$energyDatasets$subsidies_by_measure
-      )
-
-      # Statbox value for current selection's aggregated electricity production
-      inputVals$elec_prod_last_year <- inputVals$energyDatasets$elec_prod |>
-        dplyr::filter(annee == last_year_elec_prod) |>
-        dplyr::filter(!commune == "Canton de Vaud") |> # remove cantonal row
-        dplyr::summarise(production = sum(production, na.rm = T)) |>
-        dplyr::pull(production)
-
-      # Statbox value for current selection's aggregated electricity consumption
-      inputVals$elec_cons_last_year <- inputVals$energyDatasets$elec_cons |>
-        dplyr::filter(annee == last_year_elec_cons) |>
-        dplyr::filter(!commune == "Canton de Vaud")|>
-        dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
-        dplyr::pull(consommation)
-
-      # Statbox value for current selection's aggregated buildings thermal consumption
-      inputVals$max_year_rg_cons <- inputVals$energyDatasets$regener_cons_ae_use |>
-        dplyr::filter(etat == last_year_rgr) |>
-        dplyr::filter(!commune == "Canton de Vaud") |>
-        dplyr::summarise(consommation=sum(consommation, na.rm = T)) |>
-        dplyr::pull(consommation)
-
-      # Statbox value for current selection's aggregated sum of M01 measures
-      inputVals$max_year_subsidies_m01 <- inputVals$energyDatasets$subsidies_by_measure |>
-        dplyr::filter(annee == last_year_subsidies) |>
-        dplyr::filter(!commune == "Canton de Vaud") |>
-        dplyr::filter(mesure == "M01") |>
-        dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        dplyr::pull(nombre)
-
-      # Statbox value for current selection's aggregated NG consumption
-      inputVals$ng_cons_last_year <- inputVals$energyDatasets$ng_cons |>
-        dplyr::filter(annee == last_year_ng_cons) |>
-        dplyr::filter(!commune == "Canton de Vaud")|>
-        dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
-        dplyr::pull(consommation)
-
-    })# End observe
 
     # mod_download_all_data ----
     mod_download_all_data_server("download_all_data", inputVals = inputVals)

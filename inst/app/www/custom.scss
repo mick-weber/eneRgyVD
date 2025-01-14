@@ -249,6 +249,7 @@ a {
   margin-bottom:0 !important;
 }
 
+/* Change defaults to dropdowns */
 .dropdown-menu{
   background-color:white;
   .dropdown-item{
@@ -258,6 +259,23 @@ a {
   .dropdown-header{
     color:black;
   }
+}
+
+
+/* airYearPickerInput: remove the border highlight when the widget is focused */
+.sw-air-picker:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* airYearPickerInput : change colors of selected items once years are opened */
+.air-datepicker{
+
+    --adp-cell-background-color-selected: #3A862D !important;
+    --adp-cell-background-color-selected-hover: #3A862D !important;
+    --adp-cell-background-color-in-range: #3A872E3B !important;
+    --adp-cell-background-color-in-range-hover: #3A872E3B !important;
+    --adp-background-color-in-range:#3A872E3B !important;
 }
 
 /* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */

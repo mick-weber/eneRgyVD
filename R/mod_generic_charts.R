@@ -11,6 +11,7 @@ mod_generic_charts_ui <- function(id,
                                   title,
                                   title_complement){
   ns <- NS(id)
+
   tagList(
 
     # Header ----
@@ -43,7 +44,7 @@ mod_generic_charts_ui <- function(id,
 
     # Pills ----
 
-    bslib::navset_pill(
+    bslib::navset_pill(id = ns("generic_mod"),
       header = br(), # blank line to space content (alternative would be to add padding)
 
                        ### Graph ----
@@ -123,6 +124,7 @@ mod_generic_charts_ui <- function(id,
 #'
 #' @noRd
 mod_generic_charts_server <- function(id,
+                                      parent,
                                       subsetData, # passed from inputVals, bit redundant but clear
                                       # energyUnit not needed here !
                                       inputVals,
@@ -140,6 +142,27 @@ mod_generic_charts_server <- function(id,
                                       ){ # the non-reactive documentation file for variables description
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+
+    ## |---------------------------------------------------------------|
+    ##          DEV WORK : generic year selector
+    ## |---------------------------------------------------------------|
+
+    # test <- reactive({
+    #   unique(sort(subsetData()[[var_year]]))
+    # })
+    #
+    # observeEvent(test(), {
+    #   print("Hey I've changed ! ")
+    # })
+
+
+    ## |---------------------------------------------------------------|
+    ##          /DEV WORK
+    ## |---------------------------------------------------------------|
+
+
+
 
     # Initialize toggle stacked condition for conditionalPanel in ui
     # stack/dodge widget will only show if <coerce_dodge> is FALSE OR if <var_cat> is NULL ANS if at least 1 commune is selected
@@ -223,8 +246,8 @@ mod_generic_charts_server <- function(id,
       subsetData() |>
         add_colname_unit(colnames = var_values, unit = unit) |>
         rename_columns_output()
-
     })
+
 
     # Module to download DT table data
     mod_download_data_server("table_download",

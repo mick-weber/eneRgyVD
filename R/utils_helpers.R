@@ -457,65 +457,31 @@ max_regener_year <- max(energy_datasets$regener_cons_ae_use$etat)
 
 regener_current_year <- max_regener_year
 
-## Objects specific 'Subventions'  ----
+## Objects for sidebar year selector widgets
 
-# mesures_pb |> dplyr::select(MESURE, MESURE_TRAD, MESURE_SIMPLIFIEE2)
+part_voit_elec_years <- c(
+  sprintf("%s-01-01", min(unique(mobility_datasets$part_voit_elec$annee))),
+  sprintf("%s-01-01", max(unique(mobility_datasets$part_voit_elec$annee)))
+)
+
+taux_motorisation_years <- c(
+  sprintf("%s-01-01", min(unique(mobility_datasets$taux_motorisation$annee))),
+  sprintf("%s-01-01", max(unique(mobility_datasets$taux_motorisation$annee)))
+)
+
+qualite_desserte_years <- c(
+  sprintf("%s-01-01", min(unique(mobility_datasets$qualite_desserte$annee))),
+  sprintf("%s-01-01", max(unique(mobility_datasets$qualite_desserte$annee)))
+)
 
 
-# ## Objects specific (Statbox)  ---- DISABLED FOR NOW
-#
-# #last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
-#
-# ### Cantonal statbox values ----
-#
-# #### VD electricity production for last available year
-#
-last_year_elec_prod <- max(energy_datasets$elec_prod$annee) # When prod elec alone
-#
-# elec_prod_vd_last_year <- energy_datasets$elec_prod |>
-#   dplyr::filter(commune == "Canton de Vaud") |>
-#   dplyr::filter(annee == last_year_elec_prod) |>
-#   dplyr::summarise(production = sum(production, na.rm = TRUE)) |>
-#   dplyr::pull()
-#
-# #### VD electricity consumption for last available year
-#
-last_year_elec_cons <- max(energy_datasets$elec_cons$annee) # When prod elec alone
-#
-# elec_cons_vd_last_year <- energy_datasets$elec_cons |>
-#   dplyr::filter(commune == "Canton de Vaud") |>
-#   dplyr::filter(annee == last_year_elec_cons) |>
-#   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
-#   dplyr::pull()
-#
-# #### VD heat consumption for last common year
-# # !`annee` -> `etat`
-#
-last_year_rgr <- max(energy_datasets$regener_needs$etat)
-#
-# cons_rg_vd_last_year <- energy_datasets$regener_cons_ae_aff |>
-#   dplyr::filter(commune == "Canton de Vaud") |>
-#   dplyr::filter(etat == last_year_rgr) |>
-#   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
-#   dplyr::pull()
-#
-# #### VD subsidies M01 for last common year
-last_year_subsidies <- max(energy_datasets$subsidies_by_measure$annee)
-#
-# subsidies_m01_vd_last_year <- energy_datasets$subsidies_by_measure |>
-#   dplyr::filter(commune == "Canton de Vaud") |>
-#   dplyr::filter(annee == last_year_subsidies) |>
-#   dplyr::filter(mesure == "M01") |>
-#   dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-#   dplyr::pull()
-#
-# #### VD ng cons for last available year
-#
-last_year_ng_cons <- max(energy_datasets$ng_cons$annee) # When prod ng alone
-#
-# ng_cons_vd_last_year <- energy_datasets$ng_cons |>
-#   dplyr::filter(commune == "Canton de Vaud") |>
-#   dplyr::filter(annee == last_year_ng_cons) |>
-#   dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
-#   dplyr::pull()
+
+surface_canopee_years <- unique(adaptation_datasets$surface_canopee$annee)
+batiment_danger_years <- unique(adaptation_datasets$batiment_danger$annee)
+
+
+
+
+
+
 

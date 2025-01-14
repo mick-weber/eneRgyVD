@@ -300,8 +300,8 @@ create_plot_ggiraph <- function(data,
       )
     ))
 
-  # Conditional geom_text for stacked bars
-  if (!isTRUE(dodge) & !is.null(var_cat) & geom == "col") {
+  # Conditional geom_text labels for stacked bars
+  if (geom == "col" & !is.null(var_cat) & !isTRUE(dodge)) {
     ggplot <- ggplot +
       ggiraph::geom_text_interactive(
         data = data_totals,
@@ -318,26 +318,33 @@ create_plot_ggiraph <- function(data,
         size = 10,
         size.unit = "pt",
         fontface = "plain",
-        color = "grey20",
+        color = "grey20", # color of the text label !
         inherit.aes = FALSE
       )
   }
 
-  # Add geometries conditionally
-  if (geom == "col") {
+  # Add geometries conditionally (col acc. to var_cat & line (var_cat implicitly passed otherwise col))
+  if (geom == "col" & !is.null(var_cat)) {
     ggplot <- ggplot +
       ggiraph::geom_col_interactive(
         position = dplyr::if_else(condition = dodge, true = "dodge", false = "stack")
-      ) +
+      )+
       ggplot2::scale_fill_manual(
         name = legend_title,
         values = color_palette
       )
+  } else if(geom == "col" & is.null(var_cat)){
+    ggplot <- ggplot +
+      ggiraph::geom_col_interactive(
+        position = dplyr::if_else(condition = dodge, true = "dodge", false = "stack"),
+        fill = color_palette[1] # even if more are supplied take only the first as var_cat is null
+      )
   } else if (geom == "line") {
     ggplot <- ggplot +
-      ggiraph::geom_line_interactive(size = 1.5,
-                                     ggplot2::aes(group = if (!is.null(var_cat)) .data[[var_cat]] else 1)) +
-      ggiraph::geom_point_interactive(size = 3) +
+      ggiraph::geom_line_interactive(
+        size = 1,
+        ggplot2::aes(group = if (!is.null(var_cat)) .data[[var_cat]] else 1)) +
+      ggiraph::geom_point_interactive(size = 2.5) +
       ggplot2::scale_color_manual(
         name = legend_title,
         values = color_palette
@@ -353,7 +360,8 @@ create_plot_ggiraph <- function(data,
       scales::percent,
       scales::label_number(big.mark = "'")
     ),
-    expand = ggplot2::expansion(mult = c(0, 0.15))
+    limits = c(0, NA), # Force the Y-axis to start at 0
+    expand = ggplot2::expansion(mult = c(0, 0.15)) # Add some area around, vertically
     ) +
     ggplot2::labs(x = "", y = unit) +
     ggiraph::facet_wrap_interactive(

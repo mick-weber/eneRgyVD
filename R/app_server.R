@@ -421,7 +421,7 @@ app_server <- function(input, output, session) {
                             unit = "vhc/1000 habitants",
                             coerce_dodge = FALSE,
                             var_cat = NULL,
-                            color_palette = "#6495ED", # default_palette, dedicated one, or one color
+                            color_palette = "lightblue", # default_palette, dedicated one, or one color
                             legend_title = NULL,
                             dl_prefix = "taux_motorisation_",
                             doc_vars = NULL # for now

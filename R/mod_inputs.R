@@ -34,24 +34,23 @@ mod_inputs_ui <- function(id){
     # we must remember to update these conditionalPanel conditions when we change the names of each nav_panel() and navset_card_pill() !!
     # otherwise the plots etc. fail to render because they can't access the required conditional input values ! (selected year, etc.)
 
-    # uiOutput generic year slider attempt
+    # Energy
+    uiOutput(ns("elec_cons_years_picker")),
+    uiOutput(ns("elec_prod_years_picker")),
+    uiOutput(ns("ng_cons_years_picker")),
+    uiOutput(ns("subsidies_years_picker")),
+
+    # Mobility
     uiOutput(ns("part_voit_elec_years_picker")),
     uiOutput(ns("qualite_desserte_years_picker")),
     uiOutput(ns("taux_motorisation_years_picker")),
 
-    # uiOutput for elec consumption ----
-    uiOutput(ns("elec_cons_widget")), # End conditionalPanel
+    # Climate
 
-    # uiOutput() for elec production ----
-    uiOutput(ns("elec_prod_widget")),
 
     # uiOutput() for regener ----
     uiOutput(ns("regener_widget")),
 
-    # uiOutput() for ng_cons ----
-    uiOutput(ns("ng_cons_widget")),
-
-    uiOutput(ns("qualite_desserte_widget")),
 
     ## |---------------------------------------------------------------|
     ##          Sidebar bottom footer
@@ -90,10 +89,6 @@ mod_inputs_server <- function(id){
     ns <- session$ns
 
     # # # TEST PRINT #
-    # observe({
-    #   print(input$selected_communes)
-    #   print(inputVals$selectedCommunes)
-    # })
     # # /TEST PRINT
 
     # 0. Retrieve units ----
@@ -106,33 +101,135 @@ mod_inputs_server <- function(id){
     uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
 
-
     # Render UI sidebar widgets ----
     # They must be rendered dynamically (and not in UI directly) so that we can pass req(input$selected_communes)
     # Additional display conditions are stored in conditionalPanel()
 
 
-    ## |---------------------------------------------------------------|
-    ##        qualite_desserte year management
-    ## |---------------------------------------------------------------|
+    # Energy
+
+    output$elec_cons_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'",
+                              shinyWidgets::airYearpickerInput(
+                                inputId = ns("elec_cons_years"),
+                                label = "Sélection des années",
+                                separator = " à ",
+                                range = TRUE,
+                                width = "90%",
+                                addon = "right",
+                                addonAttributes = list(class = "btn disabled"),
+                                value = elec_cons_years,
+                                highlightedDates = elec_cons_years,
+                                update_on = "change",
+                                minDate = elec_cons_years[1],
+                                maxDate = elec_cons_years[2],
+                                clearButton = TRUE,
+                                language = "fr",
+                                placeholder = "Filtrer les années"
+                              )
+      )
+    })
+
+
+
+    output$elec_prod_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'",
+                              shinyWidgets::airYearpickerInput(
+                                inputId = ns("elec_prod_years"),
+                                label = "Sélection des années",
+                                separator = " à ",
+                                range = TRUE,
+                                width = "90%",
+                                addon = "right",
+                                addonAttributes = list(class = "btn disabled"),
+                                value = elec_prod_years,
+                                minDate = elec_prod_years[1],
+                                maxDate = elec_prod_years[2],
+                                clearButton = TRUE,
+                                language = "fr",
+                                placeholder = "Filtrer les années"
+                              )
+      )
+    })
+
+    output$ng_cons_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Gaz naturel'",
+                              shinyWidgets::airYearpickerInput(
+                                inputId = ns("ng_cons_years"),
+                                label = "Sélection des années",
+                                separator = " à ",
+                                range = TRUE,
+                                width = "90%",
+                                addon = "right",
+                                addonAttributes = list(class = "btn disabled"),
+                                value = ng_cons_years,
+                                minDate = ng_cons_years[1],
+                                maxDate = ng_cons_years[2],
+                                clearButton = TRUE,
+                                language = "fr",
+                                placeholder = "Filtrer les années"
+                              )
+      )
+    })
+
+    output$subsidies_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Subventions bâtiments'",
+                              shinyWidgets::airYearpickerInput(
+                                inputId = ns("subsidies_years"),
+                                label = "Sélection des années",
+                                separator = " à ",
+                                range = TRUE,
+                                width = "90%",
+                                addon = "right",
+                                addonAttributes = list(class = "btn disabled"),
+                                value = subsidies_years,
+                                minDate = subsidies_years[1],
+                                maxDate = subsidies_years[2],
+                                clearButton = TRUE,
+                                language = "fr",
+                                placeholder = "Filtrer les années"
+                              )
+      )
+    })
+
+    # Mobility
 
     output$part_voit_elec_years_picker <- renderUI({
 
       req(input$selected_communes)
 
-      shiny::conditionalPanel(
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Véhicules électriques'",
         shinyWidgets::airYearpickerInput(
           inputId = ns("part_voit_elec_years"),
           label = "Sélection des années",
+          separator = " à ",
           range = TRUE,
-          width = "80%",
+          width = "90%",
           addon = "right",
           addonAttributes = list(class = "btn disabled"),
           value = part_voit_elec_years,
           minDate = part_voit_elec_years[1],
           maxDate = part_voit_elec_years[2],
-          language = "fr"
+          clearButton = TRUE,
+          language = "fr",
+          placeholder = "Filtrer les années"
         )
       )
     })
@@ -141,19 +238,22 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-      shiny::conditionalPanel(
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Transports publics'",
         shinyWidgets::airYearpickerInput(
           inputId = ns("qualite_desserte_years"),
           label = "Sélection des années",
+          separator = " à ",
           range = TRUE,
-          width = "80%",
+          width = "90%",
           addon = "right",
           addonAttributes = list(class = "btn disabled"),
           value = qualite_desserte_years,
           minDate = qualite_desserte_years[1],
           maxDate = qualite_desserte_years[2],
-          language = "fr"
+          clearButton = TRUE,
+          language = "fr",
+          placeholder = "Filtrer les années"
         )
       )
     })
@@ -162,107 +262,40 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-      shiny::conditionalPanel(
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Taux de motorisation'",
         shinyWidgets::airYearpickerInput(
           inputId = ns("taux_motorisation_years"),
           label = "Sélection des années",
+          separator = " à ",
           range = TRUE,
-          width = "80%",
+          width = "90%",
           addon = "right",
           addonAttributes = list(class = "btn disabled"),
           value = taux_motorisation_years,
           minDate = taux_motorisation_years[1],
           maxDate = taux_motorisation_years[2],
-          language = "fr"
+          clearButton = TRUE,
+          language = "fr",
+          placeholder = "Filtrer les années"
         )
       )
     })
-
-
-
-
-    ## |---------------------------------------------------------------|
-    ##          /DEV WORK
-    ## |---------------------------------------------------------------|
-
-    output$elec_cons_widget <- renderUI({
-
-      req(input$selected_communes)
-
-      shiny::conditionalPanel(
-        condition="input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
-
-        shiny::sliderInput(ns("elec_cons_year"),
-                           label = tags$p("Choix des années", style = "font-weight:500;margin-bottom:0px;"),
-                           min = min(energy_datasets$elec_cons$annee),
-                           max = max(energy_datasets$elec_cons$annee),
-                           value = c(min(energy_datasets$elec_cons$annee),
-                                     max(energy_datasets$elec_cons$annee)),
-                           step = 1L, sep = "", ticks = T, dragRange = T
-        )
-      )
-    })
-
-
-    output$elec_prod_widget <- renderUI({
-
-      req(input$selected_communes)
-
-      shiny::conditionalPanel(
-        condition="input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'", # 2 conditions + triple escape : 2 for R, 1 for JS
-
-        shiny::sliderInput(ns("elec_prod_year"),
-                           label = tags$p("Choix des années", style = "font-weight:500;margin-bottom:0px;"),
-                           # reactive choices from current subset
-                           min = min(energy_datasets$elec_prod$annee),
-                           max = max(energy_datasets$elec_prod$annee),
-                           value = c(min(energy_datasets$elec_prod$annee),
-                                     max(energy_datasets$elec_prod$annee)),
-                           step = 1L, sep = "", ticks = TRUE, dragRange = TRUE)
-
-
-      ) # End conditionalPanel
-
-    })
-
 
     output$regener_widget <- renderUI({
 
       req(input$selected_communes)
 
-      shiny::conditionalPanel(
+      shiny::conditionalPanel( #style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
 
         #shiny::uiOutput(ns("regener_year_selector"))
         shiny::selectInput(ns("regener_needs_year"),
                            label = tags$p("Année (graphique)", style = "font-weight:500;margin-bottom:0px;"),
                            # static choices from utils_helpers.R -> no reactivity needed
-                           choices = c(min(energy_datasets$regener_needs$etat):max(energy_datasets$regener_needs$etat)),
-                           selected = max(energy_datasets$regener_needs$etat),
+                           choices = c(min_regener_year:max_regener_year),
+                           selected = max_regener_year,
                            multiple = FALSE)
-
-      ) # End conditionalPanel
-
-    })
-
-
-    output$ng_cons_widget <- renderUI({
-
-      req(input$selected_communes)
-
-      shiny::conditionalPanel(
-        condition = "input.nav == 'Gaz naturel'", # 1 condition !
-
-        shiny::sliderInput(ns("ng_cons_year"),
-                           label = tags$p("Choix des années", style = "font-weight:500;margin-bottom:0px;"),
-                           # reactive choices from current subset
-                           min = min(energy_datasets$ng_cons$annee),
-                           max = max(energy_datasets$ng_cons$annee),
-                           value = c(min(energy_datasets$ng_cons$annee),
-                                     max(energy_datasets$ng_cons$annee)),
-                           step = 1L, sep = "", ticks = T, dragRange = T)
-
 
       ) # End conditionalPanel
 
@@ -317,9 +350,11 @@ mod_inputs_server <- function(id){
       req(selectedUnits$energy_unit)
       req(selectedUnits$co2_unit)
 
-      req(input$elec_prod_year)
-      req(input$elec_cons_year)
-      req(input$ng_cons_year)
+      req(length(input$elec_prod_years)>1)
+      req(length(input$elec_cons_years)>1)
+      req(length(input$ng_cons_years)>1)
+      req(length(input$subsidies_years)>1)
+
 
       inputVals$energyDatasets <- energy_datasets |>
         # Filter communes and convert units as needed
@@ -339,11 +374,22 @@ mod_inputs_server <- function(id){
         # Filter years selectively with respective (if any) slider/selectInputs
         purrr::map2(names(energy_datasets),
                     \(df, name_df){
-                      if(name_df == "elec_prod"){df |> dplyr::filter(dplyr::between(annee, input$elec_prod_year[1], input$elec_prod_year[2]))}else
-                        if(name_df == "elec_cons"){df |> dplyr::filter(dplyr::between(annee, input$elec_cons_year[1], input$elec_cons_year[2]))}else
-                          if(name_df == "ng_cons"){df |> dplyr::filter(dplyr::between(annee, input$ng_cons_year[1], input$ng_cons_year[2]))}else
-                            #if(grepl(name_df, pattern = "regener")){df |> dplyr::filter(etat == input$regener_needs_year)}else
-                            # else (regener, others dfs, just return the df unfiltered
+                      if(name_df == "elec_prod"){df |> dplyr::filter(dplyr::between(
+                        annee,
+                        lubridate::year(input$elec_prod_years[1]),
+                        lubridate::year(input$elec_prod_years[2])))}else
+                        if(name_df == "elec_cons"){df |> dplyr::filter(dplyr::between(
+                          annee,
+                          lubridate::year(input$elec_cons_years[1]),
+                          lubridate::year(input$elec_cons_years[2])))}else
+                          if(name_df == "ng_cons"){df |> dplyr::filter(dplyr::between(
+                            annee,
+                            lubridate::year(input$ng_cons_years[1]),
+                            lubridate::year(input$ng_cons_years[2])))}else
+                              if(stringr::str_detect(name_df, pattern = "subsidies")){df |> dplyr::filter(dplyr::between(
+                                .data[[ifelse("etat" %in% names(df), "etat", "annee")]],
+                                lubridate::year(input$subsidies_years[1]),
+                                lubridate::year(input$subsidies_years[2])))}else
                           {df}
                     })
     })

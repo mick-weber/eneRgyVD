@@ -169,8 +169,8 @@ a {
 }
 
 /* Remove SelectizeInput's shadow when .focus is on */
-.selectize-input.focus {
-  border-color: black !important;
+.selectize-input {
+  border: none !important;
   box-shadow: none !important;
 }
 
@@ -262,16 +262,28 @@ a {
   box-shadow: none !important;
 }
 
-.sw-air-picker .dropdown-menu li.selected {
-  background-color: green !important;
-}
-
+/* airYearPickerInput : change colors of selected items once years are opened */
 .air-datepicker {
+  border-color: none !important;
+  font-size: 1rem !important;
   --adp-cell-background-color-selected: #3A862D !important;
   --adp-cell-background-color-selected-hover: #3A862D !important;
   --adp-cell-background-color-in-range: #3A872E3B !important;
   --adp-cell-background-color-in-range-hover: #3A872E3B !important;
   --adp-background-color-in-range:#3A872E3B !important;
+  --adp-background-color-selected-other-month:#3A872E3B !important;
+}
+
+/* airYearPickerInput : remove ugly border */
+.sw-air-picker {
+  border: none !important;
+}
+
+/* airYearPickerInput : override the 'effacer' button to clear the dates */
+.air-datepicker-button span {
+  font-weight: bold !important;
+  color: #FFAEAB !important;
+  font-size: 1rem !important;
 }
 
 /* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */

@@ -457,8 +457,30 @@ max_regener_year <- max(energy_datasets$regener_cons_ae_use$etat)
 
 regener_current_year <- max_regener_year
 
-## Objects for sidebar year selector widgets
+# years for airYearPickerInput() ----
 
+## Energy datasets
+elec_cons_years <- c(
+  sprintf("%s-01-01", min(unique(energy_datasets$elec_cons$annee))),
+  sprintf("%s-01-01", max(unique(energy_datasets$elec_cons$annee)))
+)
+
+elec_prod_years <- c(
+  sprintf("%s-01-01", min(unique(energy_datasets$elec_prod$annee))),
+  sprintf("%s-01-01", max(unique(energy_datasets$elec_prod$annee)))
+)
+
+ng_cons_years <- c(
+  sprintf("%s-01-01", min(unique(energy_datasets$ng_cons$annee))),
+  sprintf("%s-01-01", max(unique(energy_datasets$ng_cons$annee)))
+)
+
+subsidies_years <- c(
+  sprintf("%s-01-01", min(unique(energy_datasets$subsidies_by_building$etat))),
+  sprintf("%s-01-01", max(unique(energy_datasets$subsidies_by_building$etat)))
+)
+
+## Mobility datasets ----
 part_voit_elec_years <- c(
   sprintf("%s-01-01", min(unique(mobility_datasets$part_voit_elec$annee))),
   sprintf("%s-01-01", max(unique(mobility_datasets$part_voit_elec$annee)))
@@ -474,7 +496,7 @@ qualite_desserte_years <- c(
   sprintf("%s-01-01", max(unique(mobility_datasets$qualite_desserte$annee)))
 )
 
-
+## Climate datasets ----
 
 surface_canopee_years <- unique(adaptation_datasets$surface_canopee$annee)
 batiment_danger_years <- unique(adaptation_datasets$batiment_danger$annee)

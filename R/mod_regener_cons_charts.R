@@ -138,6 +138,7 @@ mod_regener_cons_charts_server <- function(id,
 
       req(inputVals$max_selected_regener)
       req(inputVals$selectedCommunes)
+      req(subset_rgr_cons_1())
 
       subset_rgr_cons_1() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
@@ -150,6 +151,7 @@ mod_regener_cons_charts_server <- function(id,
 
       req(inputVals$max_selected_regener)
       req(inputVals$selectedCommunes)
+      req(subset_rgr_cons_2())
 
       subset_rgr_cons_2() |>
         dplyr::filter(etat == inputVals$max_selected_regener)

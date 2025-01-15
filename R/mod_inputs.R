@@ -46,6 +46,8 @@ mod_inputs_ui <- function(id){
     uiOutput(ns("taux_motorisation_years_picker")),
 
     # Climate
+    # uiOutput(ns("surface_canopee_years_picker")),  # ! Only one year available, slider does not make sense
+    # uiOutput(ns("batiment_danger_years_picker")),  # ! Only one year available, slider does not make sense
 
 
     # uiOutput() for regener ----
@@ -109,104 +111,68 @@ mod_inputs_server <- function(id){
     # Energy
 
     output$elec_cons_years_picker <- renderUI({
-
       req(input$selected_communes)
-
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
                               condition = "input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'",
-                              shinyWidgets::airYearpickerInput(
-                                inputId = ns("elec_cons_years"),
-                                label = "Sélection des années",
-                                separator = " à ",
-                                range = TRUE,
-                                width = "90%",
-                                addon = "right",
-                                addonAttributes = list(class = "btn disabled"),
-                                value = elec_cons_years,
-                                highlightedDates = elec_cons_years,
-                                update_on = "change",
-                                minDate = elec_cons_years[1],
-                                maxDate = elec_cons_years[2],
-                                clearButton = TRUE,
-                                language = "fr",
-                                placeholder = "Filtrer les années"
-                              )
+                              make_slider_input_years(id = ns("elec_cons_years"),
+                                                      years = elec_cons_years)
       )
     })
 
 
 
     output$elec_prod_years_picker <- renderUI({
-
       req(input$selected_communes)
-
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
                               condition = "input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'",
-                              shinyWidgets::airYearpickerInput(
-                                inputId = ns("elec_prod_years"),
-                                label = "Sélection des années",
-                                separator = " à ",
-                                range = TRUE,
-                                width = "90%",
-                                addon = "right",
-                                addonAttributes = list(class = "btn disabled"),
-                                value = elec_prod_years,
-                                minDate = elec_prod_years[1],
-                                maxDate = elec_prod_years[2],
-                                clearButton = TRUE,
-                                language = "fr",
-                                placeholder = "Filtrer les années"
-                              )
+                              make_slider_input_years(id = ns("elec_prod_years"),
+                                                      years = elec_prod_years)
       )
     })
 
     output$ng_cons_years_picker <- renderUI({
-
       req(input$selected_communes)
-
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
                               condition = "input.nav == 'Gaz naturel'",
-                              shinyWidgets::airYearpickerInput(
-                                inputId = ns("ng_cons_years"),
-                                label = "Sélection des années",
-                                separator = " à ",
-                                range = TRUE,
-                                width = "90%",
-                                addon = "right",
-                                addonAttributes = list(class = "btn disabled"),
-                                value = ng_cons_years,
-                                minDate = ng_cons_years[1],
-                                maxDate = ng_cons_years[2],
-                                clearButton = TRUE,
-                                language = "fr",
-                                placeholder = "Filtrer les années"
-                              )
+                              make_slider_input_years(id = ns("ng_cons_years"),
+                                                      years = ng_cons_years)
       )
     })
 
     output$subsidies_years_picker <- renderUI({
+      req(input$selected_communes)
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Subventions bâtiments'",
+                              make_slider_input_years(id = ns("subsidies_years"),
+                                                      years = subsidies_years)
+      )
+    })
+
+    # Climate
+
+    output$surface_canopee_years_picker <- renderUI({
 
       req(input$selected_communes)
 
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
-                              condition = "input.nav == 'Subventions bâtiments'",
-                              shinyWidgets::airYearpickerInput(
-                                inputId = ns("subsidies_years"),
-                                label = "Sélection des années",
-                                separator = " à ",
-                                range = TRUE,
-                                width = "90%",
-                                addon = "right",
-                                addonAttributes = list(class = "btn disabled"),
-                                value = subsidies_years,
-                                minDate = subsidies_years[1],
-                                maxDate = subsidies_years[2],
-                                clearButton = TRUE,
-                                language = "fr",
-                                placeholder = "Filtrer les années"
-                              )
+                              condition = "input.nav == 'Surface de canopée urbaine'",
+                              make_slider_input_years(id = ns("surface_canopee_years"),
+                                                      years = surface_canopee_years)
       )
     })
+
+    output$batiment_danger_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Exposition aux dangers naturels'",
+                              make_slider_input_years(id = ns("batiment_danger_years"),
+                                                      years = batiment_danger_years)
+      )
+    })
+
+
 
     # Mobility
 
@@ -216,21 +182,8 @@ mod_inputs_server <- function(id){
 
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Véhicules électriques'",
-        shinyWidgets::airYearpickerInput(
-          inputId = ns("part_voit_elec_years"),
-          label = "Sélection des années",
-          separator = " à ",
-          range = TRUE,
-          width = "90%",
-          addon = "right",
-          addonAttributes = list(class = "btn disabled"),
-          value = part_voit_elec_years,
-          minDate = part_voit_elec_years[1],
-          maxDate = part_voit_elec_years[2],
-          clearButton = TRUE,
-          language = "fr",
-          placeholder = "Filtrer les années"
-        )
+        make_slider_input_years(id = ns("part_voit_elec_years"),
+                                years = part_voit_elec_years)
       )
     })
 
@@ -240,21 +193,8 @@ mod_inputs_server <- function(id){
 
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Transports publics'",
-        shinyWidgets::airYearpickerInput(
-          inputId = ns("qualite_desserte_years"),
-          label = "Sélection des années",
-          separator = " à ",
-          range = TRUE,
-          width = "90%",
-          addon = "right",
-          addonAttributes = list(class = "btn disabled"),
-          value = qualite_desserte_years,
-          minDate = qualite_desserte_years[1],
-          maxDate = qualite_desserte_years[2],
-          clearButton = TRUE,
-          language = "fr",
-          placeholder = "Filtrer les années"
-        )
+        make_slider_input_years(id = ns("qualite_desserte_years"),
+                                years = qualite_desserte_years)
       )
     })
 
@@ -264,21 +204,8 @@ mod_inputs_server <- function(id){
 
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Taux de motorisation'",
-        shinyWidgets::airYearpickerInput(
-          inputId = ns("taux_motorisation_years"),
-          label = "Sélection des années",
-          separator = " à ",
-          range = TRUE,
-          width = "90%",
-          addon = "right",
-          addonAttributes = list(class = "btn disabled"),
-          value = taux_motorisation_years,
-          minDate = taux_motorisation_years[1],
-          maxDate = taux_motorisation_years[2],
-          clearButton = TRUE,
-          language = "fr",
-          placeholder = "Filtrer les années"
-        )
+        make_slider_input_years(id = ns("taux_motorisation_years"),
+                                years = taux_motorisation_years)
       )
     })
 
@@ -286,7 +213,7 @@ mod_inputs_server <- function(id){
 
       req(input$selected_communes)
 
-      shiny::conditionalPanel( #style = "display: none;", # avoid flickering upon init
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
         condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
 
         #shiny::uiOutput(ns("regener_year_selector"))
@@ -350,10 +277,10 @@ mod_inputs_server <- function(id){
       req(selectedUnits$energy_unit)
       req(selectedUnits$co2_unit)
 
-      req(length(input$elec_prod_years)>1)
-      req(length(input$elec_cons_years)>1)
-      req(length(input$ng_cons_years)>1)
-      req(length(input$subsidies_years)>1)
+      req(input$elec_prod_years)
+      req(input$elec_cons_years)
+      req(input$ng_cons_years)
+      req(input$subsidies_years)
 
 
       inputVals$energyDatasets <- energy_datasets |>
@@ -376,20 +303,20 @@ mod_inputs_server <- function(id){
                     \(df, name_df){
                       if(name_df == "elec_prod"){df |> dplyr::filter(dplyr::between(
                         annee,
-                        lubridate::year(input$elec_prod_years[1]),
-                        lubridate::year(input$elec_prod_years[2])))}else
+                        input$elec_prod_years[1],
+                        input$elec_prod_years[2]))}else
                         if(name_df == "elec_cons"){df |> dplyr::filter(dplyr::between(
                           annee,
-                          lubridate::year(input$elec_cons_years[1]),
-                          lubridate::year(input$elec_cons_years[2])))}else
+                          input$elec_cons_years[1],
+                          input$elec_cons_years[2]))}else
                           if(name_df == "ng_cons"){df |> dplyr::filter(dplyr::between(
                             annee,
-                            lubridate::year(input$ng_cons_years[1]),
-                            lubridate::year(input$ng_cons_years[2])))}else
+                            input$ng_cons_years[1],
+                            input$ng_cons_years[2]))}else
                               if(stringr::str_detect(name_df, pattern = "subsidies")){df |> dplyr::filter(dplyr::between(
                                 .data[[ifelse("etat" %in% names(df), "etat", "annee")]],
-                                lubridate::year(input$subsidies_years[1]),
-                                lubridate::year(input$subsidies_years[2])))}else
+                                input$subsidies_years[1],
+                                input$subsidies_years[2]))}else
                           {df}
                     })
     })
@@ -414,14 +341,14 @@ mod_inputs_server <- function(id){
                           \(df, name_df){
 
                             if(name_df == "part_voit_elec"){df |> dplyr::filter(dplyr::between(annee,
-                                                                                               lubridate::year(input$part_voit_elec_years[1]),
-                                                                                               lubridate::year(input$part_voit_elec_years[2])))}else
+                                                                                               input$part_voit_elec_years[1],
+                                                                                               input$part_voit_elec_years[2]))}else
                               if(name_df == "taux_motorisation"){df |> dplyr::filter(dplyr::between(annee,
-                                                                                                    lubridate::year(input$taux_motorisation_years[1]),
-                                                                                                    lubridate::year(input$taux_motorisation_years[2])))}else
+                                                                                                    input$taux_motorisation_years[1],
+                                                                                                    input$taux_motorisation_years[2]))}else
                                 if(name_df == "qualite_desserte"){df |> dplyr::filter(dplyr::between(annee,
-                                                                                                     lubridate::year(input$qualite_desserte_years[1]),
-                                                                                                     lubridate::year(input$qualite_desserte_years[2])))}else
+                                                                                                     input$qualite_desserte_years[1],
+                                                                                                     input$qualite_desserte_years[2]))}else
                                 {df}
 
                           })

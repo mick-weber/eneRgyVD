@@ -150,38 +150,33 @@ generate_doc_accordion_panels <- function(md_file){
 
 }
 
-# Streamlined renderUIs ----
+# Streamlined sliderInputs ----
 
 
-render_sidebar_year_widget <- function(id,
-                                       ns,
-                                       condition,
-                                       available_years){
+#' make_slider_input_years
+#' creates a shiny sliderInput() widget based on a vector of two years
+#' @param id the widget inputId, passed with a ns() to avoid namespace conflicts if inside a module
+#' @param years a vector of two numeric years to be used as min, max, and default values
+#'
+#' @return a shiny sliderInput widget
+#' @export
+#'
+#' @examples make_slider_input_years(id = "slider1", years = c(2010, 2025))
+make_slider_input_years <- function(id,
+                                    years,
+                                    ...
+                                    ){
 
-  shiny::renderUI({
-
-    shiny::conditionalPanel(
-      condition = condition,
-      shiny::selectizeInput(
-        inputId = ns(paste0(id, "_year_from")),
-        label = "Année dès :",
-        choices = available_years,
-        selected = min(available_years),
-        width = "50%"
-      ),
-      shiny::selectizeInput(
-        inputId = ns(paste0(id, "_year_to")),
-        label = "Année jusqu'à :",
-        choices = available_years,
-        selected = max(available_years),
-        width = "50%"
-
-      )
-    )
-  })
-
-
-
+  shiny::sliderInput(inputId = id,
+                     label = "Sélection des années",
+                     min = years[1],
+                     max = years[2],
+                     value = years,
+                     step = 1L,
+                     sep = "",
+                     ticks = FALSE,
+                     dragRange = T
+  )
 }
 
 

@@ -450,56 +450,62 @@ categories_diren <- energy_datasets$elec_prod |>
 # to be populated
 
 ## Objects specific 'Chaleur bâtiments'  ----
-# used for fct_helpers.R -> mod_regener_cons_charts.R + mod_stats_box.R
+# RegEner specificity (see mod_inputs.R, app_server.R)
 
 min_regener_year <- min(energy_datasets$regener_cons_ae_use$etat)
 max_regener_year <- max(energy_datasets$regener_cons_ae_use$etat)
 
 regener_current_year <- max_regener_year
 
-# years for airYearPickerInput() ----
+# years for make_slider_input_years (fct_helpers.R + mod_inputs.R) ----
 
 ## Energy datasets
 elec_cons_years <- c(
-  sprintf("%s-01-01", min(unique(energy_datasets$elec_cons$annee))),
-  sprintf("%s-01-01", max(unique(energy_datasets$elec_cons$annee)))
+  min(energy_datasets$elec_cons$annee),
+  max(energy_datasets$elec_cons$annee)
 )
 
 elec_prod_years <- c(
-  sprintf("%s-01-01", min(unique(energy_datasets$elec_prod$annee))),
-  sprintf("%s-01-01", max(unique(energy_datasets$elec_prod$annee)))
+  min(energy_datasets$elec_prod$annee),
+  max(energy_datasets$elec_prod$annee)
 )
 
 ng_cons_years <- c(
-  sprintf("%s-01-01", min(unique(energy_datasets$ng_cons$annee))),
-  sprintf("%s-01-01", max(unique(energy_datasets$ng_cons$annee)))
+  min(energy_datasets$ng_cons$annee),
+  max(energy_datasets$ng_cons$annee)
 )
 
 subsidies_years <- c(
-  sprintf("%s-01-01", min(unique(energy_datasets$subsidies_by_building$etat))),
-  sprintf("%s-01-01", max(unique(energy_datasets$subsidies_by_building$etat)))
+  min(energy_datasets$subsidies_by_building$etat),
+  max(energy_datasets$subsidies_by_building$etat)
 )
 
 ## Mobility datasets ----
 part_voit_elec_years <- c(
-  sprintf("%s-01-01", min(unique(mobility_datasets$part_voit_elec$annee))),
-  sprintf("%s-01-01", max(unique(mobility_datasets$part_voit_elec$annee)))
+  min(mobility_datasets$part_voit_elec$annee),
+  max(mobility_datasets$part_voit_elec$annee)
 )
 
 taux_motorisation_years <- c(
-  sprintf("%s-01-01", min(unique(mobility_datasets$taux_motorisation$annee))),
-  sprintf("%s-01-01", max(unique(mobility_datasets$taux_motorisation$annee)))
+  min(mobility_datasets$taux_motorisation$annee),
+  max(mobility_datasets$taux_motorisation$annee)
 )
 
 qualite_desserte_years <- c(
-  sprintf("%s-01-01", min(unique(mobility_datasets$qualite_desserte$annee))),
-  sprintf("%s-01-01", max(unique(mobility_datasets$qualite_desserte$annee)))
+  min(mobility_datasets$qualite_desserte$annee),
+  max(mobility_datasets$qualite_desserte$annee)
 )
 
 ## Climate datasets ----
+surface_canopee_years <- c(
+  min(adaptation_datasets$surface_canopee$annee),
+  max(adaptation_datasets$surface_canopee$annee)
+)
 
-surface_canopee_years <- unique(adaptation_datasets$surface_canopee$annee)
-batiment_danger_years <- unique(adaptation_datasets$batiment_danger$annee)
+batiment_danger_years <- c(
+  min(adaptation_datasets$batiment_danger$annee),
+  max(adaptation_datasets$batiment_danger$annee)
+)
 
 
 

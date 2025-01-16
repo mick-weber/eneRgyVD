@@ -11,6 +11,8 @@ make_slider_input_years(id, years, ...)
 \item{id}{the widget inputId, passed with a ns() to avoid namespace conflicts if inside a module}
 
 \item{years}{a vector of two numeric years to be used as min, max, and default values}
+
+\item{...}{<data-masking>}
 }
 \value{
 a shiny sliderInput widget

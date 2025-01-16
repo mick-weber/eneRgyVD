@@ -46,6 +46,7 @@ link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 link_dummy_generic_data <- 'https://www.geo.vd.ch/?mapresources=GEOVD_ENERGIE&visiblelayers={%22GEOVD_ENERGIE%22:[%22Eoliennes%20du%20site%22,%22Site%20%C3%A9olien%22]}'
 regener_geovd_link <- 'https://www.geo.vd.ch' # temporary
+batiment_danger_geovd_link <- 'https://www.cdn.vd.ch/'
 
 
 
@@ -54,50 +55,51 @@ regener_geovd_link <- 'https://www.geo.vd.ch' # temporary
 # may rely on previous links above
 
 
-title_complement_elec_cons <- tags$p(style = "width:70vw;",
-                                     HTML("Ces données sont issues des relevés des compteurs fournis par les gestionnaires de réseau de distribution (voir détails méthodologiques).
+title_complement_elec_cons <- shiny::tags$p(style = "width:70vw;",
+                                     shiny::HTML("Ces données sont issues des relevés des compteurs fournis par les gestionnaires de réseau de distribution (voir détails méthodologiques).
                                           <br>
                                           La <strong>distribution</strong> ne doit pas être confondue à la <strong>consommation finale</strong> car il manque l'autoconsommation (notamment photovoltaïque) ou encore l'électricité du réseau des CFF.
                                           L'autoconsommation estimée est disponible dans la <strong>table des données de production d'électricité</strong>."))
 
-title_complement_elec_prod <- tags$p(style = "width:70vw;",
-                                     HTML("Ces données sont le résultat d'un traitement des données issues de l'organisme de certification des garanties d'origine <a href = 'https://pronovo.ch/fr/'> Pronovo</a> (voir détails méthodologiques)."))
+title_complement_elec_prod <- shiny::tags$p(style = "width:70vw;",
+                                     shiny::HTML("Ces données sont le résultat d'un traitement des données issues de l'organisme de certification des garanties d'origine <a href = 'https://pronovo.ch/fr/'> Pronovo</a> (voir détails méthodologiques).
+                                                 La production comprend une <strong>estimation de l'autoconsommation</strong>, informations disponibles dans la table des données."))
 
-title_complement_ng_cons <- tags$p(style = "width:70vw",
-                                   HTML("Ces données sont issues des relevés des compteurs fournis par les gestionnaires de réseau de distribution. Elles ne
+title_complement_ng_cons <- shiny::tags$p(style = "width:70vw",
+                                   shiny::HTML("Ces données sont issues des relevés des compteurs fournis par les gestionnaires de réseau de distribution. Elles ne
                                    comprennent pas les livraisons de gaz naturel hors-réseau, par exemple via des citernes remplies par transport routier.
                                         <br>
                                         L'exactitude des distinctions sectorielles ainsi que certaines variations interannuelles peuvent s'expliquer par la qualité des données fournies (voir détails méthodologiques)."))
 
-title_complement_regener_needs <- tags$p(style = "width:70vw;",
+title_complement_regener_needs <- shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",
-                                         strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
+                                         shiny::strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
                                          "Plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques. ",
                                          create_geoportail_tag(link = regener_geovd_link))
 
-title_complement_regener_cons <-  tags$p(style = "width:70vw;",
+title_complement_regener_cons <-  shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent comment la consommation de différents agents énergétiques se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
-                                         strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
+                                         shiny::strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
                                          "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.",
                                          create_geoportail_tag(link = regener_geovd_link))
 
-title_complement_regener_misc <- tags$p(style = "width:70vw;",
+title_complement_regener_misc <- shiny::tags$p(style = "width:70vw;",
                                         "Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune.",
-                                        br(),
+                                        shiny::br(),
                                         create_geoportail_tag(link = regener_geovd_link))
 
-title_complement_subsidies_building <- tags$p(style = "width:70vw;",
+title_complement_subsidies_building <- shiny::tags$p(style = "width:70vw;",
                                               "Ces données illustrent le nombre de bâtiments ayant reçu certaines subventions du Programme Bâtiment vaudois depuis 2017 (voir détails dans la méthodologie complète).
                                          Les données précédant 2017 ne sont pas inclues mais représentent une minorité des subventions versées.",
-                                              strong("L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes."),
+                                              shiny::strong("L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes."),
                                               "Le total des subventions versées d'une année ne peut donc pas être inférieur au total de l'année précédente.
                                          La SRE correspond à la surface de référence énergétique estimée des bâtiments ayant reçu une subvention.
                                          Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD).")
 
-title_complement_subsidies_measure <- tags$p(style = "width:70vw;",
+title_complement_subsidies_measure <- shiny::tags$p(style = "width:70vw;",
                                              "Ces données illustrent le nombre de subventions versées par type et année depuis 2017
                                         (voir détails dans la méthodologie complète). Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,",
-                                             strong("il ne faut pas interpréter une subvention comme un bâtiment nouvellement subventionné."),
+                                             shiny::strong("il ne faut pas interpréter une subvention comme un bâtiment nouvellement subventionné."),
                                              "Une vision agrégée par bâtiments subventionnés est disponible dans l'onglet adjacent.")
 
 

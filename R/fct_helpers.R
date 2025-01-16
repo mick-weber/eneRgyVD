@@ -1,10 +1,10 @@
 # Info fn ----
 
-#' info_dev_message()
+#' welcome_modal()
 #' shiny modal message to inform the user about the app, and offer the possibility to have a guided tour (introjs)
 #' @return A a modal object when opening the app
 
-info_dev_message <- function(){
+welcome_modal <- function(){
 
   showModal(
     modalDialog(size = "l",
@@ -47,41 +47,6 @@ info_dev_message <- function(){
                   )
                 )
     )
-  )
-
-}
-
-
-# Statbox items ----
-
-#' make_statbox_item()
-#' custom replacement for valueboxes (too rigid) to fill statboxes with icon, title, value and year info
-#' @return a HTML div container
-#' @export
-#' @import shiny
-#'
-#' @examples
-#' make_statbox_item(iconBgClass = NULL, title = "Rescues", value = 100, unit = "people", year = 2022)
-make_statbox_item <- function(iconBgClass,
-                              title,
-                              value,
-                              unit,
-                              year){
-
-
-  tags$div(class = glue::glue("text-center padding-top-1 rounded {iconBgClass}"),
-
-           p(HTML(title), class = "p-0 m-0", style = "font-size:1.1rem;font-weight:500;"),
-           tags$div(
-             # Nicely format value (rounded + big.mark) and add unit below as newline
-             strong(HTML(format(round(value, digits = 0),
-                                big.mark = "'",
-                                zero.print = "-" # ! important when no commune is selected,0 is passed
-             )),
-             style = "font-size:1.3rem;"),
-             strong(p(unit, style = "font-size:1.2rem;")),
-             p(year, style = "font-size:1.1rem;font-weight:500;")
-           )
   )
 
 }
@@ -157,11 +122,12 @@ generate_doc_accordion_panels <- function(md_file){
 #' creates a shiny sliderInput() widget based on a vector of two years
 #' @param id the widget inputId, passed with a ns() to avoid namespace conflicts if inside a module
 #' @param years a vector of two numeric years to be used as min, max, and default values
-#'
+#' @param ... <data-masking>
 #' @return a shiny sliderInput widget
 #' @export
 #'
 #' @examples make_slider_input_years(id = "slider1", years = c(2010, 2025))
+
 make_slider_input_years <- function(id,
                                     years,
                                     ...
@@ -271,6 +237,18 @@ create_select_leaflet <- function(sf_districts,
 #'@description Creates a girafe object from a facetted ggplot bar plot for use in renderGirafe
 #'
 #' @param data the data to provide
+#' @param n_communes number of selected communes, used to control the width of facets
+#' @param var_year the year variable
+#' @param var_commune the commune variable
+#' @param unit the unit to append in <var_values>
+#' @param var_cat the optional categorical variable
+#' @param var_values the variables containing the values
+#' @param geom the type of geom for the plot : either 'col' or 'line'
+#' @param color_palette a named vector of values-colors if <var_cat> is supplied, that should match <var_cat> items
+#' @param dodge if geom = 'col' and <var_cat> is supplied : controls whether the cols are in a stacked or dodge position
+#' @param free_y if <n_communes> is higher than 1, controls whether the y axis is independent for each facet or not
+#' @param legend_title a string containing the legend title if <var_cat> is supplied
+#' @param height_svg,width_svg dimensions of ggiraph output
 #'
 #'
 #' @import ggplot2
@@ -291,19 +269,23 @@ create_plot_ggiraph <- function(data,
                                 free_y = FALSE,
                                 legend_title = NULL,
                                 height_svg,
-                                width_svg,
-                                ...) {
+                                width_svg) {
+
+  # If several values/units are passed (for table options etc.) we take the first one (convention) for the plot
+  first_var_value <- var_values[1]
+  first_unit <- unit[1]
 
   # Compute totals for conditional geom_text (if stacked)
+  # Note : we take the first var_values if several values are passed
   data_totals <- data |>
     dplyr::group_by(.data[[var_year]], .data[[var_commune]]) |>
-    dplyr::summarise(total = sum(.data[[var_values]], na.rm = TRUE))
+    dplyr::summarise(total = sum(.data[[first_var_value]], na.rm = TRUE))
 
   # Compute ggplot2
   ggplot <- data |>
     ggplot2::ggplot(ggplot2::aes(
       x = as.factor(.data[[var_year]]),
-      y = .data[[var_values]],
+      y = .data[[first_var_value]],
       fill = if (geom == "col" & !is.null(var_cat)) .data[[var_cat]] else NULL,  # Use fill only for bars
       color = if (geom == "line" & !is.null(var_cat)) .data[[var_cat]] else NULL, # Use color for lines
       data_id = if (!is.null(var_cat)) {
@@ -313,16 +295,16 @@ create_plot_ggiraph <- function(data,
       },
       tooltip = paste0(
         if (!is.null(var_cat)) paste0(.data[[var_cat]], "\n"),
-        if (unit == "%") {
+        if (first_unit == "%") {
           paste(
-            scales::percent(.data[[var_values]], accuracy = 0.1),
+            scales::percent(.data[[first_var_value]], accuracy = 0.1),
             " en ",
             .data[[var_year]]
           )
         } else {
           paste(
-            format(round(.data[[var_values]], digits = 0), big.mark = "'"),
-            unit,
+            format(round(.data[[first_var_value]], digits = 0), big.mark = "'"),
+            first_unit,
             "en ",
             .data[[var_year]]
           )
@@ -338,7 +320,7 @@ create_plot_ggiraph <- function(data,
         ggplot2::aes(
           x = as.factor(.data[[var_year]]),
           y = total,
-          label = if (unit == "%") {
+          label = if (first_unit == "%") {
             scales::percent(total, accuracy = 0.01)
           } else {
             format(total, big.mark = "'", digits = 1, scientific = FALSE)
@@ -386,14 +368,14 @@ create_plot_ggiraph <- function(data,
   # Add scales, facets, and theme
   ggplot <- ggplot +
     ggplot2::scale_y_continuous(labels = ifelse(
-      unit == "%",
+      first_unit == "%",
       scales::percent,
       scales::label_number(big.mark = "'")
     ),
     limits = c(0, NA), # Force the Y-axis to start at 0
     expand = ggplot2::expansion(mult = c(0, 0.15)) # Add some area around, vertically
     ) +
-    ggplot2::labs(x = "", y = unit) +
+    ggplot2::labs(x = "", y = first_unit) +
     ggiraph::facet_wrap_interactive(
       facets = ggplot2::vars(.data[[var_commune]]),
       ncol = 2,
@@ -494,9 +476,10 @@ create_alluvial_chart <- function(data,
 
 #' lump_alluvial_factors()
 #' takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
-#' according to two {forcats} functions which arguments should be modified in the code
+#' according to two forcats functions which arguments should be modified in the code
 #'
 #' @param data the dataset used to create the ggalluvial plot
+#' @param var_commune the municipality variable
 #' @param var_from the variable for the left stratum
 #' @param var_flow the variable that quantifies the flows from `var_from` to `var_to`
 #' @param var_to the variable for the right stratum
@@ -554,8 +537,8 @@ format_numbers_heuristic <- function(number) {
 #' @param var_year colname corresponding to the year (passed as a string)
 #' @param var_values colname corresponding to the value(s) (passed as a string, or a vector of string)
 #' @param var_cat colname corresponding to the categorical variable (passed as a string)
-#' @param string or variable containing a string or a list of strings, used as a prefix to `var_values` through `add_colname_unit`
-#' @param na_string a string specifying how should NAs be displayed, as it can change from one dataset to another
+#' @param unit the unit to display inside brackets in the supplied <var_values> variables
+#' @param na_string a string specifying how should NAs be displayed, as it can change from one dataset to another (defaults to : 'Non disponible')
 #' @param DT_dom  the DT domain values to specify which DT extensions should be applied
 #'
 #' @return a dataTable object
@@ -717,18 +700,17 @@ return_palette_regener <- function(){
 #' create_geoportail_tag
 #' Creates a icon+link combination (tag) which redirects towards a specified geoportail link where geodata
 #' can be viewed for Canton de Vaud
-#' @param link
-#'
+#' @param link the geoportail link that will be used inside the tag (https://geo.vd.ch/...)
 #' @return a span tag with icon and an html <a> tag with the redirect link
 #' @export
 #'
-#' @examples create_geoportail_tag(link = "https://google.com")
+#' @examples create_geoportail_tag(link = "https://geo.vd.ch")
+
 create_geoportail_tag <- function(link){
 
-  tags$span(
-    phosphoricons::ph(title = NULL, "map-trifold"), strong("Géodonnées détaillées disponibles sur", tags$a(href = link, 'geo.vd.ch', target = '_blank'))
+  shiny::tags$span(
+    phosphoricons::ph(title = NULL, "map-trifold"), shiny::strong("Géodonnées détaillées disponibles sur", shiny::tags$a(href = link, 'geo.vd.ch', target = '_blank'))
   )
-
 }
 
 
@@ -865,6 +847,7 @@ add_colname_unit <- function(data, colnames, unit){
 #' rename_columns_output()
 #' Uses the csv file in app/extdata/ to convert initial colnames to nicely formatted ones
 #' the function matches only the start of the initial colname to find a match
+#' @param data the dataset to rename with the default <colnames_replacement_display> object
 #' @return a renamed dataframe
 #' @export
 

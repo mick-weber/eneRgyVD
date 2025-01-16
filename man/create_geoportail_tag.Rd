@@ -9,7 +9,7 @@ can be viewed for Canton de Vaud}
 create_geoportail_tag(link)
 }
 \arguments{
-\item{link}{}
+\item{link}{the geoportail link that will be used inside the tag (https://geo.vd.ch/...)}
 }
 \value{
 a span tag with icon and an html <a> tag with the redirect link
@@ -20,5 +20,5 @@ Creates a icon+link combination (tag) which redirects towards a specified geopor
 can be viewed for Canton de Vaud
 }
 \examples{
-create_geoportail_tag(link = "https://google.com")
+create_geoportail_tag(link = "https://geo.vd.ch")
 }

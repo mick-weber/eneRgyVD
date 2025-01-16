@@ -28,11 +28,11 @@ make_table_dt(
 
 \item{var_cat}{colname corresponding to the categorical variable (passed as a string)}
 
-\item{na_string}{a string specifying how should NAs be displayed, as it can change from one dataset to another}
+\item{unit}{the unit to display inside brackets in the supplied <var_values> variables}
+
+\item{na_string}{a string specifying how should NAs be displayed, as it can change from one dataset to another (defaults to : 'Non disponible')}
 
 \item{DT_dom}{the DT domain values to specify which DT extensions should be applied}
-
-\item{string}{or variable containing a string or a list of strings, used as a prefix to `var_values` through `add_colname_unit`}
 }
 \value{
 a dataTable object

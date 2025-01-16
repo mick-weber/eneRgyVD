@@ -8,6 +8,9 @@ the function matches only the start of the initial colname to find a match}
 \usage{
 rename_columns_output(data)
 }
+\arguments{
+\item{data}{the dataset to rename with the default <colnames_replacement_display> object}
+}
 \value{
 a renamed dataframe
 }

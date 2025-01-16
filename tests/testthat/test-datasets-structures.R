@@ -1,111 +1,53 @@
-# These tests aim at checking that supplied datasets have the expected structure
-#  both in terms of variable names and lengths. Variable names order does not matter.
+test_that("Check all datasets have expected colnames based on extadata/ located file", {
 
-test_that("Check all variabes in REGENER", {
+  # Read file containing all colnames used to make nice translations for table display etc.
+  load_colnames <- read.csv2("./inst/extdata/colnames_replacement_display.csv")
 
-  # Prepare ordered expected colnames
+  # Make named list of dataframes containing the colnames
+  expected_colnames <- split(
+    load_colnames$colname,
+    load_colnames$dataset
+  )
 
-  expected_cons_aff_colnames <- c("commune", "ae", "consommation", "pct_commune",
-                                  "co2_direct", "affectation", "etat") |> sort()
+  # Extract similar structure for all available datasets
+  energy_colnames <- energy_datasets |>
+    purrr::map(\(df){colnames(df)})
 
-  expected_cons_use_colnames <- c("commune", "ae", "consommation", "co2_direct",
-                                  "pct_commune", "usage", "etat")|> sort()
+  mobility_colnames <- mobility_datasets |>
+    purrr::map(\(df){colnames(df)})
 
-  expected_needs_colnames <- c("commune", "type", "statut", "besoins", "etat") |> sort()
+  adaptation_colnames <- adaptation_datasets |>
+    purrr::map(\(df){colnames(df)})
 
-  expected_misc_colnames <- c("commune", "SRE", "N_EGID", "N_NO_RENOV",
-                              "N_NEW_POST_2000","N_RENOV_L_POST_2000",
-                              "N_RENOV_H_POST_2000", "N_NO_GBAUJ", "etat") |> sort()
+  # Check the names of the dataset match
+  testthat::expect_true(label = "Check all expected energy_datasets names (not colnames) match loaded datasets",
+                        all(names(energy_colnames) %in% names(expected_colnames)))
+  testthat::expect_true(label = "Check all expected mobility_datasets names (not colnames) match loaded datasets",
+                        all(names(mobility_colnames) %in% names(expected_colnames)))
+  testthat::expect_true(label = "Check all expected adaptation_datasets names (not colnames) match loaded datasets",
+                        all(names(adaptation_colnames) %in% names(expected_colnames)))
 
-  # Run tests
-  expect_equal(label = "Expected colnames for RegEner datasets",
-               expected.label = "RegEner colnames do not match",
-               energy_datasets$regener_cons_ae_aff |> colnames() |> sort(),
-               expected_cons_aff_colnames)
+  # Now the dataset names
+  actual_colnames <- c(energy_colnames, mobility_colnames, adaptation_colnames)
 
-  expect_equal(label = "Expected colnames for RegEner datasets",
-               expected.label = "RegEner colnames do not match",
-               energy_datasets$regener_cons_ae_use |> colnames() |> sort(),
-               expected_cons_use_colnames)
+  common_names <- intersect(names(actual_colnames), names(expected_colnames))
 
-  expect_equal(label = "Expected colnames for RegEner datasets",
-               expected.label = "RegEner colnames do not match",
-               energy_datasets$regener_needs |> colnames() |> sort(),
-               expected_needs_colnames)
+  # Streamline tests pairwise expected/actual colnames by dataset
+  test_colnames <- purrr::pwalk(
+    .l = list(
+      dataset_name = common_names,
+      expected = expected_colnames[common_names],
+      actual = actual_colnames[common_names]
+    ),
+    .f = \(dataset_name, expected, actual) {
 
-  expect_equal(label = "Expected colnames for RegEner datasets",
-               expected.label = "RegEner colnames do not match",
-               energy_datasets$regener_misc |> colnames() |> sort(),
-               expected_misc_colnames)
-
-
-})
-
-
-test_that("Check all variabes in ELEC_CONS", {
-
-  # Prepare ordered expected colnames
-
-  expected_elec_cons_colnames <- c("annee", "commune", "consommation", "secteur") |> sort()
-
-  # Run tests
-  expect_equal(label = "Expected colnames for elec_cons dataset",
-               expected.label = "colnames do not match",
-               energy_datasets$elec_cons|> colnames() |> sort(),
-               expected_elec_cons_colnames)
-
-})
-
-
-test_that("Check all variabes in NG_CONS", {
-
-  # Prepare ordered expected colnames
-
-  expected_ng_colnames <- c("annee", "commune", "consommation", "secteur") |> sort()
-
-  # Run tests
-  expect_equal(label = "Expected colnames for elec_cons dataset",
-               expected.label = "colnames do not match",
-               energy_datasets$ng_cons|> colnames() |> sort(),
-               expected_ng_colnames)
-
-})
-
-test_that("Check all variabes in ELEC_PROD", {
-
-  # Prepare ordered expected colnames
-
-  expected_elec_prod_colnames <- c("categorie", "commune", "annee", "puissance_electrique_installee",
-                                   "injection", "autoconsommation", "production", "numero_de_la_commune") |>sort()
-
-  # Run tests
-  expect_equal(label = "Expected colnames for elec_prod dataset",
-               expected.label = "colnames do not match",
-               energy_datasets$elec_prod |> colnames() |> sort(),
-               expected_elec_prod_colnames)
-
-})
-
-
-test_that("Check all variabes in SUBSIDIES", {
-
-  # Prepare ordered expected colnames
-
-  expected_subsidies_building_colnames <- c("commune", "etat", "subv_type", "N_EGID",
-                                            "SRE", "detail_chauffage") |> sort()
-
-  expected_subsidies_measure_colnames <- c("commune", "annee", "mesure", "detail_mesure",
-                            "mesure_simplifiee", "nombre") |> sort()
-
-  # Run tests
-  expect_equal(label = "Expected colnames for subsidies dataset",
-               expected.label = "colnames do not match",
-               energy_datasets$subsidies_by_building |> colnames() |> sort(),
-               expected_subsidies_building_colnames)
-
-  expect_equal(label = "Expected colnames for subsidies dataset",
-               expected.label = "colnames do not match",
-               energy_datasets$subsidies_by_measure |> colnames() |> sort(),
-               expected_subsidies_measure_colnames)
-
+      testthat::expect_equal(
+        expected = sort(expected),
+        object = sort(actual),
+        label = glue::glue(
+          "{dataset_name} : colnames in 'extdata/colnames_replacement_display.csv' don't match loaded variables in utils_helpers.R!"
+        )
+      )
+    }
+  )
 })

@@ -64,7 +64,6 @@ qualite_desserte;commune;Commune
 qualite_desserte;annee;Année
 qualite_desserte;qualite_desserte;Indice de qualité de desserte
 qualite_desserte;type;Type
-qualite_desserte;qualite_desserte_emploi;Qualité desserte emploi
 surface_canopee;commune;Commune
 surface_canopee;surface_urbaine;Surface urbaine
 surface_canopee;part_surface;Part de la surface

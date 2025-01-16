@@ -40,7 +40,7 @@ app_server <- function(input, output, session) {
 
   # Dev message ----
 
-  info_dev_message() # defined in fct_helpers.R
+  welcome_modal() # defined in fct_helpers.R
 
   observeEvent(input$modal_info, {
     bslib::nav_select(id = "nav", selected = "À propos", session)
@@ -362,9 +362,9 @@ app_server <- function(input, output, session) {
                             inputVals = inputVals,
                             var_commune = "commune",
                             var_year = "annee",
-                            var_values = "surface_urbaine",
+                            var_values = c("surface_urbaine", "part_surface"),
                             ggiraph_geom = "col",
-                            unit = "ha",
+                            unit = c("ha", "%"),
                             coerce_dodge = FALSE, # these should not be stacked --> don't make sense
                             var_cat = "categorie",
                             color_palette = surface_canopee_palette, # default_palette, dedicated one, or one color
@@ -386,7 +386,7 @@ app_server <- function(input, output, session) {
                             coerce_dodge = FALSE,
                             var_cat = "categorie", # ask OCDC to change dataset var name...
                             color_palette = batiment_danger_palette, # default_palette, dedicated one, or one color
-                            legend_title = "Bâtiments : ",
+                            legend_title = "Nombre de bâtiments : ",
                             dl_prefix = "bat_danger_",
                             doc_vars = NULL # for now
   )

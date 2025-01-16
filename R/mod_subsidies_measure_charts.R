@@ -144,6 +144,7 @@ mod_subsidies_measure_charts_server <- function(id,
       width_svg <- 15  # Keep width static for two columns layout
 
       # Plotly but factor lumped for clarity :
+
       subsetData() |>
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,
                                                               n = 3,

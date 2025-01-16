@@ -26,7 +26,6 @@ test_that("Check missing 'commune' in every dataset so we explicitely plot/table
             purrr::map(mobility_datasets, \(df) expect_in(values_canton_communes, unique(df$commune)))
             purrr::map(adaptation_datasets, \(df) expect_in(values_canton_communes, unique(df$commune)))
 
-
           })
 
 

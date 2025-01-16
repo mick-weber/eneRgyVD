@@ -18,12 +18,35 @@ create_plot_ggiraph(
   free_y = FALSE,
   legend_title = NULL,
   height_svg,
-  width_svg,
-  ...
+  width_svg
 )
 }
 \arguments{
 \item{data}{the data to provide}
+
+\item{n_communes}{number of selected communes, used to control the width of facets}
+
+\item{var_year}{the year variable}
+
+\item{var_commune}{the commune variable}
+
+\item{unit}{the unit to append in <var_values>}
+
+\item{var_cat}{the optional categorical variable}
+
+\item{var_values}{the variables containing the values}
+
+\item{geom}{the type of geom for the plot : either 'col' or 'line'}
+
+\item{color_palette}{a named vector of values-colors if <var_cat> is supplied, that should match <var_cat> items}
+
+\item{dodge}{if geom = 'col' and <var_cat> is supplied : controls whether the cols are in a stacked or dodge position}
+
+\item{free_y}{if <n_communes> is higher than 1, controls whether the y axis is independent for each facet or not}
+
+\item{legend_title}{a string containing the legend title if <var_cat> is supplied}
+
+\item{height_svg, width_svg}{dimensions of ggiraph output}
 }
 \value{
 an interactive girafe object

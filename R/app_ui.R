@@ -45,7 +45,7 @@ app_ui <- function(request) {
               },
               {
                 element: "#introjs_select_communes",
-                intro: "<b>Communes 2/2</b><br>Vous pouvez également choisir des communes dans la barre latérale.",
+                intro: "<b>Communes 2/2</b><br>Vous pouvez également choisir des communes dans la barre latérale.<br>Vous y trouverez également les <strong>valeurs cantonales</strong> pour d\'éventuelles comparaisons.",
                 position: "right"
               },
               {
@@ -350,9 +350,8 @@ app_ui <- function(request) {
 
                                                                                mod_generic_charts_ui("adaptation_canopy",
                                                                                                      title = "Surface de canopée urbaine",
-                                                                                                     title_complement = tags$div(tags$p("Complément à proposer OCDC"),
-                                                                                                                                 tags$p(create_geoportail_tag(link = regener_geovd_link)
-                                                                                                                                 )
+                                                                                                     title_complement = tags$div(tags$p("Complément à proposer OCDC")#,
+                                                                                                                                 #tags$p(create_geoportail_tag(link = regener_geovd_link))
                                                                                                      ))
                                                               )# end nested nav_panel
                                        )# end navset_card_pill
@@ -369,7 +368,7 @@ app_ui <- function(request) {
                                                                                mod_generic_charts_ui("buildings_exposure_hazards",
                                                                                                      title = "Bâtiments exposés à des dangers naturels",
                                                                                                      title_complement = tags$div(tags$p("Complément à proposer OCDC"),
-                                                                                                                                 tags$p(create_geoportail_tag(link = regener_geovd_link)
+                                                                                                                                 tags$p(create_geoportail_tag(link = batiment_danger_geovd_link)
                                                                                                                                  )
                                                                                                      ))
 

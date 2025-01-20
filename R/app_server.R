@@ -354,7 +354,7 @@ app_server <- function(input, output, session) {
 
   # Output modules adaptation ----
 
-  ## canopy (générique) ----
+  ## canopy (generic) ----
 
   mod_generic_charts_server("adaptation_canopy",
                             parent = session,
@@ -362,9 +362,9 @@ app_server <- function(input, output, session) {
                             inputVals = inputVals,
                             var_commune = "commune",
                             var_year = "annee",
-                            var_values = c("surface_urbaine", "part_surface"),
+                            var_values = c("part_surface", "surface_urbaine"),
                             ggiraph_geom = "col",
-                            unit = c("ha", "%"),
+                            unit = c("%", "ha"),
                             coerce_dodge = FALSE, # these should not be stacked --> don't make sense
                             var_cat = "categorie",
                             color_palette = surface_canopee_palette, # default_palette, dedicated one, or one color
@@ -421,7 +421,7 @@ app_server <- function(input, output, session) {
                             var_commune = "commune",
                             var_year = "annee",
                             var_values = "taux_motorisation",
-                            ggiraph_geom = "col",
+                            ggiraph_geom = "line",
                             unit = "vhc/1000 habitants",
                             coerce_dodge = FALSE,
                             var_cat = NULL,

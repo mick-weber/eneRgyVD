@@ -5,17 +5,17 @@
 
 ## D'ou viennent ces données ?
 
-Les taux de motorisation sont basée sur les immatriculations du canton, collectées par le service des autos et de la navigation (SAN). Les valeurs sont données en nombre de voiture par 1000 habitants.
-
-## Qui traite ces données
+Le taux de motorisation mesure le nombre de voitures de tourisme pour 1’000 habitants. Il est calculé à partir de la population résidente au 31 décembre de l’année précédente (OFS) et des immatriculations de véhicules au 30 septembre (OFS/OFROU). Cet indicateur reflète l’évolution du parc automobile des vaudois.
+ 
+## Qui traite ces données ?
 
 La DGMR (Direction générale de la mobilité et des routes). Source des données https://cartostatdgmr.vd.ch/#c=indicator&i=voitures.voit_1000hab&s=2023&view=map1
 
 ## Quand est-ce que ces données sont mis à jour?
 
-Elles sont mises à jour annuellement.
+Elles sont mises à jour annuellement (janvier).
 
 ## A quoi faut-il faire attention ?
 
-Le taux de motorisation n'est pas directement lié aux distances parcourues en voiture. Une voiture peut être utilisée fréquemment ou, au contraire, rarement. <br>
-Sinon, le taux de motorisation est relativement précis, même s'il existe encore quelques incertitudes sur les données. Par exemple, l'Office fédéral de la statistique (OFS) en Suisse recense les véhicules en fonction du domicile des détenteurs, tandis que le Service des automobiles et de la navigation (SAN) se concentre sur les plaques vaudoises, indépendamment de l'adresse des propriétaires.
+Le taux de motorisation reflète uniquement le nombre de voitures par habitant, sans indiquer leur usage. L'OFS recense les véhicules en fonction du domicile des détenteurs, tandis que le Service des automobiles et de la navigation (SAN) les attribue selon la plaque du véhicule indépendamment de l'adresse du propriétaire. Dans certaines communes, l'indicateur peut être biaisé par une population tenant compte de résidents temporaires (internat), ou d'un nombre de véhicules surnuméraires enregistrés par certaine société à leur siège social.
+

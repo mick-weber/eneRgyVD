@@ -16,14 +16,5 @@ Les données sont mises à jour quelques mois après la fin d'une année civile.
 
 ## À quoi faut-il faire attention ?
 
-Il s'agit d'estimations théoriques : aucune donnée de consommation effective n'est transmise dans le RegEner. Pour cette raison, des variations importantes peuvent s'avérer entre la consommation estimée et la consommation effective d'un bâtiment. La précision du RegEner réside surtout dans les données agrégées où les variations individuelles de bâtiments s'équilibrent. De nombreux bâtiments ne sont pas à jour dans le registre cantonal des bâtiments, dont la mise à jour incombe aux communes. Pour cette raison, il est connu que certains agents énergétiques comme le mazout sont surreprésentés. L'amélioration de la qualité des données énergétiques est un long processus auquel la DGE-DIREN travaille en partenariat avec d'autres services. 
-
-
-
-
-
-
-
-
-
+Il s'agit d'estimations théoriques : aucune donnée de consommation effective n'est transmise dans le RegEner. Pour cette raison, des variations importantes peuvent s'avérer entre la consommation estimée et la consommation effective d'un bâtiment. La précision du RegEner réside surtout dans les données agrégées où les variations individuelles de bâtiments s'équilibrent. De nombreux bâtiments ne sont pas à jour dans le registre cantonal des bâtiments, dont la mise à jour incombe aux communes. Pour cette raison, il est connu que certains agents énergétiques comme le mazout sont surreprésentés. L'amélioration de la qualité des données énergétiques est un long processus auquel la DGE-DIREN travaille en partenariat avec d'autres services. Les émissions de gaz à effet de serre directes, qui concernent uniquement le gaz et le mazout, sont calculées à l'aide des facteurs de l'Office fédéral de l'environnemnet. 
 

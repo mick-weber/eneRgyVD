@@ -31,7 +31,7 @@ mod_upload_communes_ui <- function(id){
                                               style = "padding-bottom:0px;", # remove excessive padding below content
 
                                               shiny::fileInput(ns("file_communes"),
-                                                               label = div(style = "font-size:1rem;",
+                                                               label = div(style = "font-size:0.9rem;",
 
                                                                            shiny::markdown("La **première** colonne du fichier csv (séparateur point-virgule <**;**>)
                                                                           doit contenir les **numéros OFS** des communes à sélectionner.

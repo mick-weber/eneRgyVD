@@ -4,7 +4,8 @@
 \alias{rename_columns_output}
 \title{rename_columns_output()
 Uses the csv file in app/extdata/ to convert initial colnames to nicely formatted ones
-the function matches only the start of the initial colname to find a match}
+the function matches only the start of the initial colname to find a match, allowing the
+unit to be added before this function via 'add_colname_unit()'}
 \usage{
 rename_columns_output(data)
 }
@@ -17,5 +18,6 @@ a renamed dataframe
 \description{
 rename_columns_output()
 Uses the csv file in app/extdata/ to convert initial colnames to nicely formatted ones
-the function matches only the start of the initial colname to find a match
+the function matches only the start of the initial colname to find a match, allowing the
+unit to be added before this function via 'add_colname_unit()'
 }

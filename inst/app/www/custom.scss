@@ -58,13 +58,20 @@
   background-color:#3A862D;
 }
 
-
+/* Change showNotification() display used in mod_upload_communes.R and mod_unit_converter.R*/
 .shiny-notification{
-  position:fixed;
-  top: calc(50%);
-  left: calc(40%);
-  width:20vw;
-  text-align:center;
+  background-color:#343A40;
+  color:white;
+  border:none;
+  width: 20vw; /* Set fixed width of 20% of viewport */
+  min-width: 150px; /* Optional: Minimum width to avoid too small notifications */
+  margin-bottom: 5px; /* Space between notifications */
+  left: calc(100% - 21vw); /* Ensure the notification does not overflow the screen by starting the notif 1vw before its width */
+}
+
+/* White escape button instead of black */
+.shiny-notification-close{
+  color:white;
 }
 
 /* shiny::fileInput() generates a progress bar once the file is uploaded with 'Upload complete' text */

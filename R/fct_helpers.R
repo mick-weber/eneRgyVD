@@ -351,7 +351,7 @@ create_plot_ggiraph <- function(data,
         position = dplyr::if_else(condition = dodge, true = "dodge", false = "stack"),
         fill = color_palette[1] # even if more are supplied take only the first as var_cat is null
       )
-  } else if (geom == "line") {
+  } else if (geom == "line" & !is.null(var_cat)) {
     ggplot <- ggplot +
       ggiraph::geom_line_interactive(
         size = 1,
@@ -361,6 +361,13 @@ create_plot_ggiraph <- function(data,
         name = legend_title,
         values = color_palette
       )
+  } else if (geom == "line" & is.null(var_cat)){
+    ggplot <- ggplot +
+      ggiraph::geom_line_interactive(
+        size = 1,
+        ggplot2::aes(group = if (!is.null(var_cat)) .data[[var_cat]] else 1),
+        color = color_palette[1]) +
+      ggiraph::geom_point_interactive(size = 2.5, color = color_palette[1])
   } else {
     stop("Invalid value for 'geom'. Use 'col' for bar chart or 'line' for line chart.")
   }
@@ -775,6 +782,8 @@ convert_units <- function(data,
     stop("`data` is neither dataframe nor numeric ! No conversion can be made.")
 
   }
+
+
 }
 
 
@@ -831,13 +840,8 @@ add_colname_unit <- function(data, colnames, unit){
         dplyr::rename_with(.cols = dplyr::any_of(current_colname),
                            .fn = \(col) paste0(col, " [", current_unit, "]"))
 
-
-
     }
-
-
   }
-
   return(data)
 }
 
@@ -846,7 +850,8 @@ add_colname_unit <- function(data, colnames, unit){
 
 #' rename_columns_output()
 #' Uses the csv file in app/extdata/ to convert initial colnames to nicely formatted ones
-#' the function matches only the start of the initial colname to find a match
+#' the function matches only the start of the initial colname to find a match, allowing the
+#' unit to be added before this function via 'add_colname_unit()'
 #' @param data the dataset to rename with the default <colnames_replacement_display> object
 #' @return a renamed dataframe
 #' @export

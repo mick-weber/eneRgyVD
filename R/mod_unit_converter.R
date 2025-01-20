@@ -55,7 +55,11 @@ mod_unit_converter_ui <- function(id){
                                                                                                     animation = "jelly")
                                                                )# End div
                                               )# End nav_panel
-                                            )# End navset_tab
+                                            ),# End navset_tab
+                                            tags$div(style = "font-size:0.9rem;font-style:italic;",
+                                                     "Note : ces conversions ne s'appliquent qu'à certaines statistiques."
+                                            ),
+
                      ))# End accordion
   )
 }
@@ -81,6 +85,30 @@ mod_unit_converter_server <- function(id){
     })
 
     # Return units ----
+
+    # !search 'convert_units(' to look where conversion occur
+    energy_transform_notifs <- c("électricité", "gaz naturel", "chaleur des bâtiments") # add other data as needed
+    ges_transform_notifs <- c("consommation des bâtiments") # add other data as needed
+
+    # Notify notifications when energy unit changes
+    observeEvent(selectedUnits$energy_unit, ignoreInit = TRUE, {
+
+      purrr::walk(energy_transform_notifs, function(unit) {
+        shiny::showNotification(glue::glue("Conversion d'unité appliquée pour les données : {unit} ({selectedUnits$energy_unit})"), type = "message")
+      })
+    })
+
+    # Notify when energy unit changes
+    observeEvent(selectedUnits$co2_unit, ignoreInit = TRUE, {
+
+      purrr::walk(ges_transform_notifs, function(unit) {
+        shiny::showNotification(glue::glue("Conversion d'unité appliquée pour les données : {unit} ({selectedUnits$co2_unit})"), type = "message")
+      })
+    })
+
+
+
+
 
     return(selectedUnits)
 

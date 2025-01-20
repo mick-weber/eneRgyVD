@@ -93,7 +93,7 @@ mod_download_all_data_server <- function(id,
 
         # Regener renamed+units
         regener_besoins = inputVals$energyDatasets$regener_needs |>
-          add_colname_unit(colnames = dplyr::contains("besoins"),
+          add_colname_unit(colnames = "besoins",
                            unit = inputVals$energyUnit) |>
           rename_columns_output(),
 
@@ -125,7 +125,6 @@ mod_download_all_data_server <- function(id,
 
         # Subsidies measure
         subventions_mesure = inputVals$energyDatasets$subsidies_by_measure|>
-          rename_misc_colnames() |>
           rename_columns_output(),
 
         # NG consumption
@@ -177,7 +176,11 @@ mod_download_all_data_server <- function(id,
     output$download_all_excel <- downloadHandler(
       filename = paste0("profil_climatique_global_", Sys.Date(), ".xlsx"),
       content = function(file){
-        writexl::write_xlsx(download_all_sheets(), path = file)
+        #writexl::write_xlsx(download_all_sheets(), path = file)
+        openxlsx::write.xlsx(x = download_all_sheets(),
+                             file = file,
+                             keepNA = TRUE,
+                             na.string = "(Confidentiel ou non-disponible)")
       }
     )
 

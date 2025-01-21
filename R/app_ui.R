@@ -325,7 +325,7 @@ app_ui <- function(request) {
                                                               ),
 
                                                               #### Par batiments ----
-                                                              bslib::nav_panel("Vue par bâtiments",
+                                                              bslib::nav_panel("Vue du parc subventionné",
                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_subsidies_building_charts_ui("subsidies_building",

@@ -33,8 +33,8 @@ mod_unit_converter_ui <- function(id){
                                                                div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
                                                                    shinyWidgets::prettyRadioButtons(inputId = ns("energy_unit"),
                                                                                                     label = NULL,
-                                                                                                    choices = c("kWh", "MWh", "GWh", "TJ"),
-                                                                                                    selected = "MWh",
+                                                                                                    choices = energy_units_table$unit,
+                                                                                                    selected = "MWh", # default
                                                                                                     inline = FALSE,
                                                                                                     status =  "default",
                                                                                                     icon = icon("check"),
@@ -42,13 +42,13 @@ mod_unit_converter_ui <- function(id){
                                                                )# End div
 
                                               ),# End nav_panel
-                                              bslib::nav_panel(title = tags$div(style = "font-size:1rem;", "CO2"),
+                                              bslib::nav_panel(title = tags$div(style = "font-size:1rem;", "CO2-eq"),
 
                                                                div(style = "font-size:1rem;padding-left:2vh;padding-top:1vh;",
                                                                    shinyWidgets::prettyRadioButtons(inputId = ns("co2_unit"),
                                                                                                     label = NULL,
-                                                                                                    choices = c("kgCO2", "tCO2", "ktCO2"),
-                                                                                                    selected = "tCO2",
+                                                                                                    choices = co2_units_table$unit,
+                                                                                                    selected = "tCO2-eq", # default
                                                                                                     inline = FALSE,
                                                                                                     status =  "default",
                                                                                                     icon = icon("check"),
@@ -56,7 +56,7 @@ mod_unit_converter_ui <- function(id){
                                                                )# End div
                                               )# End nav_panel
                                             ),# End navset_tab
-                                            tags$div(style = "font-size:0.9rem;font-style:italic;",
+                                            tags$div(style = "font-size:0.9rem;font-style:italic;text-align:center;",
                                                      "Note : ces conversions ne s'appliquent qu'à certaines statistiques."
                                             ),
 

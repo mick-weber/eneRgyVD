@@ -198,6 +198,7 @@ mod_ng_charts_server <- function(id,
         var_year = var_year,
         var_values = var_values,
         var_cat = var_cat,
+        icons_palette = cons_icons,
         unit = inputVals$energyUnit
       )
     })

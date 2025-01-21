@@ -266,7 +266,7 @@ app_server <- function(input, output, session) {
                          var_cat = "secteur", # might be NULL if needed
                          var_values = "consommation",
                          color_palette = colors_sectors, # app's defaults is blue if no var_cat supplied
-                         # name of dl prefix to supply to download module
+                         icons_palette = cons_icons,
                          dl_prefix = "elec_cons_",
                          # documentation file from utils_helpers.R
                          doc_vars = doc_datasets$elec_cons)
@@ -282,11 +282,26 @@ app_server <- function(input, output, session) {
                          var_cat = "categorie",
                          var_values = c("production", "injection", "autoconsommation", "puissance_electrique_installee"),
                          color_palette = colors_categories,
-                         # name of dl prefix to supply to download module
+                         icons_palette = prod_icons,
                          dl_prefix = "elec_prod_",
                          # documentation file from utils_helpers.R
                          doc_vars = doc_datasets$elec_prod)
 
+
+
+  ## mod ng_charts ----
+
+  mod_ng_charts_server("ng_cons_charts",
+                       inputVals = inputVals,
+                       subsetData = reactive({inputVals$energyDatasets$ng_cons}),
+                       var_commune = "commune",
+                       var_year = "annee",
+                       var_cat = "secteur",
+                       var_values = "consommation",
+                       color_palette = colors_sectors,
+                       dl_prefix = "conso_gaz_",
+                       doc_vars = doc_datasets$ng_cons # utils_helpers.R
+  )
 
   ## mod regener_cons_charts ----
   mod_regener_cons_charts_server("regener_cons",
@@ -335,20 +350,6 @@ app_server <- function(input, output, session) {
                                       inputVals = inputVals,
                                       dl_prefix = "subventions_mesure_",
                                       doc_vars = doc_datasets$subsidies # utils_helpers.R
-  )
-
-  ## mod ng_charts ----
-
-  mod_ng_charts_server("ng_cons_charts",
-                       inputVals = inputVals,
-                       subsetData = reactive({inputVals$energyDatasets$ng_cons}),
-                       var_commune = "commune",
-                       var_year = "annee",
-                       var_cat = "secteur",
-                       var_values = "consommation",
-                       color_palette = colors_sectors,
-                       dl_prefix = "conso_gaz_",
-                       doc_vars = doc_datasets$ng_cons # utils_helpers.R
   )
 
 
@@ -407,7 +408,7 @@ app_server <- function(input, output, session) {
                             unit = "%",
                             coerce_dodge = FALSE,
                             var_cat = NULL,
-                            color_palette = "#6495ED", # default_palette, dedicated one, or one color
+                            color_palette = "#3c9ba7", # default_palette, dedicated one, or one color
                             legend_title = NULL,
                             dl_prefix = "part_ve_",
                             doc_vars = NULL # for now
@@ -425,7 +426,7 @@ app_server <- function(input, output, session) {
                             unit = "vhc/1000 habitants",
                             coerce_dodge = FALSE,
                             var_cat = NULL,
-                            color_palette = "lightblue", # default_palette, dedicated one, or one color
+                            color_palette = "#f5b093", # default_palette, dedicated one, or one color
                             legend_title = NULL,
                             dl_prefix = "taux_motorisation_",
                             doc_vars = NULL # for now

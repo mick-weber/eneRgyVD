@@ -136,6 +136,7 @@ mod_generic_charts_server <- function(id,
                                       unit,
                                       coerce_dodge,
                                       color_palette,
+                                      icons_palette = NULL,
                                       legend_title,
                                       dl_prefix = dl_prefix,
                                       doc_vars = doc_vars
@@ -232,7 +233,8 @@ mod_generic_charts_server <- function(id,
                     var_year = var_year,
                     var_values = var_values,
                     var_cat = var_cat,
-                    unit = unit
+                    unit = unit,
+                    icons_palette = icons_palette,
       )
     })
 

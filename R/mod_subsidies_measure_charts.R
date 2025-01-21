@@ -183,6 +183,7 @@ mod_subsidies_measure_charts_server <- function(id,
                     var_year = "annee",
                     var_values = c("nombre"),
                     var_cat = "mesure",
+                    icons_palette = subsidies_measure_icons,
                     na_string = "Non disponible",
                     unit = NULL # no unit to apply
       )

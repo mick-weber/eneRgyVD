@@ -255,6 +255,7 @@ mod_regener_needs_charts_server <- function(id,
                     var_year = "etat",
                     var_values = c("Besoins actuels", "Besoins optimaux"),# created above in subsetData_wide()
                     var_cat = "type",
+                    icons_palette = regener_icons_type,
                     unit = inputVals$energyUnit
       )
 

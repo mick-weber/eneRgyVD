@@ -132,6 +132,7 @@ mod_elec_charts_server <- function(id,
                                    var_cat, # categorical var ('secteur'/'categorie', NULL, ...)
                                    var_values, # prod/consumption kwh
                                    color_palette, # utils_helpers.R
+                                   icons_palette,
                                    dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
                                    doc_vars){ # the non-reactive documentation file for variables description
   moduleServer(id, function(input, output, session){
@@ -198,8 +199,9 @@ mod_elec_charts_server <- function(id,
         var_year = var_year,
         var_values = var_values,
         var_cat = var_cat,
-        na_string = "(Confidentiel)", # override default 'Non disponible' for this dataset, until LVLEne 2025 passes.
-        unit = inputVals$energyUnit
+        icons_palette = icons_palette,
+        unit = inputVals$energyUnit,
+        na_string = "(Confidentiel)" # override default 'Non disponible' for this dataset, until LVLEne 2025 passes.
       )
 
     })# End renderDT

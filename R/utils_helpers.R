@@ -116,7 +116,7 @@ subpanels_tribble <- dplyr::tribble(
   "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
   "regener_cons-rgr_cons_help", "Energie", "navset_energie","Chaleur bâtiments", "data_4", "Chaleur des bâtiments","navset_regener", "Consommation des bâtiments",
   "regener_misc-rgr_misc_help", "Energie","navset_energie", "Chaleur bâtiments", "data_5", "Chaleur des bâtiments","navset_regener", "Informations bâtiments",
-  "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue par bâtiments",
+  "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue du parc subventionné",
   "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
@@ -149,7 +149,7 @@ DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 # Must match the choices in header's widget
 # Linked to fct_helpers.R convert_units()'s function
 
-# all datasets should come as 'kWh' values so we index based on kWh
+# all datasets must come as 'kWh' values so we index based on kWh
 energy_units_table <- dplyr::tribble(
   ~unit, ~factor,
   "kWh", 1,
@@ -158,12 +158,12 @@ energy_units_table <- dplyr::tribble(
   "TJ", 1/3.6*1e6
 )
 
-# all datasets come as 'tCO2' values so we index based on tCO2
+# all datasets must come as 'tCO2' values so we index based on tCO2
 co2_units_table <- dplyr::tribble(
   ~unit, ~factor,
-  "kgCO2", 1e-3,
-  "tCO2", 1,
-  "ktCO2", 1e3
+  "kgCO2-eq", 1e-3,
+  "tCO2-eq", 1,
+  "ktCO2-eq", 1e3
 )
 
 ## Column replacement ----
@@ -395,18 +395,18 @@ subsidies_measure_icons <- subsidies_measure_palette_table |>
 ### Canopee palette ----
 
 surface_canopee_palette <- c("avec canopée >3m" = "limegreen",
-                                "sans canopée >3m" = "grey75")
+                              "sans canopée >3m" = "grey75")
 
 ### Natural hazards palette ----
 
-batiment_danger_palette <- c("danger moyen" = "#ffdb0f",
-                                "danger élevé" = "#FF870F")
+batiment_danger_palette <- c("danger moyen" = "#6f95ff",
+                              "danger élevé" = "#ff4d4d")
 
 
 ### Qualite desserte palette ----
 
-qualite_desserte_palette <- c("Population" = "#1C86EE",
-                              "Emploi" = "#BD6F6F")
+qualite_desserte_palette <- c("Population" = "#ab96c3",
+                              "Emploi" = "#75b364")
 
 
 # Non-reactive objects for input widgets ----

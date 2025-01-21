@@ -13,6 +13,7 @@ make_table_dt(
   var_values,
   var_cat,
   unit,
+  icons_palette,
   na_string = "Non disponible",
   DT_dom = "frtip"
 )
@@ -29,6 +30,8 @@ make_table_dt(
 \item{var_cat}{colname corresponding to the categorical variable (passed as a string)}
 
 \item{unit}{the unit to display inside brackets in the supplied <var_values> variables}
+
+\item{icons_palette}{a dataframe of icons with two variables : the categorical variable (`var_cat`) and an `icon` variable with the full html code for the icon and color (see `utils_helpers.R`)}
 
 \item{na_string}{a string specifying how should NAs be displayed, as it can change from one dataset to another (defaults to : 'Non disponible')}
 

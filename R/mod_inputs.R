@@ -294,7 +294,7 @@ mod_inputs_server <- function(id){
                           unit_from = "kWh", # initial value in all dataset
                           unit_to = selectedUnits$energy_unit) |>
             convert_units(colnames = c("co2_direct"),
-                          unit_from = "tCO2", # initial value in all dataset
+                          unit_from = "tCO2-eq", # initial value in all dataset
                           unit_to = selectedUnits$co2_unit
             )
         }) |>

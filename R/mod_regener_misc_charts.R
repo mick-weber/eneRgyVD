@@ -79,6 +79,7 @@ mod_regener_misc_charts_server <- function(id,
         var_year = "etat",
         var_values = NULL,
         var_cat = NULL,
+        icons_palette = NULL,
         unit = NULL
       )
 

@@ -545,6 +545,7 @@ format_numbers_heuristic <- function(number) {
 #' @param var_values colname corresponding to the value(s) (passed as a string, or a vector of string)
 #' @param var_cat colname corresponding to the categorical variable (passed as a string)
 #' @param unit the unit to display inside brackets in the supplied <var_values> variables
+#' @param icons_palette a dataframe of icons with two variables : the categorical variable (`var_cat`) and an `icon` variable with the full html code for the icon and color (see `utils_helpers.R`)
 #' @param na_string a string specifying how should NAs be displayed, as it can change from one dataset to another (defaults to : 'Non disponible')
 #' @param DT_dom  the DT domain values to specify which DT extensions should be applied
 #'
@@ -557,17 +558,28 @@ make_table_dt <- function(data,
                           var_values,
                           var_cat,
                           unit,
+                          icons_palette,
                           na_string = "Non disponible",
                           DT_dom = "frtip"){
 
   ## |---------------------------------------------------------------|
   ##          Prepare data
   ## |---------------------------------------------------------------|
+  if(!is.null(icons_palette)){
+
+    data <- data |>
+      dplyr::left_join(icons_palette, by = var_cat) |>
+      dplyr::relocate(icon, .before = var_cat) |>
+      dplyr::rename(" " = "icon")# empty colname for icons
+  }
+
+
   data_prep <- data |>
     dplyr::mutate(!!var_year := as.factor(.data[[var_year]])) |>
     # any_of() allows to pass var_car even if it does not exist
     dplyr::relocate(.data[[var_commune]],
                     .data[[var_year]],
+                    dplyr::any_of(" "), # optional if icons are passed (hence any_of)
                     dplyr::any_of(var_cat),
                     dplyr::any_of(var_values)) |>
     dplyr::arrange(.data[[var_commune]], desc(.data[[var_year]])) |>
@@ -597,6 +609,33 @@ make_table_dt <- function(data,
   ##          Datatable options
   ## |--------------------------------------------------------------------|
 
+  column_defs <- list(
+    # Apply custom rendering for all columns
+    list(
+      targets = "_all",           # Apply to all columns
+      className = 'dt-center',
+      render = DT::JS(
+        "function(data, type, row, meta) {",
+        glue::glue("return data === null ? '({na_string})' : data;"),
+        "}")
+    )
+  )
+
+  # Conditionally add the icons_palette logic to remove ordering widget + align right next to var_cat
+  if (!is.null(icons_palette)) {
+    column_defs <- append(
+      column_defs,
+      list(list(targets = " ",
+                className = 'dt-right',
+                orderable = FALSE))
+    )
+  }
+
+  ## |---------------------------------------------------------------|
+  ##          Datatable
+  ## |---------------------------------------------------------------|
+
+
   dt_table <- data_prep |>
     DT::datatable(
       escape = FALSE,                  # Render HTML (e.g., icons) instead of text
@@ -611,19 +650,10 @@ make_table_dt <- function(data,
         server = FALSE,                # Use client-side processing
         dom = DT_dom,                  # Define DOM positioning
         language = DT_fr_language,     # Language settings
-        columnDefs = list(
-          # Apply custom rendering for all columns
-          list(
-            targets = "_all",           # Apply to all columns
-            className = 'dt-center',
-            render = DT::JS(
-              "function(data, type, row, meta) {",
-              glue::glue("return data === null ? '({na_string})' : data;"),
-              "}")
-          )
-        )
+        columnDefs = column_defs
       )
     )
+
   return(dt_table)
 }
 

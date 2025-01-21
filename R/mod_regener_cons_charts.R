@@ -233,7 +233,8 @@ mod_regener_cons_charts_server <- function(id,
                         var_year = "etat",
                         var_values = c("consommation", "co2_direct"),
                         var_cat = "ae",
-                        unit = list(inputVals$energyUnit, inputVals$co2Unit)
+                        unit = list(inputVals$energyUnit, inputVals$co2Unit),
+                        icons_palette = regener_icons
           )
         })
 
@@ -250,7 +251,8 @@ mod_regener_cons_charts_server <- function(id,
                         var_year = "etat",
                         var_values = c("consommation", "co2_direct"),
                         var_cat = "ae",
-                        unit = c(inputVals$energyUnit, inputVals$co2Unit)
+                        unit = c(inputVals$energyUnit, inputVals$co2Unit),
+                        icons_palette = regener_icons
           )
         })
       }# End elseif

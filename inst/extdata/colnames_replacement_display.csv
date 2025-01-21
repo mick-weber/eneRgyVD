@@ -22,7 +22,7 @@ regener_needs;etat;Etat
 regener_cons_ae_use;commune;Commune
 regener_cons_ae_use;ae;Agent énergétique
 regener_cons_ae_use;consommation;Consommation
-regener_cons_ae_use;co2_direct;CO2 direct
+regener_cons_ae_use;co2_direct;GES direct
 regener_cons_ae_use;pct_commune;Part commune
 regener_cons_ae_use;usage;Usage
 regener_cons_ae_use;etat;Etat
@@ -30,7 +30,7 @@ regener_cons_ae_aff;commune;Commune
 regener_cons_ae_aff;ae;Agent énergétique
 regener_cons_ae_aff;consommation;Consommation
 regener_cons_ae_aff;pct_commune;Part commune
-regener_cons_ae_aff;co2_direct;CO2 direct
+regener_cons_ae_aff;co2_direct;GES direct
 regener_cons_ae_aff;affectation;Affectation
 regener_cons_ae_aff;etat;Etat
 regener_misc;commune;Commune

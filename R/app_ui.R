@@ -314,16 +314,6 @@ app_ui <- function(request) {
 
                                        bslib::navset_card_tab(id = "navset_subsidies",
 
-                                                              #### Par batiments ----
-                                                              bslib::nav_panel("Vue par bâtiments",
-                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
-
-                                                                               mod_subsidies_building_charts_ui("subsidies_building",
-                                                                                                                title = HTML("Subventions Programme bâtiments (vue par bâtiment)"),
-                                                                                                                title_complement = title_complement_subsidies_building # utils_text_and_links.R
-                                                                               )
-                                                              ),
-
                                                               #### Par mesures ----
                                                               bslib::nav_panel("Vue par subventions",
                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
@@ -332,7 +322,18 @@ app_ui <- function(request) {
                                                                                                                title = HTML("Subventions Programme bâtiments (vue par subventions)"),
                                                                                                                title_complement = title_complement_subsidies_measure # utils_text_and_links.R
                                                                                )
+                                                              ),
+
+                                                              #### Par batiments ----
+                                                              bslib::nav_panel("Vue par bâtiments",
+                                                                               icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
+
+                                                                               mod_subsidies_building_charts_ui("subsidies_building",
+                                                                                                                title = HTML("Subventions Programme bâtiments (vue par bâtiment)"),
+                                                                                                                title_complement = title_complement_subsidies_building # utils_text_and_links.R
+                                                                               )
                                                               )
+
                                        )# End navset_card_pill
                       )# End nav_panel 'Subventions bâtiments'
       ),# End nav_menu Energie

@@ -626,7 +626,7 @@ make_table_dt <- function(data,
     column_defs <- append(
       column_defs,
       list(list(targets = " ",
-                className = 'dt-right',
+                width = "50px",
                 orderable = FALSE))
     )
   }

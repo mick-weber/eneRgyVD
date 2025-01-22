@@ -6,7 +6,7 @@
 Creates a icon+link combination (tag) which redirects towards a specified geoportail link where geodata
 can be viewed for Canton de Vaud}
 \usage{
-create_geoportail_tag(link)
+create_geoportail_tag(link, text)
 }
 \arguments{
 \item{link}{the geoportail link that will be used inside the tag (https://geo.vd.ch/...)}

@@ -44,15 +44,8 @@ link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ### Geoportail links ----
 
-link_dummy_generic_data <- 'https://www.geo.vd.ch/?mapresources=GEOVD_ENERGIE&visiblelayers={%22GEOVD_ENERGIE%22:[%22Eoliennes%20du%20site%22,%22Site%20%C3%A9olien%22]}'
-regener_geovd_link <- 'https://www.geo.vd.ch' # temporary
-batiment_danger_geovd_link <- 'https://www.cdn.vd.ch/'
-
-
-
-
 ## Title complements (when useful) ----
-# may rely on previous links above
+### Energie ----
 
 
 title_complement_elec_cons <- shiny::tags$p(style = "width:70vw;",
@@ -75,18 +68,21 @@ title_complement_regener_needs <- shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",
                                          shiny::strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
                                          "Plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques. ",
-                                         create_geoportail_tag(link = regener_geovd_link))
+                                         #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
+                                         )
 
 title_complement_regener_cons <-  shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent comment la consommation de différents agents énergétiques se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
                                          shiny::strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
                                          "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.",
-                                         create_geoportail_tag(link = regener_geovd_link))
+                                         #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
+                                         )
 
 title_complement_regener_misc <- shiny::tags$p(style = "width:70vw;",
                                         "Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune.",
                                         shiny::br(),
-                                        create_geoportail_tag(link = regener_geovd_link))
+                                        #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
+                                        )
 
 title_complement_subsidies_building <- shiny::tags$p(style = "width:70vw;",
                                               "Ces données illustrent le nombre de bâtiments ayant reçu certaines subventions du Programme Bâtiment vaudois depuis 2017 (voir détails dans la méthodologie complète).
@@ -104,9 +100,39 @@ title_complement_subsidies_measure <- shiny::tags$p(style = "width:70vw;",
 
 
 
+### Mobilité ----
 
+title_complement_part_voit_elec <- shiny::tags$p(style = "width:70vw;",
+                                                 "La part de voitures électriques dans le canton de Vaud mesure la proportion de voitures entièrement électriques (BEV)
+parmi l'ensemble du parc. Cet indicateur suit l'évolution de la motorisation décarbonnée de la population vaudoise.",
+                                                 create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=qdtp_pop.pop_qdtp_is&s=2024&view=map1',
+                                                                       text = 'cartostatdgmr.vd.ch')
+)
 
+title_complement_taux_motorisation <- shiny::tags$p(style = "width:70vw;",
+                                                    "Le taux de motorisation mesure le nombre de voitures de tourisme pour 1’000 habitants. Cet indicateur reflète l’évolution du parc automobile des vaudois.
+Pour l'interprétation des données, une comparaison avec la moyenne cantonale ou avec des communes au profil similaire peut être réalisée.",
+                                                    create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=voitures.voit_1000hab&s=2023&view=map1',
+                                                                          text = 'cartostatdgmr.vd.ch')
+)
 
+title_complement_qualite_desserte <- shiny::tags$p(style = "width:70vw;",
+                                                   "L'indice synthétique de la qualité de desserte de la population ou des emplois par les transports publics mesure la fréquence des transport situés respectivement à proximité du domicile ou du lieu de travail. Cet indice est exprimé en pourcentage : 100 % représentant une desserte optimale où l'ensemble des habitants ou des emplois se situent dans des zones très bien desservies.
+Pour l'interprétation des données, une comparaison avec la moyenne cantonale ou avec des communes au profil similaire peut être réalisée.",
+                                                   create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=carbu_ofs.part_elec&s=2023&view=map1',
+                                                                         text = 'cartostatdgmr.vd.ch')
+)
 
+### Adaptation ----
 
+title_complement_surface_canopee <- shiny::tags$p(style = "width:70vw;",
+                                                  "Cet indicateur permet de chiffrer la part d'espace couvert par une végétation arborée de plus de 3m de hauteur dans l’espace bâti.
+Une arborisation importante de l’espace bâti permet notamment de limiter les îlots de chaleur, d’améliorer la qualité de l’air et d’offrir à une multitude d’espèces un refuge et de la nourriture. Dans le contexte actuel de changement climatique et d’érosion de la biodiversité, il est donc primordial de renforcer la couverture canopée dans l’espace bâti.
+Pour l'interprétation des données, une comparaison avec la moyenne cantonale ou avec des communes au profil similaire peut être réalisée. "
+)
 
+title_complement_batiment_danger <- shiny::tags$p(style = "width:70vw;",
+                                                  "L’indicateur du nombre de bâtiment exposé à des dangers naturels est obtenu par croisement spatial des données sur les bâtiments et celles sur les zones de dangers naturels. Les bâtiments sont sommés selon le degré de danger pour obtenir le nombre total par commune.",
+                                                  create_geoportail_tag(link = 'www.cdn.vd.ch',
+                                                                        text = 'cdn.vd.ch')
+)

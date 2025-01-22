@@ -745,10 +745,10 @@ return_palette_regener <- function(){
 #'
 #' @examples create_geoportail_tag(link = "https://geo.vd.ch")
 
-create_geoportail_tag <- function(link){
+create_geoportail_tag <- function(link, text){
 
   shiny::tags$span(
-    phosphoricons::ph(title = NULL, "map-trifold"), shiny::strong("Géodonnées détaillées disponibles sur", shiny::tags$a(href = link, 'geo.vd.ch', target = '_blank'))
+    phosphoricons::ph(title = NULL, "map-trifold"), shiny::strong("Géodonnées détaillées disponibles sur", shiny::tags$a(href = link, text, target = '_blank'))
   )
 }
 

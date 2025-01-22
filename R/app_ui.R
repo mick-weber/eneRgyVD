@@ -351,9 +351,8 @@ app_ui <- function(request) {
 
                                                                                mod_generic_charts_ui("adaptation_canopy",
                                                                                                      title = "Surface de canopée urbaine",
-                                                                                                     title_complement = tags$div(tags$p("Complément à proposer OCDC")#,
-                                                                                                                                 #tags$p(create_geoportail_tag(link = regener_geovd_link))
-                                                                                                     ))
+                                                                                                     title_complement = title_complement_surface_canopee
+                                                                                                     )
                                                               )# end nested nav_panel
                                        )# end navset_card_pill
                       ),# end first main nav_panel
@@ -368,11 +367,8 @@ app_ui <- function(request) {
 
                                                                                mod_generic_charts_ui("buildings_exposure_hazards",
                                                                                                      title = "Bâtiments exposés à des dangers naturels",
-                                                                                                     title_complement = tags$div(tags$p("Complément à proposer OCDC"),
-                                                                                                                                 tags$p(create_geoportail_tag(link = batiment_danger_geovd_link)
-                                                                                                                                 )
-                                                                                                     ))
-
+                                                                                                     title_complement = title_complement_batiment_danger
+                                                                                                     )
                                                               )# end nested nav_panel
                                        )
                       )# end second main nav_panel
@@ -391,8 +387,8 @@ app_ui <- function(request) {
 
                                                                                mod_generic_charts_ui("part_voit_elec",
                                                                                                      title = "Part des voitures électriques",
-                                                                                                     title_complement = HTML("<i>Complément à proposer OCDC</i>")
-                                                                               )
+                                                                                                     title_complement = title_complement_part_voit_elec
+                                                                                                     )
                                                               )# end firstnav_panel
                                        )# end navset_card_tab
                       ),# end main nav_panel
@@ -406,7 +402,7 @@ app_ui <- function(request) {
 
                                                                                mod_generic_charts_ui("taux_motorisation",
                                                                                                      title = "Taux de motorisation",
-                                                                                                     title_complement = HTML("<i>Complément à proposer OCDC</i>")
+                                                                                                     title_complement = title_complement_taux_motorisation
                                                                                )
                                                               )# end firstnav_panel
                                        )# end navset_card_tab
@@ -421,7 +417,7 @@ app_ui <- function(request) {
 
                                                                                mod_generic_charts_ui("qualite_desserte",
                                                                                                      title = "Qualité de desserte des transports publics",
-                                                                                                     title_complement = HTML("<i>Complément à proposer OCDC</i>")
+                                                                                                     title_complement = title_complement_qualite_desserte
                                                                                )
                                                               )# end firstnav_panel
                                        )# end navset_card_tab

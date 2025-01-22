@@ -88,8 +88,14 @@ mod_download_all_data_server <- function(id,
                                         "production"),
                            unit = inputVals$energyUnit) |>
           rename_columns_output(),
-
         #add_colname_unit(unit = inputVals$energyUnit),
+
+
+        # NG consumption
+        gaz_cons = inputVals$energyDatasets$ng_cons |>
+          add_colname_unit(colnames = "consommation",
+                           unit = inputVals$energyUnit) |>
+          rename_columns_output(),
 
         # Regener renamed+units
         regener_besoins = inputVals$energyDatasets$regener_needs |>
@@ -125,12 +131,6 @@ mod_download_all_data_server <- function(id,
 
         # Subsidies measure
         subventions_mesure = inputVals$energyDatasets$subsidies_by_measure|>
-          rename_columns_output(),
-
-        # NG consumption
-        gaz_cons = inputVals$energyDatasets$ng_cons |>
-          add_colname_unit(colnames = "consommation",
-                            unit = inputVals$energyUnit) |>
           rename_columns_output(),
 
         ## |---------------------------------------------------------------|

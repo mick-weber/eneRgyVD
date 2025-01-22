@@ -273,7 +273,7 @@ create_plot_ggiraph <- function(data,
 
   # If several values/units are passed (for table options etc.) we take the first one (convention) for the plot
   first_var_value <- var_values[1]
-  first_unit <- unit[1]
+  first_unit <- if(is.null(unit)){""}else{unit[1]}
 
   # Compute totals for conditional geom_text (if stacked)
   # Note : we take the first var_values if several values are passed

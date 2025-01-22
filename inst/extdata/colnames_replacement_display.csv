@@ -70,6 +70,6 @@ surface_canopee;part_surface;Part de la surface
 surface_canopee;annee;Année
 surface_canopee;categorie;Categorie
 batiment_danger;commune;Commune
-batiment_danger;nb_batiment_danger;Nombre
+batiment_danger;nombre_batiment;Nombre de bâtiments
 batiment_danger;annee;Année
 batiment_danger;categorie;Catégorie

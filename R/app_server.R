@@ -381,9 +381,9 @@ app_server <- function(input, output, session) {
                             inputVals = inputVals,
                             var_commune = "commune",
                             var_year = "annee",
-                            var_values = "nb_batiment_danger",
+                            var_values = "nombre_batiment",
                             ggiraph_geom = "col",
-                            unit = "Bâtiments",
+                            unit = NULL,
                             coerce_dodge = FALSE,
                             var_cat = "categorie", # ask OCDC to change dataset var name...
                             color_palette = batiment_danger_palette, # default_palette, dedicated one, or one color
@@ -442,7 +442,7 @@ app_server <- function(input, output, session) {
                             var_values = "qualite_desserte",
                             var_cat = "type",
                             ggiraph_geom = "line",
-                            unit = "-",
+                            unit = NULL,
                             coerce_dodge = FALSE,
                             color_palette = qualite_desserte_palette, # dedicated one, or one color
                             legend_title = "Type d'indice",

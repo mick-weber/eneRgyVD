@@ -33,7 +33,8 @@ Imports:
     stringr,
     tidyr,
     utils,
-    openxlsx
+    openxlsx,
+    rjson
 Suggests: 
     shinytest2,
     spelling (>= 2.2),

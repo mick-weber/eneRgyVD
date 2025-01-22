@@ -565,7 +565,7 @@ make_table_dt <- function(data,
   ## |---------------------------------------------------------------|
   ##          Prepare data
   ## |---------------------------------------------------------------|
-  if(!is.null(icons_palette)){
+  if(!is.null(icons_palette) & !is.null(var_cat)){
 
     data <- data |>
       dplyr::left_join(icons_palette, by = var_cat) |>
@@ -611,22 +611,23 @@ make_table_dt <- function(data,
 
   column_defs <- list(
     # Apply custom rendering for all columns
-    list(
-      targets = "_all",           # Apply to all columns
-      className = 'dt-center',
-      render = DT::JS(
-        "function(data, type, row, meta) {",
-        glue::glue("return data === null ? '({na_string})' : data;"),
-        "}")
+    list(targets = list(0,1),           # Apply to first cols (commune/year)
+         className = 'dt-center'),
+
+    list(targets = "_all",
+         render = DT::JS(
+           "function(data, type, row, meta) {",
+           glue::glue("return data === null ? '({na_string})' : data;"),
+           "}"))
     )
-  )
 
   # Conditionally add the icons_palette logic to remove ordering widget + align right next to var_cat
-  if (!is.null(icons_palette)) {
+  if (!is.null(icons_palette) & !is.null(var_cat)) {
     column_defs <- append(
       column_defs,
       list(list(targets = " ",
                 width = "50px",
+                className = 'dt-right',
                 orderable = FALSE))
     )
   }
@@ -638,13 +639,14 @@ make_table_dt <- function(data,
 
   dt_table <- data_prep |>
     DT::datatable(
+      class = "compact hover",         # Compact display + hover effect
       escape = FALSE,                  # Render HTML (e.g., icons) instead of text
       extensions = 'Buttons',          # Enable the Buttons extension (for export buttons)
       selection = 'single',            # Allow single row selection
       rownames = FALSE,                # Hide row numbers/names
       options = list(
         paging = TRUE,                 # Enable pagination
-        pageLength = 15,               # Number of rows per page
+        pageLength = 10,               # Number of rows per page
         scrollY = TRUE,                # Enable vertical scrolling
         autoWidth = TRUE,              # Smart column width handling
         server = FALSE,                # Use client-side processing

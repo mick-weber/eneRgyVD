@@ -1,3 +1,6 @@
+[![R-CMD-check](https://github.com/mick-weber/eneRgyVD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mick-weber/eneRgyVD/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/mick-weber/eneRgyVD/graph/badge.svg)](https://app.codecov.io/gh/mick-weber/eneRgyVD)
+
 # **Welcome to eneRgyVD** ! 
 
 This R Shiny app, built upon a `{golem}` framework, is developed by the Direction de l'énergie of Canton de Vaud (Switzerland) in collaboration with the Office cantonal de la durabilité et du climat (OCDC) to provide statistics at the municipal level for the themes of energy, climate and mobility.

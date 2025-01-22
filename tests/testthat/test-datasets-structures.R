@@ -1,7 +1,7 @@
 test_that("Check all datasets have expected colnames based on extadata/ located file", {
 
   # Read file containing all colnames used to make nice translations for table display etc.
-  load_colnames <- read.csv2("./inst/extdata/colnames_replacement_display.csv")
+  load_colnames <- utils::read.csv2("../../inst/extdata/colnames_replacement_display.csv", sep = ";")
 
   # Make named list of dataframes containing the colnames
   expected_colnames <- split(

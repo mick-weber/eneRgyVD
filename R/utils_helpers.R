@@ -176,7 +176,7 @@ colnames_replacement_display <- read.delim(file = "inst/extdata/colnames_replace
                                            encoding = "UTF-8") |>
   tidyr::as_tibble() |>
   dplyr::distinct(colname, replacement) |>
-  arrange(desc(nchar(colname))) # do this so that longer names match first, avoid partial undesired matches (e.g. nombre_batiments & nombre)
+  dplyr::arrange(desc(nchar(colname))) # do this so that longer names match first, avoid partial undesired matches (e.g. nombre_batiments & nombre)
 
 
 ## List of non-ASCII words that should replace internal colnames

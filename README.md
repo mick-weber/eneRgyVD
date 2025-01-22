@@ -1,9 +1,10 @@
+[![R-CMD-check](https://github.com/mick-weber/eneRgyVD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mick-weber/eneRgyVD/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/mick-weber/eneRgyVD/graph/badge.svg)](https://app.codecov.io/gh/mick-weber/eneRgyVD)
+
 # **Welcome to eneRgyVD** ! 
 
-This R Shiny app, built upon a `{golem}` framework, is used by the Direction de l'énergie of Canton de Vaud (Switzerland) to share statistics about municipalities in canton de Vaud.
+This R Shiny app, built upon a `{golem}` framework, is developed by the Direction de l'énergie of Canton de Vaud (Switzerland) in collaboration with the Office cantonal de la durabilité et du climat (OCDC) to provide statistics at the municipal level for the themes of energy, climate and mobility.
 
-The app's latest production version is deployed here : https://stat-energie-vd.ch/profil-energie under the name *Profil énergétique des communes vaudoises*.
+The app's latest production version is deployed here : https://stat-climat-vd.ch/profil-climatique under the name *Profil climatique des communes vaudoises*.
 
-Early 2024, a new version based on `{bslib}` has been developed to upgrade from Bootstrap 4 to 5.
-
-Any inquiries can be addressed at [stat.energie@vd.ch](mailto:stat.energie@vd.ch?subject=Question-eneRgyVD)
+Any dev inquiries can be addressed at [stat.energie@vd.ch](mailto:stat.energie@vd.ch?subject=Question-eneRgyVD) or at [pecc@vd.ch](mailto:pecc@vd.ch?subject=Question-profil-climatique) for more generic questions.

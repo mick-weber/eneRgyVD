@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_subsidies_measure_charts_ui <- function(id){
+mod_subsidies_measure_charts_ui <- function(id,
+                                            title,
+                                            title_complement){
   ns <- NS(id)
   tagList(
 
@@ -15,29 +17,27 @@ mod_subsidies_measure_charts_ui <- function(id){
     tags$div(
       # Large+ screens : inline, flex layout, justified items
       #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
+      class = "d-flex justify-content-start",
       # Title
-      h4(HTML("Subventions Programme bâtiments<br>(vue par mesures)")),
+      h4(title, style = "padding-right:3vw;"),
 
-
-      # Methodology accordion
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_subsidies_warning)),
-          br(),
-          actionButton(ns("subsidies_measure_help"), label = "Plus de détails sur les données")
-        ),
-        open = FALSE)
+      # Methodology button
+      actionButton(ns("subsidies_measure_help"),
+                   class = "btnCustom",
+                   label = tags$span(style = "font-weight:500;",
+                                     "Source et méthode",
+                                     bslib::tooltip(
+                                       id = ns("tooltip_data_help"),
+                                       placement = "right",
+                                       options = list(customClass = "customTooltips"), # custom.scss
+                                       trigger = phosphoricons::ph(title = NULL, "info"),
+                                       generic_method_warning # utils_text_and_links.R
+                                     )
+                   ))
     ),
 
-    # Disclaimer for regener cons data (in a column for better display)
-    tags$p("Ces données illustrent le nombre de subventions versées par type et année depuis 2017
-           (voir détails dans la méthodologie complète). Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,",
-           strong("il ne faut pas interpréter une subvention comme un bâtiment nouvellement subventionné."),
-                  "Une vision agrégée par bâtiments subventionnés est disponible dans l'onglet Subventions par bâtiments."),
+    # utils_text_and_links.R
+    title_complement,
 
     # TABSETS for better readability of plot / table
     bslib::navset_pill(
@@ -46,7 +46,7 @@ mod_subsidies_measure_charts_ui <- function(id){
       ## Graphique tabPanel ----
 
       bslib::nav_panel(title = "Graphique",
-                       icon = bsicons::bs_icon("bar-chart-fill"),
+                       icon = phosphoricons::ph(title = NULL, "chart-bar"),
 
                        # breating
                        br(),
@@ -76,7 +76,7 @@ mod_subsidies_measure_charts_ui <- function(id){
                        # Plotly bar (only one viz) ----
                        # plotly barplot in server according to which flow/bar is selected
 
-                       plotly::plotlyOutput(ns("plot_subsidies")) |>
+                       ggiraph::girafeOutput(ns("plot_subsidies")) |>
                          shinycssloaders::withSpinner(type = 6,
                                                       color= main_color) # color defined in utils_helpers.R
 
@@ -85,16 +85,18 @@ mod_subsidies_measure_charts_ui <- function(id){
       ## Table tabPanel ----
 
       bslib::nav_panel(title = "Table",
-                       icon = bsicons::bs_icon("table"),
+                       icon = phosphoricons::ph(title = NULL, "table"),
                        # breathing
                        br(),
 
                        p(shiny::HTML("Note : les données sont plus détaillées que celles affichées dans l'onglet <strong>Graphique</strong>.")),
 
+                       br(),
+
                        # Download module
                        mod_download_data_ui(ns("table_download")),
 
-                       # DT table
+                       # rt table
                        DT::dataTableOutput(ns("table_1"))
 
       )# End tabPanel 'Table'
@@ -107,7 +109,7 @@ mod_subsidies_measure_charts_ui <- function(id){
 #' @noRd
 mod_subsidies_measure_charts_server <- function(id,
                                                 subsetData, # passed from inputVals, bit redundant but clear
-                                                # selectedUnit not needed here !
+                                                # energyUnit not needed here !
                                                 inputVals,
                                                 dl_prefix = dl_prefix,
                                                 doc_vars = doc_vars
@@ -116,22 +118,30 @@ mod_subsidies_measure_charts_server <- function(id,
     ns <- session$ns
 
     # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({
-      length(inputVals$selectedCommunes) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
+    output$toggle <- reactive({length(unique(subsetData()$commune)) > 1})
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
 
     # Plot logic ----
 
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+    output$plot_subsidies <- ggiraph::renderGirafe({
 
-    subsetData_d <- reactive({subsetData()}) |> shiny::debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
+      req(subsetData())
 
-    output$plot_subsidies <- plotly::renderPlotly({
+      # Compute number of rows
+      num_facets <- length(unique(subsetData()$commune))
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
+
+      # Dynamic height and width ratios (unitless)
+      base_height_per_row <- 2  # Adjust height ratio per row
+
+      # Save units passed to create_plot_ggiraph()
+      height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
 
       # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
       validate(
@@ -139,7 +149,8 @@ mod_subsidies_measure_charts_server <- function(id,
       )
 
       # Plotly but factor lumped for clarity :
-      subsetData_d() |>
+
+      subsetData() |>
         dplyr::mutate(mesure_simplifiee = forcats::fct_lump_n(f = mesure_simplifiee,
                                                               n = 3,
                                                               w = nombre,
@@ -147,31 +158,39 @@ mod_subsidies_measure_charts_server <- function(id,
                                                               other_level = "Autres mesures (voir table)")) |>
         dplyr::group_by(commune, annee, mesure_simplifiee) |>
         dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        create_bar_plotly(n_communes = length(inputVals_communes_d()),
-                          var_year = "annee",
-                          var_commune = "commune",
-                          var_values = "nombre",
-                          var_rank_2 = "mesure_simplifiee",
-                          unit = "subventions",
-                          legend_title = NULL,
-                          color_palette = subsidies_measure_simplifiee_colors,
-                          dodge = FALSE, # we don't allow user to dodge w/ toggle button
-                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                          web_width = inputVals$web_width, # px width of browser when app starts
-                          web_height = inputVals$web_height # px height of browser when app starts
-        )# End create_bar_plotly
+        create_plot_ggiraph(# data piped
+                           n_communes = dplyr::n_distinct(subsetData()$commune),
+                           var_year = "annee",
+                           var_commune = "commune",
+                           unit = "subventions",
+                           var_cat = "mesure_simplifiee",
+                           var_values = "nombre",
+                           geom = "col",
+                           color_palette = subsidies_measure_simplifiee_colors, # defined in utils_helpers.R
+                           dodge = FALSE, # if T -> 'dodge', F -> 'stack'
+                           free_y = input$toggle_status, # reactive(input$toggle_status)
+                           legend_title = NULL, # links to ifelse in facet_wrap(scales = ...)
+                           height_svg = height_svg, # px width of browser when app starts
+                           width_svg = width_svg # px height of browser when app starts
+        )
+
     })# End renderPlot
 
     # Table logic ----
 
-    # DT table, detailed (plot is aggregated) with both N_EGID & SRE
+    # rt table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
-      create_subsidies_table_dt(data = subsetData(),
-                                var_year = "annee",
-                                var_rank_2 = "mesure",
-                                icon_list = return_icons_subsidies(which = "measure"),
-                                DT_dom = "frtip" # remove default button in DT extensions
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+      make_table_dt(data = subsetData(),
+                    var_commune = "commune",
+                    var_year = "annee",
+                    var_values = c("nombre"),
+                    var_cat = "mesure",
+                    icons_palette = subsidies_measure_icons,
+                    na_string = "Non disponible",
+                    unit = NULL # no unit to apply
       )
     })
 
@@ -181,13 +200,9 @@ mod_subsidies_measure_charts_server <- function(id,
 
     download_data <- reactive({
 
-
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_misc_colnames() |>  # fct_helpers.R
-        rename_fr_colnames()       # fct_helpers.R
-
-
+        rename_column_output()
     })
 
     # Module to download DT table data

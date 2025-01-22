@@ -7,117 +7,131 @@ load("./data/sf_communes.rda")
 load("./data/sf_districts.rda")
 load("./data/sf_lacs.rda")
 
-## elec_prod data ----
-
+## energy data ----
+# elec_prod
 load("./data/elec_prod.rda")
 load("./data/elec_prod_doc.rda")
-
-## elec_cons data ----
-
+# elec_cons
 load("./data/elec_cons.rda")
 load("./data/elec_cons_doc.rda")
-
-## regener data ----
-
+# ng_cons
+load("./data/ng_cons.rda")
+load("./data/ng_cons_doc.rda")
+# regener
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
 load("./data/regener_needs.rda")
 load("./data/regener_misc.rda")
 load("./data/regener_doc.rda")
-
-## subsidies data ----
-
+# subsidies
 load("./data/subsidies_by_building.rda")
 load("./data/subsidies_by_measure.rda")
 load("./data/subsidies_doc.rda")
 
-## glossary ----
+## mobility data ----
+load("./data/part_voit_elec.rda")
+load("./data/qualite_desserte.rda")
+load("./data/taux_motorisation.rda")
 
-load("./data/glossary.rda")
+## adaptation data ----
+load("./data/surface_canopee.rda")
+load("./data/batiment_danger.rda")
+
+## glossary ----
+load("data/glossary.rda")
+
+# Group dataset objects ----
+
+# energy
+energy_datasets_objects <- c("elec_prod",
+                             "elec_cons",
+                             "ng_cons",
+                             "regener_needs",
+                             "regener_cons_ae_use",
+                             "regener_cons_ae_aff",
+                             "regener_misc",
+                             "subsidies_by_measure",
+                             "subsidies_by_building")
+# adaptation
+adaptation_datasets_objects <- c("surface_canopee",
+                                 "batiment_danger")
+
+# mobility
+mobility_datasets_objects <- c("part_voit_elec",
+                               "taux_motorisation",
+                               "qualite_desserte")
+
+# Create datasets groups
+
+## energy
+energy_datasets <- setNames(mget(energy_datasets_objects), energy_datasets_objects)
+
+## mobility
+mobility_datasets <- setNames(mget(mobility_datasets_objects), mobility_datasets_objects)
+
+## adaptation
+adaptation_datasets <- setNames(mget(adaptation_datasets_objects), adaptation_datasets_objects)
+
+# Dictionnary tables if provided in .rda ! ----
+# Reminder : this is not necessary but provides a dictionnary table if available to mod_about_the_app.R
+doc_objects <- c("elec_prod_doc",
+                 "elec_cons_doc",
+                 "ng_cons_doc",
+                 "regener_doc",
+                 "subsidies_doc")
+
+doc_datasets <- setNames(mget(doc_objects), doc_objects)
 
 ## doc panels for accordions ----
 # see fct_helpers.R
 
+# energy
 elec_prod_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_prod-doc.md")
 elec_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/elec_cons-doc.md")
 regener_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/regener-doc.md")
 subsidies_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/subsidies-doc.md")
+ng_cons_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/ng_cons-doc.md")
 
-# Store .Rmd in temp dir ----
-# https://mastering-shiny.org/action-transfer.html#downloading-reports
-
-report_path <- tempfile(fileext = ".Rmd")
-
-# Files others than .Rd are in ./inst/extdata/
-file.copy("./inst/extdata/downloadable_report.Rmd", report_path, overwrite = TRUE)
-
-# Generic utils ----
-# Tab-specific items at the end (see outline : `Objects specific to...`) !
-
-## Debounce time ----
-# Usef in app_server.R + plotting modules to avoid loop errors and flickering
-
-debounce_plot_time <- 400 # ms, empirically defined as ideal
-
-## Sentence related to communes selection ----
-
-# when 0 commune is selected for an output display request :
-req_communes_phrase <- "Sélectionner au moins une commune pour générer un résultat"
-
-# when 1+ commune is selected but not available in the dataset :
-req_communes_not_available <- "Aucune donnée n'est disponible pour la sélection actuelle"
-
-## Sentence methodological changes ----
-# Used in ui.r to avoid repetition
-
-generic_method_warning <- "La méthode utilisée pour obtenir ces résultats est sujette à amélioration au fil des années. Pour cette raison, il est possible que les données changent légèrement de manière rétroactive.
-                                                       Les grands principes de chaque méthode ainsi que les principales modifications sont documentés dans l'onglet 'À propos'."
-
-specific_elec_warning <- "Si des données sont visiblement manquantes ou erronées, merci de prendre contact afin qu'une évaluation du problème puisse être faite."
-
-specific_rgr_warning <- "Ces données dépendent notamment de la qualité de l'information qui figure dans les registres cantonal et fédéral des bâtiments, en particulier pour les agents énergétiques.
-La DGE-DIREN se rend disponible pour accompagner des communes qui souhaiteraient procéder à une amélioration des données énergétiques figurant dans le registre."
-
-specific_subsidies_warning <- "Ces données sont issues d'un traitement des données du Programme bâtiments et concernent exclusivement les subventions versées (avec achèvement de travaux).
-Les subventions promises pour lesquels les travaux n'ont pas été effectués ne sont donc pas comptabilisées."
+# mobility
+part_voit_elec_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/part_voit_elec-doc.md")
+qualite_desserte_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/qualite_desserte-doc.md")
+taux_motorisation_doc_panels <-  generate_doc_accordion_panels(md_file = "./data-doc/taux_motorisation-doc.md")
 
 
-
-## NEWS notifications  ----
-# These are served to bs4DropdownMenu in app_ui.R
-
-notif_msg <- tidyr::tribble(~icon, ~status, ~text,
-                    "cloud-arrow-up", "info", "01.24: Ajout données subventions Programme Bâtiments",
-                    "cloud-arrow-up", "info", "06.23: Ajout données consommation th. bâtiments 2022",
-                     "cloud-arrow-up", "info", "06.23: Ajout données production électricité 2015-2022",
-                     "star", "info", "06.23: Mise en ligne du profil"
-)
+# adaptation
+surface_canopee_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/surface_canopee-doc.md")
+batiment_danger_doc_panels <- generate_doc_accordion_panels(md_file = "./data-doc/batiment_danger-doc.md")
 
 
-## Sidebar width ----
+# REDIRECTIONS ----
 
-sidebar_width <- 300 # px ; used in custom.css & plotting fns with inputVals$web_width/height
+# This is used by app_server.R/ and methodological accordions in specific modules to redirect user in 'mod_about_the_app.R' module
+# This is also ulsed by mod_table_content.R to redirect users towards tabpanels
 
-## Facetted plot's height ----
+subpanels_tribble <- dplyr::tribble(
+  # <about_*> = item names in mod_about_the_app.R   //  <nav_*> = item names in app_ui.R
+  ~observe_input, ~about_nav_panel, ~navset_id,  ~about_tabpanel_name, ~data_id, ~nav_panel, ~navset_name, ~nav_name,
+  # energy (data_1-20)
+  "consumption_charts-elec_data_help","Energie","navset_energie", "Distribution d'électricité", "data_1", "Electricité", "navset_elec", "Distribution d'électricité",
+  "production_charts-elec_data_help", "Energie","navset_energie", "Production d'électricité", "data_2", "Electricité", "navset_elec", "Production d'électricité",
+  "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
+  "regener_cons-rgr_cons_help", "Energie", "navset_energie","Chaleur bâtiments", "data_4", "Chaleur des bâtiments","navset_regener", "Consommation des bâtiments",
+  "regener_misc-rgr_misc_help", "Energie","navset_energie", "Chaleur bâtiments", "data_5", "Chaleur des bâtiments","navset_regener", "Informations bâtiments",
+  "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue du parc subventionné",
+  "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
+  "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
-# Number of facets starting from which a height increase is necessary
-n_facets_limit <- 4
+  # adaptation (data_20-29)
+  "adaptation_canopy-generic_data_help", "Adaptation climat", "navset_climat", "Surface de canopée urbaine", "data_20", "Surface de canopée urbaine", "navset_canopy", "Surface de canopée urbaine",
+  "buildings_exposure_hazards-generic_data_help", "Adaptation climat", "navset_climat", "Bâtiments exposés à des dangers naturels", "data_21", "Exposition aux dangers naturels", "navset_natural_hazards", "Bâtiments exposés à des dangers naturels",
 
-# Height of facet plot's below limit
-height_facet_under_limit <- 400
+  # mobility (data_30-39)
+  "part_voit_elec-generic_data_help", "Mobilité", "navset_mobilite", "Part des voitures électriques", "data_30", "Véhicules électriques", "navset_vehicules", "Part des voitures électriques",
+  "taux_motorisation-generic_data_help", "Mobilité", "navset_mobilite", "Taux de motorisation", "data_31", "Taux de motorisation", "navset_taux_motorisation", "Taux de motorisation",
+  "qualite_desserte-generic_data_help", "Mobilité", "navset_mobilite", "Qualité de desserte des transports publics", "data_32", "Transports publics", "navset_qualite_desserte", "Qualité de desserte des transports publics"
 
-# Height of facet plot's above limit
-height_facet_above_limit <- 700
+  )
 
-
-## Links and mail ----
-# Used for mod_about_the_app.R and/or contact notificationMenu in ui.R
-
-mail_address <- "stat.energie@vd.ch"
-link_diren <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-lenvironnement-et-de-la-securite-des/direction-generale-de-lenvironnement-dge/diren-energie/"
-link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
-link_pecc <- "https://www.vd.ch/pecc" # shortcut link redirecting to https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc
-link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ## DT language file ----
 ### RUN ONCE : Store JSON french language items file for DT library. May require rjson library (not in DESCRIPTION)
@@ -136,34 +150,37 @@ DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 # Must match the choices in header's widget
 # Linked to fct_helpers.R convert_units()'s function
 
-units_table <- dplyr::tribble(
-  ~unit, ~kWh,
+# all datasets must come as 'kWh' values so we index based on kWh
+energy_units_table <- dplyr::tribble(
+  ~unit, ~factor,
   "kWh", 1,
   "MWh", 1e3,
   "GWh", 1e6,
   "TJ", 1/3.6*1e6
 )
 
-## Column replacement ----
-
-cols_renaming_vector <- c(
-  # regener_misc
-  "Commune" = "commune",  # applies to `subsidies` too
-  "Etat" = "etat",        # applies to `subsidies` too
-  "Surface de référence énergétique (m2)" = "SRE",  # applies to `subsidies` too
-  "Bâtiments chauffés" = "N_EGID",
-  "Bâtiments neufs (2001+)" = "N_NEW_POST_2000",
-  "Bâtiments rénovés légèrement (2001+)" = "N_RENOV_L_POST_2000",
-  "Bâtiments rénovés lourdement (2001+)" = "N_RENOV_H_POST_2000",
-  "Bâtiments sans rénovation récente" = "N_NO_RENOV",
-  "Bâtiments sans année de construction" = "N_NO_GBAUJ",
-  # subsidies
-  "Type de subvention" = "subv_type"
+# all datasets must come as 'tCO2' values so we index based on tCO2
+co2_units_table <- dplyr::tribble(
+  ~unit, ~factor,
+  "kgCO2-eq", 1e-3,
+  "tCO2-eq", 1,
+  "ktCO2-eq", 1e3
 )
+
+## Column replacement ----
+# load csv file of replacement columns for tables & downloads in ./inst/extdata/
+# used by rename_columns_output()
+colnames_replacement_display <- read.delim(file = "inst/extdata/colnames_replacement_display.csv",
+                                           header = TRUE,
+                                           sep = ";",
+                                           encoding = "UTF-8") |>
+  tidyr::as_tibble() |>
+  dplyr::distinct(colname, replacement)
 
 
 ## List of non-ASCII words that should replace internal colnames
 # Note that colnames are already in a 'sentence' format (i.e. Ae and not ae)
+# They are used in `rename_fr_colnames()` for a nicer print/export of data tables
 replace_fr_accents <- c("electricite" = "électricité",
                         "electrique" = "électrique",
                         "energetique" = "énergétique",
@@ -172,20 +189,28 @@ replace_fr_accents <- c("electricite" = "électricité",
                         "Annee" = "Année",
                         "Ae" = "Agent énergétique",
                         "optimises" = "optimisés",
-                        "Detail" = "Détail")
+                        "Detail" = "Détail",
+                        "canopee" = "canopée")
 
-## These are used to dynamically target columns renaming in fct_helpers.R and mod_elec_charts.R
+## These are used to dynamically target columns renaming in add_colname_units() and mod_elec_charts.R
 energy_col_keywords <- c("Consommation", "Production", "Injection", "Autoconsommation", "Besoins")
+
 power_col_keywords <- c("Puissance", "installé")
+power_col_keywords_dev <- c("puissance", "installe")
+
 co2_keywords <- c("CO2")
+percent_keywords <- c("Pct", "Part", "Taux")
 
 
 # Colors and icons ----
 
 ## Default ggplot2 colors ----
 
-# Avoids darkgrey for geom_cols when 'var_rank_2' is NULL
+# Avoids darkgrey for geom_cols when 'var_cat' is NULL and if no palette/color is supplied
 ggplot2::update_geom_defaults("col", ggplot2::aes(fill = "#90b0ee"))
+
+## Default palette if not supplied
+default_palette <- RColorBrewer::brewer.pal(name = "Set3", n = 12)
 
 ## Prod colors and icons (prod) ----
 # Base tribble with categorie, icon and color
@@ -328,11 +353,6 @@ subsidies_building_colors <- subsidies_building_palette$color |>
 # It's flexible enough if new/removed subsidies appear
 # Thanks https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
 
-## |---------------------------------------------------------------|
-##          REVIEW START
-## |---------------------------------------------------------------|
-
-# NEW CODE
 subsidies_measure_palette_plot <- dplyr::tribble(~mesure_simplifiee, ~ color,
                                                  "Isolation partielle", "#ffdb0f",
                                                  "Isolation globale", "#FF870F",
@@ -344,18 +364,13 @@ subsidies_measure_palette_plot <- dplyr::tribble(~mesure_simplifiee, ~ color,
                                                  "Autres mesures (voir table)", "#cccccc"
                                                  )
 
-
-## |---------------------------------------------------------------|
-##          REVIEW END
-## |---------------------------------------------------------------|
-
 # Prepare palette for create_bar_plotly()
 subsidies_measure_simplifiee_colors <- subsidies_measure_palette_plot$color |>
   setNames(nm = subsidies_measure_palette_plot$mesure_simplifiee)
 
 
 # This palette is only supplying colors for the table. The p
-subsidies_measure_palette_table <- subsidies_by_measure |>
+subsidies_measure_palette_table <- energy_datasets$subsidies_by_measure |>
   dplyr::distinct(mesure) |>
   dplyr::mutate(icon = dplyr::case_when(
     mesure %in% c("M01", "M12", "M13", "M14") ~ as.character(shiny::icon("house")),
@@ -378,35 +393,21 @@ subsidies_measure_icons <- subsidies_measure_palette_table |>
 # subsidies_measure_detail_colors <- subsidies_measure_palette_table$color |>
 #   setNames(nm = subsidies_measure_palette_table$mesure)
 
+### Canopee palette ----
 
-# Theme ----
+surface_canopee_palette <- c("avec canopée >3m" = "limegreen",
+                              "sans canopée >3m" = "grey75")
 
-## Color used for multiple ui items ----
+### Natural hazards palette ----
 
-main_color <- "#3A862D"
-main_color_active <- "#343A40"
+batiment_danger_palette <- c("danger moyen" = "#6f95ff",
+                              "danger élevé" = "#ff4d4d")
 
-## Custom {fresh} theme passed to bs4Dash in app_ui.R
-# Example from https://dreamrs.github.io/fresh/
 
-profil_theme <- bslib::bs_theme(version = 5,
-                                preset = "bootstrap",
-                                font_scale = 1.2,
-                                "navbar-bg" = "#3A862D",
-                                "modal-footer-margin-between" = "0rem",
-                                primary = "#3A862D",
-                                secondary = "#343A40"
-) |>
-  # add some variables
-  bslib::bs_add_variables(
-    "dropdown-link-active-bg" = "white",         # nav menus
-    "dropdown-link-active-color" = "$secondary", # nav menus
-    "accordion-button-active-bg" = "$secondary", # bg color when activated
-    "accordion-button-active-color" = "white",   # text color when activated
-    "accordion-button-focus-box-shadow" = "0 0 0 $btn-focus-width rgba($secondary, 0.25)", # width + color of shadow when active
+### Qualite desserte palette ----
 
-    .where = "declarations") |>
-    bslib::bs_add_rules(sass::sass_file("./inst/app/www/custom_bs5.scss")) # add complementary sass file
+qualite_desserte_palette <- c("Population" = "#ab96c3",
+                              "Emploi" = "#75b364")
 
 
 # Non-reactive objects for input widgets ----
@@ -440,7 +441,7 @@ choices_canton_communes <- list(
 
 ### Colors for categorie
 
-categories_diren <- elec_prod |>
+categories_diren <- energy_datasets$elec_prod |>
   dplyr::distinct(categorie) |>
   dplyr::arrange(categorie) |>
   dplyr::pull()
@@ -450,76 +451,66 @@ categories_diren <- elec_prod |>
 # to be populated
 
 ## Objects specific 'Chaleur bâtiments'  ----
-# used for fct_helpers.R -> mod_regener_cons_charts.R + mod_stats_box.R
+# RegEner specificity (see mod_inputs.R, app_server.R)
 
-min_regener_year <- min(regener_cons_ae_use$etat)
-max_regener_year <- max(regener_cons_ae_use$etat)
+min_regener_year <- min(energy_datasets$regener_cons_ae_use$etat)
+max_regener_year <- max(energy_datasets$regener_cons_ae_use$etat)
 
 regener_current_year <- max_regener_year
 
-## Objects specific 'Subventions'  ----
+# years for make_slider_input_years (fct_helpers.R + mod_inputs.R) ----
 
-# mesures_pb |> dplyr::select(MESURE, MESURE_TRAD, MESURE_SIMPLIFIEE2)
+## Energy datasets
+elec_cons_years <- c(
+  min(energy_datasets$elec_cons$annee),
+  max(energy_datasets$elec_cons$annee)
+)
+
+elec_prod_years <- c(
+  min(energy_datasets$elec_prod$annee),
+  max(energy_datasets$elec_prod$annee)
+)
+
+ng_cons_years <- c(
+  min(energy_datasets$ng_cons$annee),
+  max(energy_datasets$ng_cons$annee)
+)
+
+subsidies_years <- c(
+  min(energy_datasets$subsidies_by_building$etat),
+  max(energy_datasets$subsidies_by_building$etat)
+)
+
+## Mobility datasets ----
+part_voit_elec_years <- c(
+  min(mobility_datasets$part_voit_elec$annee),
+  max(mobility_datasets$part_voit_elec$annee)
+)
+
+taux_motorisation_years <- c(
+  min(mobility_datasets$taux_motorisation$annee),
+  max(mobility_datasets$taux_motorisation$annee)
+)
+
+qualite_desserte_years <- c(
+  min(mobility_datasets$qualite_desserte$annee),
+  max(mobility_datasets$qualite_desserte$annee)
+)
+
+## Climate datasets ----
+surface_canopee_years <- c(
+  min(adaptation_datasets$surface_canopee$annee),
+  max(adaptation_datasets$surface_canopee$annee)
+)
+
+batiment_danger_years <- c(
+  min(adaptation_datasets$batiment_danger$annee),
+  max(adaptation_datasets$batiment_danger$annee)
+)
 
 
-## Objects specific 'Carte' (Statbox)  ----
-
-#last_common_elec_year <- max(elec_prod$annee) # When prod elec alone
-
-### Cantonal statbox values ----
-
-#### VD electricity production for last available year
-
-last_year_elec_prod <- max(elec_prod$annee) # When prod elec alone
-
-elec_prod_vd_last_year <- elec_prod |>
-  dplyr::filter(commune == "Canton de Vaud") |>
-  dplyr::filter(annee == last_year_elec_prod) |>
-  dplyr::summarise(production = sum(production, na.rm = TRUE)) |>
-  dplyr::pull()
-
-#### VD electricity consumption for last available year
-
-last_year_elec_cons <- max(elec_cons$annee) # When prod elec alone
-
-elec_cons_vd_last_year <- elec_cons |>
-  dplyr::filter(commune == "Canton de Vaud") |>
-  dplyr::filter(annee == last_year_elec_cons) |>
-  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
-  dplyr::pull()
-
-#### VD heat consumption for last common year
-# !`annee` -> `etat`
-last_year_rgr <- max(regener_needs$etat)
-
-cons_rg_vd_last_year <- regener_cons_ae_aff |>
-  dplyr::filter(commune == "Canton de Vaud") |>
-  dplyr::filter(etat == last_year_rgr) |>
-  dplyr::summarise(consommation = sum(consommation, na.rm = TRUE)) |>
-  dplyr::pull()
-
-#### VD subsidies M01 for last common year
-last_year_subsidies <- max(subsidies_by_measure$annee)
-
-subsidies_m01_vd_last_year <- subsidies_by_measure |>
-  dplyr::filter(commune == "Canton de Vaud") |>
-  dplyr::filter(annee == last_year_subsidies) |>
-  dplyr::filter(mesure == "M01") |>
-  dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-  dplyr::pull()
 
 
-### Map-specific ----
-# We retrieve the coordinates
-# With a nested list ; each district name has 4 coordinates (xmin,ymin,xmax,ymax)
-# These coordinates represent the boundaries for the leaflet map zoom adjustments (through widget)
 
-# bboxes <- districts_names |>
-#   purrr::map(.f = ~ sf::st_bbox(sf_districts |> dplyr::filter(NOM_MIN == .x))) |>
-#   purrr::set_names(districts_names)
-#
-# ## Add & fill the Canton bbox in our bboxes using the whole districts borders
-#
-# bboxes$Canton <- sf_districts |> sf::st_bbox()
 
 

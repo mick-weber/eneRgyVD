@@ -11,45 +11,47 @@ mod_upload_communes_ui <- function(id){
   ns <- NS(id)
   tagList(
 
+    tags$div(
+      br(),
+      # Label as for selectizeInput for esthetics (form-label bs5 class) + add tooltip
+      tags$p("Importer des communes",
+             style = "font-weight:500;margin-bottom:0.5rem !important;",
+             bslib::tooltip(
+               id = "tooltip_import_communes",
+               placement = "right",
+               options = list(customClass = "customTooltips"), # custom.scss
+               trigger = phosphoricons::ph(title = NULL, "info"),
+               "Cette fonctionnalité permet d'importer un fichier csv avec des numéros OFS de communes pour automatiser une sélection de communes, par exemple pour une agglomération"
+             )),
 
-    bslib::accordion(open = FALSE,
-                     class = "fs-sidebar-header", # custom.css
-                     bslib::accordion_panel(title = "Fichier de communes",
-                                            icon = bsicons::bs_icon("cloud-arrow-up-fill"),
+      bslib::accordion(open = FALSE,
+                       class = "fs-sidebar-header rotatedSVG", # custom.css
+                       bslib::accordion_panel(title = "Fichier de communes",
+                                              icon = phosphoricons::ph(title = NULL, "cloud-arrow-up"),
+                                              style = "padding-bottom:0px;", # remove excessive padding below content
 
-                                            shiny::fileInput(ns("file_communes"),
-                                                             label = p(
-                                                               # add tooltip to provide details about the format
-                                                                       bslib::tooltip(
-                                                                         id = ns("tooltip_upload"),
-                                                                         options = list(customClass = "customTooltips"),
-                                                                         trigger = tags$span(
-                                                                           class = "link-primary",
-                                                                           "Format requis",
-                                                                           bsicons::bs_icon("info-circle")),
-                                                                            shiny::markdown("La **première** colonne du fichier .csv (séparateur **point-virgule ';'** uniquement)
+                                              shiny::fileInput(ns("file_communes"),
+                                                               label = div(style = "font-size:0.9rem;",
+
+                                                                           shiny::markdown("La **première** colonne du fichier csv (séparateur point-virgule <**;**>)
                                                                           doit contenir les **numéros OFS** des communes à sélectionner.
-                                                                          <br> Attention aux fusions de communes !"),
+                                                                          Attention aux fusions de communes !"),
 
-                                                                       ),
-
-                                                                       br(),
-
-                                                                       tags$i(tags$a(href= "www/exemple_import_communes.csv",
-                                                                                     target="_blank", "Télécharger un exemple",
-                                                                                     download = "exemple_import_communes.csv",
-                                                                                     class = "link-primary",
-                                                                                     style = "font-size:1rem;"))
-                                                             ),
-                                                             buttonLabel = "Importer...",
-                                                             placeholder = ".csv",
-                                                             multiple = FALSE,
-                                                             accept = c("text/csv",
-                                                                        "text/comma-separated-values,text/plain",
-                                                                        ".csv")
-                                                             )# End fileInput()
-                     )# End accordion_panel
-    )# End accordion()
+                                                                           tags$i(tags$a(href= "www/exemple_import_communes.csv",
+                                                                                         target="_blank", "Télécharger un exemple",
+                                                                                         download = "exemple_import_communes.csv",
+                                                                                         class = "link-primary"))
+                                                               ),
+                                                               buttonLabel = "Importer...",
+                                                               placeholder = ".csv",
+                                                               multiple = FALSE,
+                                                               accept = c("text/csv",
+                                                                          "text/comma-separated-values,text/plain",
+                                                                          ".csv")
+                                              )# End fileInput()
+                       )# End accordion_panel
+      )# End accordion()
+    )# End div
   )# End tagList
 }
 
@@ -67,7 +69,7 @@ mod_upload_communes_server <- function(id){
       tryCatch(
         {
           input_file <- utils::read.csv(input$file_communes$datapath,
-                                 sep = ";")
+                                        sep = ";")
 
           # communes_names_id -> utils_helpers.R ; this code implicitely removes dupe ids !
           input_communes <- communes_names_id[names(communes_names_id) %in% input_file[[1]]] |> # [[1]] -> first col is read only
@@ -93,10 +95,10 @@ mod_upload_communes_server <- function(id){
       unique_communes <- length(input_communes_timed())-1 # ignore the time stamp with -1 !
 
       if(unique_communes > 0){
-      notify_text <- paste0("Importation de communes : ",
-                             unique_communes,
-                             " communes distinctes ont été importées.")
-      type = "message"
+        notify_text <- paste0("Importation de communes : ",
+                              unique_communes,
+                              " communes distinctes ont été importées.")
+        type = "message"
 
       }else{
 
@@ -105,9 +107,9 @@ mod_upload_communes_server <- function(id){
         type <- "error"
       }
 
-    # Actually notify
-    showNotification(notify_text,
-                     type = type)
+      # Actually notify
+      showNotification(notify_text,
+                       type = type)
 
     })
 

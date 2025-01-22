@@ -3,15 +3,15 @@
 \name{convert_units}
 \alias{convert_units}
 \title{convert_units()
-Converts units either from dataframe (in target columns) or directly from a numeric value
-according to which current unit is selected in the application}
+Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
+conversion tables are defined in utils_helpers.R}
 \usage{
-convert_units(data, colnames, unit_from = "kWh", unit_to)
+convert_units(data, colnames = NULL, unit_from, unit_to)
 }
 \arguments{
 \item{data}{the dataframe containing the columns where to convert units}
 
-\item{colnames}{the colnames where to convert units}
+\item{colnames}{the colnames where to convert units. If multiple are provided they will all be converted the same}
 
 \item{unit_from}{the unit to convert from}
 
@@ -22,6 +22,6 @@ the same dataframe with updated units on target colnames
 }
 \description{
 convert_units()
-Converts units either from dataframe (in target columns) or directly from a numeric value
-according to which current unit is selected in the application
+Converts the values of a vector (colname) or a direct value (data) given its starting and end unit.
+conversion tables are defined in utils_helpers.R
 }

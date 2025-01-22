@@ -1,5 +1,5 @@
 <!--- Content retrieved by 'generate_doc_accordion_panels()' in fct_helpers.R & utils_helpers.R -->
-<!--- Don't add linebreaks within paragraphs, add empty line at the end, prefer plain HTML for links -->
+<!--- Don't add linebreaks within paragraphs or use <br> tags inline, add empty line at the end, prefer plain HTML for links -->
 # Production d'électricité
 
 ## D'où viennent les données ?

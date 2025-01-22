@@ -13,81 +13,73 @@ mod_inputs_ui <- function(id){
   shiny::tagList(
 
     # selectizeInput() for municipalities ----
-
-    shiny::selectizeInput(inputId = ns("selected_communes"),
-                          label = "Sélection des communes",
-                          choices = choices_canton_communes,
-                          selected = NULL,
-                          multiple = TRUE,
-                          options = list(placeholder = "Plusieurs acceptées")
+    # make a div so that introjs can target the full item
+    tags$div(id = "introjs_select_communes",
+             shiny::selectizeInput(inputId = ns("selected_communes"),
+                                   label = tags$p("Sélection des communes", style = "font-weight:500;margin-bottom:0px;"),
+                                   choices = choices_canton_communes,
+                                   selected = NULL,
+                                   multiple = TRUE,
+                                   options = list(
+                                     placeholder = "Plusieurs acceptées",
+                                     plugins = list("remove_button",
+                                                    "clear_button")
+                                   )
+             )
     ),
-      # conditionalPanel uploadCommunes widget ----
 
-      # IF tab Carte
-      shiny::conditionalPanel(
-        condition="input.nav == 'Carte'",
+    ## |---------------------------------------------------------------|
+    ##          This section is source of many sorrows !!
+    ## |---------------------------------------------------------------|
+    # we must remember to update these conditionalPanel conditions when we change the names of each nav_panel() and navset_card_pill() !!
+    # otherwise the plots etc. fail to render because they can't access the required conditional input values ! (selected year, etc.)
 
-        # We open a div to wrap the label + widget so that they don't get distinguished by the 'gap' spacer from bslib
-        tags$div(
-          br(),
-          # Label as for selectizeInput for esthetics (form-label bs5 class)
-          tags$p("Importer des communes",
-                 style = "margin-bottom:0.5rem !important;"),
-          mod_upload_communes_ui(ns("uploaded_communes"))
-        )
-      ),# End div
+    # Energy
+    uiOutput(ns("elec_cons_years_picker")),
+    uiOutput(ns("elec_prod_years_picker")),
+    uiOutput(ns("ng_cons_years_picker")),
+    uiOutput(ns("subsidies_years_picker")),
 
-    # uiOutput for tabCons ----
+    # Mobility
+    uiOutput(ns("part_voit_elec_years_picker")),
+    uiOutput(ns("qualite_desserte_years_picker")),
+    uiOutput(ns("taux_motorisation_years_picker")),
 
-    shiny::conditionalPanel(
-      condition="input.nav == 'Distribution'",
-
-      shiny::uiOutput(ns("elec_cons_year"))
-
-    ), # End conditionalPanel
-
-    # uiOutput() for tabProd ----
-    # IF tabProd : 2 widgets in a single uiOutput call for years and technologies
-    # --> uiOutput/renderUI because its parameters are reactive
-
-    shiny::conditionalPanel(
-      condition="input.nav == 'Production'",
-
-      shiny::uiOutput(ns("prod_year_n_techs"))
-
-    ), # End conditionalPanel
-
-    # uiOutput() for tabRegener ----
-    # Use js array for all tabs because we can't target the overarching 'tabRegener' it does not work
-    shiny::conditionalPanel(
-      condition="['Besoins', 'Consommations', 'Autres'].includes(input.nav)",
-      shiny::uiOutput(ns("regener_year_selector"))
-
-    ), # End conditionalPanel
+    # Climate
+    # uiOutput(ns("surface_canopee_years_picker")),  # ! Only one year available, slider does not make sense
+    # uiOutput(ns("batiment_danger_years_picker")),  # ! Only one year available, slider does not make sense
 
 
-    # Unit converter ----
+    # uiOutput() for regener ----
+    uiOutput(ns("regener_widget")),
 
+
+    ## |---------------------------------------------------------------|
+    ##          Sidebar bottom footer
+    ## |---------------------------------------------------------------|
+
+    # Div with bottom elements ----
     tags$div(style = "margin-top: auto;",
-             # Unit converter widget
-             bslib::accordion(open = FALSE,
-                              class = "fs-sidebar-header rotatedSVG",
-                              bslib::accordion_panel(title = "Changer d'unité",
-                                                     icon = bsicons::bs_icon("calculator-fill"),
-                                                           shinyWidgets::prettyRadioButtons(inputId = ns("selected_unit"),
-                                                                                            label = NULL,
-                                                                                            choices = c("kWh", "MWh", "GWh", "TJ"),
-                                                                                            selected = "MWh",
-                                                                                            inline = FALSE,
-                                                                                            status =  "default",
-                                                                                            icon = icon("check"),
-                                                                                            animation = "jelly")
-             )),
-             ),# End div()
 
+             ## Upload communes widget (conditional) ----
+             shiny::conditionalPanel(
+               condition="input.nav == 'Accueil'",
+               mod_upload_communes_ui(ns("uploaded_communes"))
+             ),
 
+             ##  Unit converter widget (conditional) ----
+             shiny::conditionalPanel(
+               condition="input.nav != 'Accueil'",
+               mod_unit_converter_ui(ns("unit_converter"))
+             ),# End conditionalPanel
 
-
+             ##  Downoad all widget (fixed) ----
+             hr(), # separator
+             tags$div(
+               id = "introjs_download_all",
+               mod_download_all_data_ui(ns("download_all_data")),
+             )
+    )# End div()
   ) # End tagList
 } # End UI
 
@@ -98,126 +90,11 @@ mod_inputs_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Important note ----
-    ## Unit conversion is made here, at the root of inputVals, for each dataset
+    # # # TEST PRINT #
+    # # /TEST PRINT
 
-    # 1. tabCons inputs ----
-
-     subset_elec_cons <- reactive({
-
-       req(input$selected_communes)
-
-       elec_cons |>
-         filter(commune %in% input$selected_communes) |>
-         convert_units(colnames = "consommation",
-                       unit_from = "kWh",
-                       unit_to = input$selected_unit)
-
-     })
-
-
-    # 2. tabProd inputs ----
-
-    ## Reactive subset data  ----
-    # This is only used to feed the dynamic UI (year/techs available)
-    # The 'usable' dataset for plots etc. is computed in app_server.R and is further filtered by
-    # the values of the year sliderInput() and techs pickerInput()
-
-    subset_elec_prod <- reactive({
-
-      req(input$selected_communes)
-      req(input$selected_unit)
-
-      elec_prod |>
-        filter(commune %in% input$selected_communes) |>
-        convert_units(colnames = contains(c("injection", "production", "autoconso", "puissance")),
-                      unit_from = "kWh",
-                      unit_to = input$selected_unit)
-    })
-
-
-    # 3. tabRegener inputs ----
-    # Subset aggregated regener data with the currently selected commune(s)
-
-    ## 1/4: cons/use ----
-    # regener by commune, consumption, ae, use
-    # I may rename these later for more explicit names...
-    subset_rgr_cons_1 <- reactive({
-
-      req(input$selected_communes)
-      req(input$selected_unit)
-
-      regener_cons_ae_use |>
-        filter(commune %in% input$selected_communes) |>
-        convert_units(colnames = "consommation",
-                      unit_from = "kWh", # must be data's original unit
-                      unit_to = input$selected_unit)
-
-    })
-
-    ## 2/4: cons/aff ----
-    # regener by commune, consumption, ae, aff
-    # I may rename these later for more explicit names...
-    subset_rgr_cons_2 <- reactive({
-
-      req(input$selected_communes)
-      req(input$selected_unit)
-
-      regener_cons_ae_aff |>
-        filter(commune %in% input$selected_communes) |>
-        convert_units(colnames = "consommation",
-                      unit_from = "kWh", # must be data's original unit
-                      unit_to = input$selected_unit)
-
-    })
-
-    ## 3/4 : needs ----
-    # regener by commune, needs
-
-    subset_rgr_needs <- reactive({
-
-      req(input$selected_communes)
-      req(input$selected_unit)
-
-      regener_needs |>
-        dplyr::filter(commune %in% input$selected_communes) |>
-        convert_units(colnames = contains("besoins"),
-                      unit_from = "kWh",  # must be data's original unit
-                      unit_to = input$selected_unit)
-
-    })
-
-    ## 4/4 : misc ----
-    # other regener data
-
-    subset_rgr_misc <- reactive({
-
-      req(input$selected_communes)
-
-      regener_misc |>
-        dplyr::filter(commune %in% input$selected_communes)
-
-    })
-
-
-    # 4. tabSubsidies inputs ----
-
-    # 1/2
-    subset_subsidies_building <- reactive({
-
-      req(input$selected_communes)
-
-      subsidies_by_building |>
-        dplyr::filter(commune %in% input$selected_communes)
-    })
-
-    subset_subsidies_measure <- reactive({
-      req(input$selected_communes)
-
-      subsidies_by_measure |>
-        dplyr::filter(commune %in% input$selected_communes)
-    })
-
+    # 0. Retrieve units ----
+    selectedUnits <- mod_unit_converter_server("unit_converter")
 
     # Uploaded communes ----
     ## '_timed' because we have a timestamp as the first element to force reactivity
@@ -225,226 +102,279 @@ mod_inputs_server <- function(id){
 
     uploaded_communes_timed <- mod_upload_communes_server("uploaded_communes")
 
-    # Storing in inputVals : ----
-    # Initializing the inputVals items
 
-    inputVals <- reactiveValues()
+    # Render UI sidebar widgets ----
+    # They must be rendered dynamically (and not in UI directly) so that we can pass req(input$selected_communes)
+    # Additional display conditions are stored in conditionalPanel()
 
-# [inputVals communes & unit] ----
 
-    # communes
-    observe({
-      inputVals$selectedCommunes <- input$selected_communes
+    # Energy
+
+    output$elec_cons_years_picker <- renderUI({
+      req(input$selected_communes)
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Electricité' && input.navset_elec == 'Distribution d\\\'électricité'",
+                              make_slider_input_years(id = ns("elec_cons_years"),
+                                                      years = elec_cons_years)
+      )
     })
 
-    # uploaded communes
-    ## we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval
 
-    observe({
-      inputVals$uploadedCommunesTimed <- uploaded_communes_timed()
-      })
 
-    # unit selected
-    observe({
-      inputVals$selectedUnit <- input$selected_unit
+    output$elec_prod_years_picker <- renderUI({
+      req(input$selected_communes)
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Electricité' && input.navset_elec == 'Production d\\\'électricité'",
+                              make_slider_input_years(id = ns("elec_prod_years"),
+                                                      years = elec_prod_years)
+      )
     })
 
-# [inputVals datasets & subsets] ----
-    # Other inputs not influenced by selectInputs() else than commune
+    output$ng_cons_years_picker <- renderUI({
+      req(input$selected_communes)
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Gaz naturel'",
+                              make_slider_input_years(id = ns("ng_cons_years"),
+                                                      years = ng_cons_years)
+      )
+    })
 
-    observe({
+    output$subsidies_years_picker <- renderUI({
+      req(input$selected_communes)
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Subventions bâtiments'",
+                              make_slider_input_years(id = ns("subsidies_years"),
+                                                      years = subsidies_years)
+      )
+    })
 
-      # store the commune cons dataset already filtered
-    inputVals$elec_cons_dataset <- subset_elec_cons()
+    # Climate
 
-      # store the commune prod dataset already filtered
-    inputVals$elec_prod_dataset <- subset_elec_prod()
-
-      # store the regener commune dataset already filtered
-
-      inputVals$rgr_1 <- subset_rgr_cons_1()
-      inputVals$rgr_2 <- subset_rgr_cons_2()
-
-      inputVals$rgr_needs <- subset_rgr_needs()
-      inputVals$rgr_misc <- subset_rgr_misc()
-
-      # store subsidies dataset already filtered
-
-      inputVals$subsidies_building <- subset_subsidies_building()
-      inputVals$subsidies_measure <- subset_subsidies_measure()
-
-      # store min & max !available! years from consumption data to feed sliderInput()
-
-      inputVals$min_avail_elec_cons <- min(subset_elec_cons()$annee)
-      inputVals$max_avail_elec_cons <- max(subset_elec_cons()$annee)
-
-      # store min & max !available! years to feed sliderInput()
-      inputVals$min_avail_elec_prod <- min(subset_elec_prod()$annee)
-      inputVals$max_avail_elec_prod <- max(subset_elec_prod()$annee)
-
-      # store list of !available! techs to feed pickerInput()
-      inputVals$techs_avail <- subset_elec_prod() |>
-        dplyr::distinct(categorie) |>
-        dplyr::pull()
-
-      # store min & max years from regener dataset (this does not need to by commune specific)
-      inputVals$min_regener_year <- min_regener_year # utils_helpers.R
-      inputVals$max_regener_year <- max_regener_year # utils_helpers.R
-
-
-    })# End observe
-
-
-    ### Statbox subsets, communes only (!) ----
-    # --> we exclude Cantonal row which value is separated inside a dedicated statbox
-
-    observe({
-
-      req(subset_elec_prod(),
-          subset_elec_cons(),
-          subset_rgr_cons_1(),
-          subset_subsidies_measure()
-          )
-
-      # Statbox value for current selection's aggregated electricity production
-      inputVals$elec_prod_last_year <- subset_elec_prod() |>
-        dplyr::filter(annee == last_year_elec_prod) |>
-        dplyr::filter(!commune == "Canton de Vaud") |> # remove cantonal row
-        dplyr::summarise(production = sum(production, na.rm = T)) |>
-        dplyr::pull(production)
-
-      # Statbox value for current selection's aggregated electricity consumption
-
-      inputVals$elec_cons_last_year <- subset_elec_cons() |>
-        dplyr::filter(annee == last_year_elec_cons) |>
-        dplyr::filter(!commune == "Canton de Vaud")|>
-        dplyr::summarise(consommation = sum(consommation, na.rm = T)) |>
-        dplyr::pull(consommation)
-
-      # Statbox value for current selection's aggregated buildings thermal consumption
-
-      inputVals$max_year_rg_cons <- subset_rgr_cons_1() |>
-        dplyr::filter(etat == last_year_rgr) |>
-        dplyr::filter(!commune == "Canton de Vaud") |>
-        dplyr::summarise(consommation=sum(consommation, na.rm = T)) |>
-        dplyr::pull(consommation)
-
-
-      inputVals$max_year_subsidies_m01 <- subset_subsidies_measure() |>
-        dplyr::filter(annee == last_year_subsidies) |>
-        dplyr::filter(!commune == "Canton de Vaud") |>
-        dplyr::filter(mesure == "M01") |>
-        dplyr::summarise(nombre = sum(nombre, na.rm = TRUE)) |>
-        dplyr::pull(nombre)
-
-    })# End observe
-
-
-    ## Render dynamic UI for renderUIs ----
-
-    ### tabCons dynamic select ----
-
-     output$elec_cons_year <- shiny::renderUI({
-
-       req(input$selected_communes)
-
-       shiny::tagList(
-
-         shiny::sliderInput(ns("elec_cons_year"), label = "Choix des années",
-                            min = inputVals$min_avail_elec_cons,
-                            max = inputVals$max_avail_elec_cons,
-                            value = c(inputVals$min_avail_elec_cons,
-                                      inputVals$max_avail_elec_cons),
-                            step = 1L, sep = "", ticks = T, dragRange = T
-                            )
-
-         )# End tagList
-     })# End renderUi
-
-    ### tabRegener dynamic select ----
-
-    output$regener_year_selector <- shiny::renderUI({
+    output$surface_canopee_years_picker <- renderUI({
 
       req(input$selected_communes)
 
-               shiny::sliderInput(ns("regener_year"),
-                                  label = "Choix des années",
-                                  min = inputVals$min_regener_year,
-                                  max = inputVals$max_regener_year,
-                                  value = c(inputVals$min_regener_year,
-                                            inputVals$max_regener_year),
-                                  step = 1L, sep = "", ticks = T, dragRange = T)
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Surface de canopée urbaine'",
+                              make_slider_input_years(id = ns("surface_canopee_years"),
+                                                      years = surface_canopee_years)
+      )
+    })
+
+    output$batiment_danger_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+                              condition = "input.nav == 'Exposition aux dangers naturels'",
+                              make_slider_input_years(id = ns("batiment_danger_years"),
+                                                      years = batiment_danger_years)
+      )
+    })
+
+
+
+    # Mobility
+
+    output$part_voit_elec_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+        condition = "input.nav == 'Véhicules électriques'",
+        make_slider_input_years(id = ns("part_voit_elec_years"),
+                                years = part_voit_elec_years)
+      )
+    })
+
+    output$qualite_desserte_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+        condition = "input.nav == 'Transports publics'",
+        make_slider_input_years(id = ns("qualite_desserte_years"),
+                                years = qualite_desserte_years)
+      )
+    })
+
+    output$taux_motorisation_years_picker <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+        condition = "input.nav == 'Taux de motorisation'",
+        make_slider_input_years(id = ns("taux_motorisation_years"),
+                                years = taux_motorisation_years)
+      )
+    })
+
+    output$regener_widget <- renderUI({
+
+      req(input$selected_communes)
+
+      shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
+        condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
+
+        #shiny::uiOutput(ns("regener_year_selector"))
+        shiny::selectInput(ns("regener_needs_year"),
+                           label = tags$p("Année (graphique)", style = "font-weight:500;margin-bottom:0px;"),
+                           # static choices from utils_helpers.R -> no reactivity needed
+                           choices = c(min_regener_year:max_regener_year),
+                           selected = max_regener_year,
+                           multiple = FALSE)
+
+      ) # End conditionalPanel
 
     })
 
 
-    ### tabProd dynamic select ----
+    # Initialize inputVals ----
+    inputVals <- reactiveValues(
 
-    output$prod_year_n_techs <- shiny::renderUI({
+      uploadedCommunesTimed = NULL,
+      energyUnit = NULL,
+      co2Unit = NULL,
+      max_selected_regener = NULL,
 
-        req(input$selected_communes)
-        req(input$selected_unit)
+      # nested reactiveValues to avoid triggering everything when one dataset changes (see 'stratégie du petit r' from ThinkR)
+      energyDatasets = reactiveValues(),
+      mobilityDatasets = reactiveValues(),
+      adaptationDatasets = reactiveValues()
+    )
 
-      shiny::tagList(
+    ## Store communes & unit ----
+    # Create a reactive value for the debounced communes
+    debouncedCommunes <- debounce(reactive(input$selected_communes), millis = 300)
 
-        shiny::sliderInput(ns("elec_prod_year"),
-                           label = "Choix des années",
-                           min = inputVals$min_avail_elec_prod,
-                           max = inputVals$max_avail_elec_prod,
-                           value = c(inputVals$min_avail_elec_prod,
-                                     inputVals$max_avail_elec_prod),
-                           step = 1L, sep = "", ticks = TRUE, dragRange = TRUE),
+    # communes
 
+    observe({inputVals$selectedCommunesDirect <- input$selected_communes})
+    observe({inputVals$selectedCommunes <- debouncedCommunes()})
 
-        # For SELECTABLE technologies : these checkboxes are linked to other server parts
-        tags$div(class = "fs-sidebar",
-        shinyWidgets::prettyCheckboxGroup(inputId = ns("prod_techs"),
-                                          label = "Choix des technologies",
-                                          choices = inputVals$techs_avail,
-                                          selected = inputVals$techs_avail,
-                                          inline = FALSE,
-                                          bigger = FALSE,
-                                          shape = "round",
-                                          status =  "default",
-                                          icon = icon("check"),
-                                          animation = "jelly"),
-        # For NON-SELECTABLE technologies : a title with a unordered list (see custom.css classes)
-        tags$p(#class = "sidebar_na_title",
-               "Non représentées :"),
-        tags$ul(class = "sidebar_na_list",
-                setdiff(categories_diren, inputVals$techs_avail) |> # unavailable techs
-                  purrr::map(tags$li) # map into list items of ul()
-        )# End tags$ul
-      )# End tags$div
-      )# End tagList
-    }) # End renderUI
+    # uploaded communes (we keep the timestamp to maintain reactivity updates and avoid unwanted lazy eval)
+    observe({inputVals$uploadedCommunesTimed <- uploaded_communes_timed()})
+    # units selected
+    observe({inputVals$energyUnit <- selectedUnits$energy_unit})
+    observe({inputVals$co2Unit <- selectedUnits$co2_unit})
 
 
-# [inputVals 3/3] -----
+    ## Store filtered datasets in inputVals ----
+    # Note : we do it here and not in app_server.R so we don't have to pass all inputs in inputVals, retrieve them in app_server.R and filter there...
 
-    # We eventually complete inputVals with the values from renderUI() above
+    ## 1. energyDatasets ----
+
+    # Special treatment for regener : we want to store the slider value so it's available only for the plot code (not made for multiple years)
+    observe({
+      inputVals$max_selected_regener <- input$regener_needs_year
+    })
+
+
     observe({
 
-                        # Cons elec selected inputs
-      inputVals$min_selected_elec_cons <- input$elec_cons_year[1] # current min year selected for elec consumption
-      inputVals$max_selected_elec_cons <- input$elec_cons_year[2] # current max year selected for elec consumption
+      # req all inputs needed to filter & convert the datasets
+      req(debouncedCommunes())
+      req(selectedUnits$energy_unit)
+      req(selectedUnits$co2_unit)
 
-      # Prod elec selected inputs
-      inputVals$min_selected_elec_prod <- input$elec_prod_year[1] # current min year selected for elec production
-      inputVals$max_selected_elec_prod <- input$elec_prod_year[2] # current max year selected for elec production
-      inputVals$techs_selected <- input$prod_techs      # current selected technologies for elec production
+      req(input$elec_prod_years)
+      req(input$elec_cons_years)
+      req(input$ng_cons_years)
+      req(input$subsidies_years)
 
 
-      # RegEner selected inputs
-      inputVals$min_selected_regener <- input$regener_year[1]
-      inputVals$max_selected_regener <- input$regener_year[2]
-
+      inputVals$energyDatasets <- energy_datasets |>
+        # Filter communes and convert units as needed
+        purrr::map(\(df){
+          df |>
+            dplyr::filter(commune %in% debouncedCommunes()) |>
+            convert_units(colnames = c("consommation", "besoins",
+                                       "production", "injection", "autoconsommation",
+                                       "puissance_electrique_installee"),
+                          unit_from = "kWh", # initial value in all dataset
+                          unit_to = selectedUnits$energy_unit) |>
+            convert_units(colnames = c("co2_direct"),
+                          unit_from = "tCO2-eq", # initial value in all dataset
+                          unit_to = selectedUnits$co2_unit
+            )
+        }) |>
+        # Filter years selectively with respective (if any) slider/selectInputs
+        purrr::map2(names(energy_datasets),
+                    \(df, name_df){
+                      if(name_df == "elec_prod"){df |> dplyr::filter(dplyr::between(
+                        annee,
+                        input$elec_prod_years[1],
+                        input$elec_prod_years[2]))}else
+                        if(name_df == "elec_cons"){df |> dplyr::filter(dplyr::between(
+                          annee,
+                          input$elec_cons_years[1],
+                          input$elec_cons_years[2]))}else
+                          if(name_df == "ng_cons"){df |> dplyr::filter(dplyr::between(
+                            annee,
+                            input$ng_cons_years[1],
+                            input$ng_cons_years[2]))}else
+                              if(stringr::str_detect(name_df, pattern = "subsidies")){df |> dplyr::filter(dplyr::between(
+                                .data[[ifelse("etat" %in% names(df), "etat", "annee")]],
+                                input$subsidies_years[1],
+                                input$subsidies_years[2]))}else
+                          {df}
+                    })
     })
 
-    # Returning all the input values ----
+    ## 2. mobilityDatasets ----
+    observe({
 
+      # req all inputs needed to filter & convert the datasets
+      req(debouncedCommunes())
+      # req mobility_dataset
+      req(input$part_voit_elec_years)
+      req(input$taux_motorisation_years)
+      req(input$qualite_desserte_years)
+
+      inputVals$mobilityDatasets <- mobility_datasets |>
+        purrr::map(\(mobility_df){
+          mobility_df |>
+            dplyr::filter(commune %in% debouncedCommunes())
+          # no convert_units() call here
+          # no input widgets filter here neither
+        }) |> purrr::map2(names(mobility_datasets),
+                          \(df, name_df){
+
+                            if(name_df == "part_voit_elec"){df |> dplyr::filter(dplyr::between(annee,
+                                                                                               input$part_voit_elec_years[1],
+                                                                                               input$part_voit_elec_years[2]))}else
+                              if(name_df == "taux_motorisation"){df |> dplyr::filter(dplyr::between(annee,
+                                                                                                    input$taux_motorisation_years[1],
+                                                                                                    input$taux_motorisation_years[2]))}else
+                                if(name_df == "qualite_desserte"){df |> dplyr::filter(dplyr::between(annee,
+                                                                                                     input$qualite_desserte_years[1],
+                                                                                                     input$qualite_desserte_years[2]))}else
+                                {df}
+
+                          })
+    })
+
+    ## 3. adaptationDatasets----
+    observe({
+
+      # req all inputs needed to filter & convert the datasets
+      req(debouncedCommunes())
+      req(selectedUnits$co2_unit)
+
+      inputVals$adaptationDatasets <- adaptation_datasets |>
+        purrr::map(\(adaptation_df){
+          adaptation_df |>
+            dplyr::filter(commune %in% debouncedCommunes()) # |>
+          # no convert_units() call here
+          # no input widgets filter here neither
+        })
+    })
+
+    # mod_download_all_data ----
+    mod_download_all_data_server("download_all_data", inputVals = inputVals)
+
+    # Returning inputVals ----
     return(inputVals)
-
 
   }) # End moduleServer
 } # End server

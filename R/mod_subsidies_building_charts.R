@@ -7,7 +7,9 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_subsidies_building_charts_ui <- function(id){
+mod_subsidies_building_charts_ui <- function(id,
+                                             title,
+                                             title_complement){
   ns <- NS(id)
   tagList(
 
@@ -15,33 +17,27 @@ mod_subsidies_building_charts_ui <- function(id){
     tags$div(
       # Large+ screens : inline, flex layout, justified items
       #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
+      class = "d-flex justify-content-start",
       # Title
-      h4(HTML("Subventions Programme bâtiments<br>(vue par bâtiment)")),
+      h4(title, style = "padding-right:3vw;"),
 
-
-      # Methodology accordion
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_subsidies_warning)),
-          br(),
-          actionButton(ns("subsidies_building_help"), label = "Plus de détails sur les données")
-        ),
-        open = FALSE)
+      # Methodology button
+      actionButton(ns("subsidies_building_help"),
+                   class = "btnCustom",
+                   label = tags$span(style = "font-weight:500;",
+                                     "Source et méthode",
+                                     bslib::tooltip(
+                                       id = ns("tooltip_data_help"),
+                                       placement = "right",
+                                       options = list(customClass = "customTooltips"), # custom.scss
+                                       trigger = phosphoricons::ph(title = NULL, "info"),
+                                       generic_method_warning # utils_text_and_links.R
+                                     )
+                   ))
     ),
 
-
-    # Disclaimer for regener cons data (in a column for better display)
-    tags$p("Ces données illustrent le nombre de bâtiments ayant reçu certaines subventions du Programme Bâtiment vaudois depuis 2017
-    (voir détails dans la méthodologie complète).
-    Les données précédant 2017 ne sont pas inclues mais représentent une minorité des subventions versées.",
-    strong("L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes."),
-    "Le total des subventions versées d'une année ne peut donc pas être inférieur au total de l'année précédente.
-    La SRE correspond à la surface de référence énergétique estimée des bâtiments ayant reçu une subvention.
-    Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD)."),
+    # utils_text_and_links.R
+    title_complement,
 
     # TABSETS for better readability of plot / table
     bslib::navset_pill(
@@ -50,72 +46,75 @@ mod_subsidies_building_charts_ui <- function(id){
       ## Graphique tabPanel ----
 
       bslib::nav_panel(title = "Graphique",
-                       icon = bsicons::bs_icon("bar-chart-fill"),
-                      # breating
-                      br(),
+                       icon = phosphoricons::ph(title = NULL, "chart-bar"),
+                       # breating
+                       br(),
 
-                      bslib::layout_column_wrap(width = 1/3,
-                                                class = "d-flex align-items-end",
+                       bslib::layout_column_wrap(width = 1/3,
+                                                 class = "d-flex align-items-end",
 
-                      # radioGroupButtons() for tab ----
-                      shinyWidgets::radioGroupButtons(
-                        inputId = ns("tab_plot_type"),
-                        label = h6(strong("Représentation")),
-                        choices = c(`<i class='fa fa-house'></i> Par nombre de bâtiments` = "n_egid",
-                                    `<i class='fa fa-layer-group'></i> Par m<sup>2</sup> de SRE` = "sre"),
-                        justified = TRUE,
-                        width = "100%"),
+                                                 # radioGroupButtons() for tab ----
+                                                 shinyWidgets::radioGroupButtons(
+                                                   inputId = ns("tab_plot_type"),
+                                                   label = h6(strong("Représentation")),
+                                                   choices = c(`<i class='fa fa-house'></i> Par nombre de bâtiments` = "n_egid",
+                                                               `<i class='fa fa-layer-group'></i> Par m<sup>2</sup> de SRE` = "sre"),
+                                                   justified = TRUE,
+                                                   individual = TRUE,
+                                                   width = "100%"),
 
 
-                      # materialSwitch 1/1 for bar plot
-                      shiny::conditionalPanel(
-                        # Both conditions: toggle must be TRUE and the bar plot button must be selected
-                        condition = "output.toggle",
-                        ns = ns,
-                        tags$div(
-                          class = "d-flex justify-content-center",
-                          shinyWidgets::materialSwitch(
-                            inputId = ns("toggle_status"),
-                            value = FALSE,
-                            label = strong("Axe vertical commun", class = "align-middle"),
-                            status = "success",
-                            inline = TRUE),
-                          tags$span(strong("indépendant", class = "align-middle"))
-                        )# End tags$div
+                                                 # materialSwitch 1/1 for bar plot
+                                                 shiny::conditionalPanel(
+                                                   # Both conditions: toggle must be TRUE and the bar plot button must be selected
+                                                   condition = "output.toggle",
+                                                   ns = ns,
+                                                   tags$div(
+                                                     class = "fs-materialSwitch",
+                                                     shinyWidgets::materialSwitch(
+                                                       inputId = ns("toggle_status"),
+                                                       value = FALSE,
+                                                       label = strong("Axe vertical commun", class = "align-middle"),
+                                                       status = "success",
+                                                       inline = TRUE),
+                                                     tags$span(strong("indépendant", class = "align-middle"))
+                                                   )# End tags$div
 
-                      )# End conditionalPanel
+                                                 )# End conditionalPanel
 
-                      ), # End layout_column_wrap
+                       ), # End layout_column_wrap
 
-                      # breathing
-                      br(),
+                       # breathing
+                       br(),
 
-                      # Plotly bar (only one viz) ----
-                      # plotly barplot in server according to which flow/bar is selected
+                       # Plotly bar (only one viz) ----
+                       # plotly barplot in server according to which flow/bar is selected
 
-                      plotly::plotlyOutput(ns("plot_subsidies")) |>
-                        shinycssloaders::withSpinner(type = 6,
-                                                     color= main_color) # color defined in utils_helpers.R
+                       ggiraph::girafeOutput(ns("plot_subsidies")) |>
+                         shinycssloaders::withSpinner(type = 6,
+                                                      color= main_color) # color defined in utils_helpers.R
 
       ),# End tabPanel 'Graphique'
 
       ## Table tabPanel ----
 
       bslib::nav_panel(title = "Table",
-                      icon = bsicons::bs_icon("table"),
+                       icon = phosphoricons::ph(title = NULL, "table"),
 
-                             # breathing
-                             br(),
+                       # breathing
+                       br(),
 
-                             tags$p("Les données sont davantage détaillées que pour les graphiques ce qui permet
-                                    de discerner quel type de chauffage est subventionné avec la colonne `Détail chauffage`.
-                                    La colonne `Type de subvention` permet de retrouver les données des graphiques."),
+                       tags$p(HTML("Les données sont davantage détaillées que pour les graphiques ce qui permet
+                                    de discerner quel type de chauffage est subventionné avec la colonne <i>Détail chauffage</i>.
+                                    La colonne <i>Type de subvention</i> permet de retrouver les données des graphiques.")),
 
-                             # Download module
-                             mod_download_data_ui(ns("table_download")),
+                       br(),
 
-                             # DT table
-                             DT::dataTableOutput(ns("table_1"))
+                       # Download module
+                       mod_download_data_ui(ns("table_download")),
+
+                       # rt table
+                       DT::dataTableOutput(ns("table_1"))
 
       )# End nav_panel 'Table'
     )# End nav_menu
@@ -126,12 +125,12 @@ mod_subsidies_building_charts_ui <- function(id){
 #'
 #' @noRd
 mod_subsidies_building_charts_server <- function(id,
-                                        subsetData, # passed from inputVals, bit redundant but clear
-                                        # selectedUnit not needed here !
-                                        inputVals,
-                                        dl_prefix = dl_prefix,
-                                        doc_vars = doc_vars
-                                        ){
+                                                 subsetData, # passed from inputVals, bit redundant but clear
+                                                 # energyUnit not needed here !
+                                                 inputVals,
+                                                 dl_prefix = dl_prefix,
+                                                 doc_vars = doc_vars
+){
   moduleServer(id, function(input, output, session){
 
     ns <- session$ns
@@ -149,75 +148,87 @@ mod_subsidies_building_charts_server <- function(id,
     # Important : aggregate to remove `detail_chauffage` from plots
     subsetData_agg <- reactive({
       subsetData() |>
-      dplyr::group_by(commune, etat, subv_type) |>
-      dplyr::summarise(N_EGID = sum(N_EGID),
-                       SRE = sum(SRE))
+        dplyr::group_by(commune, etat, subv_type) |>
+        dplyr::summarise(N_EGID = sum(N_EGID),
+                         SRE = sum(SRE))
     })
 
-
-    ## Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
-
-    subsetData_agg_d <- reactive({subsetData_agg()}) |> shiny::debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
-
     # Plot accordingly to which radioGroupButton (sre/n_egid) is selected
-        output$plot_subsidies <- plotly::renderPlotly({
+    output$plot_subsidies <- ggiraph::renderGirafe({
 
-          # If selected commune(s) yields in 0 rows, then state it's not available instead of plotting error
-          validate(
-            need(nrow(subsetData_agg_d()) > 0, message = req_communes_not_available)
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
+      req(subsetData())
+
+      # Compute number of rows
+      num_facets <- length(unique(subsetData()$commune))
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
+
+      # Dynamic height and width ratios (unitless)
+      base_height_per_row <- 2  # Adjust height ratio per row
+
+      # Save units passed to create_plot_ggiraph()
+      height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
+
+      if(input$tab_plot_type == "sre"){
+
+        # Then plot aggregated data :
+        subsetData_agg() |>
+          create_plot_ggiraph(
+            n_communes = dplyr::n_distinct(subsetData_agg()$commune),
+            var_year = "etat",
+            var_commune = "commune",
+            var_values = "SRE",
+            var_cat = "subv_type",
+            unit = "m<sup>2</sup>",
+            legend_title = "",
+            geom = "col",
+            color_palette = subsidies_building_colors,
+            dodge = FALSE, # we don't allow user to dodge w/ toggle button
+            free_y = input$toggle_status, # reactive(input$toggle_status)
+            height_svg = height_svg, # px width of browser when app starts
+            width_svg = width_svg # px height of browser when app starts
           )
 
-          if(input$tab_plot_type == "sre"){
+      }else if(input$tab_plot_type == "n_egid"){
 
-            # Then plot aggregated data :
-            subsetData_agg_d() |>
-            create_bar_plotly(n_communes = length(inputVals_communes_d()),
-                              var_year = "etat",
-                              var_commune = "commune",
-                              var_values = "SRE",
-                              var_rank_2 = "subv_type",
-                              unit = "m<sup>2</sup>",
-                              legend_title = "",
-                              color_palette = subsidies_building_colors,
-                              dodge = FALSE, # we don't allow user to dodge w/ toggle button
-                              free_y = input$toggle_status, # reactive(input$toggle_status)
-                              web_width = inputVals$web_width, # px width of browser when app starts
-                              web_height = inputVals$web_height # px height of browser when app starts
-            )
+        # Then plot aggregated data :
+        subsetData_agg() |>
+          create_plot_ggiraph(n_communes =  dplyr::n_distinct(subsetData_agg()$commune),
+                             var_year = "etat",
+                             var_commune = "commune",
+                             var_values = "N_EGID",
+                             var_cat = "subv_type",
+                             unit = "Bâtiments",
+                             legend_title = "",
+                             geom = "col",
+                             color_palette = subsidies_building_colors,
+                             dodge = FALSE, # we don't allow user to dodge w/ toggle button
+                             free_y = input$toggle_status, # reactive(input$toggle_status)
+                             height_svg = height_svg, # px width of browser when app starts
+                             width_svg = width_svg # px height of browser when app starts
 
-          }else if(input$tab_plot_type == "n_egid"){
-
-            # Then plot aggregated data :
-            subsetData_agg_d() |>
-            create_bar_plotly(n_communes = length(inputVals_communes_d()),
-                              var_year = "etat",
-                              var_commune = "commune",
-                              var_values = "N_EGID",
-                              var_rank_2 = "subv_type",
-                              unit = "Bâtiments",
-                              legend_title = "",
-                              color_palette = subsidies_building_colors,
-                              dodge = FALSE, # we don't allow user to dodge w/ toggle button
-                              free_y = input$toggle_status, # reactive(input$toggle_status)
-                              web_width = inputVals$web_width, # px width of browser when app starts
-                              web_height = inputVals$web_height # px height of browser when app starts
-
-            )# End create_bar_plotly
-          }# End else if
-        })# End renderPlot
+          )# End create_bar_plotly
+      }# End else if
+    })# End renderPlot
 
     # Table logic ----
 
-    # DT table, detailed (plot is aggregated) with both N_EGID & SRE
+    # rt table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
-      create_subsidies_table_dt(data = subsetData(),
-                                var_year = "etat",
-                                var_rank_2 = "subv_type",
-                                icon_list = return_icons_subsidies(which = "building"),
-                                DT_dom = "frtip" # remove default button in DT extensions
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+      make_table_dt(data = subsetData(),
+                    var_commune = "commune",
+                    var_year = "etat",
+                    var_values = c("N_EGID", "SRE"),
+                    var_cat = "subv_type",
+                    icons_palette = subsidies_building_icons,
+                    na_string = "Non disponible",
+                    unit = NULL # no unit to apply
       )
     })
 
@@ -230,8 +241,7 @@ mod_subsidies_building_charts_server <- function(id,
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_misc_colnames() |>  # fct_helpers.R
-        rename_fr_colnames()       # fct_helpers.R
+        rename_columns_output()
 
 
     })

@@ -1,8 +1,8 @@
 Package: eneRgyVD
-Title: PKG_TITLE
+Title: Municipal statistics for climate-related policies, Canton de Vaud (Switzerland)
 Version: 0.1.0
 Authors@R: 
-    person("AUTHOR_FIRST", "AUTHOR_LAST", , "AUTHOR@MAIL.COM", role = c("cre", "aut"))
+    person(given = "Michael", family = "Weber", email = "michaelweber_cnp@outlook.com", role = c("cre", "aut"))
 Description: PKG_DESC.
 License: GPL (>= 3)
 Depends: 
@@ -13,36 +13,32 @@ Imports:
     dplyr,
     DT,
     forcats,
-    future,
     ggalluvial,
+    ggiraph,
     ggplot2,
     glue,
     golem (>= 0.3.2),
-    knitr,
+    htmltools,
     leaflet,
     leaflet.extras,
-    markdown,
-    plotly,
-    promises,
+    phosphoricons,
     purrr,
     readr,
-    rmarkdown,
     scales,
     sf,
     shiny (>= 1.7.1),
-    shinyalert,
-    shinybrowser,
     shinycssloaders,
     shinylogs,
     shinyWidgets,
     stringr,
     tidyr,
     utils,
-    writexl
+    openxlsx
 Suggests: 
     shinytest2,
     spelling (>= 2.2),
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

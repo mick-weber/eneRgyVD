@@ -21,7 +21,3 @@ Create HTML `bslib::accordion_panel()` items for each dataset documented in ./da
 spliced as arguments inside a `bslib::accordion()` item. Each markdown h2 heading is used as a `title` argument for
 `accordion_panel()` and each paragraph (i.e. not a h2 header) is used as content to fill the `accordion_panel()`.
 }
-\examples{
-items <- generate_doc_accordion_panels("./data-doc/elec_prod-doc.md")
-bslib::accordion(!!!items, open = FALSE)
-}

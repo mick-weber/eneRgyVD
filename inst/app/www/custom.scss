@@ -1,0 +1,432 @@
+/* import components ; the full bs path is provided in theme.R */
+@import "functions";
+@import "variables";
+@import "mixins";
+
+/* Custom modal upon opening the app -> fct_helpers.R */
+
+/* Set dialog to a decent position */
+.modal-dialog {
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%) !important;
+  width: 40%;  /* or any width that suits your design */
+  max-width: 60%; /* Optional: ensures modal doesn’t overflow the viewport */
+}
+
+.modal-header {
+      background-color: #343A40;
+      color: white;
+    }
+
+.modal-header img {
+      max-height: 50px;
+    }
+
+.modal-warning {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-left: 5px solid #ffc107;
+      color: #856404;
+      font-size: 1rem;
+    }
+
+/* Add padding between the two buttons */
+.modal-footer button {
+  margin-right: 10px; /* Add space between buttons */
+}
+
+.modal-footer button:last-child {
+  margin-right: 0; /* No extra space after the last button */
+}
+
+/* introJS center wide tooltips (can't achieve that with position:"center" in the .js script... */
+.introjs-center-tooltip {
+      left: 50% !important;  /* Center the tooltip horizontally */
+      transform: translateX(-50%) !important;  /* Shift the tooltip back by 50% of its width */
+    }
+
+/* IntroJS 'Passer' button will otherwise overflow the introjs div */
+.introjs-skipbutton{
+  width:unset;
+  padding-right:10px;
+}
+
+/* Override progress color instead of default's blue */
+.introjs-progressbar{
+  background-color:#3A862D;
+}
+
+/* Change showNotification() display used in mod_upload_communes.R and mod_unit_converter.R*/
+.shiny-notification{
+  background-color:#343A40;
+  color:white;
+  border:none;
+  width: 20vw; /* Set fixed width of 20% of viewport */
+  min-width: 150px; /* Optional: Minimum width to avoid too small notifications */
+  margin-bottom: 5px; /* Space between notifications */
+  left: calc(100% - 21vw); /* Ensure the notification does not overflow the screen by starting the notif 1vw before its width */
+}
+
+/* White escape button instead of black */
+.shiny-notification-close{
+  color:white;
+}
+
+/* shiny::fileInput() generates a progress bar once the file is uploaded with 'Upload complete' text */
+/* we make it transparent to avoid english to show up and avoid complex JS insertion to change it  */
+.progress-bar {
+  color: transparent!important
+}
+
+/* Add bottom margin to avoid overlapping of main content and footer, and override default padding for main container of 1rem*/
+.main{
+  margin-bottom:20px;
+  padding:0.75rem !important;
+  padding-bottom:0.1rem !important;
+}
+
+/* Invert logo color, set height and align left*/
+.customLogo{
+    filter: brightness(0) invert(1);
+}
+
+.navbar {
+  padding-bottom:0px !important;
+  margin-bottom:0px !important;
+}
+
+/* Add spacing between items (nav_panel()) */
+/* Change color of nav's unselected navigation links (and hovering) with darkgrey instead of light grey, more visible */
+#nav{
+  .nav-link{
+  color:#343A40;
+  margin-right: 2vw !important;
+
+  &:hover{
+    color:#343A40;
+  }}
+}
+
+
+/* Make TOC accordion_panel bold */
+.TOCaccordionPanelBold{
+
+    .accordion-button {
+      font-weight: 500;
+      padding-top:0.75rem;
+      padding-bottom:0.75rem;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: white; /* Active background color */
+      color: #343A40;
+    }
+
+    .accordion-item {
+      border: 1px solid #ccc; /* Full border around each panel */
+      border-radius: 10px; /* Rounded corners */
+      margin-bottom: 10px; /* Add space between panels */
+      overflow: hidden; /* Ensure rounded corners apply properly */
+    }
+
+}
+
+/* Add margin between accordion items + remove underline (default from actionLInk)*/
+.customTOC{
+  text-decoration:none;
+  margin-bottom:5px;
+  color:#343A40;
+  font-weight: 500;
+}
+
+
+/* Add some underline only when hovering actionLink */
+.customTOC:hover {
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
+
+/* Add some spacing between underline and text for all <a> tags */
+a {
+  text-underline-offset: 3px;
+}
+
+
+/* Create contour in all nav-link descendants (direct or not) of nav-pills classes*/
+.nav-pills .nav-link {
+
+  margin-right:5px;
+  border-width:1px;
+  border-style: solid;
+  border-color:#3A862D;
+  padding-top:0.3rem;
+  padding-bottom:0.3rem;
+}
+
+/* Applies to radio buttons : add a little spacing, to be used with radioGroupButtons(individual = TRUE)*/
+.radiobtn {
+  margin-right:5px;
+}
+
+/* Increase size of choices when opening selectizeInput dropdown */
+.selectize-dropdown-content {
+          max-height: 40vh !important; /* Adjust the height */
+          overflow-y: auto !important; /* Add scroll */
+        }
+
+/* Remove SelectizeInput's shadow when .focus is on */
+.selectize-input{
+  border:none !important;
+  box-shadow:none !important;
+}
+
+/* Set the clear button completely at the right instead of calc(0.75rem-5px) & red*/
+.selectize-control.plugin-clear_button .clear{
+  right:0px;
+  color:red;
+}
+
+/* sliderInputs font-size + position them a bit higher to avoid overlapping the bar */
+
+.irs-from, .irs-to, .irs-min, .irs-max, .irs-single{
+  font-size:0.9rem !important;
+  top:-5px !important;
+}
+
+/* sliderInputs major ticks color */
+.irs-grid-pol{
+  background:lightgrey !important;
+}
+
+/* sliderInputs minor ticks remove */
+.irs-grid-pol.small{
+  display: none !important;
+}
+
+.customTooltips{
+  max-width:none;
+}
+
+/*Invert the color of the svg arrow icon when the accordion is open */
+/* see : https://stackoverflow.com/questions/66335238/changing-the-color-arrow-in-bootstrap */
+.accordion-button:not(.collapsed)::after {
+    filter: invert(50%);
+}
+
+
+/*Used for mod_inputs.R unit converter widget : we change the orientation since the widget is as bottom of sidebar*/
+
+.rotatedSVG{
+
+  .accordion-button.collapsed::after{
+    transform:rotate(-180deg) !important;
+  }
+
+  .accordion-button::after{
+    transform:rotate(0deg);
+  }
+}
+
+/* add grid property to sidebar so that mod_unit_converter can be added below with margin-top:auto; property */
+.sidebar{
+  margin-top:0.75rem; /* align with padding between sidebar and card_headers() */
+  display: grid;
+}
+
+/* Add spacing approx. the same as card_header() from leaflet map next to sidebar*/
+.sidebar-content{
+  padding-top:2.5rem !important;
+}
+
+.fs-sidebar{
+  font-size:0.9rem;
+}
+
+.fs-materialSwitch{
+  font-size:1rem;
+}
+
+.fs-sidebar-header{
+  .accordion-title{
+    font-size:1rem;
+  }
+  .accordion-button{
+    padding-top:0.75rem;
+    padding-bottom:0.75rem;
+  }
+}
+
+/* Remove default's bottom margin for <p> elements. Used in fct_helpers.R (generate_doc_accordion_panels()) */
+.customPanel p{
+  margin-bottom:0 !important;
+}
+
+/* Change defaults to dropdowns */
+.dropdown-menu{
+  background-color:white;
+  .dropdown-item{
+    color:black;
+  }
+
+  .dropdown-header{
+    color:black;
+  }
+}
+
+/* Custom class for all download buttons in mod_download_data.R / mod_download_rmd.R */
+.btnCustom{
+  background-color:transparent;
+  color:#3A862D;
+  border-color:#3A862D;
+}
+.btnCustom:hover{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+.btnCustom:focus{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+.btnCustom:active{
+  background-color:#3A862D;
+  color:white;
+  border-color:#3A862D;
+}
+
+
+/*Used to narrow the otherwise large download buttons in mod_download_rmd (called with btn-primary class in the code) */
+.btnDownloadAll{
+  display:flex;
+  align-items:center;
+  gap: 0.5em;
+  width:100% !important;
+  background-color:white !important;
+  color: black !important;
+  text-align: left !important;
+  font-size:1rem;
+  padding-top:0.75rem;
+  padding-bottom:0.75rem;
+  text-decoration: none;
+
+}
+
+.btnDownloadAll:hover {
+        text-decoration: underline;
+      }
+
+/*Set card header background to transparent*/
+.card-header{
+  background-color:transparent;
+}
+
+/* Change default colors of navset_card_tab() tab links */
+.card-header-tabs .nav-link {
+      color: #343A40;
+    }
+
+.card-header-tabs .nav-link.active {
+      color: #3A862D;
+      font-weight:500;
+    }
+
+/* ggiraph toolbar icon display (color and size) */
+
+.ggiraph-toolbar-icon.neutral{
+  stroke:#3A862D;
+  fill:#3A862D;
+  width:2rem;
+}
+
+
+/* Div backgrounds with icons used in mod_stats_box.R for each type of make_statbox_item() call*/
+/* For a new icon : go to https://icons.getbootstrap.com/, paste the desired icon 'Copy HTML' text, paste it in the <svg> balises */
+/* Then modify color/opacity with the 'fill = "rgba(x,y,z,a)"' argument in the <svg> call */
+
+
+.iconBgElecCons{
+          background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255, 185, 15, 0.2)" class="bi bi-plug-fill" viewBox="0 0 16 16">
+  <path d="M6 0a.5.5 0 0 1 .5.5V3h3V.5a.5.5 0 0 1 1 0V3h1a.5.5 0 0 1 .5.5v3A3.5 3.5 0 0 1 8.5 10c-.002.434-.01.845-.04 1.22-.041.514-.126 1.003-.317 1.424a2.08 2.08 0 0 1-.97 1.028C6.725 13.9 6.169 14 5.5 14c-.998 0-1.61.33-1.974.718A1.92 1.92 0 0 0 3 16H2c0-.616.232-1.367.797-1.968C3.374 13.42 4.261 13 5.5 13c.581 0 .962-.088 1.218-.219.241-.123.4-.3.514-.55.121-.266.193-.621.23-1.09.027-.34.035-.718.037-1.141A3.5 3.5 0 0 1 4 6.5v-3a.5.5 0 0 1 .5-.5h1V.5A.5.5 0 0 1 6 0"/>
+</svg>');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+
+
+}
+
+.iconBgElecProd{
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255, 185, 15, 0.1)" class="bi bi-lightning-charge-fill" viewBox="0 0 16 16"><path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/></svg>');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+}
+
+.iconBgRgr{
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(205, 92, 92, 0.1)" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/></svg>');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+}
+
+.iconBgSubs{
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(11, 156, 49, 0.1)" class="bi bi-house-fill" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1 .5.5 0 0 0-.5.5v1.293z"/><path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/></svg>');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+}
+
+.iconBgNGcons{
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(62, 160, 246, 0.1)" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/></svg>');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+}
+
+/* custom CSS for creating a pulse notification in nested nav_panels so we see them more when inactive */
+/* this class is called in nav_panel(..., icon(NULL, class = 'pulse')) when we want it to appear */
+.nav-link .pulse {
+  position: relative;
+  vertical-align:middle;
+  margin-bottom:3px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  z-index: 10;
+  border: 10px solid #3A862D;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-out infinite;
+}
+
+/* Display pulse animation only when the item is NOT active ! */
+.nav-link.active .pulse {
+  display: none; /* Hide pulse for the active nav panel */
+}
+
+/* Controlling the pulse frames */
+@keyframes pulse {
+  0% {
+      -webkit-transform: scale(0);
+      opacity: 0.0;
+  }
+  25% {
+      -webkit-transform: scale(0.1);
+      opacity: 0.1;
+  }
+  50% {
+      -webkit-transform: scale(0.5);
+      opacity: 0.3;
+  }
+  75% {
+      -webkit-transform: scale(0.8);
+      opacity: 0.5;
+    }
+  100% {
+      -webkit-transform: scale(1);
+      opacity: 0.0;
+  }
+}
+

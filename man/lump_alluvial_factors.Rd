@@ -4,12 +4,14 @@
 \alias{lump_alluvial_factors}
 \title{lump_alluvial_factors()
 takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
-according to two {forcats} functions which arguments should be modified in the code}
+according to two forcats functions which arguments should be modified in the code}
 \usage{
 lump_alluvial_factors(data, var_commune, var_from, var_flow, var_to)
 }
 \arguments{
 \item{data}{the dataset used to create the ggalluvial plot}
+
+\item{var_commune}{the municipality variable}
 
 \item{var_from}{the variable for the left stratum}
 
@@ -23,5 +25,5 @@ a ggplot object
 \description{
 lump_alluvial_factors()
 takes a dataframe structured for ggalluvial and lumps the factor variables (var_from, var_to)
-according to two {forcats} functions which arguments should be modified in the code
+according to two forcats functions which arguments should be modified in the code
 }

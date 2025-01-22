@@ -11,6 +11,7 @@ mod_generic_charts_ui <- function(id,
                                   title,
                                   title_complement){
   ns <- NS(id)
+
   tagList(
 
     # Header ----
@@ -18,26 +19,24 @@ mod_generic_charts_ui <- function(id,
     tags$div(
       # Large+ screens : inline, flex layout, justified items
       #  smaller screens : row by row (default layout without fill)
-      class = "d-lg-flex justify-content-between",
+      class = "d-flex justify-content-start",
       # Title (w small padding to avoid it touching the accordion)
-      h4(title, style = "padding-right:10px;"),
+      h4(title, style = "padding-right:3vw;"),
 
 
-      # Methodology accordion
-
-      bslib::accordion(
-        class = "customAccordion", # custom.scss : lg screens = 70% width; smaller screens = 100% width
-        bslib::accordion_panel(
-          title = "Méthodologie",
-          div(paste(generic_method_warning, # text in utils_helpers.R
-                    specific_elec_warning)),
-          br(),
-          # Since multiple mod_elec_charts can exist, we play with the namespace to land the correct 'mod_about_the_app.R' page
-          # This is done in app_server.R, `subpanels_tribble` object
-
-          actionButton(ns("elec_data_help"), label = "Plus de détails sur les données")
-        ),
-        open = FALSE)
+      # Methodology button
+      actionButton(ns("generic_data_help"),
+                   class = "btnCustom",
+                   label = tags$span(style = "font-weight:500;",
+                                     "Source et méthode",
+                                     bslib::tooltip(
+                                       id = ns("tooltip_data_help"),
+                                       placement = "right",
+                                       options = list(customClass = "customTooltips"), # custom.scss
+                                       trigger = phosphoricons::ph(title = NULL, "info"),
+                                       generic_method_warning # utils_text_and_links.R
+                                     )
+                   ))
     ),#End div
 
     # If any : pass title_complement at 70% width of container
@@ -45,15 +44,15 @@ mod_generic_charts_ui <- function(id,
 
     # Pills ----
 
-    bslib::navset_pill(header = br(), # blank line to space content (alternative would be to add padding)
+    bslib::navset_pill(id = ns("generic_mod"),
+      header = br(), # blank line to space content (alternative would be to add padding)
 
                        ### Graph ----
                        bslib::nav_panel(title = "Graphique",
-                                        icon = bsicons::bs_icon("bar-chart-fill"),
+                                        icon = phosphoricons::ph(title = NULL, "chart-bar"),
 
-
-                                        bslib::layout_column_wrap(width = 1/4, # each col = 33% of avail. width
-                                                                  class = "d-flex align-items-end",
+                                        bslib::layout_columns(col_widths = c(-2, 4, 4, -2),
+                                                                  class = "fs-materialSwitch",
 
 
                                                                   # materialSwitch 1/2 for bar plot
@@ -63,7 +62,6 @@ mod_generic_charts_ui <- function(id,
                                                                     ns = ns,
 
                                                                     tags$div(
-                                                                      class = "d-flex justify-content-center",
                                                                       tags$div(
                                                                         class = "align-middle",
                                                                         shinyWidgets::materialSwitch(
@@ -83,7 +81,6 @@ mod_generic_charts_ui <- function(id,
                                                                     ns = ns,
 
                                                                     tags$div(
-                                                                      class = "d-flex justify-content-center",
                                                                       shinyWidgets::materialSwitch(
                                                                         inputId = ns("toggle_status"),
                                                                         value = FALSE,
@@ -98,7 +95,9 @@ mod_generic_charts_ui <- function(id,
 
 
                                         # !! Since sunburst is removed we can directly use renderPlotly
-                                        uiOutput(ns("plot_render_ui"))
+                                        ggiraph::girafeOutput(ns("generic_chart"))|>
+                                          shinycssloaders::withSpinner(type = 6,
+                                                                       color= main_color) # color defined in utils_helpers.R
 
 
 
@@ -107,12 +106,12 @@ mod_generic_charts_ui <- function(id,
 
                        ### Table ----
                        bslib::nav_panel(title = "Table",
-                                        icon = bsicons::bs_icon("table"),
+                                        icon = phosphoricons::ph(title = NULL, "table"),
 
                                         # Download buttons
                                         mod_download_data_ui(ns("table_download")),
 
-                                        # DT table
+                                        # rt table
                                         DT::dataTableOutput(ns("table_1"))
 
 
@@ -125,40 +124,60 @@ mod_generic_charts_ui <- function(id,
 #'
 #' @noRd
 mod_generic_charts_server <- function(id,
+                                      parent,
+                                      subsetData, # passed from inputVals, bit redundant but clear
+                                      # energyUnit not needed here !
                                       inputVals,
-                                      subsetData, # filtered data for communes and selected years
-                                      selectedUnit, # unit selected in mod_unit_converter.R
-                                      legend_title, # for legend of barplot (either secteur/technologies)
-                                      target_year, # which current year for the sunburst
-                                      var_year, # 'annee'
-                                      var_commune, # 'commune'
-                                      var_rank_2, # categorical var ('secteur'/'categorie', NULL, ...)
-                                      var_values, # prod/consumption kwh
-                                      color_palette, # utils_helpers.R
-                                      fct_table_dt_type, # table function to pass (data specific)
-                                      dl_prefix,# when DL the data (mod_download_data.R) : prod_(...) or cons_(...)
-                                      doc_vars){ # the non-reactive documentation file for variables description
+                                      var_commune,
+                                      var_year,
+                                      var_cat,
+                                      var_values,
+                                      ggiraph_geom,
+                                      unit,
+                                      coerce_dodge,
+                                      color_palette,
+                                      icons_palette = NULL,
+                                      legend_title,
+                                      dl_prefix = dl_prefix,
+                                      doc_vars = doc_vars
+                                      ){ # the non-reactive documentation file for variables description
   moduleServer(id, function(input, output, session){
-
     ns <- session$ns
 
 
-    # Make debounced inputs ----
-    # For barplot functions only, this avoids flickering plots when many items are selected/removed
+    ## |---------------------------------------------------------------|
+    ##          DEV WORK : generic year selector
+    ## |---------------------------------------------------------------|
 
-    subsetData_d <- reactive({subsetData()}) |> debounce(debounce_plot_time)
-    inputVals_communes_d <- reactive({inputVals$selectedCommunes}) |> debounce(debounce_plot_time)
+    # test <- reactive({
+    #   unique(sort(subsetData()[[var_year]]))
+    # })
+    #
+    # observeEvent(test(), {
+    #   print("Hey I've changed ! ")
+    # })
 
 
-    # Initialize toggle free_y condition for conditionalPanel in ui
-    output$toggle <- reactive({
-      length(inputVals_communes_d()) > 1 # Returns TRUE if more than 1 commune, else FALSE
-    })
+    ## |---------------------------------------------------------------|
+    ##          /DEV WORK
+    ## |---------------------------------------------------------------|
+
+
+
 
     # Initialize toggle stacked condition for conditionalPanel in ui
-    output$commune <- reactive({
-      length(inputVals_communes_d()) > 0 # Returns TRUE if at least one commune is selected, else FALSE
-    })
+    # stack/dodge widget will only show if <coerce_dodge> is FALSE OR if <var_cat> is NULL ANS if at least 1 commune is selected
+    # this is because sometimes we want to force the dodge (thus remove widget, see create_plot_ggiraph logic below), and
+    # sometimes we want to remove the widget when dodge/stack is pointless if there's no <var_cat> available
+      output$commune <- reactive({
+        if(is.null(var_cat) | coerce_dodge == TRUE | ggiraph_geom == "line"){
+          FALSE  # this will never show the widget
+        }else{
+          length(unique(subsetData()$commune)) > 0}
+      })
+
+    # Initialize toggle free_y condition for conditionalPanel in ui
+    output$toggle <- reactive({dplyr::n_distinct(subsetData()$commune) > 1 }) # Returns TRUE if more than 1 commune, else FALSE
 
     # We don't suspend output$toggle when hidden (default is TRUE)
     outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
@@ -166,77 +185,81 @@ mod_generic_charts_server <- function(id,
 
     # Plot logic ----
 
-    # Render plot selectively based on radioButton above
-    # Note we're nesting renderPlotly inside renderUI to access input$tab_plot_type for css class
+    output$generic_chart <- ggiraph::renderGirafe({
 
-    output$plot_render_ui <- renderUI({
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
+      validate(need(nrow(subsetData()) > 0, message = req_communes_not_available))
+      req(subsetData())
 
-      # Update the initialized FALSE toggle_status with the input$toggle_status
-      # PLOTLY BAR PLOT
+      # Compute number of rows
+      num_facets <- length(inputVals$selectedCommunes)
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
 
-      output$chart_1 <- plotly::renderPlotly({
+      # Dynamic height and width ratios (unitless)
+      base_height_per_row <- 2  # Adjust height ratio per row
 
-        # fct is defined in fct_helpers.R
-        create_bar_plotly(data = subsetData_d(),
-                          n_communes = length(inputVals_communes_d()),
-                          var_year = var_year,
-                          var_commune = var_commune,
-                          # unit = inputVals$selectedUnit,
-                          var_rank_2 = var_rank_2,
-                          var_values = var_values,
-                          color_palette = color_palette, # defined in utils_helpers.R
-                          dodge = input$stacked_status, # if T -> 'dodge', F -> 'stack'
-                          free_y = input$toggle_status, # reactive(input$toggle_status)
-                          legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
-                          web_width = inputVals$web_width, # px width of browser when app starts
-                          web_height = inputVals$web_height # px height of browser when app starts
-        )
+      # Save units passed to create_plot_ggiraph()
+      height_svg <- 2 + (num_rows * base_height_per_row)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
 
-      })# End renderPlotly
-
-
-      # We create a div so that we can pass a class. If sunburst, the class adds left-padding. If not,
-
-      tags$div(
-        plotly::plotlyOutput(ns("chart_1")) |>
-          shinycssloaders::withSpinner(type = 6,
-                                       color= main_color) # color defined in utils_helpers.R
+      # fct is defined in fct_helpers.R
+      create_plot_ggiraph(data = subsetData(),
+                         n_communes = dplyr::n_distinct(subsetData()$commune),
+                         var_year = var_year,
+                         var_commune = var_commune,
+                         unit = unit,
+                         var_cat = var_cat,
+                         var_values = var_values, # if more than one var_values is passed, plot only the first one.
+                         geom = ggiraph_geom,
+                         color_palette = color_palette, # defined in utils_helpers.R
+                         dodge = if(coerce_dodge == TRUE){TRUE}else{input$stacked_status}, # if T -> 'dodge', F -> 'stack'
+                         free_y = input$toggle_status, # reactive(input$toggle_status)
+                         legend_title = legend_title, # links to ifelse in facet_wrap(scales = ...)
+                         height_svg = height_svg, # px width of browser when app starts
+                         width_svg = width_svg # px height of browser when app starts
       )
-
-    })# End renderUI
+    })# End renderGirafe
 
     # Table logic ----
-    # Renders the DT table
+
+    # rt table, detailed (plot is aggregated) with both N_EGID & SRE
     output$table_1 <- DT::renderDataTable({
 
-      fct_table_dt_type(data = subsetData(),
-                        #unit = inputVals$selectedUnit,
-                        DT_dom = "frtip" # no buttons extension for DT table
-      )
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-    })# End renderDT
+      make_table_dt(data = subsetData(),
+                    var_commune = var_commune,
+                    var_year = var_year,
+                    var_values = var_values,
+                    var_cat = var_cat,
+                    unit = unit,
+                    icons_palette = icons_palette,
+      )
+    })
 
     # Download logic ----
-    # store the data in a reactive (not sure why we can't pass subsetData_d() it directly, but otherwise this won't work)
+
+    # store the data in a reactive (not sure why we can't pass subsetData() it directly, but otherwise this won't work)
 
     download_data <- reactive({
 
-
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_fr_colnames()  #|>  # fct_helpers.R
-        # NO COLNAME UNITS FOR THIS
-        # add_colname_units(unit = inputVals$selectedUnit)  # fct_helpers.R
-
+        add_colname_unit(colnames = var_values, unit = unit) |>
+        rename_columns_output()
     })
+
 
     # Module to download DT table data
     mod_download_data_server("table_download",
                              inputVals = inputVals,
                              data = download_data,
                              dl_prefix = dl_prefix,
-                             doc_vars = doc_vars) # dl prefix for file name, passed into app_server.R
-  }) # End ModuleServer
+                             doc_vars = doc_vars) # dl prefix for file name, passed from app_server.R
+
+
+  })
 } # End server
 
 

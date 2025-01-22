@@ -4,9 +4,9 @@ test_that("Check that map layers are valid components for a leaflet map",
 
             # Most basic map with the app 3 layers
             map <- create_select_leaflet(
-              sf_districts = eneRgyVD::sf_districts,
-              sf_lacs = eneRgyVD::sf_lacs,
-              sf_communes = eneRgyVD::sf_communes
+              sf_districts = sf_districts,
+              sf_lacs = sf_lacs,
+              sf_communes = sf_communes
             )
             # Check class
             expect_equal(class(map),
@@ -36,10 +36,10 @@ test_that("Check unit conversion works as expected",
           }
 )
 
-# add_colname_units() ----
+# add_colname_unit() ----
 test_that("Check unit addition in colname works as expected",
           {
-            df_in <- eneRgyVD::add_colname_units(data = data.frame(consommation = 100), unit = "MWh")
+            df_in <- eneRgyVD::add_colname_unit(colnames = "consommation", data = data.frame(consommation = 100), unit = "MWh")
             df_out <- data.frame(`consommation [MWh]` = 100, check.names = FALSE)
 
             expect_equal(df_in, df_out)

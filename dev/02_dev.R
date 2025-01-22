@@ -27,7 +27,7 @@ usethis::use_package("readr")
 usethis::use_package("openxlsx") # allows NA reformatting (for confidential data)
 usethis::use_package("tidyr")
 usethis::use_package("forcats")
-usethis::use_package("plotly")
+usethis::use_package("ggiraph")
 usethis::use_package("ggplot2")
 usethis::use_package("ggalluvial")
 usethis::use_package("DT")
@@ -35,13 +35,7 @@ usethis::use_package("scales")
 usethis::use_package("rjson")
 usethis::use_package("shinyWidgets")
 
-usethis::use_package("bs4Dash")
-usethis::use_package("shinydashboardPlus")
-usethis::use_package("fresh")    # for bs4Dash custom theme
-
 usethis::use_package("shinycssloaders")
-usethis::use_package("shinyalert")
-usethis::use_package("shinybrowser")
 usethis::use_package("leaflet")
 usethis::use_package("leaflet.extras")
 usethis::use_package("sf")
@@ -56,6 +50,7 @@ usethis::use_package("shinylogs") # record session logs for user tracking
 # UPDATE bs5
 
 usethis::use_package("bslib")
+usethis::use_package("phosphoricons")
 
 
 ## Add modules ----
@@ -74,21 +69,25 @@ golem::add_module(name = "regener_needs_charts", with_test = TRUE)
 golem::add_module(name = "regener_misc_charts", with_test = TRUE)
 golem::add_module(name = "subsidies_building_charts", with_test = TRUE)
 golem::add_module(name = "subsidies_measure_charts", with_test = TRUE)
-#golem::add_module(name = "map", with_test = FALSE)
+golem::add_module(name = "ng_charts", with_test = FALSE)
 golem::add_module(name = "upload_communes", with_test = FALSE)
 golem::add_module(name = "news", with_test = FALSE)
 golem::add_module(name = "generic_charts", with_test = TRUE)
+golem::add_module(name = "table_content", with_test = FALSE)
+golem::add_module(name = "download_all_data", with_test = FALSE)
+golem::add_module(name = "unit_converter", with_test = FALSE)
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 golem::add_fct("helpers", with_test = TRUE)
 golem::add_utils("helpers", with_test = TRUE)
+golem::add_utils("text", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
 golem::add_js_file("script")
 golem::add_js_handler("handlers")
-golem::add_sass_file("custom_bs5")
+golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package

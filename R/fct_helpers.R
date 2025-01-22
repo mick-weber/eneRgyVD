@@ -740,10 +740,11 @@ return_palette_regener <- function(){
 #' Creates a icon+link combination (tag) which redirects towards a specified geoportail link where geodata
 #' can be viewed for Canton de Vaud
 #' @param link the geoportail link that will be used inside the tag (https://geo.vd.ch/...)
+#' @param text the text on which the link should be applied, usually shorter than the link
 #' @return a span tag with icon and an html <a> tag with the redirect link
 #' @export
 #'
-#' @examples create_geoportail_tag(link = "https://geo.vd.ch")
+#' @examples create_geoportail_tag(link = "https://geo.vd.ch", text = "geo.vd.ch")
 
 create_geoportail_tag <- function(link, text){
 

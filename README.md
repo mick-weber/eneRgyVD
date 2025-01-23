@@ -1,4 +1,5 @@
 [![R-CMD-check](https://github.com/mick-weber/eneRgyVD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mick-weber/eneRgyVD/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/eneRgyVD)](https://CRAN.R-project.org/package=eneRgyVD)
 
 # **Welcome to eneRgyVD** ! 
 

@@ -106,12 +106,12 @@ title_complement_part_voit_elec <- shiny::tags$p(style = "width:70vw;",
                                                  "La part de voitures électriques dans le canton de Vaud mesure la proportion de voitures entièrement électriques (BEV)
 parmi l'ensemble du parc. Cet indicateur suit l'évolution de la motorisation décarbonnée de la population vaudoise.",
                                                  tags$br(),
-                                                 create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=qdtp_pop.pop_qdtp_is&s=2024&view=map1',
+                                                 create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=carbu_ofs.part_elec&s=2023&view=map1',
                                                                        text = 'cartostatdgmr.vd.ch')
 )
 
 title_complement_taux_motorisation <- shiny::tags$p(style = "width:70vw;",
-                                                    "Le taux de motorisation mesure le nombre de voitures de tourisme pour 1’000 habitants. Cet indicateur reflète l’évolution du parc automobile des vaudois.
+                                                    "Le taux de motorisation mesure le nombre de voitures de tourisme pour 1’000 habitants. Cet indicateur reflète l’évolution du parc automobile des Vaudois.
 Pour l'interprétation des données, une comparaison avec la moyenne cantonale ou avec des communes au profil similaire peut être réalisée.",
                                                     tags$br(),
                                                     create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=voitures.voit_1000hab&s=2023&view=map1',
@@ -122,7 +122,7 @@ title_complement_qualite_desserte <- shiny::tags$p(style = "width:70vw;",
                                                    "L'indice synthétique de la qualité de desserte de la population ou des emplois par les transports publics mesure la fréquence des transport situés respectivement à proximité du domicile ou du lieu de travail. Cet indice est exprimé en pourcentage : 100 % représentant une desserte optimale où l'ensemble des habitants ou des emplois se situent dans des zones très bien desservies.
 Pour l'interprétation des données, une comparaison avec la moyenne cantonale ou avec des communes au profil similaire peut être réalisée.",
                                                    tags$br(),
-                                                   create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=carbu_ofs.part_elec&s=2023&view=map1',
+                                                   create_geoportail_tag(link = 'https://cartostatdgmr.vd.ch/#c=indicator&i=qdtp_pop.pop_qdtp_is&s=2024&view=map1',
                                                                          text = 'cartostatdgmr.vd.ch')
 )
 
@@ -135,7 +135,7 @@ Pour l'interprétation des données, une comparaison avec la moyenne cantonale o
 )
 
 title_complement_batiment_danger <- shiny::tags$p(style = "width:70vw;",
-                                                  "L’indicateur du nombre de bâtiment exposé à des dangers naturels est obtenu par croisement spatial des données sur les bâtiments et celles sur les zones de dangers naturels. Les bâtiments sont sommés selon le degré de danger pour obtenir le nombre total par commune.",
+                                                  "L’indicateur du nombre de bâtiments exposé à des dangers naturels est obtenu par croisement spatial des données sur les bâtiments et celles sur les zones de dangers naturels. Les bâtiments sont sommés selon le degré de danger pour obtenir le nombre total par commune.",
                                                   tags$br(),
                                                   create_geoportail_tag(link = 'https://www.cdn.vd.ch',
                                                                         text = 'cdn.vd.ch')

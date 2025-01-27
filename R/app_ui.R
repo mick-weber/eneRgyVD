@@ -65,7 +65,7 @@ app_ui <- function(request) {
 
               },
               {
-                intro: "D\'autres fonctionnalités comme l\'importation de communes via un fichier, le changement d\'unités, des chiffres-clés, etc. permettent de vous simplifier la vie."
+                intro: "D\'autres fonctionnalités comme l\'importation de communes via un fichier ou le changement d\'unités permettent de vous simplifier la vie."
               },
               {
                 intro: "Voilà pour l\'essentiel, nous espérons que vous trouverez cette application utile.<br><br>Bonne visite ! &#x1F389;"
@@ -329,7 +329,7 @@ app_ui <- function(request) {
                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_subsidies_building_charts_ui("subsidies_building",
-                                                                                                                title = HTML("Subventions Programme bâtiments (vue par bâtiment)"),
+                                                                                                                title = HTML("Subventions Programme bâtiments (vue du parc)"),
                                                                                                                 title_complement = title_complement_subsidies_building # utils_text_and_links.R
                                                                                )
                                                               )

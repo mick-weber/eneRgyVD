@@ -36,7 +36,7 @@ mod_about_the_app_ui <- function(id){
                                                              ),
                                                              br(),
                                                              h4(strong("Collaborations")),
-                                                             tags$p("Le profil énergétique a été initialement développée par la DGE-DIREN en 2023.
+                                                             tags$p("Le profil énergétique a été initialement développé par la DGE-DIREN en 2023.
                                                                         En 2024, l’OCDC a souhaité mettre à disposition des communes d’autres données et l’application est devenue le profil climatique dès janvier 2025.
                                                                         De ce fait, le point de contact pour la gestion de cette application est désormais l’OCDC qui collabore toujours étroitement avec la DIREN.
                                                                         D’autres services ont également participé à la valorisation des données comme DGE-Biodiv, DGE-UDN et la DGMR."
@@ -263,16 +263,16 @@ mod_about_the_app_ui <- function(id){
                       ##          tabPanel 'Glossaire' ----
                       ## |---------------------------------------------------------------|
 
-                      bslib::nav_panel(title = "Glossaire",
-                                       bslib::layout_columns(col_widths = c(-1, 8, -3),
-                                                             # breathing
-                                                             br(),
-                                                             tags$h4(strong("Glossaire")),
-                                                             tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
-                                                             DT::dataTableOutput(ns("glossary_table"))
-
-                                       )# End layout_columns
-                      ),# End tabPanel 'Confidentialité'
+                      # bslib::nav_panel(title = "Glossaire",
+                      #                  bslib::layout_columns(col_widths = c(-1, 8, -3),
+                      #                                        # breathing
+                      #                                        br(),
+                      #                                        tags$h4(strong("Glossaire")),
+                      #                                        tags$p("Ci-dessous un lexique des principales abbréviations et termes techniques utilisés dans cette application."),
+                      #                                        DT::dataTableOutput(ns("glossary_table"))
+                      #
+                      #                  )# End layout_columns
+                      # ),# End tabPanel 'Confidentialité'
 
                       ## |---------------------------------------------------------------|
                       ##          tabPanel 'Techno' ----
@@ -372,10 +372,10 @@ mod_about_the_app_server <- function(id){
 
 
     # Glossaire ----
-    output$glossary_table <- DT::renderDataTable({
-      glossary |>
-        make_doc_table_dt(doc_prefix = "glossaire_")
-    })
+    # output$glossary_table <- DT::renderDataTable({
+    #   glossary |>
+    #     make_doc_table_dt(doc_prefix = "glossaire_")
+    # })
 
   })
 }

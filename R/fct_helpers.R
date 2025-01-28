@@ -323,10 +323,14 @@ create_plot_ggiraph <- function(data,
           label = if (first_unit == "%") {
             scales::percent(total, accuracy = 0.01)
           } else {
-            format(total, big.mark = "'", digits = 1, scientific = FALSE)
+            ifelse(total == 0, # in this case we prefer '(Aucune donnée)' than a 0 displayed, more explicit
+                   "(Aucune donnée)",
+                   format(total, big.mark = "'", digits = 1, scientific = FALSE)
+            )
           }
         ),
-        vjust = -0.5,
+        vjust = -0.5, # above bars
+        hjust = 0.5, # center
         size = 10,
         size.unit = "pt",
         fontface = "plain",
@@ -372,6 +376,9 @@ create_plot_ggiraph <- function(data,
     stop("Invalid value for 'geom'. Use 'col' for bar chart or 'line' for line chart.")
   }
 
+  # Set dynamic expand values for scale_y_continuous if % unit is used
+  expansion_mult <- if(first_unit == "%"){0.1}else{0.15} # +10% for %, otherwise +15%
+
   # Add scales, facets, and theme
   ggplot <- ggplot +
     ggplot2::scale_y_continuous(labels = ifelse(
@@ -380,8 +387,7 @@ create_plot_ggiraph <- function(data,
       scales::label_number(big.mark = "'")
     ),
     limits = c(0, NA), # Force the Y-axis to start at 0
-    expand = ggplot2::expansion(mult = c(0, 0.15)) # Add some area around, vertically
-    ) +
+    expand = ggplot2::expansion(mult = c(0, expansion_mult))) +
     ggplot2::labs(x = "", y = first_unit) +
     ggiraph::facet_wrap_interactive(
       facets = ggplot2::vars(.data[[var_commune]]),
@@ -891,14 +897,21 @@ add_colname_unit <- function(data, colnames, unit){
 
 rename_columns_output <- function(data) {
 
+  # Create a named vector of replacements
+  replacements <- setNames(
+    colnames_replacement_display$replacement,
+    paste0("^", colnames_replacement_display$colname) # Patterns to match
+  )
+
   # Renaming columns
   renamed_data <- data |>
-    dplyr::rename_with(~ stringr::str_replace_all(.x, setNames(
-      colnames_replacement_display$replacement,
-      paste0("^", colnames_replacement_display$colname) # Only replace when it matches
-    )), dplyr::everything())
+    dplyr::rename_with(~ stringr::str_replace_all(
+      string = .x, # Column names
+      pattern = replacements # Named vector of patterns and replacements
+    ))
 
   return(renamed_data)
 }
+
 
 

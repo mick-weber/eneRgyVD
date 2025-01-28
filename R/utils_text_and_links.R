@@ -62,7 +62,8 @@ title_complement_ng_cons <- shiny::tags$p(style = "width:70vw",
                                    shiny::HTML("Ces données sont issues des relevés des compteurs fournis par les gestionnaires de réseau de distribution. Elles ne
                                    comprennent pas les livraisons de gaz naturel hors-réseau, par exemple via des citernes remplies par transport routier.
                                         <br>
-                                        L'exactitude des distinctions sectorielles ainsi que certaines variations interannuelles peuvent s'expliquer par la qualité des données fournies (voir détails méthodologiques)."))
+                                        L'exactitude des distinctions sectorielles ainsi que certaines variations interannuelles peuvent s'expliquer par la qualité des données fournies (voir détails méthodologiques).
+                                               La catégorie <i>Indéfini</i> correspond à une quantité qui n'a pas pu être catégorisée dans <i>Ménages</i> ou <i>Hors-ménages</i>."))
 
 title_complement_regener_needs <- shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",

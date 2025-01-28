@@ -130,7 +130,7 @@ mod_download_all_data_server <- function(id,
           rename_columns_output(),
 
         # Subsidies measure
-        subventions_mesure = inputVals$energyDatasets$subsidies_by_measure|>
+        subventions_mesure = inputVals$energyDatasets$subsidies_by_measure |>
           rename_columns_output(),
 
         ## |---------------------------------------------------------------|

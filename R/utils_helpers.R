@@ -17,6 +17,7 @@ load("./data/elec_cons_doc.rda")
 # ng_cons
 load("./data/ng_cons.rda")
 load("./data/ng_cons_doc.rda")
+
 # regener
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")

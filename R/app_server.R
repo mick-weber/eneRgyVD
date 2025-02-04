@@ -27,15 +27,16 @@ app_server <- function(input, output, session) {
   # make sure the logs subfolder exists to store logs below
   # note to myself : if logs don't work this is probably due to lacking write authorisations !
 
-  # RUN <sudo chmod -R 757 /srv/shiny-server/> in terminal if needed
-
+  # RUN: sudo chown -R rserver:rserver /srv/shiny-server/> in terminal if needed
   if(!dir.exists("./logs")){
     dir.create("./logs")
   }
 
   shinylogs::track_usage(
-    what = c("session"),
-    storage_mode = shinylogs::store_json(path = "logs/") # store in the /logs subfolder
+    what = c("session", "input"),
+    storage_mode = shinylogs::store_json(path = "logs/"),#, # store in the /logs subfolder
+    exclude_input_regex = "^(?!nav$|inputs_1-selected_communes$).*" #,
+    #exclude_users = "h7q1n0" # myself locally
   )
 
   # Dev message ----

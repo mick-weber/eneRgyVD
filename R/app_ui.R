@@ -338,43 +338,6 @@ app_ui <- function(request) {
                       )# End nav_panel 'Subventions bâtiments'
       ),# End nav_menu Energie
 
-      ## Adaptation climat ----
-      bslib::nav_menu("Adaptation climat",
-                      # Canopée ----
-                      bslib::nav_panel("Surface de canopée urbaine",
-                                       icon = phosphoricons::ph(title = NULL, "tree",
-                                                                weight = "fill",
-                                                                fill = "#3A862D"),
-                                       # Nested navset_card_tab()
-                                       bslib::navset_card_tab(id = "navset_canopy",
-                                                              bslib::nav_panel(title = "Surface de canopée urbaine",
-
-                                                                               mod_generic_charts_ui("adaptation_canopy",
-                                                                                                     title = "Surface de canopée urbaine",
-                                                                                                     title_complement = title_complement_surface_canopee
-                                                                                                     )
-                                                              )# end nested nav_panel
-                                       )# end navset_card_pill
-                      ),# end first main nav_panel
-
-                      # Dangers naturels (bâtiments) ----
-                      bslib::nav_panel("Exposition aux dangers naturels",
-                                       icon = phosphoricons::ph(title = NULL, "warning-diamond",
-                                                                fill = "#EE7600"),
-                                       #Nested navaset_card_tab()
-                                       bslib::navset_card_tab(id = "navset_natural_hazards",
-                                                              bslib::nav_panel(title = "Bâtiments exposés à des dangers naturels",
-
-                                                                               mod_generic_charts_ui("buildings_exposure_hazards",
-                                                                                                     title = "Bâtiments exposés à des dangers naturels",
-                                                                                                     title_complement = title_complement_batiment_danger
-                                                                                                     )
-                                                              )# end nested nav_panel
-                                       )
-                      )# end second main nav_panel
-      ), # End nav_menu() 'Adaptation'
-
-
       ## Mobilité ----
       bslib::nav_menu("Mobilité",
 
@@ -423,6 +386,43 @@ app_ui <- function(request) {
                                        )# end navset_card_tab
                       )# end main nav_panel
       ),# End nav_menu() 'Mobilite'
+
+
+      ## Adaptation climat ----
+      bslib::nav_menu("Adaptation climat",
+                      # Canopée ----
+                      bslib::nav_panel("Surface de canopée urbaine",
+                                       icon = phosphoricons::ph(title = NULL, "tree",
+                                                                weight = "fill",
+                                                                fill = "#3A862D"),
+                                       # Nested navset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_canopy",
+                                                              bslib::nav_panel(title = "Surface de canopée urbaine",
+
+                                                                               mod_generic_charts_ui("adaptation_canopy",
+                                                                                                     title = "Surface de canopée urbaine",
+                                                                                                     title_complement = title_complement_surface_canopee
+                                                                               )
+                                                              )# end nested nav_panel
+                                       )# end navset_card_pill
+                      ),# end first main nav_panel
+
+                      # Dangers naturels (bâtiments) ----
+                      bslib::nav_panel("Exposition aux dangers naturels",
+                                       icon = phosphoricons::ph(title = NULL, "warning-diamond",
+                                                                fill = "#EE7600"),
+                                       #Nested navaset_card_tab()
+                                       bslib::navset_card_tab(id = "navset_natural_hazards",
+                                                              bslib::nav_panel(title = "Bâtiments exposés à des dangers naturels",
+
+                                                                               mod_generic_charts_ui("buildings_exposure_hazards",
+                                                                                                     title = "Bâtiments exposés à des dangers naturels",
+                                                                                                     title_complement = title_complement_batiment_danger
+                                                                               )
+                                                              )# end nested nav_panel
+                                       )
+                      )# end second main nav_panel
+      ), # End nav_menu() 'Adaptation'
 
       ## Misc ----
       bslib::nav_menu("Divers",

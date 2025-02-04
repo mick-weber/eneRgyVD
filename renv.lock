@@ -619,7 +619,7 @@
         "shinylogs",
         "stringr",
         "tidyr",
-        "utils",
+        "utils"
       ],
       "Hash": "5f58290187b49ded2cbc9e8c8bf56387"
     },

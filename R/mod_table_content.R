@@ -54,14 +54,6 @@ mod_table_content_ui <- function(id){
                                                                              tags$span(style = "margin-left:15px;", "Vue du parc subventionné"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out"))))
 
                    ),
-                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation", icon = phosphoricons::ph(title = NULL, "thermometer-simple", weight = "fill", fill = "#EE7600"),
-                                          tags$div(class = "row", actionLink(ns("data_20"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             tags$span(style = "margin-left:15px;", "Surface de canopée urbaine"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out")))),
-                                          tags$div(class = "row", actionLink(ns("data_21"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             tags$span(style = "margin-left:15px;", "Exposition aux dangers naturels"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out"))))
-
-                   ),
-
                    bslib::accordion_panel(title = "Mobilité", value = "mobility", icon = phosphoricons::ph(title = NULL, "road-horizon", weight = "bold", fill = "grey20"),
                                           tags$div(class = "row", actionLink(ns("data_30"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              tags$span(style = "margin-left:15px;", "Part des voitures électriques"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out")))),
@@ -69,6 +61,13 @@ mod_table_content_ui <- function(id){
                                                                              tags$span(style = "margin-left:15px;", "Taux de motorisation"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_32"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              tags$span(style = "margin-left:15px;", "Qualité de desserte des transports publics"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out"))))
+                   ),
+                   bslib::accordion_panel(title = "Adaptation climat", value = "adaptation", icon = phosphoricons::ph(title = NULL, "thermometer-simple", weight = "fill", fill = "#EE7600"),
+                                          tags$div(class = "row", actionLink(ns("data_20"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             tags$span(style = "margin-left:15px;", "Surface de canopée urbaine"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out")))),
+                                          tags$div(class = "row", actionLink(ns("data_21"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
+                                                                             tags$span(style = "margin-left:15px;", "Exposition aux dangers naturels"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out"))))
+
                    )
                  )#End accordion
         )#End introjs div

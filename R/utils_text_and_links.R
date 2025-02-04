@@ -66,16 +66,16 @@ title_complement_ng_cons <- shiny::tags$p(style = "width:70vw",
                                                La catégorie <i>Indéfini</i> correspond à une quantité qui n'a pas pu être catégorisée dans <i>Ménages</i> ou <i>Hors-ménages</i>."))
 
 title_complement_regener_needs <- shiny::tags$p(style = "width:70vw;",
-                                         "Ces données illustrent la répartition des besoins énergétiques théoriques pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",
+                                         "Ces données illustrent la répartition des besoins énergétiques théoriques (et corrigés climatiquement) pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",
                                          shiny::strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
-                                         "Plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques. ",
+                                         "Pour plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques. ",
                                          #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
                                          )
 
 title_complement_regener_cons <-  shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent comment la consommation de différents agents énergétiques se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
                                          shiny::strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
-                                         "Il s'agit d'estimations théoriques fondées sur des données empiriques. Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.",
+                                         "Il s'agit d'estimations théoriques (et corrigées climatiquement) fondées sur des données empiriques. Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.",
                                          #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
                                          )
 

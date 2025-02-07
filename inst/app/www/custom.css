@@ -279,6 +279,7 @@ a {
   background-color: transparent;
   color: #3A862D;
   border-color: #3A862D;
+  margin-bottom: 5px;
 }
 
 .btnCustom:hover {

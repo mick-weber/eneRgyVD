@@ -15,7 +15,7 @@ make_table_dt(
   unit,
   icons_palette,
   na_string = "Non disponible",
-  DT_dom = "frtip"
+  DT_dom = "lfrtip"
 )
 }
 \arguments{

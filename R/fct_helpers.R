@@ -566,7 +566,7 @@ make_table_dt <- function(data,
                           unit,
                           icons_palette,
                           na_string = "Non disponible",
-                          DT_dom = "frtip"){
+                          DT_dom = "lfrtip"){
 
   ## |---------------------------------------------------------------|
   ##          Prepare data
@@ -647,12 +647,13 @@ make_table_dt <- function(data,
     DT::datatable(
       class = "compact hover",         # Compact display + hover effect
       escape = FALSE,                  # Render HTML (e.g., icons) instead of text
-      extensions = 'Buttons',          # Enable the Buttons extension (for export buttons)
       selection = 'single',            # Allow single row selection
       rownames = FALSE,                # Hide row numbers/names
       options = list(
         paging = TRUE,                 # Enable pagination
-        pageLength = 10,               # Number of rows per page
+        lengthMenu = list(c(10,15,30,50,-1),
+                          c('10', '15','30','50','Tout montrer')),              # Number of rows per page
+        pageLength = 15, # set default
         scrollY = TRUE,                # Enable vertical scrolling
         autoWidth = TRUE,              # Smart column width handling
         server = FALSE,                # Use client-side processing

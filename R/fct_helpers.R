@@ -337,6 +337,34 @@ create_plot_ggiraph <- function(data,
         color = "grey20", # color of the text label !
         inherit.aes = FALSE
       )
+
+    # Conditional geom_text labels for dodged bars (necessary since very low values show no bar - a label helps to see values)
+  }else if(geom == "col" & !is.null(var_cat) & isTRUE(dodge)){
+    ggplot <- ggplot +
+      ggiraph::geom_text_interactive(
+        ggplot2::aes(
+          x = as.factor(.data[[var_year]]),
+          y = .data[[first_var_value]],
+          group = .data[[var_cat]],
+          label = if (first_unit == "%") {
+            scales::percent(.data[[first_var_value]], accuracy = 0.01)
+          } else {
+            ifelse(.data[[first_var_value]] == 0, # in this case we prefer '(Aucune donnée)' than a 0 displayed, more explicit
+                   "(Aucune donnée)",
+                   format(.data[[first_var_value]], big.mark = "'", digits = 1, scientific = FALSE)
+            )
+          }
+        ),
+
+        check_overlap = TRUE,
+        position = ggplot2::position_dodge(width = 0.9),
+        vjust = -0.5, # above bars
+        hjust = 0.5,
+        size = 10,
+        size.unit = "pt",
+        fontface = "plain",
+        color = "grey20" # color of the text label !
+      )
   }
 
   # Add geometries conditionally (col acc. to var_cat & line (var_cat implicitly passed otherwise col))
@@ -565,7 +593,7 @@ make_table_dt <- function(data,
                           var_cat,
                           unit,
                           icons_palette,
-                          na_string = "Non disponible",
+                          na_string = "(Non disponible)",
                           DT_dom = "lfrtip"){
 
   ## |---------------------------------------------------------------|
@@ -623,7 +651,7 @@ make_table_dt <- function(data,
     list(targets = "_all",
          render = DT::JS(
            "function(data, type, row, meta) {",
-           glue::glue("return data === null ? '({na_string})' : data;"),
+           glue::glue("return data === null ? '{na_string}' : data;"),
            "}"))
     )
 

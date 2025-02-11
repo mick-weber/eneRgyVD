@@ -14,7 +14,7 @@ make_table_dt(
   var_cat,
   unit,
   icons_palette,
-  na_string = "Non disponible",
+  na_string = "(Non disponible)",
   DT_dom = "lfrtip"
 )
 }

@@ -227,7 +227,7 @@ mod_subsidies_building_charts_server <- function(id,
                     var_values = c("N_EGID", "SRE"),
                     var_cat = "subv_type",
                     icons_palette = subsidies_building_icons,
-                    na_string = "Non disponible",
+                    na_string = "(Non disponible)",
                     unit = NULL # no unit to apply
       )
     })

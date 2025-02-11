@@ -1,7 +1,4 @@
 /* import components ; the full bs path is provided in theme.R */
-/* Custom modal upon opening the app -> fct_helpers.R */
-/* Set dialog to a decent position */
-/* for small screens : allow full screen to avoid scrolling the modal */
 .modal-header {
   background-color: #343A40;
   color: white;
@@ -173,6 +170,11 @@ a {
 .selectize-input {
   border: none !important;
   box-shadow: none !important;
+}
+
+/* Add spacing right to each selected item for better UX with the removeAll button */
+.selectize-control.multi .selectize-input > .item {
+  margin-right: 0.5rem;
 }
 
 /* Set the clear button completely at the right instead of calc(0.75rem-5px) & red*/

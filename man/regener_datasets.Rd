@@ -12,11 +12,11 @@
 \format{
 A tibble with various rows and cols which are not detailed yet
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 9027 rows and 7 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 13746 rows and 7 columns.
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2408 rows and 5 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 3612 rows and 5 columns.
 
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 602 rows and 9 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 903 rows and 9 columns.
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 17 rows and 4 columns.
 }

@@ -86,18 +86,18 @@ title_complement_regener_misc <- shiny::tags$p(style = "width:70vw;",
                                         )
 
 title_complement_subsidies_building <- shiny::tags$p(style = "width:70vw;",
-                                              "Ces données illustrent le nombre de bâtiments ayant reçu certaines subventions du Programme Bâtiment vaudois depuis 2017 (voir détails dans la méthodologie complète).
-                                         Les données précédant 2017 ne sont pas inclues mais représentent une minorité des subventions versées.",
+                                              "Ces données illustrent le nombre cumulé de bâtiments ayant reçu des subventions du Programme Bâtiment vaudois depuis 2017.
+                                         Les données précédant 2017 ne sont pas inclues mais représentent une part négligeable des subventions versées jusqu'à aujourd'hui.",
                                               shiny::strong("L'état à la fin de chaque année est présenté, en cumulant les subventions des années précédentes."),
                                               "Le total des subventions versées d'une année ne peut donc pas être inférieur au total de l'année précédente.
                                          La SRE correspond à la surface de référence énergétique estimée des bâtiments ayant reçu une subvention.
                                          Pour simplifier, le terme 'chauffage renouvelable' englobe également les pompes à chaleur (PAC) et le chauffage à distance (CAD).")
 
 title_complement_subsidies_measure <- shiny::tags$p(style = "width:70vw;",
-                                             "Ces données illustrent le nombre de subventions versées par type et année depuis 2017
-                                        (voir détails dans la méthodologie complète). Plusieurs subventions pouvant être accordées à un même bâtiment sur une ou plusieurs années,",
-                                             shiny::strong("il ne faut pas interpréter une subvention comme un bâtiment nouvellement subventionné."),
-                                             "Une vision agrégée par bâtiments subventionnés est disponible dans l'onglet adjacent.")
+                                             "Ces données illustrent le nombre annuel de bâtiments ayant fait l'objet d'une subvention payée, par type et année depuis 2017.
+                                             Un bâtiment peut réapparaître plusieurs fois au fil des années s'il reçoit de nouvelles subventions",
+                                             shiny::strong("il ne faut donc pas interpréter un bâtiment subventionné comme un bâtiment systématiquement nouvellement subventionné."),
+                                             "Une vision cumulée par bâtiments subventionnés est disponible dans l'onglet adjacent.")
 
 
 

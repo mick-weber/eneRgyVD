@@ -118,8 +118,8 @@ subpanels_tribble <- dplyr::tribble(
   "regener_needs-rgr_needs_help", "Energie","navset_energie", "Chaleur bâtiments", "data_3", "Chaleur des bâtiments","navset_regener", "Besoins des bâtiments",
   "regener_cons-rgr_cons_help", "Energie", "navset_energie","Chaleur bâtiments", "data_4", "Chaleur des bâtiments","navset_regener", "Consommation des bâtiments",
   "regener_misc-rgr_misc_help", "Energie","navset_energie", "Chaleur bâtiments", "data_5", "Chaleur des bâtiments","navset_regener", "Informations bâtiments",
-  "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue du parc subventionné",
-  "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par subventions",
+  "subsidies_measure-subsidies_measure_help", "Energie", "navset_energie", "Subventions bâtiments", "data_7", "Subventions bâtiments","navset_subsidies", "Vue par travaux subventionnés",
+  "subsidies_building-subsidies_building_help", "Energie","navset_energie", "Subventions bâtiments", "data_6", "Subventions bâtiments","navset_subsidies", "Vue cumulée du parc subventionné",
   "ng_cons_charts-ng_cons_help", "Energie", "navset_energie", "Distribution de gaz naturel", "data_8", "Gaz naturel", "navset_ng", "Distribution de gaz naturel",
 
   # adaptation (data_20-29)

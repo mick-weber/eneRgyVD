@@ -315,7 +315,7 @@ app_ui <- function(request) {
                                        bslib::navset_card_tab(id = "navset_subsidies",
 
                                                               #### Par mesures ----
-                                                              bslib::nav_panel("Vue par subventions",
+                                                              bslib::nav_panel("Vue par travaux subventionnés",
                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_subsidies_measure_charts_ui("subsidies_measure",
@@ -325,7 +325,7 @@ app_ui <- function(request) {
                                                               ),
 
                                                               #### Par batiments ----
-                                                              bslib::nav_panel("Vue du parc subventionné",
+                                                              bslib::nav_panel("Vue cumulée du parc subventionné",
                                                                                icon = icon(NULL, class = "pulse"), # only when inactive, custom.scss
 
                                                                                mod_subsidies_building_charts_ui("subsidies_building",

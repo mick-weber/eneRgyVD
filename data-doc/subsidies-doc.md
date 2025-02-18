@@ -16,4 +16,11 @@ Les données sont disponibles quelques mois après la fin d'une année civile.
 
 ## À quoi faut-il faire attention ?
 
-Les mesures indirectes du Programme bâtiments ne sont pas intégrées dans ces statistiques. De très légères différences statistiques peuvent apparaître en comparaison des informations fournies directement par le Programme bâtiments car la méthode diffère. Il se peut également que des subventions ne puissent pas être rattachées à un bâtiment, et donc à une commune ce qui les exclut de ces statistiques.
+Les mesures indirectes du Programme bâtiments ne sont pas intégrées dans ces statistiques. De très légères différences statistiques peuvent apparaître en comparaison des informations fournies directement par le Programme bâtiments car la méthode diffère. Il se peut également que des subventions ne puissent pas être rattachées à un bâtiment, et donc à une commune ce qui les exclut de ces statistiques. L'exemple ci-dessous permet de bien comprendre la différence entre la vue par travaux subventionnés, et la vue cumulée du parc subventionné.
+<br><br>
+<em>Un bâtiment reçoit sa première subvention d'isolation partielle (M01) en 2018. En 2020, il en reçoit une nouvelle et reçoit également la subvention de bonus d'isolation (M01 + M14) car il atteint le seuil des 90% de surface conformément isolées. Cette même année, une pompe à chaleur est également installée avec la subvention M07.
+</em>
+<br><br>
+Dans la <strong>vue par travaux subventionnés </strong> le bâtiment va se retrouver 1x en 2018 sous la catégorie dans la catégorie <em>Isolation partielle</em>, puis 2x en 2020 : 1x pour le couple M01/M14 sous la catégorie <em>Isolation globale</em> et 1x dans la catégorie <em>Chauffage renouvelable</em>. À noter également que lorsqu'une seule subvention d'isolation est remplie pour deux bâtiments adjacents (numéros EGID), on considère dans cette statistique que deux travaux distincts ont été réalisés.
+<br>
+Dans la vue <strong>vue cumulée du parc subventionné</strong>, le bâtiment ne peut pas se retrouver plus d'une fois par année : il figurera en 2018 ainsi qu'en 2019 dans la catégorie <em>Isolation partielle</em>, puis en 2020 il passera dans la catégorie <em>Isolation globale + chauffage renouvelable</em>. 

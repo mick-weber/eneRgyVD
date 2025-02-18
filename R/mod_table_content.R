@@ -51,7 +51,7 @@ mod_table_content_ui <- function(id){
                                           tags$div(class = "row", actionLink(ns("data_7"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
                                                                              tags$span(style = "margin-left:15px;", "Vue par travaux subventionnés"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out")))),
                                           tags$div(class = "row", actionLink(ns("data_6"), class = "customTOC border p-2 rounded d-flex justify-content-between align-items-center",
-                                                                             tags$span(style = "margin-left:15px;", "Vue du parc subventionné"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out"))))
+                                                                             tags$span(style = "margin-left:15px;", "Vue cumulée du parc subventionné"), icon = NULL, tags$span(phosphoricons::ph(title = NULL, "arrow-square-out"))))
 
                    ),
                    bslib::accordion_panel(title = "Mobilité", value = "mobility", icon = phosphoricons::ph(title = NULL, "road-horizon", weight = "bold", fill = "grey20"),

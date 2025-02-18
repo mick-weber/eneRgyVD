@@ -15,7 +15,7 @@ mod_news_ui <- function(id){
 
                           h4(strong("Nouveautés")),
 
-                          bslib::accordion(open = c("tocome", "jan25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
+                          bslib::accordion(open = c("tocome", "feb25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,
 
                                            # Next updates ----
@@ -24,19 +24,22 @@ mod_news_ui <- function(id){
                                                                   icon = phosphoricons::ph(title = NULL, "question", height = "1.5em"),
                                                                   tagList(
                                                                     phosphoricons::ph(title = NULL, "dots-three", height = "1.5em"),
-                                                                    "Processus de mise à jour des données publiées durant 2025")
+                                                                    "Mise à jour des données selon disponibilité propre à chaque thématique")
                                            ),
 
-                                           # Janvier 2025
+                                           # Février 2025
 
-                                           bslib::accordion_panel(title = HTML("<strong>Janvier 2025</strong>"),
-                                                                  value = "jan25",
+                                           bslib::accordion_panel(title = HTML("<strong>Février 2025</strong>"),
+                                                                  value = "feb25",
                                                                   icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
                                                                   tagList(phosphoricons::ph(title = NULL, "star", height = "1.5em"),
                                                                        "Migration profil climatique"),
                                                                   tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),
+                                                                          "Ajout des données de subventions Programme bâtiments 2024"),
+                                                                  tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),
+                                                                          "Ajout des données de chaleur des bâtiments 2024"),
+                                                                  tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),
                                                                        "Ajout des données de distribution de gaz 2018-2022"),
-
                                                                   tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),
                                                                        "Ajout des données de surface de canopée en zone urbaine"),
                                                                   tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),

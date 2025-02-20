@@ -34,10 +34,9 @@ Imports:
     tidyr,
     utils,
     openxlsx,
+    stats,
     rjson
 Suggests: 
-    shinytest2,
-    spelling (>= 2.2),
     testthat (>= 3.0.0),
     knitr
 VignetteBuilder: 

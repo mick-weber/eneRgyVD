@@ -145,6 +145,7 @@ subpanels_tribble <- dplyr::tribble(
 ### Load json french language file for DT library
 # Files others than .Rd are in ./inst/extdata/
 
+#' @importFrom rjson fromJSON
 DT_fr_language <- rjson::fromJSON(file = "./inst/extdata/DT_fr_language.json")
 
 ## Units conversion table ----

@@ -921,6 +921,7 @@ add_colname_unit <- function(data, colnames, unit){
 #' the function matches only the start of the initial colname to find a match, allowing the
 #' unit to be added before this function via 'add_colname_unit()'
 #' @param data the dataset to rename with the default <colnames_replacement_display> object
+#' @importFrom stats setNames line
 #' @return a renamed dataframe
 #' @export
 

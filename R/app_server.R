@@ -48,6 +48,11 @@ app_server <- function(input, output, session) {
     removeModal() # Close the modal after redirecting
   })
 
+  observeEvent(input$modal_news, {
+    bslib::nav_select(id = "nav", selected = "Nouveautés", session)
+    removeModal() # Close the modal after redirecting
+  })
+
   # introJS ----
 
   observeEvent(input$introjs, {

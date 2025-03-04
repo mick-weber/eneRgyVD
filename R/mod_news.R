@@ -15,7 +15,7 @@ mod_news_ui <- function(id){
 
                           h4(strong("Nouveautés")),
 
-                          bslib::accordion(open = c("tocome", "feb25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
+                          bslib::accordion(open = c("tocome", "mar25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,
 
                                            # Next updates ----
@@ -27,17 +27,27 @@ mod_news_ui <- function(id){
                                                                     "Mise à jour des données selon disponibilité propre à chaque thématique")
                                            ),
 
-                                           # Février 2025
+                                           # Mars 2025
+                                           bslib::accordion_panel(title = HTML("<strong>Mars 2025</strong>"),
+                                                                  value = "mar25",
+                                                                  icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
+                                                                    tagList(phosphoricons::ph(title = NULL, "eraser", height = "1.5rem"),
+                                                                            "Correctif données distribution d'électricité 2018-2021 (Lutry)"),
+                                                                  br(),br(),
+                                                                    tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5em"),
+                                                                            "Mise à jour des données de subventions Programme bâtiments 2024"),
+                                                                  br(),br(),
+                                                                    tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5em"),
+                                                                            "Mise à jour des données de chaleur des bâtiments 2024")
+                                           ),
 
+                                           # Février 2025
                                            bslib::accordion_panel(title = HTML("<strong>Février 2025</strong>"),
                                                                   value = "feb25",
                                                                   icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
                                                                   tagList(phosphoricons::ph(title = NULL, "star", height = "1.5em"),
                                                                        "Migration profil climatique"),
-                                                                  tags$li(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5em"),
-                                                                          "Mise à jour des données de subventions Programme bâtiments 2024"),
-                                                                  tags$li(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5em"),
-                                                                          "Mise à jour des données de chaleur des bâtiments 2024"),
+
                                                                   tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),
                                                                        "Ajout des données de distribution de gaz 2018-2022"),
                                                                   tags$li(phosphoricons::ph(title = NULL, "folder-plus", height = "1.5em"),
@@ -53,7 +63,6 @@ mod_news_ui <- function(id){
                                            ),
 
                                            # Octobre 2024
-
                                            bslib::accordion_panel(title = HTML("<strong>Octobre 2024</strong>"),
                                                                   value = "oct24",
                                                                   icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
@@ -62,7 +71,6 @@ mod_news_ui <- function(id){
                                            ),
 
                                            # Juillet 2024 ----
-
                                            bslib::accordion_panel(title = HTML("<strong>Juillet  2024</strong>"),
                                                                   value = "july24",
                                                                   icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),

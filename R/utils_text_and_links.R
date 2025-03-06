@@ -69,6 +69,8 @@ title_complement_regener_needs <- shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent la répartition des besoins énergétiques théoriques (et corrigés climatiquement) pour la chaleur des bâtiments, soit l'eau chaude sanitaire et chauffage des locaux.",
                                          shiny::strong("Ne sont pas compris la chaleur des procédés industriels et l'électricité pour un usage autre que calorifique."),
                                          "Pour plus d'informations, notamment sur les besoins optimisés, voir les détails méthodologiques. ",
+                                         "La qualité des données s'améliorant d'année en année, certaines ruptures sont inévitables et peuvent expliquer des évolutions contre-intuitives vis-à-vis de l'assainissement du parc immobilier.
+                                          Pour cette raison, il est recommandé de n'utiliser que la dernière année disponible, et d'exploiter les années antérieures avec précaution uniquement lorsque nécessaire."
                                          #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
                                          )
 
@@ -76,11 +78,14 @@ title_complement_regener_cons <-  shiny::tags$p(style = "width:70vw;",
                                          "Ces données illustrent comment la consommation de différents agents énergétiques se répartit pour satisfaire les besoins en chaleur du bâtiment (chauffage et eau chaude sanitaire) selon l'usage ou l'affectation principale des bâtiments.",
                                          shiny::strong("La chaleur de procédés et l'électricité pour un usage autre que calorifique ne sont pas compris."),
                                          "Il s'agit d'estimations théoriques (et corrigées climatiquement) fondées sur des données empiriques. Les communes jouent notamment un rôle central pour garantir que les données reflètent bien la réalité des agents énergétiques en vigueur.",
+                                         "La qualité des données s'améliorant d'année en année, certaines ruptures sont inévitables et peuvent expliquer des évolutions contre-intuitives vis-à-vis de l'assainissement du parc immobilier.
+                                          Pour cette raison, il est recommandé de n'utiliser que la dernière année disponible, et d'exploiter les années antérieures avec précaution uniquement lorsque nécessaire."
                                          #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
                                          )
 
 title_complement_regener_misc <- shiny::tags$p(style = "width:70vw;",
-                                        "Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune.",
+                                        "Ces données reflètent quelques estimations structurelles du parc immobilier chauffé de chaque commune. La qualité des données s'améliorant d'année en année, certaines ruptures sont inévitables et peuvent expliquer des évolutions contre-intuitives vis-à-vis de l'assainissement du parc immobilier.
+                                        Pour cette raison, il est recommandé de n'utiliser que la dernière année disponible, et d'exploiter les années antérieures avec précaution uniquement lorsque nécessaire.",
                                         shiny::br(),
                                         #create_geoportail_tag(link = 'https://www.geo.vd.ch', text = 'geo.vd.ch')
                                         )

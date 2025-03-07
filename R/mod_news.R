@@ -38,7 +38,10 @@ mod_news_ui <- function(id){
                                                                             "Mise à jour des données de subventions Programme bâtiments 2024"),
                                                                   br(),br(),
                                                                     tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5em"),
-                                                                            "Mise à jour des données de chaleur des bâtiments 2024")
+                                                                            "Mise à jour des données de chaleur des bâtiments 2024"),
+                                                                  br(),br(),
+                                                                  tagList(phosphoricons::ph(title = NULL, "eraser", height = "1.5em"),
+                                                                          "Mise à jour des données de chaleur des bâtiments 2022/2023 (alignement méthodologique aux données 2024)")
                                            ),
 
                                            # Février 2025

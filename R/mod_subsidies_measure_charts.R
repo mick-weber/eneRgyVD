@@ -202,7 +202,7 @@ mod_subsidies_measure_charts_server <- function(id,
 
       # Make colnames nicelly formatted and add the current unit
       subsetData() |>
-        rename_column_output()
+        rename_columns_output()
     })
 
     # Module to download DT table data

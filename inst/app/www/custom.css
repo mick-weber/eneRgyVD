@@ -225,9 +225,39 @@ a {
   display: grid;
 }
 
+/* Deal with sidebar width dynamically (struggled hard to find the right selector)*/
+/* external monitors : fixed size */
+@media (min-width: 1401px) {
+  .bslib-sidebar-layout {
+    --_sidebar-width: 300px !important;
+    /* Smaller sidebar for smaller screens */
+  }
+}
+
+/* laptops : */
+@media (max-width: 1400px) {
+  .bslib-sidebar-layout {
+    --_sidebar-width: 25vw !important;
+    /* Smaller sidebar for smaller screens */
+  }
+}
+
+/* smartphones + tablets : */
+@media (max-width: 768px) {
+  .bslib-sidebar-layout {
+    --_sidebar-width: 40vw !important;
+    /* Smaller sidebar for smaller screens */
+  }
+}
+
 /* Add spacing approx. the same as card_header() from leaflet map next to sidebar*/
 .sidebar-content {
   padding-top: 2.5rem !important;
+}
+
+/* Override big bslib gap that messes with small screens (makes y-scrollbar in sidebar though it's not necessary)*/
+.bslib-sidebar-layout > .sidebar > .sidebar-content {
+  gap: 0px !important;
 }
 
 .fs-sidebar {

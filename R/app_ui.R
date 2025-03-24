@@ -87,12 +87,10 @@ app_ui <- function(request) {
 
       # Sidebar ----
       sidebar = bslib::sidebar(
-
+        id = "customSidebar",
         open = "always",
         class = "shadow rounded-end-3", # add some shadow + rounded + see custom.scss
-        width = "15vw",
         bg =  "#343A40",
-
         mod_inputs_ui("inputs_1")
 
       ),# End sidebar()

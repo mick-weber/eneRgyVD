@@ -86,7 +86,7 @@ mod_download_all_data_server <- function(id,
                                         "injection",
                                         "autoconsommation",
                                         "production"),
-                           unit = inputVals$energyUnit) |>
+                           unit = rep(inputVals$energyUnit, 4)) |>
           rename_columns_output(),
         #add_colname_unit(unit = inputVals$energyUnit),
 
@@ -97,10 +97,18 @@ mod_download_all_data_server <- function(id,
                            unit = inputVals$energyUnit) |>
           rename_columns_output(),
 
-        # Regener renamed+units
+        # Regener needs renamed+units
         regener_besoins = inputVals$energyDatasets$regener_needs |>
           add_colname_unit(colnames = "besoins",
                            unit = inputVals$energyUnit) |>
+          rename_columns_output(),
+
+        # Regener renamed+units
+        regener_cons_year = inputVals$energyDatasets$regener_cons_ae_year |>
+          add_colname_unit(colnames = "consommation",
+                           unit = inputVals$energyUnit) |>
+          add_colname_unit(colnames = "co2_direct",
+                           unit = inputVals$co2Unit) |>
           rename_columns_output(),
 
         # Regener renamed+units

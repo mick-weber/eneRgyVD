@@ -19,6 +19,7 @@ load("./data/ng_cons.rda")
 load("./data/ng_cons_doc.rda")
 
 # regener
+load("./data/regener_cons_ae_year.rda")
 load("./data/regener_cons_ae_use.rda")
 load("./data/regener_cons_ae_aff.rda")
 load("./data/regener_needs.rda")
@@ -48,6 +49,7 @@ energy_datasets_objects <- c("elec_prod",
                              "elec_cons",
                              "ng_cons",
                              "regener_needs",
+                             "regener_cons_ae_year",
                              "regener_cons_ae_use",
                              "regener_cons_ae_aff",
                              "regener_misc",

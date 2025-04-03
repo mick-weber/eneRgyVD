@@ -44,39 +44,58 @@ mod_regener_cons_charts_ui <- function(id,
       id = ns("tabset_rgr_cons"),
       header = br(), # blank line to space content (alternative would be to add padding)
 
-    # nav_panel for better readability of plot / table
+      # nav_panel for better readability of plot / table
 
-    bslib::nav_panel(title = "Graphique",
-                     icon = phosphoricons::ph(title = NULL, "chart-bar"),
+      bslib::nav_panel(title = "Graphique",
+                       icon = phosphoricons::ph(title = NULL, "chart-bar"),
 
- tags$p(class = "text-muted justify-content-center pb-2",
-   "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
-      shiny::textOutput(ns("current_year_txt"), inline = TRUE)),
+                       tags$p(class = "text-muted justify-content-center pb-2",
+                              "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
+                              shiny::textOutput(ns("current_year_txt"), inline = TRUE)),
 
-                      # radioGroupButtons() for tab ----
+                       bslib::layout_columns(col_widths = c(-2, 8, -2),
+                                             class = "fs-materialSwitch",
 
- bslib::layout_column_wrap(width = 1/3, # 33% of avail. width
-                           class = "d-flex align-items-end",
+                                             # materialSwitch 2/2 for bar plot
+                                             shiny::conditionalPanel(
+                                               # Toggle condition in server must be reached
+                                               condition = "output.toggle",
+                                               ns = ns,
 
-                      shinyWidgets::radioGroupButtons(
-                        inputId = ns("tab_plot_type"),
-                        label = h6(strong("Affichage de la consommation")),
-                        choices = c(`<i class='fa fa-fire'></i> Par usage` = "use",
-                                    `<i class='fa fa-house'></i> Par affectation` = "aff"),
-                        justified = TRUE,
-                        individual = TRUE,
-                        width = "100%")
+                                               tags$div(
+                                                 shinyWidgets::materialSwitch(
+                                                   inputId = ns("toggle_status"),
+                                                   value = FALSE,
+                                                   label = strong("Axe vertical commun", class = "align-middle"),
+                                                   status = "success",
+                                                   inline = TRUE),
+                                                 tags$span(strong("indépendant", class = "align-middle"))
+                                               )# End tags$div
+                                             )# End 2nd conditionalPanel
 
- ),# End layout_column_wrap
+                       ),#End layout_column_wrap() for buttons
 
-                      # Alluvial plot ----
-                      # ggalluvial plot
-                        uiOutput(ns("plot_render_ui")) |>
-                              shinycssloaders::withSpinner(type = 6, color= main_color)
+                       # radioGroupButtons() for tab ----
 
-                      # shiny::plotOutput(ns("chart_alluvial"), height = "auto") |>
-                         # shinycssloaders::withSpinner(type = 6,
-                         #                              color= main_color) # color defined in utils_helpers.R
+                       bslib::layout_column_wrap(width = 1/3, # 33% of avail. width
+                                                 class = "d-flex align-items-end",
+
+                                                 shinyWidgets::radioGroupButtons(
+                                                   inputId = ns("tab_plot_type"),
+                                                   label = h6(strong("Affichage de la consommation")),
+                                                   choices = c(
+                                                     `<i class='fa fa-fire'></i> Par année` = "year",
+                                                     `<i class='fa fa-fire'></i> Par usage` = "use",
+                                                     `<i class='fa fa-house'></i> Par affectation` = "aff"),
+                                                   justified = TRUE,
+                                                   individual = TRUE,
+                                                   width = "100%")
+
+                       ),# End layout_column_wrap
+
+                       # Dynamic plot rendering
+                       uiOutput(ns("plot_render_ui")) |>
+                         shinycssloaders::withSpinner(type = 6, color= main_color)
 
 
       ),# End nav_panel 'Graphique'
@@ -86,20 +105,22 @@ mod_regener_cons_charts_ui <- function(id,
 
                        bslib::layout_column_wrap(width = 1/3, # each col = 33% of avail. width
 
-                             # radioGroupButtons() for tab ----
-                             shinyWidgets::radioGroupButtons(
-                               inputId = ns("tab_table_type"),
-                               label = h6(strong("Affichage de la consommation")),
-                               choices = c(`<i class='fa fa-fire'></i> Par usage` = "use",
-                                           `<i class='fa fa-house'></i> Par affectation` = "aff"),
-                               justified = TRUE,
-                               individual = TRUE,
-                               width = "100%")
-                             ),# End layout_column_wrap
+                                                 # radioGroupButtons() for tab ----
+                                                 shinyWidgets::radioGroupButtons(
+                                                   inputId = ns("tab_table_type"),
+                                                   label = h6(strong("Affichage de la consommation")),
+                                                   choices = c(
+                                                     `<i class='fa fa-fire'></i> Par année` = "year",
+                                                     `<i class='fa fa-fire'></i> Par usage` = "use",
+                                                     `<i class='fa fa-house'></i> Par affectation` = "aff"),
+                                                   justified = TRUE,
+                                                   individual = TRUE,
+                                                   width = "100%")
+                       ),# End layout_column_wrap
 
                        br(),
-                             # Download module
-                             mod_download_data_ui(ns("table_download")),
+                       # Download module
+                       mod_download_data_ui(ns("table_download")),
 
                        # rt table
                        DT::dataTableOutput(ns("table_1")) |>
@@ -114,14 +135,20 @@ mod_regener_cons_charts_ui <- function(id,
 #'
 #' @noRd
 mod_regener_cons_charts_server <- function(id,
-                                      inputVals, # for facet height
-                                      subset_rgr_cons_1, # conso->use
-                                      subset_rgr_cons_2, # conso->aff
-                                      doc_vars = doc_vars,
-                                      dl_prefix
-                                      ){
+                                           inputVals, # for facet height
+                                           subset_rgr_cons_year,# conso->year
+                                           subset_rgr_cons_use, # conso->use
+                                           subset_rgr_cons_aff, # conso->aff
+                                           doc_vars = doc_vars,
+                                           dl_prefix
+){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # Initialize toggle free_y condition for conditionalPanel in ui
+    output$toggle <- reactive({length(unique(subset_rgr_cons_year()$commune)) > 1})
+    # We don't suspend output$toggle when hidden (default is TRUE)
+    outputOptions(output, 'toggle', suspendWhenHidden = FALSE)
 
     # renderText() latest year for UI's textOutput() ----
 
@@ -134,101 +161,160 @@ mod_regener_cons_charts_server <- function(id,
 
     # filter for the latest year for the plots (not the table) ----
 
-    subset_rgr_cons_1_last_year <- reactive({
+    subset_rgr_cons_use_last_year <- reactive({
 
       req(inputVals$max_selected_regener)
       req(inputVals$selectedCommunes)
-      req(subset_rgr_cons_1())
+      req(subset_rgr_cons_use())
 
-      subset_rgr_cons_1() |>
+      subset_rgr_cons_use() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
     })
 
-    # subset_rgr_cons_2 -> subset_rgr_cons_2_last_year
+    # subset_rgr_cons_aff -> subset_rgr_cons_aff_last_year
 
-    subset_rgr_cons_2_last_year <- reactive({
+    subset_rgr_cons_aff_last_year <- reactive({
 
       req(inputVals$max_selected_regener)
       req(inputVals$selectedCommunes)
-      req(subset_rgr_cons_2())
+      req(subset_rgr_cons_aff())
 
-      subset_rgr_cons_2() |>
+      subset_rgr_cons_aff() |>
         dplyr::filter(etat == inputVals$max_selected_regener)
 
     })
 
 
-    # tabs and renderPlot() ----
 
     output$plot_render_ui <- renderUI({
+      validate(need(inputVals$selectedCommunes, req_communes_phrase))  # Ensure input is valid
+      # Make sure the data is available
+      req(subset_rgr_cons_use_last_year())
+      req(subset_rgr_cons_aff_last_year())
+      req(subset_rgr_cons_year())
 
-      validate(need(inputVals$selectedCommunes, req_communes_phrase))
-      req(subset_rgr_cons_1_last_year())
+      # Compute number of rows
+      num_facets <- length(unique(subset_rgr_cons_year()$commune))
+      num_columns <- 2
+      num_rows <- ceiling(num_facets / num_columns)  # Calculate rows needed for 2 columns
 
+      # Dynamic height and width for svg/px
+      base_height_per_row_svg <- 2  # Adjust height ratio per row
+      base_height_per_row_px <- 300  # Adjust height ratio per row
 
-      if(input$tab_plot_type == "use"){
-      output$chart_1 <- renderPlot({
+      # height/width for svg (ggiraph) and px (alluvial)
+      height_svg <- 2 + (num_rows * base_height_per_row_svg)  # Height grows with the number of rows
+      width_svg <- 15  # Keep width static for two columns layout
 
-            subset_rgr_cons_1_last_year()  |>
-              lump_alluvial_factors(var_commune = "commune",
-                                    var_flow = "consommation",
-                                    var_from = "ae",
-                                    var_to = "usage") |>
-              create_alluvial_chart(var_commune = "commune",
-                                    var_flow = "consommation",
-                                    var_from = "ae",
-                                    label_from = "Consommation",
-                                    var_to = "usage",
-                                    label_to = "Usage")
-
-      }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_1_last_year()$commune)),
-                         yes = 400, # if no commune selected, default width = 400
-                         no = ceiling(dplyr::n_distinct(subset_rgr_cons_1_last_year()$commune)/2)*400))
-
-      }else if(input$tab_plot_type == "aff"){
+      height_px <- num_rows * base_height_per_row_px
 
 
-        output$chart_1 <- renderPlot({
-          subset_rgr_cons_2_last_year()  |>
-            lump_alluvial_factors(var_commune = "commune",
-                                  var_flow = "consommation",
-                                  var_from = "ae",
-                                  var_to = "affectation") |>
-            create_alluvial_chart(var_commune = "commune",
-                                  var_flow = "consommation",
-                                  var_from = "ae",
-                                  label_from = "Consommation",
-                                  var_to = "affectation",
-                                  label_to = "Affectation")
-        }, height = ifelse(test = is.null(dplyr::n_distinct(subset_rgr_cons_2_last_year()$commune)),
-                           yes = 400, # if no commune selected, default width = 400
-                           no = ceiling(dplyr::n_distinct(subset_rgr_cons_2_last_year()$commune)/2)*400))
+      ## renderGirafe ----
+      output$bar_plot <- ggiraph::renderGirafe({
 
+        req(subset_rgr_cons_year())
+
+        create_plot_ggiraph(data = subset_rgr_cons_year(),
+                            n_communes = dplyr::n_distinct(subset_rgr_cons_year()$commune),
+                            var_year = "etat",
+                            var_commune = "commune",
+                            unit = inputVals$energyUnit,
+                            var_cat = "ae",
+                            var_values = "consommation",
+                            geom = "col",
+                            color_palette = colors_ae, # defined in utils_helpers.R
+                            dodge = FALSE, # if T -> by default we stack, no user interaction allowed
+                            free_y = input$toggle_status,
+                            legend_title = NULL,
+                            height_svg = height_svg, # see above, heuristic
+                            width_svg = width_svg # see above, heuristic
+        )
+      })
+
+
+
+      ## renderPlot 1/2 ----
+      output$alluvial_use_plot <- renderPlot({
+
+        req(subset_rgr_cons_use_last_year())
+
+        subset_rgr_cons_use_last_year()  |>
+          lump_alluvial_factors(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                var_to = "usage") |>
+          create_alluvial_chart(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                label_from = "Consommation",
+                                var_to = "usage",
+                                label_to = "Usage")
+
+      }, height = height_px)
+
+      ## renderPlot 2/2 ----
+      output$alluvial_aff_plot <- renderPlot({
+
+        req(subset_rgr_cons_aff_last_year())
+
+        subset_rgr_cons_aff_last_year()  |>
+          lump_alluvial_factors(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                var_to = "affectation") |>
+          create_alluvial_chart(var_commune = "commune",
+                                var_flow = "consommation",
+                                var_from = "ae",
+                                label_from = "Consommation",
+                                var_to = "affectation",
+                                label_to = "Affectation")
+      }, height = height_px)
+
+      #Plot rendering based on tab selection
+
+      if(input$tab_plot_type == "year"){
+        ggiraph::girafeOutput(ns("bar_plot"))
+      } else if(input$tab_plot_type == "use"){
+        tags$div(style = "margin-top:2vh;",
+                 plotOutput(ns("alluvial_use_plot"))
+        )
+      } else if(input$tab_plot_type == "aff"){
+        tags$div(style = "margin-top:2vh;",
+                 plotOutput(ns("alluvial_aff_plot"))
+        )
       }
-
-      # We create a div so that we can optionnaly pass a class
-      tags$div(
-        style = "margin-top:2vh;", # otherwise alluvial plots are too close to input$tab_plot_type
-        plotOutput(ns("chart_1")) |>
-          shinycssloaders::withSpinner(type = 6,
-                                       color= main_color) # color defined in utils_helpers.R
-      )
-
-      })# End renderUI
+    })
 
 
     # tabs and renderTable ----
     observe({
 
-      if(input$tab_table_type == "use"){
+      if(input$tab_table_type == "year"){
+
+        # Bar plot table 1 : conso by year
+        output$table_1 <- DT::renderDataTable({
+
+          validate(need(inputVals$selectedCommunes, req_communes_phrase))
+
+          make_table_dt(data = subset_rgr_cons_year(),
+                        var_commune = "commune",
+                        var_year = "etat",
+                        var_values = c("consommation", "pct_commune", "co2_direct"),
+                        var_cat = "ae",
+                        unit = list(inputVals$energyUnit, NULL, inputVals$co2Unit),
+                        icons_palette = regener_icons
+          )
+        })
+      }
+      else if(input$tab_table_type == "use"){
 
         # Alluvial table 1 : conso -> usage
         output$table_1 <- DT::renderDataTable({
 
-            validate(need(inputVals$selectedCommunes, req_communes_phrase))
+          validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-          make_table_dt(data = subset_rgr_cons_1(),
+          make_table_dt(data = subset_rgr_cons_use(),
                         var_commune = "commune",
                         var_year = "etat",
                         var_values = c("consommation", "co2_direct"),
@@ -246,7 +332,7 @@ mod_regener_cons_charts_server <- function(id,
 
           validate(need(inputVals$selectedCommunes, req_communes_phrase))
 
-          make_table_dt(data = subset_rgr_cons_1(),
+          make_table_dt(data = subset_rgr_cons_use(),
                         var_commune = "commune",
                         var_year = "etat",
                         var_values = c("consommation", "co2_direct"),
@@ -263,20 +349,28 @@ mod_regener_cons_charts_server <- function(id,
 
     download_data <- reactive({
 
-      if(input$tab_table_type == "use"){
+      if(input$tab_table_type == "year"){
 
-        subset_rgr_cons_1() |> # from app_server.R
+        subset_rgr_cons_year() |> # from app_server.R
           # Add the currently selected unit in the colnames (conversion is already done)
           add_colname_unit(colnames = c("consommation", "co2_direct"),
                            unit = c(inputVals$energyUnit,inputVals$co2Unit )) |>
           rename_columns_output()
 
-          } else if(input$tab_table_type == "aff"){
+      }else if(input$tab_table_type == "use"){
 
-        subset_rgr_cons_2() |> # from app_server.R
-              add_colname_unit(colnames = c("consommation", "co2_direct"),
-                                unit = c(inputVals$energyUnit,inputVals$co2Unit )) |>
-              rename_columns_output()
+        subset_rgr_cons_use() |> # from app_server.R
+          # Add the currently selected unit in the colnames (conversion is already done)
+          add_colname_unit(colnames = c("consommation", "co2_direct"),
+                           unit = c(inputVals$energyUnit,inputVals$co2Unit )) |>
+          rename_columns_output()
+
+      } else if(input$tab_table_type == "aff"){
+
+        subset_rgr_cons_aff() |> # from app_server.R
+          add_colname_unit(colnames = c("consommation", "co2_direct"),
+                           unit = c(inputVals$energyUnit,inputVals$co2Unit )) |>
+          rename_columns_output()
       }
 
     })

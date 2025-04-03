@@ -226,6 +226,7 @@ a {
 }
 
 /* Deal with sidebar width dynamically (struggled hard to find the right selector)*/
+/* From less specific to more specific ! */
 /* external monitors : fixed size */
 @media (min-width: 1401px) {
   .bslib-sidebar-layout {

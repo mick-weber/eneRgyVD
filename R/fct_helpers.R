@@ -608,7 +608,6 @@ make_table_dt <- function(data,
       dplyr::rename(" " = "icon")# empty colname for icons
   }
 
-
   data_prep <- data |>
     dplyr::mutate(!!var_year := as.factor(.data[[var_year]])) |>
     # any_of() allows to pass var_car even if it does not exist
@@ -875,7 +874,8 @@ add_colname_unit <- function(data, colnames, unit){
 
   # Ensure that colnames and units are of equal length, otherwise replicate unit as needed
   if(length(colnames) > length(unit)) {
-    unit <- rep(unit, length(colnames))
+    # message("Number of units passed to `add_colname_unit()` is lower than the target colnames. <unit> is thus repeated to fit the number of colnames.")
+    unit <- rep(unlist(unit), length(colnames))
   }
 
   if(length(colnames) < length(unit)) {
@@ -907,8 +907,14 @@ add_colname_unit <- function(data, colnames, unit){
 
       data <- data |>
         dplyr::rename_with(.cols = dplyr::any_of(current_colname),
-                           .fn = \(col) paste0(col, " [", current_unit, "]"))
-
+                           .fn = \(col){
+                             if(!is.null(current_unit)){
+                               paste0(col, " [", current_unit, "]")
+                             }else{
+                               col
+                             }
+                           }
+        )
     }
   }
   return(data)

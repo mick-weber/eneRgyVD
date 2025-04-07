@@ -1,10 +1,12 @@
+# eneRgyVD 1.1.0
+
+* Ajout d'un jeu de données `regener_cons_ae_year` qui est la version simplifiée de `regener_cons_ae_use/aff` permettant un affichage en barplot par année, en complément des diagrammes alluviaux précédemment proposés
+
+* Meilleure gestion des petits écrans (laptop, mobile, etc.) pour la sidebar ainsi que pour le groupement/déploiement de la barre de navigation principale selon la largeur d'écran disponible
+
+* Meilleure intégration des scripts javascript dans des fichiers dédiés plutôt que dans le header HTML du fichier app_ui.R
+
 # eneRgyVD 1.0.0
-
-# eneRgyVD 0.1.0
-
-<style type="text/css", rel="stylsheet">
-/* add custom css if needed */
-</style>
 
 ## Suivi des modifications du profil énergétique
 

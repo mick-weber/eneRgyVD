@@ -312,8 +312,9 @@ app_server <- function(input, output, session) {
   ## mod regener_cons_charts ----
   mod_regener_cons_charts_server("regener_cons",
                                  inputVals = inputVals,
-                                 subset_rgr_cons_1 = reactive({inputVals$energyDatasets$regener_cons_ae_use}),
-                                 subset_rgr_cons_2 = reactive({inputVals$energyDatasets$regener_cons_ae_aff}),
+                                 subset_rgr_cons_year = reactive({inputVals$energyDatasets$regener_cons_ae_year}),
+                                 subset_rgr_cons_use = reactive({inputVals$energyDatasets$regener_cons_ae_use}),
+                                 subset_rgr_cons_aff = reactive({inputVals$energyDatasets$regener_cons_ae_aff}),
                                  dl_prefix = "conso_bat_",
                                  doc_vars = doc_datasets$regener # utils_helpers.R
   )

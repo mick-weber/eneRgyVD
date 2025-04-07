@@ -39,8 +39,8 @@ mod_generic_charts_ui <- function(id,
                    ))
     ),#End div
 
-    # If any : pass title_complement at 70% width of container
-    tags$p(title_complement, style = "width:70vw;"),
+    # If any : pass title_complement from utils_text_and_links (beware of css styling, width and font-size)
+    title_complement,
 
     # Pills ----
 

@@ -32,7 +32,7 @@ app_ui <- function(request) {
     ## |---------------------------------------------------------------|
     # Top navbar ----
     tags$nav(
-      class = "navbar navbar-expand-lg bg-primary",
+      class = "navbar navbar-expand-md bg-primary",
       style = "color:white;padding: 2px; width: 100%; position: relative; z-index: 1000;",
 
       # Tweak the title spacers and font-size
@@ -74,7 +74,8 @@ app_ui <- function(request) {
 
       id = "nav", # conditionalPanels will refer to this as input.nav == <condition>
       fillable = TRUE,
-
+      navbar_options = list(class = "navbar-expand-xl",
+                            style = "@media (max-width:1199px) {.navbar-header .navbar-toggle{order:2 !important;}}"), #instead of default lg we collapse earlier to avoid navbar on two rows
       # Footer
       footer = p("DGE-DIREN @ 2025", class = "fw-lighter",
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
@@ -102,7 +103,7 @@ app_ui <- function(request) {
           # When clicked, add a reactive input (id from div is not listened by server). See app_server.R.
           # With server code this redirects to 'Accueil' tab
           onclick = "Shiny.setInputValue(id = 'clickLogoToHomepage_click', value = 'clickLogoToHomepage_click', {priority : 'event'})",
-          style = "cursor: pointer;display: flex; align-items: center; gap: 10px;margin-right:10vw;",
+          style = "cursor: pointer;display: flex; align-items: center; gap: 10px;margin-right:3rem;",
           tags$img(src = "www/vd-logo-black.svg", height = "50px", class = "navbar-brand"),
           tags$div(
             style = "font-size:0.9rem;",

@@ -85,6 +85,26 @@
   margin-bottom:0px !important;
 }
 
+/* Make sure the hamburger button is on the right (order:2). */
+/*Override fault bootstrap.min.css rule that sets 998.98px as limit for order:2 to be effective*/
+
+@media (max-width: 1199.98px) {
+    /* Override the .navbar-header styles */
+    .navbar-header {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    /* Override the order of the hamburger button */
+    .navbar-header .navbar-toggle {
+        order: 2 !important;  /* Change the order to 2 */
+    }
+}
+
+
 /* Add spacing between items (nav_panel()) */
 /* Change color of nav's unselected navigation links (and hovering) with darkgrey instead of light grey, more visible */
 #nav{

@@ -1,75 +1,81 @@
 ﻿dataset;colname;replacement
-elec_prod;puissance_electrique_installee;Puissance électrique installée
-regener_misc;N_RENOV_L_POST_2000;Bâtiments rénovés partiellement (2001+)
-regener_misc;N_RENOV_H_POST_2000;Bâtiments rénovés globalement (2001+)
-subsidies_by_measure;mesure_simplifiee;Mesure simplifiée
-taux_motorisation;taux_motorisation;Taux de motorisation
-elec_prod;autoconsommation;Autoconsommation
-subsidies_by_building;detail_chauffage;Détail chauffage
-qualite_desserte;qualite_desserte;Indice de qualité de desserte
-regener_misc;N_NEW_POST_2000;Bâtiments neufs (2001+)
-surface_canopee;surface_urbaine;Surface urbaine
 batiment_danger;nombre_batiment;Nombre de bâtiments
-part_voit_elec;part_voit_elec;Part voitures électriques
-subsidies_by_measure;detail_mesure;Détail mesure
-elec_cons;consommation;Consommation
-ng_cons;consommation;Consommation
-regener_cons_ae_use;consommation;Consommation
-regener_cons_ae_aff;consommation;Consommation
-surface_canopee;part_surface;Part de la surface
-regener_cons_ae_use;pct_commune;Part commune
-regener_cons_ae_aff;pct_commune;Part commune
-regener_cons_ae_aff;affectation;Affectation
-elec_prod;production;Production
-regener_cons_ae_use;co2_direct;GES direct
-regener_cons_ae_aff;co2_direct;GES direct
-regener_misc;N_NO_RENOV;Bâtiments sans rénovation récente
-regener_misc;N_NO_GBAUJ;Bâtiments sans année de construction
-elec_prod;categorie;Catégorie
-elec_prod;injection;Injection
-subsidies_by_building;subv_type;Type de subvention
-surface_canopee;categorie;Categorie
 batiment_danger;categorie;Catégorie
-elec_prod;commune;Commune
+batiment_danger;commune;Commune
+batiment_danger;annee;Année
+elec_cons;consommation;Consommation
 elec_cons;commune;Commune
 elec_cons;secteur;Secteur
+elec_cons;annee;Année
+elec_prod;puissance_electrique_installee;Puissance électrique installée
+elec_prod;autoconsommation;Autoconsommation
+elec_prod;production;Production
+elec_prod;categorie;Catégorie
+elec_prod;injection;Injection
+elec_prod;commune;Commune
+elec_prod;annee;Année
+ng_cons;consommation;Consommation
 ng_cons;commune;Commune
 ng_cons;secteur;Secteur
+ng_cons;annee;Année
+part_voit_elec;part_voit_elec;Part voitures électriques
+part_voit_elec;commune;Commune
+part_voit_elec;annee;Année
+qualite_desserte;qualite_desserte;Indice de qualité de desserte
+qualite_desserte;commune;Commune
+qualite_desserte;annee;Année
+qualite_desserte;type;Type
+regener_cons_ae_aff;consommation;Consommation
+regener_cons_ae_aff;pct_commune;Part commune
+regener_cons_ae_aff;affectation;Affectation
+regener_cons_ae_aff;co2_direct;GES direct
+regener_cons_ae_aff;commune;Commune
+regener_cons_ae_aff;etat;Etat
+regener_cons_ae_aff;ae;Agent énergétique
+regener_cons_ae_use;consommation;Consommation
+regener_cons_ae_use;pct_commune;Part commune
+regener_cons_ae_use;co2_direct;GES direct
+regener_cons_ae_use;commune;Commune
+regener_cons_ae_use;usage;Usage
+regener_cons_ae_use;etat;Etat
+regener_cons_ae_use;ae;Agent énergétique
+regener_misc;N_RENOV_L_POST_2000;Bâtiments rénovés partiellement (2001+)
+regener_misc;N_RENOV_H_POST_2000;Bâtiments rénovés globalement (2001+)
+regener_misc;N_NEW_POST_2000;Bâtiments neufs (2001+)
+regener_misc;N_NO_RENOV;Bâtiments sans rénovation récente
+regener_misc;N_NO_GBAUJ;Bâtiments sans année de construction
+regener_misc;commune;Commune
+regener_misc;N_EGID;Nombre de bâtiments
+regener_misc;etat;Etat
+regener_misc;SRE;Surface de référence énergétique
 regener_needs;commune;Commune
 regener_needs;besoins;Besoins
-regener_cons_ae_use;commune;Commune
-regener_cons_ae_aff;commune;Commune
-regener_misc;commune;Commune
-subsidies_by_measure;commune;Commune
-subsidies_by_building;commune;Commune
-part_voit_elec;commune;Commune
-taux_motorisation;commune;Commune
-qualite_desserte;commune;Commune
-surface_canopee;commune;Commune
-batiment_danger;commune;Commune
 regener_needs;statut;Statut
-regener_misc;N_EGID;Nombre de bâtiments
-subsidies_by_measure;mesure;Mesure
-subsidies_by_measure;nombre;Nombre
-subsidies_by_building;N_EGID;Nombre de bâtiments
-elec_prod;annee;Année
-elec_cons;annee;Année
-ng_cons;annee;Année
-regener_cons_ae_use;usage;Usage
-subsidies_by_measure;annee;Année
-part_voit_elec;annee;Année
-taux_motorisation;annee;Année
-qualite_desserte;annee;Année
-surface_canopee;annee;Année
-batiment_danger;annee;Année
 regener_needs;type;Type
 regener_needs;etat;Etat
-regener_cons_ae_use;etat;Etat
-regener_cons_ae_aff;etat;Etat
-regener_misc;etat;Etat
+subsidies_by_building;detail_chauffage;Détail chauffage
+subsidies_by_building;subv_type;Type de subvention
+subsidies_by_building;commune;Commune
+subsidies_by_building;N_EGID;Nombre de bâtiments
 subsidies_by_building;etat;Etat
-qualite_desserte;type;Type
-regener_misc;SRE;Surface de référence énergétique
 subsidies_by_building;SRE;Surface de référence énergétique
-regener_cons_ae_use;ae;Agent énergétique
-regener_cons_ae_aff;ae;Agent énergétique
+subsidies_by_measure;mesure_simplifiee;Mesure simplifiée
+subsidies_by_measure;detail_mesure;Détail mesure
+subsidies_by_measure;commune;Commune
+subsidies_by_measure;mesure;Mesure
+subsidies_by_measure;nombre;Nombre
+subsidies_by_measure;annee;Année
+surface_canopee;surface_urbaine;Surface urbaine
+surface_canopee;part_surface;Part de la surface
+surface_canopee;categorie;Categorie
+surface_canopee;commune;Commune
+surface_canopee;annee;Année
+taux_motorisation;taux_motorisation;Taux de motorisation
+taux_motorisation;commune;Commune
+taux_motorisation;annee;Année
+regener_cons_ae_year;commune;Commune
+regener_cons_ae_year;ae;Agent énergétique
+regener_cons_ae_year;consommation;Consommation
+regener_cons_ae_year;co2_direct;GES direct
+regener_cons_ae_year;pct_commune;Part commune
+regener_cons_ae_year;etat;Etat

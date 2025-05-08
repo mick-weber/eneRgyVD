@@ -214,8 +214,9 @@ mod_inputs_server <- function(id){
       req(input$selected_communes)
 
       shiny::conditionalPanel(style = "display: none;", # avoid flickering upon init
-        condition = "input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
-
+        condition = #"input.nav == 'Chaleur des bâtiments' && ['Besoins des bâtiments', 'Consommation des bâtiments'].includes(input.navset_regener)", # 2 conditions !
+        "(input.nav == 'Chaleur des bâtiments' && input.navset_regener == 'Besoins des bâtiments') ||
+        (input.nav == 'Chaleur des bâtiments' && input.navset_regener == 'Consommation des bâtiments' && ['use', 'aff'].includes(input['regener_cons-tab_plot_type']))",
         #shiny::uiOutput(ns("regener_year_selector"))
         shiny::selectInput(ns("regener_needs_year"),
                            label = tags$p("Année (graphique)", style = "font-weight:500;margin-bottom:0px;"),

@@ -49,9 +49,13 @@ mod_regener_cons_charts_ui <- function(id,
       bslib::nav_panel(title = "Graphique",
                        icon = phosphoricons::ph(title = NULL, "chart-bar"),
 
-                       tags$p(class = "text-muted justify-content-center pb-2",
-                              "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
-                              shiny::textOutput(ns("current_year_txt"), inline = TRUE)),
+                       # Disclaimer that only the latest year is used : only for use/year panels below, not yearly (makes no se)
+                       shiny::conditionalPanel(
+                         glue::glue("['use', 'aff'].includes(input['{ns('tab_plot_type')}'])"),
+                                               tags$p(class = "text-muted justify-content-center pb-2",
+                                                      "L'année affichée correspond à l'année la plus récente sélectionnée dans la barre latérale : ",
+                                                      shiny::textOutput(ns("current_year_txt"), inline = TRUE))
+                       ),
 
                        bslib::layout_columns(col_widths = c(-2, 8, -2),
                                              class = "fs-materialSwitch",

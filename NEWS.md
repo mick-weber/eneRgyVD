@@ -1,3 +1,5 @@
+# eneRgyVD 1.2.0
+
 # eneRgyVD 1.1.0
 
 * Ajout d'un jeu de données `regener_cons_ae_year` qui est la version simplifiée de `regener_cons_ae_use/aff` permettant un affichage en barplot par année, en complément des diagrammes alluviaux précédemment proposés

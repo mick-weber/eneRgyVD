@@ -1,5 +1,11 @@
 # eneRgyVD 1.2.0
 
+* Ajout des données de production d'électricité 2024
+
+* Ajout des données mobilité 2024 (trois jeux de données)
+
+* Changements mineurs de texte/affichage/gestion des liens
+
 # eneRgyVD 1.1.0
 
 * Ajout d'un jeu de données `regener_cons_ae_year` qui est la version simplifiée de `regener_cons_ae_use/aff` permettant un affichage en barplot par année, en complément des diagrammes alluviaux précédemment proposés

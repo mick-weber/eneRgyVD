@@ -17,7 +17,7 @@ Source des données : [Cartostat DGMR](https://cartostatdgmr.vd.ch/#c=indicator&
 
 ## Quand est-ce que ces données sont mises à jour ?
 
-Elles sont mises à jour annuellement en automne.
+Elles sont mises à jour annuellement au début de l'été pour l'année précédente.
 
 ## A quoi faut-il faire attention ?
 

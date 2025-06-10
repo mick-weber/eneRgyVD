@@ -21,11 +21,13 @@ mod_about_the_app_ui <- function(id){
                                                              # breathing
                                                              br(),
                                                              h4(strong("Pourquoi cette application ?")),
-                                                             tags$p("Le but du profil climatique est de faciliter la planification énergie et climat des territoires en diffusant des informations disponibles au niveau communal qui ne sont pas facilement accessibles autrement.
-           Bien que dédié principalement aux communes, cet outil se veut accessible pour tout le monde.
+                                                             tags$p("Le profil climatique met à disposition des statistiques communales facilite la planification énergie et climat du territoire vaudois.
+                                                             Cet outil se veut accessible pour tout le monde.
            Les différentes visualisations, les options de téléchargement ainsi que la possibilité d'exporter un rapport automatisé permettent d'explorer les données et de les exporter facilement."),
                                                              # breathing
-                                                             "Le profil climatique est un outil évolutif et de nouvelles données pourront être mises à disposition. Plus d'informations dans la page Nouveautés",
+
+                                                             tags$p(HTML("Le profil climatique est un outil évolutif et de nouvelles données pourront être mises à disposition.
+                                                                    Plus d'informations dans la page <strong>Nouveautés</strong>.")),
 
                                                              "Vos suggestions, retours ou critiques sont précieux et nous permettent d'améliorer cette application.",
                                                              tags$span(

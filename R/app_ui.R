@@ -104,6 +104,7 @@ app_ui <- function(request) {
       bslib::nav_item(
         tags$div(
           id = "clickLogoToHomepage",
+          title = "Retour à l’accueil",  # ← tooltip text here
           # When clicked, add a reactive input (id from div is not listened by server). See app_server.R.
           # With server code this redirects to 'Accueil' tab
           onclick = "Shiny.setInputValue(id = 'clickLogoToHomepage_click', value = 'clickLogoToHomepage_click', {priority : 'event'})",
@@ -427,7 +428,7 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
+    favicon(rel = "icon"),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = "Profil climatique vaudois"

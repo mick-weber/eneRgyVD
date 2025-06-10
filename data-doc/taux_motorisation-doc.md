@@ -9,7 +9,7 @@ Le taux de motorisation mesure le nombre de voitures de tourisme pour 1’000 ha
  
 ## Qui traite ces données ?
 
-La DGMR (Direction générale de la mobilité et des routes). Source des données https://cartostatdgmr.vd.ch/#c=indicator&i=voitures.voit_1000hab&s=2023&view=map1
+La DGMR (Direction générale de la mobilité et des routes). Source des données : [Cartostat DGMR](https://cartostatdgmr.vd.ch/#c=indicator&i=voitures.voit_1000hab&s=2023&view=map1){target="_blank"}
 
 ## Quand est-ce que ces données sont mis à jour?
 

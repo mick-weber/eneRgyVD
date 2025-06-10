@@ -10,7 +10,8 @@ La part de voitures électriques dans le canton de Vaud mesure la proportion de 
 ## Qui traite ces données ?
 
 La DGMR (Direction générale de la mobilité et des routes). <br>
-Source des données:  https://cartostatdgmr.vd.ch/#c=indicator&i=carbu_ofs.part_elec&s=2023&view=map1
+Source des données : [Cartostat DGMR](https://cartostatdgmr.vd.ch/#c=indicator&i=carbu_ofs.part_elec&s=2023&view=map1){target="_blank"}
+
 
 ## Quand est-ce que ces données sont mis à jour?
 

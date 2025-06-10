@@ -38,12 +38,27 @@ welcome_modal <- function(){
 
                       )
                   ),
+
+                  # News highlights section
+                  div(class = "px-4 pt-2",
+                      style = "font-size:1.1rem;",
+                      tags$p(
+                        "Ajoutées récemment (juin 2025) :",
+                      tags$ul(
+                        tags$li("données de production d'électricité 2024"),
+                        tags$li("données de taux de motorisation 2024"),
+                        tags$li("données de part de voitures électriques 2024"),
+                        tags$li("données de qualité de desserte des transports publics 2024"),
+                        )
+                      )
+                  ),
+
                   # Grey warning area
                   div(class = "modal-warning d-flex align-items-center",
                       shiny::icon("warning", class = "fa-2x me-3"), # Add margin to the right of the icon
                       div(
                         "Les données sont susceptibles de changer de manière rétroactive.",
-                        "Il est donc important de les interpréter avec précaution car des améliorations méthodologiques peuvent avoir lieu."
+                        "Il est donc important de les interpréter avec précaution car des améliorations méthodologiques peuvent régulièrement avoir lieu."
                       )
                   )
                 )
@@ -106,7 +121,8 @@ generate_doc_accordion_panels <- function(md_file){
                            title,
                            icon = phosphoricons::ph(title = NULL, "question"),
                            shiny::tags$div(class = "customPanel",
-                                           shiny::markdown(paragraph))
+                                           HTML(markdown::markdownToHTML(text = paragraph, fragment.only = TRUE)) # allows url target_blank etc.
+                                           )
                          )
 
                        })

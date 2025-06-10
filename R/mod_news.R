@@ -15,7 +15,7 @@ mod_news_ui <- function(id){
 
                           h4(strong("Nouveautés")),
 
-                          bslib::accordion(open = c("tocome", "mar25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
+                          bslib::accordion(open = c("tocome", "jun25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,
 
                                            # Next updates ----
@@ -25,6 +25,29 @@ mod_news_ui <- function(id){
                                                                   tagList(
                                                                     phosphoricons::ph(title = NULL, "dots-three", height = "1.5em"),
                                                                     "Mise à jour des données selon disponibilité propre à chaque thématique")
+                                           ),
+
+                                           # Juin 2025
+                                           bslib::accordion_panel(title = HTML("<strong>Juin 2025</strong>"),
+                                                                  value = "jun25",
+                                                                  icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de production d'électricité 2024",
+                                                                          br(),
+                                                                          "Note : léger correctif rétroactif appliqué sur les données 2015-2023 concernant le solaire photovoltaïque"
+                                                                          ),
+                                                                  br(), br(),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de part de véhicules électriques 2024",
+                                                                  ),
+                                                                  br(), br(),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de taux de motorisation 2024",
+                                                                  ),
+                                                                  br(), br(),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de qualité de zone de desserte des transports publics 2024",
+                                                                  )
                                            ),
 
                                            # Mars 2025

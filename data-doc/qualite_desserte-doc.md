@@ -12,7 +12,8 @@ Les données proviennent de la direction générale de la mobilité et des route
 
 ## Qui traite ces données ?
 
-La DGMR (Direction générale de la mobilité et des routes). <br> Source des données:  https://cartostatdgmr.vd.ch/#c=indicator&i=qdtp_pop.pop_qdtp_is&s=2024&view=map1
+La DGMR (Direction générale de la mobilité et des routes). <br>
+Source des données : [Cartostat DGMR](https://cartostatdgmr.vd.ch/#c=indicator&i=qdtp_pop.pop_qdtp_is&s=2024&view=map1){target="_blank"}
 
 ## Quand est-ce que ces données sont mises à jour ?
 

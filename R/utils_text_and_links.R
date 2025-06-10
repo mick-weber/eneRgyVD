@@ -39,7 +39,7 @@ mail_address <- "pecc@vd.ch"
 link_diren <- "https://www.vd.ch/djes/dge/dge-diren"
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
 link_pecc <- "https://www.vd.ch/pecc" # shortcut link redirecting to https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc
-link_ocdc <- "https://www.vd.ch/dfa/office-cantonal-de-la-durabilite-et-du-climat-ocdc"
+link_ocdc <- "https://www.vd.ch/dadn/ocdc"
 link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ### Geoportail links ----

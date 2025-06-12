@@ -133,6 +133,10 @@
 
 #' @rdname regener_datasets
 #' @export
+"regener_cons_ae_year"
+
+#' @rdname regener_datasets
+#' @export
 "regener_needs"
 
 #' @rdname regener_datasets

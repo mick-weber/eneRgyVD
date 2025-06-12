@@ -81,6 +81,7 @@ welcome_modal <- function(){
 #' @importFrom bslib accordion_panel
 #' @importFrom shiny markdown
 #' @importFrom phosphoricons ph
+#' @importFrom markdown markdownToHTML
 #'
 #' @return a list of HTML accordion_panels to be spliced in a `bslib::accordion()`
 #' @export
@@ -121,7 +122,7 @@ generate_doc_accordion_panels <- function(md_file){
                            title,
                            icon = phosphoricons::ph(title = NULL, "question"),
                            shiny::tags$div(class = "customPanel",
-                                           HTML(markdown::markdownToHTML(text = paragraph, fragment.only = TRUE)) # allows url target_blank etc.
+                                           shiny::HTML(markdown::markdownToHTML(text = paragraph, fragment.only = TRUE)) # allows url target_blank etc.
                                            )
                          )
 

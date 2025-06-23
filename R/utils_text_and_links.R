@@ -40,6 +40,7 @@ link_diren <- "https://www.vd.ch/djes/dge/dge-diren"
 link_dge <- "https://www.vd.ch/toutes-les-autorites/departements/departement-de-la-jeunesse-de-lenvironnement-et-de-la-securite-djes/direction-generale-de-lenvironnement-dge/"
 link_pecc <- "https://www.vd.ch/pecc" # shortcut link redirecting to https://www.vd.ch/etat-droit-finances/communes/climat-et-durabilite/plan-energie-et-climat-communal-pecc
 link_ocdc <- "https://www.vd.ch/dadn/ocdc"
+link_cartostat_dgmr <- "https://cartostatdgmr.vd.ch/"
 link_github <- "https://github.com/mick-weber/eneRgyVD"
 
 ### Geoportail links ----
@@ -56,7 +57,10 @@ title_complement_elec_cons <- shiny::tags$p(style = "width:70vw;font-size:1.1rem
 
 title_complement_elec_prod <- shiny::tags$p(style = "width:70vw;font-size:1.1rem;",
                                      shiny::HTML("Ces données sont le résultat d'un traitement des données issues de l'organisme de certification des garanties d'origine <a href = 'https://pronovo.ch/fr/'> Pronovo</a> (voir détails méthodologiques).
-                                                 La production comprend une <strong>estimation de l'autoconsommation</strong>, informations disponibles dans la table des données."))
+                                                 La production comprend une <strong>estimation de l'autoconsommation</strong>, informations disponibles dans la table des données.
+                                                 <br>
+                                                 <strong>Protection des données :</strong>
+                                                 Les données de production d'années contenant moins de 3 installations d'une même technologie sont retirées (voir la table des données)."))
 
 title_complement_ng_cons <- shiny::tags$p(style = "width:70vw;font-size:1.1rem;",
                                    shiny::HTML("Ces données sont issues des relevés des compteurs fournis par les gestionnaires de réseau de distribution. Elles ne

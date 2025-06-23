@@ -65,6 +65,8 @@ app_ui <- function(request) {
                            "OCDC", href = link_ocdc, target = "_blank"),
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
                            "DGE-DIREN", href = link_diren, target = "_blank"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
+                           "Cartostat DGMR", href = link_cartostat_dgmr, target = "_blank"),
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "github-logo"),
                            "GitHub",  href = link_github, target = "_blank")
                   )

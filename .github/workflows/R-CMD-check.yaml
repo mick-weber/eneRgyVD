@@ -38,24 +38,16 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: false
-
-      - name: Force CRAN mirror only
-        run: |
-          echo 'options(repos = c(CRAN = "https://cran.rstudio.com"))' > ~/.Rprofile
-
-      - name: Debug R repo config
-        run: |
-          Rscript -e 'print(getOption("repos"))'
+          use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          use-pak: false # fails check with R 4.5+
 
       - uses: r-lib/actions/check-r-package@v2
         with:
           error-on: '"error"'
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
-

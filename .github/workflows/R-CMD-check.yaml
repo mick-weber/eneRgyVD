@@ -19,10 +19,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
+          - {os: macos-latest,   r: 'oldrel'}
+          - {os: windows-latest, r: 'oldrel'}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'oldrel'}
+          - {os: ubuntu-latest,   r: 'oldrel'}
           - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
@@ -44,7 +44,6 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          use-pak: false  # v2 won't work with this input
 
       - uses: r-lib/actions/check-r-package@v2
         with:

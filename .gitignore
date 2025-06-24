@@ -3,7 +3,6 @@
 .Rdata
 .httr-oauth
 .DS_Store
-.Rhistory
 inst/doc
 /Meta/
 /data-raw/

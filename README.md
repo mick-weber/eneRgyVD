@@ -3,7 +3,7 @@
 
 # **Welcome to eneRgyVD** ! 
 
-This R Shiny app, built upon a `{golem}` framework, is developed by the Direction de l'énergie of Canton de Vaud (Switzerland) in collaboration with the Office cantonal de la durabilité et du climat (OCDC) to provide statistics at the municipal level for the themes of energy, climate and mobility.
+This R Shiny app, built upon a `{golem}` framework, is developed by the Direction générale de l'environnement - Direction de l'énergie (DGE-DIREN) of Canton de Vaud (Switzerland) in a collaboration with the Office cantonal de la durabilité et du climat (OCDC) to provide statistics at the municipal level for the themes of energy, climate and mobility.
 
 The app's latest production version is deployed here : https://stat-climat-vd.ch/profil-climat/ under the name *Profil climatique des communes vaudoises*.
 

@@ -32,7 +32,7 @@ welcome_modal <- function(){
                       tags$p("Cette application est mise à disposition par l'",
                              tags$a(href = link_ocdc, target = "_blank", "Office cantonal de la durabilité et du climat"),
                              "et la ",
-                             tags$a(href = link_diren, target = "_blank", "Direction de l'énergie"),
+                             tags$a(href = link_dge, target = "_blank", "Direction générale de l'environnement"),
                              " pour diffuser des données énergétiques et climatiques à l'échelle des communes vaudoises, notamment pour la réalisation des ",
                              tags$a(href = link_pecc, target = "_blank", "plans énergie et climat communaux (PECC).")
 

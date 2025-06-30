@@ -62,11 +62,13 @@ app_ui <- function(request) {
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
                            "Plan énergie climat", href = link_pecc, target = "_blank"),
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
-                           "OCDC", href = link_ocdc, target = "_blank"),
+                           "OCDC", title = "Office cantonal de la durabilité et du climat", href = link_ocdc, target = "_blank"),
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
-                           "DGE-DIREN", href = link_diren, target = "_blank"),
+                           "DGE", title = "Direction générale de l'environnement", href = link_dge, target = "_blank"),
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
-                           "Cartostat DGMR", href = link_cartostat_dgmr, target = "_blank"),
+                           "DGE-DIREN", title = "Direction de l'énergie", href = link_diren, target = "_blank"),
+                    tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "link-simple"),
+                           "Cartostat DGMR", title = "Guichet cartographique DGMR", href = link_cartostat_dgmr, target = "_blank"),
                     tags$a(class = "dropdown-item", phosphoricons::ph(title = NULL, "github-logo"),
                            "GitHub",  href = link_github, target = "_blank")
                   )
@@ -106,7 +108,7 @@ app_ui <- function(request) {
       bslib::nav_item(
         tags$div(
           id = "clickLogoToHomepage",
-          title = "Retour à l’accueil",  # ← tooltip text here
+          title = "Retour à l’accueil",  # tooltip
           # When clicked, add a reactive input (id from div is not listened by server). See app_server.R.
           # With server code this redirects to 'Accueil' tab
           onclick = "Shiny.setInputValue(id = 'clickLogoToHomepage_click', value = 'clickLogoToHomepage_click', {priority : 'event'})",
@@ -115,7 +117,7 @@ app_ui <- function(request) {
           tags$div(
             style = "font-size:0.9rem;",
             tags$p(class = "m-0", "Office cantonal de la durabilité et du climat"),
-            tags$p(class = "m-0", "Direction de l'énergie")
+            tags$p(class = "m-0", "Direction générale de l'environnement")
           )
         )
       ),

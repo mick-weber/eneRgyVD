@@ -43,14 +43,14 @@ welcome_modal <- function(){
                   div(class = "px-4 pt-2",
                       style = "font-size:1.1rem;",
                       tags$p(
-                        "Ajoutées récemment (juin 2025) :",
+                        "Ajoutées récemment (août 2025) :",
                       tags$ul(
-                        tags$li("données de production d'électricité 2024"),
-                        tags$li("données de taux de motorisation 2024"),
-                        tags$li("données de part de voitures électriques 2024"),
-                        tags$li("données de qualité de desserte des transports publics 2024"),
+                        tags$li("données de distribution d'électricité 2023"),
+                        tags$li("données de distribution de gaz 2023")
                         )
-                      )
+                      ),
+                      tags$p("Important : les relevés de compteurs actuels ne permettent d'obtenir l'information qu'avec 2 années de retard.",
+                             style = 'font-style:italic;')
                   ),
 
                   # Grey warning area

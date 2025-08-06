@@ -15,7 +15,7 @@ mod_news_ui <- function(id){
 
                           h4(strong("Nouveautés")),
 
-                          bslib::accordion(open = c("tocome", "jun25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
+                          bslib::accordion(open = c("tocome", "aug25"), # refers to 'value' of accordion_panel. !!update when adding entry!!!!
                                            multiple = TRUE,
 
                                            # Next updates ----
@@ -25,6 +25,23 @@ mod_news_ui <- function(id){
                                                                   tagList(
                                                                     phosphoricons::ph(title = NULL, "dots-three", height = "1.5em"),
                                                                     "Mise à jour des données selon disponibilité propre à chaque thématique")
+                                           ),
+
+                                           # Août 2025
+                                           bslib::accordion_panel(title = HTML("<strong>Août 2025</strong>"),
+                                                                  value = "aug25",
+                                                                  icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de distribution d'électricité 2023",
+                                                                          br(),
+                                                                          "Note : léger correctif rétroactif impactant principalement 2022"
+                                                                  ),
+                                                                  br(), br(),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de distribution de gaz 2023",
+                                                                          br(),
+                                                                          "Note : l'année 2022 augmente légèrement pour certaines communes grâce aux compléments fournis par des distributeurs"
+                                                                  )
                                            ),
 
                                            # Juin 2025

@@ -1,3 +1,9 @@
+# eneRgyVD 1.2.1
+
+* Ajout des données de distribution de gaz naturel 2023
+
+* Ajout des données de distribution d'électricité 2023
+
 # eneRgyVD 1.2.0
 
 * Ajout des données de production d'électricité 2024

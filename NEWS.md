@@ -1,3 +1,9 @@
+# eneRgyVD 1.3.1
+
+* Résolution du bug de téléchargement des données de besoins théoriques des bâtiments
+
+* Arrondi des valeurs énergétiques (consommation/production/puissance/co2)
+
 # eneRgyVD 1.3.0
 
 # eneRgyVD 1.2.1

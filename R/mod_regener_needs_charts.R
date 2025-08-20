@@ -265,8 +265,10 @@ mod_regener_needs_charts_server <- function(id,
     download_data <- reactive({
 
       # We send data in wide format too (Besoins actuels/optimaux)
+      colnames <- grep("Besoins", colnames(subsetData_wide()), ignore.case = TRUE, value = TRUE)
+
       subsetData_wide() |>
-        add_colname_unit(colnames = dplyr::contains("besoins"),
+        add_colname_unit(colnames = colnames,
                           unit = inputVals$energyUnit) |>
         rename_columns_output()
 

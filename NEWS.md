@@ -1,3 +1,7 @@
+# eneRgyVD 1.3.2
+
+* Correctif données production électricité, catégories biomasse agricole, déchets méthanisables, incinérables, STEP et thermique fossiles valaient 0 au niveau cantonal
+
 # eneRgyVD 1.3.1
 
 * Résolution du bug de téléchargement des données de besoins théoriques des bâtiments

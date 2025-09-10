@@ -14,6 +14,10 @@ app_ui <- function(request) {
     ## |---------------------------------------------------------------|
     # First proceed to load JS scripts / librairies as needed
     tags$head(
+
+      # Page title (for Google SEO title display, may be redundant with some golem parameters)
+      tags$title("Profil climatique vaudois"),
+
       # Add description for web content
       tags$meta(name = "description",
                 content = "Découvrez la situation énergétique et climatique de votre commune à l'aide de données mises à disposition par le Canton de Vaud."

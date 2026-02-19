@@ -1,6 +1,6 @@
 Package: eneRgyVD
 Title: Municipal statistics for climate-related policies, Canton de Vaud (Switzerland)
-Version: 1.3.2
+Version: 1.3.3
 Authors@R: 
     person(given = "Michael", family = "Weber", email = "michaelweber_cnp@outlook.com", role = c("cre", "aut"))
 Description: PKG_DESC.

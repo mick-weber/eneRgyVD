@@ -1,3 +1,9 @@
+# eneRgyVD 1.3.3
+
+* Ajout des données de consommation des bâtiments 2025 + correctif rétroactif 2022-2024
+
+* Ajout des données de subventions Programme Bâtiments 2025 (+ Programme Impulse)
+
 # eneRgyVD 1.3.2
 
 * Correctif données production électricité, catégories biomasse agricole, déchets méthanisables, incinérables, STEP et thermique fossiles valaient 0 au niveau cantonal

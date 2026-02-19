@@ -43,14 +43,13 @@ welcome_modal <- function(){
                   div(class = "px-4 pt-2",
                       style = "font-size:1.1rem;",
                       tags$p(
-                        "Ajoutées récemment (août 2025) :",
+                        "Ajoutées récemment :",
                       tags$ul(
-                        tags$li("données de distribution d'électricité 2023"),
-                        tags$li("données de distribution de gaz 2023")
+                        tags$li("données consommation théorique bâtiments 2025 (+ légère modification rétroactive 2022-2024"),
+                        tags$li("données subventions bâtiments 2025")
                         )
                       ),
-                      tags$p("Important : les relevés de compteurs actuels ne permettent d'obtenir l'information qu'avec 2 années de retard.",
-                             style = 'font-style:italic;')
+                      tags$p("Le reste des données énergie, climat et mobilité sera mis à jour selon la disponibilité des données.")
                   ),
 
                   # Grey warning area
@@ -404,7 +403,7 @@ create_plot_ggiraph <- function(data,
   } else if (geom == "line" & !is.null(var_cat)) {
     ggplot <- ggplot +
       ggiraph::geom_line_interactive(
-        size = 1,
+        linewidth = 1,
         ggplot2::aes(group = if (!is.null(var_cat)) .data[[var_cat]] else 1)) +
       ggiraph::geom_point_interactive(size = 2.5) +
       ggplot2::scale_color_manual(
@@ -414,7 +413,7 @@ create_plot_ggiraph <- function(data,
   } else if (geom == "line" & is.null(var_cat)){
     ggplot <- ggplot +
       ggiraph::geom_line_interactive(
-        size = 1,
+        linewidth = 1,
         ggplot2::aes(group = if (!is.null(var_cat)) .data[[var_cat]] else 1),
         color = color_palette[1]) +
       ggiraph::geom_point_interactive(size = 2.5, color = color_palette[1])

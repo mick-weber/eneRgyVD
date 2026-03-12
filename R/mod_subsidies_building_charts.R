@@ -57,12 +57,15 @@ mod_subsidies_building_charts_ui <- function(id,
                                                  shinyWidgets::radioGroupButtons(
                                                    inputId = ns("tab_plot_type"),
                                                    label = h6(strong("Représentation")),
-                                                   choices = c(`<i class='fa fa-house'></i> Par nombre de bâtiments` = "n_egid",
-                                                               `<i class='fa fa-layer-group'></i> Par m<sup>2</sup> de SRE` = "sre"),
+                                                   choiceNames = list(
+                                                     HTML("<i class='fa fa-house'></i> Par nombre de bâtiments"),
+                                                     HTML("<i class='fa fa-layer-group'></i> Par m<sup>2</sup> de SRE")
+                                                   ),
+                                                   choiceValues = c("n_egid", "sre"),
                                                    justified = TRUE,
                                                    individual = TRUE,
-                                                   width = "100%"),
-
+                                                   width = "100%"
+                                                 ),
 
                                                  # materialSwitch 1/1 for bar plot
                                                  shiny::conditionalPanel(
@@ -182,7 +185,7 @@ mod_subsidies_building_charts_server <- function(id,
             var_commune = "commune",
             var_values = "SRE",
             var_cat = "subv_type",
-            unit = "m<sup>2</sup>",
+            unit = expression(m^2),
             legend_title = "",
             geom = "col",
             color_palette = subsidies_building_colors,

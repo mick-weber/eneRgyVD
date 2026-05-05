@@ -15,7 +15,7 @@ mod_news_ui <- function(id){
 
                           h4(strong("Nouveautés")),
 
-                          bslib::accordion(open = c("tocome", "feb26"), # refers to 'value' of accordion_panel. !!update when adding entry!
+                          bslib::accordion(open = c("tocome", "may26"), # refers to 'value' of accordion_panel. !!update when adding entry!
                                            multiple = TRUE,
 
                                            # Next updates ----
@@ -25,6 +25,15 @@ mod_news_ui <- function(id){
                                                                   tagList(
                                                                     phosphoricons::ph(title = NULL, "dots-three", height = "1.5em"),
                                                                     "Mise à jour des données selon disponibilité propre à chaque thématique")
+                                           ),
+
+                                           # Mai 2026
+                                           bslib::accordion_panel(title = HTML("<strong>Mai 2026</strong>"),
+                                                                  value = "may26",
+                                                                  icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de production d'électricité 2025",
+                                                                  )
                                            ),
 
                                            # Février 2026

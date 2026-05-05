@@ -45,6 +45,7 @@ welcome_modal <- function(){
                       tags$p(
                         "Ajoutées récemment :",
                       tags$ul(
+                        tags$li("données production électricité 2025 + modifications mineures 2024"),
                         tags$li("données consommation théorique bâtiments 2025 + modification rétroactive 2022-2024"),
                         tags$li("données subventions bâtiments 2025 + modification rétroactive 2017-2024")
                         )

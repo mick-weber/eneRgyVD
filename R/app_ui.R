@@ -89,7 +89,7 @@ app_ui <- function(request) {
       navbar_options = list(class = "navbar-expand-xl",
                             style = "@media (max-width:1199px) {.navbar-header .navbar-toggle{order:2 !important;}}"), #instead of default lg we collapse earlier to avoid navbar on two rows
       # Footer
-      footer = p("DGE-DIREN @ 2025", class = "fw-lighter",
+      footer = p("DGE-DIREN @ 2026", class = "fw-lighter",
                  style = "position: fixed;bottom:0;right:1%;font-size:1rem;"),
       # Custom theme
       theme = profil_theme, # utils_helpers.R

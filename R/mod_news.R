@@ -27,12 +27,16 @@ mod_news_ui <- function(id){
                                                                     "Mise à jour des données selon disponibilité propre à chaque thématique")
                                            ),
 
-                                           # Mai 2026
-                                           bslib::accordion_panel(title = HTML("<strong>Mai 2026</strong>"),
+                                                                  # Mai 2026
+                                                                  bslib::accordion_panel(title = HTML("<strong>Mai 2026</strong>"),
                                                                   value = "may26",
                                                                   icon = phosphoricons::ph(title = NULL, "calendar-check", height = "1.5em"),
                                                                   tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
-                                                                          "Mise à jour des données de production d'électricité 2025",
+                                                                          "Mise à jour des données d'exposition des bâtiments aux dangers naturels"
+                                                                  ),
+                                                                  br(), br(),
+                                                                  tagList(phosphoricons::ph(title = NULL, "arrows-clockwise", height = "1.5rem"),
+                                                                          "Mise à jour des données de production d'électricité 2025"
                                                                   )
                                            ),
 

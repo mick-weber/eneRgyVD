@@ -1,5 +1,9 @@
 # eneRgyVD 1.4.0
 
+* Ajout des données de production d'électricité 2025 + correctif rétroactif 2024
+
+* Ajout des données de dangers naturels 2022-2025 (seulement 2023 était disponible)
+
 # eneRgyVD 1.3.3
 
 * Ajout des données de consommation des bâtiments 2025 + correctif rétroactif 2022-2024

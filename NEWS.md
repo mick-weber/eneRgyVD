@@ -1,3 +1,9 @@
+# eneRgyVD 1.5.0
+
+* Ajout des données de distribution d'électricité 2024 + correctif mineur 2018-2023
+
+* Ajout des données de distribution de gaz naturel 2024 + correctif mineur 2018-2023
+
 # eneRgyVD 1.4.0
 
 * Ajout des données de production d'électricité 2025 + correctif rétroactif 2024

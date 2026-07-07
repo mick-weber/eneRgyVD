@@ -1,1 +1,2 @@
 http_proxy=http://127.0.0.1:9000
+RSTUDIO_DISABLE_CHECK_FOR_UPDATES="1"

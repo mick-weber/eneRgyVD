@@ -23,6 +23,20 @@ app_ui <- function(request) {
                 content = "Découvrez la situation énergétique et climatique de votre commune à l'aide de données mises à disposition par le Canton de Vaud."
                 ),
 
+      # Website name for search engines
+      tags$script(
+        type = "application/ld+json",
+        HTML('
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://stat-climat-vd.ch/",
+        "name": "Profil climatique des communes vaudoises",
+        "alternateName": "Profil climatique vaudois"
+      }
+    ')
+      ),
+
       # Add introJS library for the guided tour
       tags$link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css"),
       tags$script(src = "https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js")
